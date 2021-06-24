@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["NonSpatialDispersalSampler",""],["NonSpatialDispersalSamplerCudaRepresentation",""]]});

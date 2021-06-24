@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["EventType",""],["LineageInteraction",""],["TypedEvent",""]],"struct":[["Dispersal",""],["DispersalEvent",""],["PackedEvent",""],["SpeciationEvent",""]]});

@@ -1,0 +1,181 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `third-party/RustaCUDA/src/memory/mod.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>mod.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../storage.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../favicon.svg">
+<link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png">
+<link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../rustacuda/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu"><img src="../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" class="help-button">?</button>
+                <a id="settings-menu" href="../../../settings.html"><img src="../../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1"> 1</span>
+<span id="2"> 2</span>
+<span id="3"> 3</span>
+<span id="4"> 4</span>
+<span id="5"> 5</span>
+<span id="6"> 6</span>
+<span id="7"> 7</span>
+<span id="8"> 8</span>
+<span id="9"> 9</span>
+<span id="10">10</span>
+<span id="11">11</span>
+<span id="12">12</span>
+<span id="13">13</span>
+<span id="14">14</span>
+<span id="15">15</span>
+<span id="16">16</span>
+<span id="17">17</span>
+<span id="18">18</span>
+<span id="19">19</span>
+<span id="20">20</span>
+<span id="21">21</span>
+<span id="22">22</span>
+<span id="23">23</span>
+<span id="24">24</span>
+<span id="25">25</span>
+<span id="26">26</span>
+<span id="27">27</span>
+<span id="28">28</span>
+<span id="29">29</span>
+<span id="30">30</span>
+<span id="31">31</span>
+<span id="32">32</span>
+<span id="33">33</span>
+<span id="34">34</span>
+<span id="35">35</span>
+<span id="36">36</span>
+<span id="37">37</span>
+<span id="38">38</span>
+<span id="39">39</span>
+<span id="40">40</span>
+<span id="41">41</span>
+<span id="42">42</span>
+<span id="43">43</span>
+<span id="44">44</span>
+<span id="45">45</span>
+<span id="46">46</span>
+<span id="47">47</span>
+<span id="48">48</span>
+<span id="49">49</span>
+<span id="50">50</span>
+<span id="51">51</span>
+<span id="52">52</span>
+<span id="53">53</span>
+<span id="54">54</span>
+<span id="55">55</span>
+<span id="56">56</span>
+<span id="57">57</span>
+<span id="58">58</span>
+<span id="59">59</span>
+<span id="60">60</span>
+<span id="61">61</span>
+<span id="62">62</span>
+<span id="63">63</span>
+<span id="64">64</span>
+<span id="65">65</span>
+<span id="66">66</span>
+<span id="67">67</span>
+<span id="68">68</span>
+<span id="69">69</span>
+<span id="70">70</span>
+<span id="71">71</span>
+<span id="72">72</span>
+<span id="73">73</span>
+<span id="74">74</span>
+<span id="75">75</span>
+<span id="76">76</span>
+<span id="77">77</span>
+<span id="78">78</span>
+<span id="79">79</span>
+<span id="80">80</span>
+<span id="81">81</span>
+<span id="82">82</span>
+<span id="83">83</span>
+<span id="84">84</span>
+<span id="85">85</span>
+<span id="86">86</span>
+<span id="87">87</span>
+</pre><div class="example-wrap"><pre class="rust ">
+<span class="doccomment">//! Access to CUDA&#39;s memory allocation and transfer functions.</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! The memory module provides a safe wrapper around CUDA&#39;s memory allocation</span>
+<span class="doccomment">//! and transfer functions. This includes access to device memory, unified</span>
+<span class="doccomment">//! memory, and page-locked host memory.</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! # Device Memory</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! Device memory is just what it sounds like - memory allocated on the device.</span>
+<span class="doccomment">//! Device memory cannot be accessed from the host directly, but data can be</span>
+<span class="doccomment">//! copied to and from the device. RustaCUDA exposes device memory through the</span>
+<span class="doccomment">//! [`DeviceBox`](struct.DeviceBox.html) and [`DeviceBuffer`](struct.</span>
+<span class="doccomment">//! DeviceBuffer.html) structures. Pointers to device memory are represented by</span>
+<span class="doccomment">//! [`DevicePointer`](struct.DevicePointer.html), while slices in device memory</span>
+<span class="doccomment">//! are represented by [`DeviceSlice`](struct.DeviceSlice.html).</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! # Unified Memory</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! Unified memory is a memory allocation which can be read from and written to</span>
+<span class="doccomment">//! by both the host and the device. When the host (or device) attempts to</span>
+<span class="doccomment">//! access a page of unified memory, it is seamlessly transferred from host RAM</span>
+<span class="doccomment">//! to device RAM or vice versa. The programmer may also choose to explicitly</span>
+<span class="doccomment">//! prefetch data to one side or another (though this is not currently exposed</span>
+<span class="doccomment">//! through RustaCUDA). RustaCUDA exposes unified memory through the</span>
+<span class="doccomment">//! [`UnifiedBox`](struct.UnifiedBox.html) and</span>
+<span class="doccomment">//! [`UnifiedBuffer`](struct.UnifiedBuffer.html) structures, and pointers to</span>
+<span class="doccomment">//! unified memory are represented by [`UnifiedPointer`](struct.UnifiedPointer.</span>
+<span class="doccomment">//! html). Since unified memory is accessible to the host, slices in unified</span>
+<span class="doccomment">//! memory are represented by normal Rust slices.</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! Unified memory is generally easier to use than device memory, but there are</span>
+<span class="doccomment">//! drawbacks. It is possible to allocate more memory than is available on the</span>
+<span class="doccomment">//! card, and this can result in very slow paging behavior. Additionally, it can</span>
+<span class="doccomment">//! require careful use of prefetching to achieve optimum performance. Finally,</span>
+<span class="doccomment">//! unified memory is not supported on some older systems.</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! # Page-locked Host Memory</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! Page-locked memory is memory that the operating system has locked into</span>
+<span class="doccomment">//! physical RAM, and will not page out to disk. When copying data from the</span>
+<span class="doccomment">//! process&#39; memory space to the device, the CUDA driver needs to first copy the</span>
+<span class="doccomment">//! data to a page-locked region of host memory, then initiate a DMA transfer to</span>
+<span class="doccomment">//! copy the data to the device itself. Likewise, when transferring from device</span>
+<span class="doccomment">//! to host, the driver copies the data into page-locked host memory then into</span>
+<span class="doccomment">//! the normal memory space. This extra copy can be eliminated if the data is</span>
+<span class="doccomment">//! loaded or generated directly into page-locked memory. RustaCUDA exposes</span>
+<span class="doccomment">//! page-locked memory through the [`LockedBuffer`](struct.LockedBuffer.html)</span>
+<span class="doccomment">//! struct.</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! For example, if the programmer needs to read an array of bytes from disk and</span>
+<span class="doccomment">//! transfer it to the device, it would be best to create a `LockedBuffer`, load</span>
+<span class="doccomment">//! the bytes directly into the `LockedBuffer`, and then copy them to a</span>
+<span class="doccomment">//! `DeviceBuffer`. If the bytes are in a `Vec&lt;u8&gt;`, there would be no advantage</span>
+<span class="doccomment">//! to using a `LockedBuffer`.</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! However, since the OS cannot page out page-locked memory, excessive use can</span>
+<span class="doccomment">//! slow down the entire system (including other processes) as physical RAM is</span>
+<span class="doccomment">//! tied up.  Therefore, page-locked memory should be used sparingly.</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! # FFI Information</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! The internal representations of `DevicePointer&lt;T&gt;` and `UnifiedPointer&lt;T&gt;`</span>
+<span class="doccomment">//! are guaranteed to be the same as `*mut T` and they can be safely passed</span>
+<span class="doccomment">//! through an FFI boundary to code expecting raw pointers (though keep in mind</span>
+<span class="doccomment">//! that device-only pointers cannot be dereferenced on the CPU).</span>
+<span class="doccomment">//! This is important when launching kernels written in C.</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! As with regular Rust, all other types (eg. `DeviceBuffer` or `UnifiedBox`)</span>
+<span class="doccomment">//! are not FFI-safe. Their internal representations are not guaranteed to be</span>
+<span class="doccomment">//! anything in particular, and are not guaranteed to be the same in different</span>
+<span class="doccomment">//! versions of RustaCUDA. If you need to pass them through an FFI boundary, you</span>
+<span class="doccomment">//! must convert them to FFI-safe primitives yourself. For example, with</span>
+<span class="doccomment">//! `UnifiedBuffer`, use the `as_unified_ptr()` and `len()` functions to get the</span>
+<span class="doccomment">//! primitives, and `mem::forget()` the Buffer so that it isn&#39;t dropped. Again,</span>
+<span class="doccomment">//! as with regular Rust, the caller is responsible for reconstructing the</span>
+<span class="doccomment">//! `UnifiedBuffer` using `from_raw_parts()` and dropping it to ensure that the</span>
+<span class="doccomment">//! memory allocation is safely cleaned up.</span>
+
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">array</span>;
+
+<span class="kw">mod</span> <span class="ident">device</span>;
+<span class="kw">mod</span> <span class="ident">locked</span>;
+<span class="kw">mod</span> <span class="ident">malloc</span>;
+<span class="kw">mod</span> <span class="ident">unified</span>;
+
+<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span>::{<span class="ident">device</span>::<span class="kw-2">*</span>, <span class="ident">locked</span>::<span class="kw-2">*</span>, <span class="ident">malloc</span>::<span class="kw-2">*</span>, <span class="ident">unified</span>::<span class="kw-2">*</span>};
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">rustacuda_core</span>::{<span class="ident">DeviceCopy</span>, <span class="ident">DevicePointer</span>, <span class="ident">UnifiedPointer</span>};
+</pre></div>
+</section><section id="search" class="content hidden"></section><section class="footer"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="rustacuda"></div>
+    <script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script><script defer src="../../../search-index.js"></script></body></html>

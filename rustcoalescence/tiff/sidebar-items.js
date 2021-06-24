@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["load_map_from_tiff","Loads a 2D map from TIFF file at `path` with the data type `D`."]],"mod":[["private",""]],"trait":[["TiffDataType",""]]});

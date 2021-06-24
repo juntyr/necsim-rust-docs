@@ -1,0 +1,1 @@
+initSidebarItems({"macro":[["export_plugin",""],["match_any_reporter_plugin_vec",""]],"mod":[["export",""],["import",""]],"static":[["CORE_VERSION",""],["RUSTC_VERSION",""]]});

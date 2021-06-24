@@ -1,0 +1,31 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="A `contract_trait` is a trait which ensures all implementors respect all provided contracts."><meta name="keywords" content="rust, rustlang, rust-lang, contract_trait"><title>contracts::contract_trait - Rust</title><link rel="stylesheet" type="text/css" href="../normalize.css"><link rel="stylesheet" type="text/css" href="../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../ayu.css" disabled ><script id="default-settings"></script><script src="../storage.js"></script><noscript><link rel="stylesheet" href="../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../favicon.svg">
+<link rel="alternate icon" type="image/png" href="../favicon-16x16.png">
+<link rel="alternate icon" type="image/png" href="../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../down-arrow.svg");}</style></head><body class="rustdoc attr"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../contracts/index.html'><div class='logo-container rust-logo'><img src='../rust-logo.png' alt='logo'></div></a><div class="sidebar-elems"><p class="location"><a href="index.html">contracts</a></p><div id="sidebar-vars" data-name="contract_trait" data-ty="attr" data-relpath=""></div><script defer src="sidebar-items.js"></script></div></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu"><img src="../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><script src="../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" class="help-button">?</button>
+                <a id="settings-menu" href="../settings.html"><img src="../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><h1 class="fqn"><span class="in-band">Attribute Macro <a href="index.html">contracts</a>::<wbr><a class="attr" href="">contract_trait</a></span><span class="out-of-band"><span id="render-detail"><a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">[<span class="inner">&#x2212;</span>]</a></span><a class="srclink" href="../src/contracts/lib.rs.html#394-413" title="goto source code">[src]</a></span></h1><pre class="rust attr">#[contract_trait]</pre><div class="docblock"><p>A <code>contract_trait</code> is a trait which ensures all implementors respect all
+provided contracts.</p>
+<p>When this attribute is applied to a <code>trait</code> definition, the trait gets
+modified so that all invocations of methods are checked.</p>
+<p>When this attribute is applied to an <code>impl Trait for Type</code> item, the
+implementation gets modified so it matches the trait definition.</p>
+<p><strong>When the <code>#[contract_trait]</code> is not applied to either the trait or an
+<code>impl</code> it will cause compile errors</strong>.</p>
+<h2 id="example" class="section-header"><a href="#example">Example</a></h2>
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="attribute">#[<span class="ident">contract_trait</span>]</span>
+<span class="kw">trait</span> <span class="ident">MyRandom</span> {
+    <span class="attribute">#[<span class="ident">requires</span>(<span class="ident">min</span> <span class="op">&lt;</span> <span class="ident">max</span>)]</span>
+    <span class="attribute">#[<span class="ident">ensures</span>(<span class="ident">min</span> <span class="op">&lt;</span><span class="op">=</span> <span class="ident">ret</span>, <span class="ident">ret</span> <span class="op">&lt;</span><span class="op">=</span> <span class="ident">max</span>)]</span>
+    <span class="kw">fn</span> <span class="ident">gen</span>(<span class="ident">min</span>: <span class="ident">f64</span>, <span class="ident">max</span>: <span class="ident">f64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">f64</span>;
+}
+
+<span class="comment">// Not a very useful random number generator, but a valid one!</span>
+<span class="kw">struct</span> <span class="ident">AlwaysMax</span>;
+
+<span class="attribute">#[<span class="ident">contract_trait</span>]</span>
+<span class="kw">impl</span> <span class="ident">MyRandom</span> <span class="kw">for</span> <span class="ident">AlwaysMax</span> {
+    <span class="kw">fn</span> <span class="ident">gen</span>(<span class="ident">min</span>: <span class="ident">f64</span>, <span class="ident">max</span>: <span class="ident">f64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">f64</span> {
+        <span class="ident">max</span>
+    }
+}</pre></div>
+</div></section><section id="search" class="content hidden"></section><section class="footer"></section><div id="rustdoc-vars" data-root-path="../" data-current-crate="contracts"></div>
+    <script src="../main.js"></script><script defer src="../search-index.js"></script></body></html>

@@ -1,0 +1,108 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="API documentation for the Rust `LocallyCoherentLineageStore` trait in crate `necsim_core`."><meta name="keywords" content="rust, rustlang, rust-lang, LocallyCoherentLineageStore"><title>necsim_core::cogs::LocallyCoherentLineageStore - Rust</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script id="default-settings"></script><script src="../../storage.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="alternate icon" type="image/png" href="../../favicon-16x16.png">
+<link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc trait"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../necsim_core/index.html'><div class='logo-container rust-logo'><img src='../../rust-logo.png' alt='logo'></div></a><p class="location">Trait LocallyCoherentLineageStore</p><div class="sidebar-elems"><div class="block items"><a class="sidebar-title" href="#provided-methods">Provided Methods</a><div class="sidebar-links"><a href="#method.get_active_global_lineage_reference_at_indexed_location">get_active_global_lineage_reference_at_indexed_location</a><a href="#method.insert_lineage_to_indexed_location_locally_coherent">insert_lineage_to_indexed_location_locally_coherent</a><a href="#method.extract_lineage_from_its_location_locally_coherent">extract_lineage_from_its_location_locally_coherent</a><a href="#method.emigrate">emigrate</a><a href="#method.immigrate_locally_coherent">immigrate_locally_coherent</a></div><a class="sidebar-title" href="#implementors">Implementors</a></div><p class="location"><a href="../index.html">necsim_core</a>::<wbr><a href="index.html">cogs</a></p><div id="sidebar-vars" data-name="LocallyCoherentLineageStore" data-ty="trait" data-relpath=""></div><script defer src="sidebar-items.js"></script></div></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu"><img src="../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><script src="../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" class="help-button">?</button>
+                <a id="settings-menu" href="../../settings.html"><img src="../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><h1 class="fqn"><span class="in-band">Trait <a href="../index.html">necsim_core</a>::<wbr><a href="index.html">cogs</a>::<wbr><a class="trait" href="">LocallyCoherentLineageStore</a></span><span class="out-of-band"><span id="render-detail"><a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">[<span class="inner">&#x2212;</span>]</a></span><a class="srclink" href="../../src/necsim_core/cogs/lineage_store.rs.html#36-142" title="goto source code">[src]</a></span></h1><div class="docblock type-decl hidden-by-usual-hider"><pre class="rust trait">pub trait LocallyCoherentLineageStore&lt;H:&nbsp;<a class="trait" href="../../necsim_core/cogs/trait.Habitat.html" title="trait necsim_core::cogs::Habitat">Habitat</a>, R:&nbsp;<a class="trait" href="../../necsim_core/cogs/trait.LineageReference.html" title="trait necsim_core::cogs::LineageReference">LineageReference</a>&lt;H&gt;&gt;: <a class="trait" href="../../necsim_core/cogs/trait.LineageStore.html" title="trait necsim_core::cogs::LineageStore">LineageStore</a>&lt;H, R&gt; + <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/index/trait.Index.html" title="trait core::ops::index::Index">Index</a>&lt;R, Output = <a class="struct" href="../../necsim_core/lineage/struct.Lineage.html" title="struct necsim_core::lineage::Lineage">Lineage</a>&gt; {
+    fn <a href="#method.get_active_global_lineage_reference_at_indexed_location" class="fnname">get_active_global_lineage_reference_at_indexed_location</a>(<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&amp;self, <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;indexed_location: &amp;<a class="struct" href="../../necsim_core/landscape/struct.IndexedLocation.html" title="struct necsim_core::landscape::IndexedLocation">IndexedLocation</a>, <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;habitat: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.reference.html">&amp;</a>H<br>&nbsp;&nbsp;&nbsp;&nbsp;) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;<a class="struct" href="../../necsim_core/lineage/struct.GlobalLineageReference.html" title="struct necsim_core::lineage::GlobalLineageReference">GlobalLineageReference</a>&gt; { ... }
+<div class="item-spacer"></div>    fn <a href="#method.insert_lineage_to_indexed_location_locally_coherent" class="fnname">insert_lineage_to_indexed_location_locally_coherent</a>(<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&amp;mut self, <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;reference: R, <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;indexed_location: <a class="struct" href="../../necsim_core/landscape/struct.IndexedLocation.html" title="struct necsim_core::landscape::IndexedLocation">IndexedLocation</a>, <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;habitat: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.reference.html">&amp;</a>H<br>&nbsp;&nbsp;&nbsp;&nbsp;) { ... }
+<div class="item-spacer"></div>    fn <a href="#method.extract_lineage_from_its_location_locally_coherent" class="fnname">extract_lineage_from_its_location_locally_coherent</a>(<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&amp;mut self, <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;reference: R, <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;event_time: <a class="struct" href="../../necsim_core_bond/positive_f64/struct.PositiveF64.html" title="struct necsim_core_bond::positive_f64::PositiveF64">PositiveF64</a>, <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;habitat: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.reference.html">&amp;</a>H<br>&nbsp;&nbsp;&nbsp;&nbsp;) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.tuple.html">(</a><a class="struct" href="../../necsim_core/landscape/struct.IndexedLocation.html" title="struct necsim_core::landscape::IndexedLocation">IndexedLocation</a>, <a class="struct" href="../../necsim_core_bond/non_negative_f64/struct.NonNegativeF64.html" title="struct necsim_core_bond::non_negative_f64::NonNegativeF64">NonNegativeF64</a><a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.tuple.html">)</a> { ... }
+<div class="item-spacer"></div>    fn <a href="#method.emigrate" class="fnname">emigrate</a>(&amp;mut self, local_lineage_reference: R) -&gt; <a class="struct" href="../../necsim_core/lineage/struct.GlobalLineageReference.html" title="struct necsim_core::lineage::GlobalLineageReference">GlobalLineageReference</a> { ... }
+<div class="item-spacer"></div>    fn <a href="#method.immigrate_locally_coherent" class="fnname">immigrate_locally_coherent</a>(<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&amp;mut self, <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;habitat: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.reference.html">&amp;</a>H, <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;global_reference: <a class="struct" href="../../necsim_core/lineage/struct.GlobalLineageReference.html" title="struct necsim_core::lineage::GlobalLineageReference">GlobalLineageReference</a>, <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;indexed_location: <a class="struct" href="../../necsim_core/landscape/struct.IndexedLocation.html" title="struct necsim_core::landscape::IndexedLocation">IndexedLocation</a>, <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;time_of_emigration: <a class="struct" href="../../necsim_core_bond/positive_f64/struct.PositiveF64.html" title="struct necsim_core_bond::positive_f64::PositiveF64">PositiveF64</a><br>&nbsp;&nbsp;&nbsp;&nbsp;) -&gt; R { ... }
+}</pre></div><h2 id="provided-methods" class="small-section-header">Provided methods<a href="#provided-methods" class="anchor"></a></h2><div class="methods"><h3 id="method.get_active_global_lineage_reference_at_indexed_location" class="method"><code>fn <a href="#method.get_active_global_lineage_reference_at_indexed_location" class="fnname">get_active_global_lineage_reference_at_indexed_location</a>(<br>&nbsp;&nbsp;&nbsp;&nbsp;&amp;self, <br>&nbsp;&nbsp;&nbsp;&nbsp;indexed_location: &amp;<a class="struct" href="../../necsim_core/landscape/struct.IndexedLocation.html" title="struct necsim_core::landscape::IndexedLocation">IndexedLocation</a>, <br>&nbsp;&nbsp;&nbsp;&nbsp;habitat: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.reference.html">&amp;</a>H<br>) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;<a class="struct" href="../../necsim_core/lineage/struct.GlobalLineageReference.html" title="struct necsim_core::lineage::GlobalLineageReference">GlobalLineageReference</a>&gt;</code><a class="srclink" href="../../src/necsim_core/cogs/lineage_store.rs.html#40-43" title="goto source code">[src]</a></h3><div class="docblock"><h1 id="contracts" class="section-header"><a href="#contracts">Contracts</a></h1>
+<p>Pre-condition - debug: indexed location is inside habitat</p>
+<ul>
+<li><code>habitat . contains(indexed_location . location())</code></li>
+</ul>
+</div><h3 id="method.insert_lineage_to_indexed_location_locally_coherent" class="method"><code>fn <a href="#method.insert_lineage_to_indexed_location_locally_coherent" class="fnname">insert_lineage_to_indexed_location_locally_coherent</a>(<br>&nbsp;&nbsp;&nbsp;&nbsp;&amp;mut self, <br>&nbsp;&nbsp;&nbsp;&nbsp;reference: R, <br>&nbsp;&nbsp;&nbsp;&nbsp;indexed_location: <a class="struct" href="../../necsim_core/landscape/struct.IndexedLocation.html" title="struct necsim_core::landscape::IndexedLocation">IndexedLocation</a>, <br>&nbsp;&nbsp;&nbsp;&nbsp;habitat: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.reference.html">&amp;</a>H<br>)</code><a class="srclink" href="../../src/necsim_core/cogs/lineage_store.rs.html#50-53" title="goto source code">[src]</a></h3><div class="docblock"><h1 id="contracts-1" class="section-header"><a href="#contracts-1">Contracts</a></h1>
+<p>Pre-condition - debug: indexed location is inside habitat</p>
+<ul>
+<li><code>habitat . contains(indexed_location . location())</code></li>
+</ul>
+<p>Pre-condition - debug: lineage reference is valid</p>
+<ul>
+<li><code>self . get(reference . clone()) . is_some()</code></li>
+</ul>
+<p>Pre-condition - debug: lineage is inactive</p>
+<ul>
+<li><code>! self [reference . clone()] . is_active()</code></li>
+</ul>
+<p>Post-condition - debug: lineage was activated</p>
+<ul>
+<li><code>self [old(reference . clone())] . is_active()</code></li>
+</ul>
+<p>Post-condition - debug: lineage was added to indexed_location</p>
+<ul>
+<li><code>self [old(reference . clone())] . indexed_location() == Some(&amp; old(indexed_location . clone()))</code></li>
+</ul>
+<p>Post-condition - debug: lineage is now indexed at indexed_location</p>
+<ul>
+<li><code>self . get_active_global_lineage_reference_at_indexed_location(&amp; old(indexed_location . clone()), old(habitat)) == Some(self [old(reference . clone())] . global_reference())</code></li>
+</ul>
+</div><h3 id="method.extract_lineage_from_its_location_locally_coherent" class="method"><code>fn <a href="#method.extract_lineage_from_its_location_locally_coherent" class="fnname">extract_lineage_from_its_location_locally_coherent</a>(<br>&nbsp;&nbsp;&nbsp;&nbsp;&amp;mut self, <br>&nbsp;&nbsp;&nbsp;&nbsp;reference: R, <br>&nbsp;&nbsp;&nbsp;&nbsp;event_time: <a class="struct" href="../../necsim_core_bond/positive_f64/struct.PositiveF64.html" title="struct necsim_core_bond::positive_f64::PositiveF64">PositiveF64</a>, <br>&nbsp;&nbsp;&nbsp;&nbsp;habitat: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.reference.html">&amp;</a>H<br>) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.tuple.html">(</a><a class="struct" href="../../necsim_core/landscape/struct.IndexedLocation.html" title="struct necsim_core::landscape::IndexedLocation">IndexedLocation</a>, <a class="struct" href="../../necsim_core_bond/non_negative_f64/struct.NonNegativeF64.html" title="struct necsim_core_bond::non_negative_f64::NonNegativeF64">NonNegativeF64</a><a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.tuple.html">)</a></code><a class="srclink" href="../../src/necsim_core/cogs/lineage_store.rs.html#75" title="goto source code">[src]</a></h3><div class="docblock"><h1 id="contracts-2" class="section-header"><a href="#contracts-2">Contracts</a></h1>
+<p>Pre-condition - debug: lineage reference is valid</p>
+<ul>
+<li><code>self . get(reference . clone()) . is_some()</code></li>
+</ul>
+<p>Pre-condition - debug: lineage is active</p>
+<ul>
+<li><code>self [reference . clone()] . is_active()</code></li>
+</ul>
+<p>Post-condition - debug: prior location is inside habitat</p>
+<ul>
+<li><code>old(habitat) . contains(ret . 0 . location())</code></li>
+</ul>
+<p>Post-condition - debug: lineage was deactivated</p>
+<ul>
+<li><code>! self [old(reference . clone())] . is_active()</code></li>
+</ul>
+<p>Post-condition - debug: returns the individual’s prior IndexedLocation</p>
+<ul>
+<li><code>ret . 0 == old(self [reference . clone()] . indexed_location() . unwrap() . clone())</code></li>
+</ul>
+<p>Post-condition - debug: returns the individual’s prior last event time</p>
+<ul>
+<li><code>ret . 1 == old(self [reference . clone()] . last_event_time())</code></li>
+</ul>
+<p>Post-condition - debug: lineage is no longer indexed at its prior IndexedLocation</p>
+<ul>
+<li><code>self . get_active_global_lineage_reference_at_indexed_location(&amp; ret . 0, old(habitat)) . is_none()</code></li>
+</ul>
+<p>Post-condition - debug: updates the time of the last event of the lineage reference</p>
+<ul>
+<li><code>self [old(reference . clone())] . last_event_time() == old(event_time)</code></li>
+</ul>
+</div><h3 id="method.emigrate" class="method"><code>fn <a href="#method.emigrate" class="fnname">emigrate</a>(&amp;mut self, local_lineage_reference: R) -&gt; <a class="struct" href="../../necsim_core/lineage/struct.GlobalLineageReference.html" title="struct necsim_core::lineage::GlobalLineageReference">GlobalLineageReference</a></code><a class="srclink" href="../../src/necsim_core/cogs/lineage_store.rs.html#101-104" title="goto source code">[src]</a></h3><div class="docblock"><h1 id="contracts-3" class="section-header"><a href="#contracts-3">Contracts</a></h1>
+<p>Pre-condition - debug: lineage reference is valid</p>
+<ul>
+<li><code>self . get(local_lineage_reference . clone()) . is_some()</code></li>
+</ul>
+<p>Pre-condition - debug: lineage is inactive</p>
+<ul>
+<li><code>! self [local_lineage_reference . clone()] . is_active()</code></li>
+</ul>
+<p>Post-condition - debug: lineage was removed</p>
+<ul>
+<li><code>self . get(old(local_lineage_reference . clone())) . is_none()</code></li>
+</ul>
+<p>Post-condition - debug: returns the individual’s GlobalLineageReference</p>
+<ul>
+<li><code>ret == old(self [local_lineage_reference . clone()] . global_reference() . clone())</code></li>
+</ul>
+</div><h3 id="method.immigrate_locally_coherent" class="method"><code>fn <a href="#method.immigrate_locally_coherent" class="fnname">immigrate_locally_coherent</a>(<br>&nbsp;&nbsp;&nbsp;&nbsp;&amp;mut self, <br>&nbsp;&nbsp;&nbsp;&nbsp;habitat: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.reference.html">&amp;</a>H, <br>&nbsp;&nbsp;&nbsp;&nbsp;global_reference: <a class="struct" href="../../necsim_core/lineage/struct.GlobalLineageReference.html" title="struct necsim_core::lineage::GlobalLineageReference">GlobalLineageReference</a>, <br>&nbsp;&nbsp;&nbsp;&nbsp;indexed_location: <a class="struct" href="../../necsim_core/landscape/struct.IndexedLocation.html" title="struct necsim_core::landscape::IndexedLocation">IndexedLocation</a>, <br>&nbsp;&nbsp;&nbsp;&nbsp;time_of_emigration: <a class="struct" href="../../necsim_core_bond/positive_f64/struct.PositiveF64.html" title="struct necsim_core_bond::positive_f64::PositiveF64">PositiveF64</a><br>) -&gt; R</code><a class="srclink" href="../../src/necsim_core/cogs/lineage_store.rs.html#120-123" title="goto source code">[src]</a></h3><div class="docblock"><h1 id="contracts-4" class="section-header"><a href="#contracts-4">Contracts</a></h1>
+<p>Pre-condition - debug: indexed location is inside habitat</p>
+<ul>
+<li><code>habitat . contains(indexed_location . location())</code></li>
+</ul>
+<p>Post-condition - debug: lineage was activated</p>
+<ul>
+<li><code>self [ret . clone()] . is_active()</code></li>
+</ul>
+<p>Post-condition - debug: lineage was added to indexed_location</p>
+<ul>
+<li><code>self [ret . clone()] . indexed_location() == Some(&amp; old(indexed_location . clone()))</code></li>
+</ul>
+<p>Post-condition - debug: lineage is now indexed at indexed_location</p>
+<ul>
+<li><code>self . get_active_global_lineage_reference_at_indexed_location(&amp; old(indexed_location . clone()), old(habitat)) == Some(self [ret . clone()] . global_reference())</code></li>
+</ul>
+</div></div><span class="loading-content">Loading content...</span><h2 id="implementors" class="small-section-header">Implementors<a href="#implementors" class="anchor"></a></h2><div class="item-list" id="implementors-list"></div><span class="loading-content">Loading content...</span><script type="text/javascript" src="../../implementors/necsim_core/cogs/trait.LocallyCoherentLineageStore.js" async></script></section><section id="search" class="content hidden"></section><section class="footer"></section><div id="rustdoc-vars" data-root-path="../../" data-current-crate="necsim_core"></div>
+    <script src="../../main.js"></script><script defer src="../../search-index.js"></script></body></html>

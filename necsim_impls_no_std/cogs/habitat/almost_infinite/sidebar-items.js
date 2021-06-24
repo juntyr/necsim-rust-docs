@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["AlmostInfiniteHabitat",""],["AlmostInfiniteHabitatCudaRepresentation",""]]});

@@ -1,0 +1,157 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="A crate implementing “Design by Contract” via procedural macros."><meta name="keywords" content="rust, rustlang, rust-lang, contracts"><title>contracts - Rust</title><link rel="stylesheet" type="text/css" href="../normalize.css"><link rel="stylesheet" type="text/css" href="../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../ayu.css" disabled ><script id="default-settings"></script><script src="../storage.js"></script><noscript><link rel="stylesheet" href="../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../favicon.svg">
+<link rel="alternate icon" type="image/png" href="../favicon-16x16.png">
+<link rel="alternate icon" type="image/png" href="../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../down-arrow.svg");}</style></head><body class="rustdoc mod"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../contracts/index.html'><div class='logo-container rust-logo'><img src='../rust-logo.png' alt='logo'></div></a><p class="location">Crate contracts</p><div class="block version"><p>Version 0.6.0</p></div><div class="sidebar-elems"><a id="all-types" href="all.html"><p>See all contracts's items</p></a><p class="location"></p><div id="sidebar-vars" data-name="contracts" data-ty="mod" data-relpath="../"></div></div></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu"><img src="../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><script src="../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" class="help-button">?</button>
+                <a id="settings-menu" href="../settings.html"><img src="../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><h1 class="fqn"><span class="in-band">Crate <a class="mod" href="">contracts</a></span><span class="out-of-band"><span id="render-detail"><a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">[<span class="inner">&#x2212;</span>]</a></span><a class="srclink" href="../src/contracts/lib.rs.html#5-413" title="goto source code">[src]</a></span></h1><div class="docblock"><p>A crate implementing <a href="https://en.wikipedia.org/wiki/Design_by_contract">“Design by Contract”</a> via procedural macros.</p>
+<p>This crate is heavily inspired by the <a href="https://github.com/nrc/libhoare"><code>libhoare</code></a> compiler plugin.</p>
+<p>The main use of this crate is to annotate functions and methods using
+“contracts” in the form of <a href="attr.requires.html"><em>pre-conditions</em> (<code>requires</code>)</a>,
+<a href="attr.ensures.html"><em>post-conditions</em> (<code>ensures</code>)</a> and <a href="attr.invariant.html"><em>invariants</em></a>.</p>
+<p>Each “contract” annotation that is violated will cause an assertion failure.</p>
+<p>The attributes use “function call form” and can contain 1 or more conditions
+to check.
+If the last argument to an attribute is a string constant it will be
+inserted into the assertion message.</p>
+<h2 id="example" class="section-header"><a href="#example">Example</a></h2>
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="attribute">#[<span class="ident">requires</span>(<span class="ident">x</span> <span class="op">&gt;</span> <span class="number">0</span>, <span class="string">&quot;x must be in the valid input range&quot;</span>)]</span>
+<span class="attribute">#[<span class="ident">ensures</span>(<span class="ident">ret</span>.<span class="ident">is_some</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ret</span>.<span class="ident">unwrap</span>() <span class="op">*</span> <span class="ident">ret</span>.<span class="ident">unwrap</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">x</span>)]</span>
+<span class="kw">fn</span> <span class="ident">integer_sqrt</span>(<span class="ident">x</span>: <span class="ident">u64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span> {
+   <span class="comment">// ...</span>
+}</pre></div>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Library</span> {
+    <span class="ident">available</span>: <span class="ident">HashSet</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
+    <span class="ident">lent</span>: <span class="ident">HashSet</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
+}
+
+<span class="kw">impl</span> <span class="ident">Library</span> {
+    <span class="kw">fn</span> <span class="ident">book_exists</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">book_id</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+        <span class="self">self</span>.<span class="ident">available</span>.<span class="ident">contains</span>(<span class="ident">book_id</span>)
+            <span class="op">|</span><span class="op">|</span> <span class="self">self</span>.<span class="ident">lent</span>.<span class="ident">contains</span>(<span class="ident">book_id</span>)
+    }
+
+    <span class="attribute">#[<span class="ident">debug_requires</span>(<span class="op">!</span><span class="self">self</span>.<span class="ident">book_exists</span>(<span class="ident">book_id</span>), <span class="string">&quot;Book IDs are unique&quot;</span>)]</span>
+    <span class="attribute">#[<span class="ident">debug_ensures</span>(<span class="self">self</span>.<span class="ident">available</span>.<span class="ident">contains</span>(<span class="ident">book_id</span>), <span class="string">&quot;Book now available&quot;</span>)]</span>
+    <span class="attribute">#[<span class="ident">ensures</span>(<span class="self">self</span>.<span class="ident">available</span>.<span class="ident">len</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">old</span>(<span class="self">self</span>.<span class="ident">available</span>.<span class="ident">len</span>()) <span class="op">+</span> <span class="number">1</span>)]</span>
+    <span class="attribute">#[<span class="ident">ensures</span>(<span class="self">self</span>.<span class="ident">lent</span>.<span class="ident">len</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">old</span>(<span class="self">self</span>.<span class="ident">lent</span>.<span class="ident">len</span>()), <span class="string">&quot;No lent change&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">add_book</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">book_id</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) {
+        <span class="self">self</span>.<span class="ident">available</span>.<span class="ident">insert</span>(<span class="ident">book_id</span>.<span class="ident">to_string</span>());
+    }
+
+    <span class="attribute">#[<span class="ident">debug_requires</span>(<span class="self">self</span>.<span class="ident">book_exists</span>(<span class="ident">book_id</span>))]</span>
+    <span class="attribute">#[<span class="ident">ensures</span>(<span class="ident">ret</span> <span class="op">-</span><span class="op">&gt;</span> <span class="self">self</span>.<span class="ident">available</span>.<span class="ident">len</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">old</span>(<span class="self">self</span>.<span class="ident">available</span>.<span class="ident">len</span>()) <span class="op">-</span> <span class="number">1</span>)]</span>
+    <span class="attribute">#[<span class="ident">ensures</span>(<span class="ident">ret</span> <span class="op">-</span><span class="op">&gt;</span> <span class="self">self</span>.<span class="ident">lent</span>.<span class="ident">len</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">old</span>(<span class="self">self</span>.<span class="ident">lent</span>.<span class="ident">len</span>()) <span class="op">+</span> <span class="number">1</span>)]</span>
+    <span class="attribute">#[<span class="ident">debug_ensures</span>(<span class="ident">ret</span> <span class="op">-</span><span class="op">&gt;</span> <span class="self">self</span>.<span class="ident">lent</span>.<span class="ident">contains</span>(<span class="ident">book_id</span>))]</span>
+    <span class="attribute">#[<span class="ident">debug_ensures</span>(<span class="op">!</span><span class="ident">ret</span> <span class="op">-</span><span class="op">&gt;</span> <span class="self">self</span>.<span class="ident">lent</span>.<span class="ident">contains</span>(<span class="ident">book_id</span>), <span class="string">&quot;Book already lent&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">lend</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">book_id</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">available</span>.<span class="ident">contains</span>(<span class="ident">book_id</span>) {
+            <span class="self">self</span>.<span class="ident">available</span>.<span class="ident">remove</span>(<span class="ident">book_id</span>);
+            <span class="self">self</span>.<span class="ident">lent</span>.<span class="ident">insert</span>(<span class="ident">book_id</span>.<span class="ident">to_string</span>());
+            <span class="bool-val">true</span>
+        } <span class="kw">else</span> {
+            <span class="bool-val">false</span>
+        }
+    }
+
+    <span class="attribute">#[<span class="ident">debug_requires</span>(<span class="self">self</span>.<span class="ident">lent</span>.<span class="ident">contains</span>(<span class="ident">book_id</span>), <span class="string">&quot;Can&#39;t return a non-lent book&quot;</span>)]</span>
+    <span class="attribute">#[<span class="ident">ensures</span>(<span class="self">self</span>.<span class="ident">lent</span>.<span class="ident">len</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">old</span>(<span class="self">self</span>.<span class="ident">lent</span>.<span class="ident">len</span>()) <span class="op">-</span> <span class="number">1</span>)]</span>
+    <span class="attribute">#[<span class="ident">ensures</span>(<span class="self">self</span>.<span class="ident">available</span>.<span class="ident">len</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">old</span>(<span class="self">self</span>.<span class="ident">available</span>.<span class="ident">len</span>()) <span class="op">+</span> <span class="number">1</span>)]</span>
+    <span class="attribute">#[<span class="ident">debug_ensures</span>(<span class="op">!</span><span class="self">self</span>.<span class="ident">lent</span>.<span class="ident">contains</span>(<span class="ident">book_id</span>))]</span>
+    <span class="attribute">#[<span class="ident">debug_ensures</span>(<span class="self">self</span>.<span class="ident">available</span>.<span class="ident">contains</span>(<span class="ident">book_id</span>), <span class="string">&quot;Book available again&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">return_book</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">book_id</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) {
+        <span class="self">self</span>.<span class="ident">lent</span>.<span class="ident">remove</span>(<span class="ident">book_id</span>);
+        <span class="self">self</span>.<span class="ident">available</span>.<span class="ident">insert</span>(<span class="ident">book_id</span>.<span class="ident">to_string</span>());
+    }
+}</pre></div>
+<h2 id="attributes" class="section-header"><a href="#attributes">Attributes</a></h2>
+<p>This crate exposes the <code>requires</code>, <code>ensures</code> and <code>invariant</code> attributes.</p>
+<ul>
+<li><code>requires</code> are checked before a function/method is executed.</li>
+<li><code>ensures</code> are checked after a function/method ran to completion</li>
+<li><code>invariant</code>s are checked both before <em>and</em> after a function/method ran.</li>
+</ul>
+<p>Additionally, all those attributes have versions with different “modes”. See
+<a href="#modes">the Modes section</a> below.</p>
+<p>For <code>trait</code>s and trait <code>impl</code>s the <code>contract_trait</code> attribute can be used.</p>
+<h2 id="pseudo-functions-and-operators" class="section-header"><a href="#pseudo-functions-and-operators">Pseudo-functions and operators</a></h2><h3 id="old-function" class="section-header"><a href="#old-function"><code>old()</code> function</a></h3>
+<p>One unique feature that this crate provides is an <code>old()</code> pseudo-function which
+allows to perform checks using a value of a parameter before the function call
+happened. This is only available in <code>ensures</code> attributes.</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="attribute">#[<span class="ident">ensures</span>(<span class="kw-2">*</span><span class="ident">x</span> <span class="op">=</span><span class="op">=</span> <span class="ident">old</span>(<span class="kw-2">*</span><span class="ident">x</span>) <span class="op">+</span> <span class="number">1</span>, <span class="string">&quot;after the call `x` was incremented&quot;</span>)]</span>
+<span class="kw">fn</span> <span class="ident">incr</span>(<span class="ident">x</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">usize</span>) {
+    <span class="kw-2">*</span><span class="ident">x</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>;
+}</pre></div>
+<h3 id="--operator" class="section-header"><a href="#--operator"><code>-&gt;</code> operator</a></h3>
+<p>For more complex functions it can be useful to express behaviour using logical
+implication. Because Rust does not feature an operator for implication, this
+crate adds this operator for use in attributes.</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="attribute">#[<span class="ident">ensures</span>(<span class="ident">person_name</span>.<span class="ident">is_some</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ret</span>.<span class="ident">contains</span>(<span class="ident">person_name</span>.<span class="ident">unwrap</span>()))]</span>
+<span class="kw">fn</span> <span class="ident">geeting</span>(<span class="ident">person_name</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">str</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">String</span> {
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">s</span> <span class="op">=</span> <span class="ident">String</span>::<span class="ident">from</span>(<span class="string">&quot;Hello&quot;</span>);
+    <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">name</span>) <span class="op">=</span> <span class="ident">person_name</span> {
+        <span class="ident">s</span>.<span class="ident">push</span>(<span class="string">&#39; &#39;</span>);
+        <span class="ident">s</span>.<span class="ident">push_str</span>(<span class="ident">name</span>);
+    }
+    <span class="ident">s</span>.<span class="ident">push</span>(<span class="string">&#39;!&#39;</span>);
+    <span class="ident">s</span>
+}</pre></div>
+<p>This operator is right-associative.</p>
+<p><strong>Note</strong>: Because of the design of <code>syn</code>, it is tricky to add custom operators
+to be parsed, so this crate performs a rewrite of the <code>TokenStream</code> instead.
+The rewrite works by separating the expression into a part that’s left of the
+<code>-&gt;</code> operator and the rest on the right side. This means that
+<code>if a -&gt; b { c } else { d }</code> will not generate the expected code.
+Explicit grouping using parenthesis or curly-brackets can be used to avoid this.</p>
+<h2 id="modes" class="section-header"><a href="#modes">Modes</a></h2>
+<p>All the attributes (requires, ensures, invariant) have <code>debug_*</code> and <code>test_*</code> versions.</p>
+<ul>
+<li>
+<p><code>debug_requires</code>/<code>debug_ensures</code>/<code>debug_invariant</code> use <code>debug_assert!</code>
+internally rather than <code>assert!</code></p>
+</li>
+<li>
+<p><code>test_requires</code>/<code>test_ensures</code>/<code>test_invariant</code> guard the <code>assert!</code> with an
+<code>if cfg!(test)</code>.
+This should mostly be used for stating equivalence to “slow but obviously
+correct” alternative implementations or checks.</p>
+<p>For example, a merge-sort implementation might look like this</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="attribute">#[<span class="ident">test_ensures</span>(<span class="ident">is_sorted</span>(<span class="ident">input</span>))]</span>
+<span class="kw">fn</span> <span class="ident">merge_sort</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Ord</span> <span class="op">+</span> <span class="ident">Copy</span><span class="op">&gt;</span>(<span class="ident">input</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">T</span>]) {
+    <span class="comment">// ...</span>
+}</pre></div>
+</li>
+</ul>
+<h2 id="feature-flags" class="section-header"><a href="#feature-flags">Feature flags</a></h2>
+<p>Following feature flags are available:</p>
+<ul>
+<li><code>disable_contracts</code> - disables all checks and assertions.</li>
+<li><code>override_debug</code> - changes all contracts (except <code>test_</code> ones) into
+<code>debug_*</code> versions</li>
+<li><code>override_log</code> - changes all contracts (except <code>test_</code> ones) into a
+<code>log::error!()</code> call if the condition is violated.
+No abortion happens.</li>
+<li><code>mirai_assertions</code> - instead of regular assert! style macros, emit macros
+used by the <a href="https://github.com/facebookexperimental/MIRAI">MIRAI</a> static analyzer.</li>
+</ul>
+</div><h2 id="attributes-1" class="section-header"><a href="#attributes-1">Attribute Macros</a></h2>
+<table><tr class="module-item"><td><a class="attr" href="attr.contract_trait.html" title="contracts::contract_trait attr">contract_trait</a></td><td class="docblock-short"><p>A <code>contract_trait</code> is a trait which ensures all implementors respect all
+provided contracts.</p>
+</td></tr><tr class="module-item"><td><a class="attr" href="attr.debug_ensures.html" title="contracts::debug_ensures attr">debug_ensures</a></td><td class="docblock-short"><p>Same as <a href="attr.ensures.html"><code>ensures</code></a>, but uses <code>debug_assert!</code>.</p>
+</td></tr><tr class="module-item"><td><a class="attr" href="attr.debug_invariant.html" title="contracts::debug_invariant attr">debug_invariant</a></td><td class="docblock-short"><p>Same as <a href="attr.invariant.html"><code>invariant</code></a>, but uses <code>debug_assert!</code>.</p>
+</td></tr><tr class="module-item"><td><a class="attr" href="attr.debug_requires.html" title="contracts::debug_requires attr">debug_requires</a></td><td class="docblock-short"><p>Same as <a href="attr.requires.html"><code>requires</code></a>, but uses <code>debug_assert!</code>.</p>
+</td></tr><tr class="module-item"><td><a class="attr" href="attr.ensures.html" title="contracts::ensures attr">ensures</a></td><td class="docblock-short"><p>Post-conditions are checked after the function body is run.</p>
+</td></tr><tr class="module-item"><td><a class="attr" href="attr.invariant.html" title="contracts::invariant attr">invariant</a></td><td class="docblock-short"><p>Invariants are conditions that have to be maintained at the “interface
+boundaries”.</p>
+</td></tr><tr class="module-item"><td><a class="attr" href="attr.requires.html" title="contracts::requires attr">requires</a></td><td class="docblock-short"><p>Pre-conditions are checked before the function body is run.</p>
+</td></tr><tr class="module-item"><td><a class="attr" href="attr.test_ensures.html" title="contracts::test_ensures attr">test_ensures</a></td><td class="docblock-short"><p>Same as <a href="attr.ensures.html"><code>ensures</code></a>, but is only enabled in <code>#[cfg(test)]</code> environments.</p>
+</td></tr><tr class="module-item"><td><a class="attr" href="attr.test_invariant.html" title="contracts::test_invariant attr">test_invariant</a></td><td class="docblock-short"><p>Same as <a href="attr.invariant.html"><code>invariant</code></a>, but is only enabled in <code>#[cfg(test)]</code> environments.</p>
+</td></tr><tr class="module-item"><td><a class="attr" href="attr.test_requires.html" title="contracts::test_requires attr">test_requires</a></td><td class="docblock-short"><p>Same as <a href="attr.requires.html"><code>requires</code></a>, but is only enabled in <code>#[cfg(test)]</code> environments.</p>
+</td></tr></table></section><section id="search" class="content hidden"></section><section class="footer"></section><div id="rustdoc-vars" data-root-path="../" data-current-crate="contracts"></div>
+    <script src="../main.js"></script><script defer src="../search-index.js"></script></body></html>
