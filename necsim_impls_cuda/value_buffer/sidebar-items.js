@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["ValueBuffer",""],["ValueBufferCudaRepresentation",""]]});
+initSidebarItems({"struct":[["ValueBuffer",""]]});

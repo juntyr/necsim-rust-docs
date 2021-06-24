@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["diffuse",""]],"struct":[["ProbabilisticEmigrationChoice",""]]});
+initSidebarItems({"struct":[["ProbabilisticEmigrationChoice",""]]});

@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["common",""],["host",""]],"struct":[["CudaExchangeBuffer",""]]});
+initSidebarItems({"struct":[["CudaExchangeBuffer",""]]});

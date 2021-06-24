@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["NeverEmigrationExit",""],["NeverEmigrationExitCudaRepresentation",""]]});
+initSidebarItems({"struct":[["NeverEmigrationExit",""]]});

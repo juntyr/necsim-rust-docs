@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["GeometricEventTimeSampler",""],["GeometricEventTimeSamplerCudaRepresentation",""]]});
+initSidebarItems({"struct":[["GeometricEventTimeSampler",""]]});

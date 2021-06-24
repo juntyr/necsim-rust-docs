@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["UniformTurnoverRate",""],["UniformTurnoverRateCudaRepresentation",""]]});
+initSidebarItems({"struct":[["UniformTurnoverRate",""]]});

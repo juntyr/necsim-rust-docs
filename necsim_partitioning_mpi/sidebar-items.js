@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["MpiLocalPartition",""],["MpiLocalPartitionError",""],["MpiPartitioningError",""]],"mod":[["partition",""]],"struct":[["MpiParallelPartition",""],["MpiPartitioning",""],["MpiRootPartition",""]]});
+initSidebarItems({"enum":[["MpiLocalPartition",""],["MpiLocalPartitionError",""],["MpiPartitioningError",""]],"struct":[["MpiParallelPartition",""],["MpiPartitioning",""],["MpiRootPartition",""]]});

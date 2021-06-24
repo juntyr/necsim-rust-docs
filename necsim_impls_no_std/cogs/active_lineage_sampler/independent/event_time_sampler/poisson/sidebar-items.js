@@ -1,1 +1,1 @@
-initSidebarItems({"constant":[["INV_PHI",""]],"struct":[["PoissonEventTimeSampler",""],["PoissonEventTimeSamplerCudaRepresentation",""]]});
+initSidebarItems({"struct":[["PoissonEventTimeSampler",""]]});

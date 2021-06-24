@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["store",""]],"struct":[["GillespieLineageStore",""]]});
+initSidebarItems({"struct":[["GillespieLineageStore",""]]});

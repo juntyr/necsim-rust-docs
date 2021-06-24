@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["CudaRng",""],["CudaRngCudaRepresentation",""]]});
+initSidebarItems({"struct":[["CudaRng",""]]});

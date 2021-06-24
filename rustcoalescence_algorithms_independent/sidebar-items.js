@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["IndependentAlgorithm",""]],"mod":[["arguments",""]]});
+initSidebarItems({"enum":[["IndependentAlgorithm",""]]});

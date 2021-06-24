@@ -973,7 +973,7 @@
             .<span class="ident">unwrap</span>();
 
         <span class="comment">// Don&#39;t allocate all memory to leave some space for the display&#39;s frame buffer</span>
-        <span class="kw">let</span> <span class="ident">allocation_size</span> <span class="op">=</span> (<span class="ident">total_memory</span> <span class="op">*</span> <span class="number">3</span>) <span class="op">/</span> <span class="number">4</span> <span class="op">/</span> <span class="ident">mem</span>::<span class="ident">size_of</span>::<span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span>();
+        <span class="kw">let</span> <span class="ident">allocation_size</span> <span class="op">=</span> <span class="ident">total_memory</span> <span class="op">/</span> <span class="number">100</span> <span class="op">/</span> <span class="ident">mem</span>::<span class="ident">size_of</span>::<span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span>();
         <span class="kw">unsafe</span> {
             <span class="comment">// Test if allocation fails with an out-of-memory error</span>
             <span class="kw">let</span> <span class="ident">_buffer</span> <span class="op">=</span> <span class="ident">DeviceBuffer</span>::<span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span>::<span class="ident">uninitialized</span>(<span class="ident">allocation_size</span>).<span class="ident">unwrap</span>();

@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["area",""],["weight",""]],"struct":[["EqualDecomposition",""]]});
+initSidebarItems({"struct":[["EqualDecomposition",""]]});

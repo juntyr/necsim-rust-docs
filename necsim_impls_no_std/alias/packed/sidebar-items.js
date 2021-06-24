@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["pop_overfull_underfull_pair_atomic",""]],"struct":[["AliasMethodSamplerAtom",""]]});
+initSidebarItems({"struct":[["AliasMethodSamplerAtom",""]]});

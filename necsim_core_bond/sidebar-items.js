@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["closed_unit_f64",""],["non_negative_f64",""],["non_zero_one_u64",""],["partition",""],["positive_f64",""],["positive_unit_f64",""]],"struct":[["ClosedUnitF64",""],["NonNegativeF64",""],["NonZeroOneU64",""],["Partition",""],["PositiveF64",""],["PositiveUnitF64",""]]});
+initSidebarItems({"struct":[["ClosedUnitF64",""],["NonNegativeF64",""],["NonZeroOneU64",""],["Partition",""],["PositiveF64",""],["PositiveUnitF64",""]]});

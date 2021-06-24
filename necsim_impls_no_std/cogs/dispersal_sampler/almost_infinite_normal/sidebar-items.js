@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["AlmostInfiniteNormalDispersalSampler",""],["AlmostInfiniteNormalDispersalSamplerCudaRepresentation",""]]});
+initSidebarItems({"struct":[["AlmostInfiniteNormalDispersalSampler",""]]});

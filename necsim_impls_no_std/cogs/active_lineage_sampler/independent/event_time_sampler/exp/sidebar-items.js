@@ -1,1 +1,1 @@
-initSidebarItems({"constant":[["INV_PHI",""]],"struct":[["ExpEventTimeSampler",""],["ExpEventTimeSamplerCudaRepresentation",""]]});
+initSidebarItems({"struct":[["ExpEventTimeSampler",""]]});

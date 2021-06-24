@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["InMemoryHabitat",""],["InMemoryHabitatCudaRepresentation",""]]});
+initSidebarItems({"struct":[["InMemoryHabitat",""]]});

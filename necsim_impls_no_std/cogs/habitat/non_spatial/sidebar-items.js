@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["NonSpatialHabitat",""],["NonSpatialHabitatCudaRepresentation",""]]});
+initSidebarItems({"struct":[["NonSpatialHabitat",""]]});

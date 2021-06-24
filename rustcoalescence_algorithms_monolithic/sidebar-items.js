@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["arguments",""],["classical",""],["gillespie",""],["skipping_gillespie",""]]});
+initSidebarItems({"mod":[["classical",""],["gillespie",""],["skipping_gillespie",""]]});

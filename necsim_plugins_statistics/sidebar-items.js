@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["coverage",""],["speciation",""],["turnover",""]]});
+initSidebarItems({});

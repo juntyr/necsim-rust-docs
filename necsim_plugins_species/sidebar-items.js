@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["default_table_name",""],["extend_statement",""],["seahash_diffuse",""]],"struct":[["SpeciesLocationsReporter",""],["SpeciesLocationsReporterArgs",""]]});
+initSidebarItems({"struct":[["SpeciesLocationsReporter",""]]});

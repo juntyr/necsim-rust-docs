@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["de",""],["error",""],["extensions",""],["parse",""],["ser",""],["value","Value module."]]});
+initSidebarItems({"mod":[["de",""],["error",""],["extensions",""],["ser",""],["value","Value module."]]});

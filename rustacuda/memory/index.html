@@ -9,7 +9,7 @@ memory, and page-locked host memory.</p>
 <p>Device memory is just what it sounds like - memory allocated on the device.
 Device memory cannot be accessed from the host directly, but data can be
 copied to and from the device. RustaCUDA exposes device memory through the
-<a href="struct.DeviceBox.html"><code>DeviceBox</code></a> and <a href="../../rustacuda/memory/device/device_buffer/struct.DeviceBuffer.html" title="DeviceBuffer"><code>DeviceBuffer</code></a>(struct.
+<a href="struct.DeviceBox.html"><code>DeviceBox</code></a> and <a href="../../rustacuda/memory/struct.DeviceBuffer.html" title="DeviceBuffer"><code>DeviceBuffer</code></a>(struct.
 DeviceBuffer.html) structures. Pointers to device memory are represented by
 <a href="struct.DevicePointer.html"><code>DevicePointer</code></a>, while slices in device memory
 are represented by <a href="struct.DeviceSlice.html"><code>DeviceSlice</code></a>.</p>
@@ -67,7 +67,7 @@ as with regular Rust, the caller is responsible for reconstructing the
 memory allocation is safely cleaned up.</p>
 </div><h2 id="modules" class="section-header"><a href="#modules">Modules</a></h2>
 <table><tr class="module-item"><td><a class="mod" href="array/index.html" title="rustacuda::memory::array mod">array</a></td><td class="docblock-short"><p>Routines for allocating and using CUDA Array Objects.</p>
-</td></tr><tr class="module-item"><td><a class="mod" href="device/index.html" title="rustacuda::memory::device mod">device</a></td><td class="docblock-short"></td></tr><tr class="module-item"><td><a class="mod" href="locked/index.html" title="rustacuda::memory::locked mod">locked</a></td><td class="docblock-short"></td></tr><tr class="module-item"><td><a class="mod" href="malloc/index.html" title="rustacuda::memory::malloc mod">malloc</a></td><td class="docblock-short"></td></tr><tr class="module-item"><td><a class="mod" href="unified/index.html" title="rustacuda::memory::unified mod">unified</a></td><td class="docblock-short"></td></tr></table><h2 id="structs" class="section-header"><a href="#structs">Structs</a></h2>
+</td></tr></table><h2 id="structs" class="section-header"><a href="#structs">Structs</a></h2>
 <table><tr class="module-item"><td><a class="struct" href="struct.DeviceBox.html" title="rustacuda::memory::DeviceBox struct">DeviceBox</a></td><td class="docblock-short"><p>A pointer type for heap-allocation in CUDA device memory.</p>
 </td></tr><tr class="module-item"><td><a class="struct" href="struct.DeviceBuffer.html" title="rustacuda::memory::DeviceBuffer struct">DeviceBuffer</a></td><td class="docblock-short"><p>Fixed-size device-side buffer. Provides basic access to device memory.</p>
 </td></tr><tr class="module-item"><td><a class="struct" href="struct.DeviceChunks.html" title="rustacuda::memory::DeviceChunks struct">DeviceChunks</a></td><td class="docblock-short"><p>An iterator over a <a href="struct.DeviceSlice.html"><code>DeviceSlice</code></a> in

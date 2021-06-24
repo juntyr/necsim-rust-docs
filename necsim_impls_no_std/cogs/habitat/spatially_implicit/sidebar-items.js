@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["SpatiallyImplicitHabitat",""],["SpatiallyImplicitHabitatCudaRepresentation",""]]});
+initSidebarItems({"struct":[["SpatiallyImplicitHabitat",""]]});

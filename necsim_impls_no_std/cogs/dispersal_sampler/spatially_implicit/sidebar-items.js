@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["SpatiallyImplicitDispersalSampler",""],["SpatiallyImplicitDispersalSamplerCudaRepresentation",""]]});
+initSidebarItems({"struct":[["SpatiallyImplicitDispersalSampler",""]]});

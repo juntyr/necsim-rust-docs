@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["IndependentEventSampler",""],["IndependentEventSamplerCudaRepresentation",""]]});
+initSidebarItems({"struct":[["IndependentEventSampler",""]]});

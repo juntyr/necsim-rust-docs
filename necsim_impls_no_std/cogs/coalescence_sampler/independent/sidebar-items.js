@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["IndependentCoalescenceSampler",""],["IndependentCoalescenceSamplerCudaRepresentation",""]]});
+initSidebarItems({"struct":[["IndependentCoalescenceSampler",""]]});

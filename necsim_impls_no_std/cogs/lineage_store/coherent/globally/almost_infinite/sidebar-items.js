@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["store",""]],"struct":[["AlmostInfiniteLineageStore",""]]});
+initSidebarItems({"struct":[["AlmostInfiniteLineageStore",""]]});

@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["contract",""],["dispersal",""]],"struct":[["InMemoryCumulativeDispersalSampler",""]]});
+initSidebarItems({"struct":[["InMemoryCumulativeDispersalSampler",""]]});

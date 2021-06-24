@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["probability",""]],"struct":[["ConditionalGillespieEventSampler",""]]});
+initSidebarItems({"struct":[["ConditionalGillespieEventSampler",""]]});

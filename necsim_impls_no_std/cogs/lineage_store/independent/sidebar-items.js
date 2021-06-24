@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["IndependentLineageStore",""],["IndependentLineageStoreCudaRepresentation",""]]});
+initSidebarItems({"struct":[["IndependentLineageStore",""]]});

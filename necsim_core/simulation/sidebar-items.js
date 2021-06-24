@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["backup",""],["builder",""],["partial",""],["process",""]],"struct":[["Simulation",""]]});
+initSidebarItems({"mod":[["partial",""]],"struct":[["Simulation",""]]});

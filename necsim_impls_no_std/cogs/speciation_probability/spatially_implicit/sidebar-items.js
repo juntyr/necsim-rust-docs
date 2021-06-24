@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["SpatiallyImplicitSpeciationProbability",""],["SpatiallyImplicitSpeciationProbabilityCudaRepresentation",""]]});
+initSidebarItems({"struct":[["SpatiallyImplicitSpeciationProbability",""]]});

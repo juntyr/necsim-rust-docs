@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["globbed",""],["segment",""],["sorted_segments",""]],"struct":[["EventLogReplay",""]]});
+initSidebarItems({"mod":[["segment",""]],"struct":[["EventLogReplay",""]]});

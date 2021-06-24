@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["NeverImmigrationEntry",""],["NeverImmigrationEntryCudaRepresentation",""]]});
+initSidebarItems({"struct":[["NeverImmigrationEntry",""]]});

@@ -1,1 +1,1 @@
-initSidebarItems({"derive":[["DeviceCopy",""]],"mod":[["memory",""]],"struct":[["DevicePointer","A pointer to device memory."],["UnifiedPointer","A pointer to unified memory."]],"trait":[["DeviceCopy","Marker trait for types which can safely be copied to or from a CUDA device."]]});
+initSidebarItems({"derive":[["DeviceCopy",""]],"struct":[["DevicePointer","A pointer to device memory."],["UnifiedPointer","A pointer to unified memory."]],"trait":[["DeviceCopy","Marker trait for types which can safely be copied to or from a CUDA device."]]});

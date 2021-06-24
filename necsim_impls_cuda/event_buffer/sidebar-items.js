@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["EventBuffer",""],["EventBufferCudaRepresentation",""]]});
+initSidebarItems({"struct":[["EventBuffer",""]]});

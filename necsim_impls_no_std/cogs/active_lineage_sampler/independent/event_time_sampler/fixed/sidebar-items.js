@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["FixedEventTimeSampler",""],["FixedEventTimeSamplerCudaRepresentation",""]]});
+initSidebarItems({"struct":[["FixedEventTimeSampler",""]]});

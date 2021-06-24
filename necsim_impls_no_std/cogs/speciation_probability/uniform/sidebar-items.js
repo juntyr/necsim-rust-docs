@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["UniformSpeciationProbability",""],["UniformSpeciationProbabilityCudaRepresentation",""]]});
+initSidebarItems({"struct":[["UniformSpeciationProbability",""]]});

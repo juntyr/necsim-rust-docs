@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["dispersal",""]],"struct":[["InMemorySeparableAliasDispersalSampler",""]]});
+initSidebarItems({"struct":[["InMemorySeparableAliasDispersalSampler",""]]});

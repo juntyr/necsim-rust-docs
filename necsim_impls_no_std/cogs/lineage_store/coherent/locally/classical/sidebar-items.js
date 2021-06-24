@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["store",""]],"struct":[["ClassicalLineageStore",""]]});
+initSidebarItems({"struct":[["ClassicalLineageStore",""]]});

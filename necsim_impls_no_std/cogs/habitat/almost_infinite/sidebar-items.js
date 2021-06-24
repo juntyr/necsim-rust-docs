@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["AlmostInfiniteHabitat",""],["AlmostInfiniteHabitatCudaRepresentation",""]]});
+initSidebarItems({"struct":[["AlmostInfiniteHabitat",""]]});

@@ -1,1 +1,1 @@
-initSidebarItems({"constant":[["P0",""],["P1",""],["P2",""],["P5",""]],"fn":[["seahash_diffuse",""],["wymum",""]],"struct":[["WyHash",""]]});
+initSidebarItems({"struct":[["WyHash",""]]});

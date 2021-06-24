@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["extent",""],["location",""]],"struct":[["IndexedLocation",""],["LandscapeExtent",""],["Location",""],["LocationIterator",""]]});
+initSidebarItems({"struct":[["IndexedLocation",""],["LandscapeExtent",""],["Location",""],["LocationIterator",""]]});

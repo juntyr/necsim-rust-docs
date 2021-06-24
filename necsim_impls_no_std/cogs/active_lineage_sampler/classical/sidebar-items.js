@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["sampler",""]],"struct":[["ClassicalActiveLineageSampler",""]]});
+initSidebarItems({"struct":[["ClassicalActiveLineageSampler",""]]});
