@@ -1,7 +1,6 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `necsim/plugins/core/src/import/serde.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>serde.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../storage.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../favicon.svg">
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `necsim/plugins/core/src/import/serde.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>serde.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../favicon.svg">
 <link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png">
-<link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../necsim_plugins_core/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu"><img src="../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" class="help-button">?</button>
-                <a id="settings-menu" href="../../../settings.html"><img src="../../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
+<link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../necsim_plugins_core/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img src="../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../settings.html" title="settings"><img src="../../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -229,16 +228,16 @@
 <span id="226">226</span>
 <span id="227">227</span>
 <span id="228">228</span>
-</pre><div class="example-wrap"><pre class="rust ">
+</pre><pre class="rust">
 <span class="doccomment">/// Inspired by the &lt;https://adventures.michaelfbryan.com/posts/plugins-in-rust/&gt; blog post</span>
 <span class="kw">use</span> <span class="ident">std</span>::{
-    <span class="ident">convert</span>::<span class="ident">TryFrom</span>, <span class="ident">fmt</span>, <span class="ident">io</span>, <span class="ident">iter</span>::<span class="ident">IntoIterator</span>, <span class="ident">mem</span>::<span class="ident">ManuallyDrop</span>, <span class="ident">path</span>::<span class="ident">PathBuf</span>, <span class="ident">rc</span>::<span class="ident">Rc</span>,
+    <span class="ident">convert::TryFrom</span>, <span class="ident">fmt</span>, <span class="ident">io</span>, <span class="ident">iter::IntoIterator</span>, <span class="ident">mem::ManuallyDrop</span>, <span class="ident">path::PathBuf</span>, <span class="ident">rc::Rc</span>,
 };
 
-<span class="kw">use</span> <span class="ident">libloading</span>::<span class="ident">Library</span>;
-<span class="kw">use</span> <span class="ident">serde</span>::<span class="ident">de</span>::{<span class="self">self</span>, <span class="ident">Deserialize</span>, <span class="ident">Deserializer</span>, <span class="ident">MapAccess</span>, <span class="ident">SeqAccess</span>, <span class="ident">Visitor</span>};
+<span class="kw">use</span> <span class="ident">libloading::Library</span>;
+<span class="kw">use</span> <span class="ident">serde::de</span>::{<span class="self">self</span>, <span class="ident">Deserialize</span>, <span class="ident">Deserializer</span>, <span class="ident">MapAccess</span>, <span class="ident">SeqAccess</span>, <span class="ident">Visitor</span>};
 
-<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">export</span>::<span class="ident">ReporterPluginDeclaration</span>, <span class="ident">import</span>::<span class="ident">ReporterPlugin</span>};
+<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">export::ReporterPluginDeclaration</span>, <span class="ident">import::ReporterPlugin</span>};
 
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ReporterPluginLibrary</span> {
     <span class="ident">library</span>: <span class="ident">Rc</span><span class="op">&lt;</span><span class="ident">PluginLibrary</span><span class="op">&gt;</span>,
@@ -253,16 +252,16 @@
 }
 
 <span class="kw">impl</span> <span class="ident">IntoIterator</span> <span class="kw">for</span> <span class="ident">ReporterPluginLibrary</span> {
-    <span class="kw">type</span> <span class="ident">IntoIter</span> <span class="op">=</span> <span class="ident">std</span>::<span class="ident">vec</span>::<span class="ident">IntoIter</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">Item</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">IntoIter</span> <span class="op">=</span> <span class="ident">std::vec::IntoIter</span><span class="op">&lt;</span><span class="self">Self</span><span class="ident">::Item</span><span class="op">&gt;</span>;
     <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="ident">ReporterPlugin</span>;
 
-    <span class="kw">fn</span> <span class="ident">into_iter</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">IntoIter</span> {
+    <span class="kw">fn</span> <span class="ident">into_iter</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span><span class="ident">::IntoIter</span> {
         <span class="self">self</span>.<span class="ident">reporters</span>.<span class="ident">into_iter</span>()
     }
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;de</span><span class="op">&gt;</span> <span class="ident">Deserialize</span><span class="op">&lt;</span><span class="lifetime">&#39;de</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">ReporterPluginLibrary</span> {
-    <span class="kw">fn</span> <span class="ident">deserialize</span><span class="op">&lt;</span><span class="ident">D</span><span class="op">&gt;</span>(<span class="ident">deserializer</span>: <span class="ident">D</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">D</span>::<span class="ident">Error</span><span class="op">&gt;</span>
+    <span class="kw">fn</span> <span class="ident">deserialize</span><span class="op">&lt;</span><span class="ident">D</span><span class="op">&gt;</span>(<span class="ident">deserializer</span>: <span class="ident">D</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">D::Error</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="ident">D</span>: <span class="ident">Deserializer</span><span class="op">&lt;</span><span class="lifetime">&#39;de</span><span class="op">&gt;</span>,
     {
@@ -272,7 +271,7 @@
 }
 
 <span class="comment">// Helper struct to load the library from its path</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">serde</span>::<span class="ident">Deserialize</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">serde::Deserialize</span>)]</span>
 <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">try_from</span> <span class="op">=</span> <span class="string">&quot;PathBuf&quot;</span>)]</span>
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">struct</span> <span class="ident">PluginLibrary</span> {
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">library</span>: <span class="ident">Library</span>,
@@ -280,47 +279,47 @@
 }
 
 <span class="kw">impl</span> <span class="ident">TryFrom</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">PluginLibrary</span> {
-    <span class="kw">type</span> <span class="ident">Error</span> <span class="op">=</span> <span class="ident">io</span>::<span class="ident">Error</span>;
+    <span class="kw">type</span> <span class="ident">Error</span> <span class="op">=</span> <span class="ident">io::Error</span>;
 
-    <span class="kw">fn</span> <span class="ident">try_from</span>(<span class="ident">library_path</span>: <span class="ident">PathBuf</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="self">Self</span>::<span class="ident">Error</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">try_from</span>(<span class="ident">library_path</span>: <span class="ident">PathBuf</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="self">Self</span><span class="ident">::Error</span><span class="op">&gt;</span> {
         <span class="comment">// Load the plugin library into memory</span>
-        <span class="kw">let</span> <span class="ident">library</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">Library</span>::<span class="ident">new</span>(<span class="ident">library_path</span>) }
-            .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">err</span><span class="op">|</span> <span class="ident">io</span>::<span class="ident">Error</span>::<span class="ident">new</span>(<span class="ident">io</span>::<span class="ident">ErrorKind</span>::<span class="ident">Other</span>, <span class="ident">err</span>))<span class="question-mark">?</span>;
+        <span class="kw">let</span> <span class="ident">library</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">Library::new</span>(<span class="ident">library_path</span>) }
+            .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">err</span><span class="op">|</span> <span class="ident">io::Error::new</span>(<span class="ident">io::ErrorKind::Other</span>, <span class="ident">err</span>))<span class="question-mark">?</span>;
 
         <span class="comment">// Load the plugin declaration symbol</span>
         <span class="kw">let</span> <span class="ident">declaration</span> <span class="op">=</span> <span class="kw">unsafe</span> {
             <span class="ident">library</span>
                 .<span class="ident">get</span>::<span class="op">&lt;</span><span class="kw-2">*</span><span class="kw">const</span> <span class="ident">ReporterPluginDeclaration</span><span class="op">&gt;</span>(<span class="string">b&quot;NECSIM_REPORTER_PLUGIN_DECLARATION&quot;</span>)
-                .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">err</span><span class="op">|</span> <span class="ident">io</span>::<span class="ident">Error</span>::<span class="ident">new</span>(<span class="ident">io</span>::<span class="ident">ErrorKind</span>::<span class="ident">Other</span>, <span class="ident">err</span>))<span class="question-mark">?</span>
+                .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">err</span><span class="op">|</span> <span class="ident">io::Error::new</span>(<span class="ident">io::ErrorKind::Other</span>, <span class="ident">err</span>))<span class="question-mark">?</span>
                 .<span class="ident">read</span>()
         };
 
         <span class="comment">// Check for rustc version incompatibilities</span>
-        <span class="kw">if</span> <span class="ident">declaration</span>.<span class="ident">rustc_version</span> <span class="op">!</span><span class="op">=</span> <span class="kw">crate</span>::<span class="ident">RUSTC_VERSION</span> {
-            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">io</span>::<span class="ident">Error</span>::<span class="ident">new</span>(
-                <span class="ident">io</span>::<span class="ident">ErrorKind</span>::<span class="ident">Other</span>,
-                <span class="macro">format</span><span class="macro">!</span>(
+        <span class="kw">if</span> <span class="ident">declaration</span>.<span class="ident">rustc_version</span> <span class="op">!</span><span class="op">=</span> <span class="kw">crate</span><span class="ident">::RUSTC_VERSION</span> {
+            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">io::Error::new</span>(
+                <span class="ident">io::ErrorKind::Other</span>,
+                <span class="macro">format!</span>(
                     <span class="string">&quot;Plugin rustc version {} does not match system rustc version {}.&quot;</span>,
                     <span class="ident">declaration</span>.<span class="ident">rustc_version</span>,
-                    <span class="kw">crate</span>::<span class="ident">RUSTC_VERSION</span>
+                    <span class="kw">crate</span><span class="ident">::RUSTC_VERSION</span>
                 ),
             ));
         }
 
         <span class="comment">// Check for plugin system version incompatibilities</span>
-        <span class="kw">if</span> <span class="ident">declaration</span>.<span class="ident">core_version</span> <span class="op">!</span><span class="op">=</span> <span class="kw">crate</span>::<span class="ident">CORE_VERSION</span> {
-            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">io</span>::<span class="ident">Error</span>::<span class="ident">new</span>(
-                <span class="ident">io</span>::<span class="ident">ErrorKind</span>::<span class="ident">Other</span>,
-                <span class="macro">format</span><span class="macro">!</span>(
+        <span class="kw">if</span> <span class="ident">declaration</span>.<span class="ident">core_version</span> <span class="op">!</span><span class="op">=</span> <span class="kw">crate</span><span class="ident">::CORE_VERSION</span> {
+            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">io::Error::new</span>(
+                <span class="ident">io::ErrorKind::Other</span>,
+                <span class="macro">format!</span>(
                     <span class="string">&quot;Plugin system version {} does not match system version {}.&quot;</span>,
                     <span class="ident">declaration</span>.<span class="ident">core_version</span>,
-                    <span class="kw">crate</span>::<span class="ident">CORE_VERSION</span>
+                    <span class="kw">crate</span><span class="ident">::CORE_VERSION</span>
                 ),
             ));
         }
 
         <span class="kw">unsafe</span> {
-            (<span class="ident">declaration</span>.<span class="ident">init</span>)(<span class="ident">log</span>::<span class="ident">logger</span>(), <span class="ident">log</span>::<span class="ident">max_level</span>());
+            (<span class="ident">declaration</span>.<span class="ident">init</span>)(<span class="ident">log::logger</span>(), <span class="ident">log::max_level</span>());
         }
 
         <span class="prelude-val">Ok</span>(<span class="self">Self</span> {
@@ -333,34 +332,34 @@
 <span class="kw">struct</span> <span class="ident">RcPluginLibrary</span>(<span class="ident">Rc</span><span class="op">&lt;</span><span class="ident">PluginLibrary</span><span class="op">&gt;</span>);
 
 <span class="comment">// Deserialise a list of ReporterPlugins using the open library</span>
-<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;de</span><span class="op">&gt;</span> <span class="ident">serde</span>::<span class="ident">de</span>::<span class="ident">DeserializeSeed</span><span class="op">&lt;</span><span class="lifetime">&#39;de</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">RcPluginLibrary</span> {
+<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;de</span><span class="op">&gt;</span> <span class="ident">serde::de::DeserializeSeed</span><span class="op">&lt;</span><span class="lifetime">&#39;de</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">RcPluginLibrary</span> {
     <span class="kw">type</span> <span class="ident">Value</span> <span class="op">=</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">ReporterPlugin</span><span class="op">&gt;</span>;
 
-    <span class="kw">fn</span> <span class="ident">deserialize</span><span class="op">&lt;</span><span class="ident">D</span>: <span class="ident">Deserializer</span><span class="op">&lt;</span><span class="lifetime">&#39;de</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">deserializer</span>: <span class="ident">D</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">Value</span>, <span class="ident">D</span>::<span class="ident">Error</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">deserialize</span><span class="op">&lt;</span><span class="ident">D</span>: <span class="ident">Deserializer</span><span class="op">&lt;</span><span class="lifetime">&#39;de</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">deserializer</span>: <span class="ident">D</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="ident">::Value</span>, <span class="ident">D::Error</span><span class="op">&gt;</span> {
         <span class="comment">// Helper struct to deserialise a single ReporterPlugin</span>
         <span class="kw">struct</span> <span class="ident">PluginReporter</span> {
             <span class="ident">library</span>: <span class="ident">Rc</span><span class="op">&lt;</span><span class="ident">PluginLibrary</span><span class="op">&gt;</span>,
         }
 
-        <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;de</span><span class="op">&gt;</span> <span class="ident">serde</span>::<span class="ident">de</span>::<span class="ident">DeserializeSeed</span><span class="op">&lt;</span><span class="lifetime">&#39;de</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">PluginReporter</span> {
+        <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;de</span><span class="op">&gt;</span> <span class="ident">serde::de::DeserializeSeed</span><span class="op">&lt;</span><span class="lifetime">&#39;de</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">PluginReporter</span> {
             <span class="kw">type</span> <span class="ident">Value</span> <span class="op">=</span> <span class="ident">ReporterPlugin</span>;
 
             <span class="kw">fn</span> <span class="ident">deserialize</span><span class="op">&lt;</span><span class="ident">D</span>: <span class="ident">Deserializer</span><span class="op">&lt;</span><span class="lifetime">&#39;de</span><span class="op">&gt;</span><span class="op">&gt;</span>(
                 <span class="self">self</span>,
                 <span class="ident">deserializer</span>: <span class="ident">D</span>,
-            ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">Value</span>, <span class="ident">D</span>::<span class="ident">Error</span><span class="op">&gt;</span> {
+            ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="ident">::Value</span>, <span class="ident">D::Error</span><span class="op">&gt;</span> {
                 <span class="kw">match</span> <span class="kw">unsafe</span> {
-                    (<span class="self">self</span>.<span class="ident">library</span>.<span class="ident">declaration</span>.<span class="ident">deserialise</span>)(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">erased_serde</span>::<span class="ident">Deserializer</span>::<span class="ident">erase</span>(
-                        <span class="ident">deserializer</span>,
-                    ))
+                    (<span class="self">self</span>.<span class="ident">library</span>.<span class="ident">declaration</span>.<span class="ident">deserialise</span>)(
+                        <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">erased_serde::Deserializer</span><span class="op">&gt;</span><span class="ident">::erase</span>(<span class="ident">deserializer</span>),
+                    )
                 } {
                     <span class="prelude-val">Ok</span>(<span class="ident">reporter</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">ReporterPlugin</span> {
                         <span class="ident">library</span>: <span class="self">self</span>.<span class="ident">library</span>,
                         <span class="ident">filter</span>: <span class="ident">reporter</span>.<span class="ident">filter</span>,
-                        <span class="ident">reporter</span>: <span class="ident">ManuallyDrop</span>::<span class="ident">new</span>(<span class="ident">ManuallyDrop</span>::<span class="ident">into_inner</span>(<span class="ident">reporter</span>).<span class="ident">reporter</span>),
+                        <span class="ident">reporter</span>: <span class="ident">ManuallyDrop::new</span>(<span class="ident">ManuallyDrop::into_inner</span>(<span class="ident">reporter</span>).<span class="ident">reporter</span>),
                         <span class="ident">finalised</span>: <span class="bool-val">false</span>,
                     }),
-                    <span class="prelude-val">Err</span>(<span class="ident">err</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>(<span class="ident">de</span>::<span class="ident">Error</span>::<span class="ident">custom</span>(<span class="ident">err</span>)),
+                    <span class="prelude-val">Err</span>(<span class="ident">err</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>(<span class="ident">de::Error::custom</span>(<span class="ident">err</span>)),
                 }
             }
         }
@@ -374,11 +373,11 @@
         <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;de</span>, <span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">Visitor</span><span class="op">&lt;</span><span class="lifetime">&#39;de</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">ReporterVecVisitor</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
             <span class="kw">type</span> <span class="ident">Value</span> <span class="op">=</span> ();
 
-            <span class="kw">fn</span> <span class="ident">expecting</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">formatter</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
-                <span class="macro">write</span><span class="macro">!</span>(<span class="ident">formatter</span>, <span class="string">&quot;an array of reporters&quot;</span>)
+            <span class="kw">fn</span> <span class="ident">expecting</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">formatter</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+                <span class="macro">write!</span>(<span class="ident">formatter</span>, <span class="string">&quot;an array of reporters&quot;</span>)
             }
 
-            <span class="kw">fn</span> <span class="ident">visit_seq</span><span class="op">&lt;</span><span class="ident">A</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="kw-2">mut</span> <span class="ident">seq</span>: <span class="ident">A</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">A</span>::<span class="ident">Error</span><span class="op">&gt;</span>
+            <span class="kw">fn</span> <span class="ident">visit_seq</span><span class="op">&lt;</span><span class="ident">A</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="kw-2">mut</span> <span class="ident">seq</span>: <span class="ident">A</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">A::Error</span><span class="op">&gt;</span>
             <span class="kw">where</span>
                 <span class="ident">A</span>: <span class="ident">SeqAccess</span><span class="op">&lt;</span><span class="lifetime">&#39;de</span><span class="op">&gt;</span>,
             {
@@ -392,7 +391,7 @@
             }
         }
 
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">reporters</span> <span class="op">=</span> <span class="ident">Vec</span>::<span class="ident">new</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">reporters</span> <span class="op">=</span> <span class="ident">Vec::new</span>();
 
         <span class="ident">deserializer</span>.<span class="ident">deserialize_seq</span>(<span class="ident">ReporterVecVisitor</span> {
             <span class="ident">library</span>: <span class="self">self</span>.<span class="number">0</span>,
@@ -404,7 +403,7 @@
 }
 
 <span class="comment">// Helper enum to deserialise field names</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">serde</span>::<span class="ident">Deserialize</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">serde::Deserialize</span>)]</span>
 <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">field_identifier</span>, <span class="ident">rename_all</span> <span class="op">=</span> <span class="string">&quot;lowercase&quot;</span>)]</span>
 <span class="kw">enum</span> <span class="ident">ReporterPluginLibraryField</span> {
     <span class="ident">Library</span>,
@@ -417,47 +416,46 @@
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;de</span><span class="op">&gt;</span> <span class="ident">Visitor</span><span class="op">&lt;</span><span class="lifetime">&#39;de</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">ReporterPluginLibraryVisitor</span> {
     <span class="kw">type</span> <span class="ident">Value</span> <span class="op">=</span> <span class="ident">ReporterPluginLibrary</span>;
 
-    <span class="kw">fn</span> <span class="ident">expecting</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">formatter</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+    <span class="kw">fn</span> <span class="ident">expecting</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">formatter</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
         <span class="ident">formatter</span>.<span class="ident">write_str</span>(<span class="string">&quot;struct Plugin&quot;</span>)
     }
 
-    <span class="kw">fn</span> <span class="ident">visit_seq</span><span class="op">&lt;</span><span class="ident">V</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="kw-2">mut</span> <span class="ident">seq</span>: <span class="ident">V</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">ReporterPluginLibrary</span>, <span class="ident">V</span>::<span class="ident">Error</span><span class="op">&gt;</span>
+    <span class="kw">fn</span> <span class="ident">visit_seq</span><span class="op">&lt;</span><span class="ident">V</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="kw-2">mut</span> <span class="ident">seq</span>: <span class="ident">V</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">ReporterPluginLibrary</span>, <span class="ident">V::Error</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="ident">V</span>: <span class="ident">SeqAccess</span><span class="op">&lt;</span><span class="lifetime">&#39;de</span><span class="op">&gt;</span>,
     {
-        <span class="kw">let</span> <span class="ident">library</span>: <span class="ident">Rc</span><span class="op">&lt;</span><span class="ident">PluginLibrary</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Rc</span>::<span class="ident">new</span>(
+        <span class="kw">let</span> <span class="ident">library</span>: <span class="ident">Rc</span><span class="op">&lt;</span><span class="ident">PluginLibrary</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Rc::new</span>(
             <span class="ident">seq</span>.<span class="ident">next_element</span>()<span class="question-mark">?</span>
-                .<span class="ident">ok_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">de</span>::<span class="ident">Error</span>::<span class="ident">invalid_length</span>(<span class="number">0</span>, <span class="kw-2">&amp;</span><span class="self">self</span>))<span class="question-mark">?</span>,
+                .<span class="ident">ok_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">de::Error::invalid_length</span>(<span class="number">0</span>, <span class="kw-2">&amp;</span><span class="self">self</span>))<span class="question-mark">?</span>,
         );
 
         <span class="kw">let</span> <span class="ident">reporters</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">ReporterPlugin</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">seq</span>
             .<span class="ident">next_element_seed</span>(<span class="ident">RcPluginLibrary</span>(<span class="ident">library</span>.<span class="ident">clone</span>()))<span class="question-mark">?</span>
-            .<span class="ident">ok_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">de</span>::<span class="ident">Error</span>::<span class="ident">invalid_length</span>(<span class="number">1</span>, <span class="kw-2">&amp;</span><span class="self">self</span>))<span class="question-mark">?</span>;
+            .<span class="ident">ok_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">de::Error::invalid_length</span>(<span class="number">1</span>, <span class="kw-2">&amp;</span><span class="self">self</span>))<span class="question-mark">?</span>;
 
         <span class="prelude-val">Ok</span>(<span class="ident">ReporterPluginLibrary</span> { <span class="ident">library</span>, <span class="ident">reporters</span> })
     }
 
-    <span class="kw">fn</span> <span class="ident">visit_map</span><span class="op">&lt;</span><span class="ident">V</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="kw-2">mut</span> <span class="ident">map</span>: <span class="ident">V</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">ReporterPluginLibrary</span>, <span class="ident">V</span>::<span class="ident">Error</span><span class="op">&gt;</span>
+    <span class="kw">fn</span> <span class="ident">visit_map</span><span class="op">&lt;</span><span class="ident">V</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="kw-2">mut</span> <span class="ident">map</span>: <span class="ident">V</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">ReporterPluginLibrary</span>, <span class="ident">V::Error</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="ident">V</span>: <span class="ident">MapAccess</span><span class="op">&lt;</span><span class="lifetime">&#39;de</span><span class="op">&gt;</span>,
     {
         <span class="kw">let</span> <span class="ident">library</span>: <span class="ident">Rc</span><span class="op">&lt;</span><span class="ident">PluginLibrary</span><span class="op">&gt;</span> <span class="op">=</span>
-            <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">ReporterPluginLibraryField</span>::<span class="ident">Library</span>) <span class="op">=</span> <span class="ident">map</span>.<span class="ident">next_key</span>()<span class="question-mark">?</span> {
-                <span class="ident">Rc</span>::<span class="ident">new</span>(<span class="ident">map</span>.<span class="ident">next_value</span>()<span class="question-mark">?</span>)
+            <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">ReporterPluginLibraryField::Library</span>) <span class="op">=</span> <span class="ident">map</span>.<span class="ident">next_key</span>()<span class="question-mark">?</span> {
+                <span class="ident">Rc::new</span>(<span class="ident">map</span>.<span class="ident">next_value</span>()<span class="question-mark">?</span>)
             } <span class="kw">else</span> {
-                <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">de</span>::<span class="ident">Error</span>::<span class="ident">missing_field</span>(<span class="string">&quot;library&quot;</span>));
+                <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">de::Error::missing_field</span>(<span class="string">&quot;library&quot;</span>));
             };
 
         <span class="kw">let</span> <span class="ident">reporters</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">ReporterPlugin</span><span class="op">&gt;</span> <span class="op">=</span>
-            <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">ReporterPluginLibraryField</span>::<span class="ident">Reporters</span>) <span class="op">=</span> <span class="ident">map</span>.<span class="ident">next_key</span>()<span class="question-mark">?</span> {
+            <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">ReporterPluginLibraryField::Reporters</span>) <span class="op">=</span> <span class="ident">map</span>.<span class="ident">next_key</span>()<span class="question-mark">?</span> {
                 <span class="ident">map</span>.<span class="ident">next_value_seed</span>(<span class="ident">RcPluginLibrary</span>(<span class="ident">library</span>.<span class="ident">clone</span>()))<span class="question-mark">?</span>
             } <span class="kw">else</span> {
-                <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">de</span>::<span class="ident">Error</span>::<span class="ident">missing_field</span>(<span class="string">&quot;reporters&quot;</span>));
+                <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">de::Error::missing_field</span>(<span class="string">&quot;reporters&quot;</span>));
             };
 
         <span class="prelude-val">Ok</span>(<span class="ident">ReporterPluginLibrary</span> { <span class="ident">library</span>, <span class="ident">reporters</span> })
     }
 }
 </pre></div>
-</section><section id="search" class="content hidden"></section><section class="footer"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="necsim_plugins_core"></div>
-    <script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script><script defer src="../../../search-index.js"></script></body></html>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="necsim_plugins_core" data-search-index-js="../../../search-index.js" data-search-js="../../../search.js"></div><script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script></body></html>

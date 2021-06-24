@@ -1,7 +1,6 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `necsim/core/src/cogs/rng.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>rng.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../storage.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../favicon.svg">
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `necsim/core/src/cogs/rng.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>rng.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../favicon.svg">
 <link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png">
-<link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../necsim_core/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu"><img src="../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" class="help-button">?</button>
-                <a id="settings-menu" href="../../../settings.html"><img src="../../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
+<link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../necsim_core/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img src="../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../settings.html" title="settings"><img src="../../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -164,23 +163,23 @@
 <span id="161">161</span>
 <span id="162">162</span>
 <span id="163">163</span>
-</pre><div class="example-wrap"><pre class="rust ">
-<span class="kw">use</span> <span class="ident">core</span>::{<span class="ident">convert</span>::<span class="ident">AsMut</span>, <span class="ident">default</span>::<span class="ident">Default</span>, <span class="ident">ptr</span>::<span class="ident">copy_nonoverlapping</span>};
+</pre><pre class="rust">
+<span class="kw">use</span> <span class="ident">core</span>::{<span class="ident">convert::AsMut</span>, <span class="ident">default::Default</span>, <span class="ident">ptr::copy_nonoverlapping</span>};
 
 <span class="kw">use</span> <span class="ident">necsim_core_bond</span>::{<span class="ident">ClosedUnitF64</span>, <span class="ident">NonNegativeF64</span>, <span class="ident">PositiveF64</span>};
 
 <span class="kw">use</span> <span class="kw">crate</span>::{
-    <span class="ident">cogs</span>::<span class="ident">Habitat</span>,
+    <span class="ident">cogs::Habitat</span>,
     <span class="ident">intrinsics</span>::{<span class="ident">cos</span>, <span class="ident">floor</span>, <span class="ident">ln</span>, <span class="ident">sin</span>, <span class="ident">sqrt</span>},
-    <span class="ident">landscape</span>::<span class="ident">IndexedLocation</span>,
+    <span class="ident">landscape::IndexedLocation</span>,
 };
 
-<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy</span>::<span class="ident">module_name_repetitions</span>)]</span>
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">RngCore</span>: <span class="kw">crate</span>::<span class="ident">cogs</span>::<span class="ident">Backup</span> <span class="op">+</span> <span class="ident">Sized</span> <span class="op">+</span> <span class="ident">Clone</span> <span class="op">+</span> <span class="ident">core</span>::<span class="ident">fmt</span>::<span class="ident">Debug</span> {
+<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::module_name_repetitions</span>)]</span>
+<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">RngCore</span>: <span class="kw">crate</span><span class="ident">::cogs::Backup</span> <span class="op">+</span> <span class="ident">Sized</span> <span class="op">+</span> <span class="ident">Clone</span> <span class="op">+</span> <span class="ident">core::fmt::Debug</span> {
     <span class="kw">type</span> <span class="ident">Seed</span>: <span class="ident">AsMut</span><span class="op">&lt;</span>[<span class="ident">u8</span>]<span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Default</span> <span class="op">+</span> <span class="ident">Sized</span>;
 
     <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">fn</span> <span class="ident">from_seed</span>(<span class="ident">seed</span>: <span class="self">Self</span>::<span class="ident">Seed</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>;
+    <span class="kw">fn</span> <span class="ident">from_seed</span>(<span class="ident">seed</span>: <span class="self">Self</span><span class="ident">::Seed</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>;
 
     <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="kw">fn</span> <span class="ident">seed_from_u64</span>(<span class="kw-2">mut</span> <span class="ident">state</span>: <span class="ident">u64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
@@ -191,16 +190,16 @@
         <span class="kw">const</span> <span class="ident">MUL</span>: <span class="ident">u64</span> <span class="op">=</span> <span class="number">6_364_136_223_846_793_005_u64</span>;
         <span class="kw">const</span> <span class="ident">INC</span>: <span class="ident">u64</span> <span class="op">=</span> <span class="number">11_634_580_027_462_260_723_u64</span>;
 
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">seed</span> <span class="op">=</span> <span class="self">Self</span>::<span class="ident">Seed</span>::<span class="ident">default</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">seed</span> <span class="op">=</span> <span class="self">Self</span><span class="ident">::Seed::default</span>();
         <span class="kw">for</span> <span class="ident">chunk</span> <span class="kw">in</span> <span class="ident">seed</span>.<span class="ident">as_mut</span>().<span class="ident">chunks_mut</span>(<span class="number">4</span>) {
             <span class="comment">// We advance the state first (to get away from the input value,</span>
             <span class="comment">// in case it has low Hamming Weight).</span>
             <span class="ident">state</span> <span class="op">=</span> <span class="ident">state</span>.<span class="ident">wrapping_mul</span>(<span class="ident">MUL</span>).<span class="ident">wrapping_add</span>(<span class="ident">INC</span>);
 
             <span class="comment">// Use PCG output function with to_le to generate x:</span>
-            <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy</span>::<span class="ident">cast_possible_truncation</span>)]</span>
+            <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::cast_possible_truncation</span>)]</span>
             <span class="kw">let</span> <span class="ident">xorshifted</span> <span class="op">=</span> (((<span class="ident">state</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">18</span>) <span class="op">^</span> <span class="ident">state</span>) <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">27</span>) <span class="kw">as</span> <span class="ident">u32</span>;
-            <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy</span>::<span class="ident">cast_possible_truncation</span>)]</span>
+            <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::cast_possible_truncation</span>)]</span>
             <span class="kw">let</span> <span class="ident">rot</span> <span class="op">=</span> (<span class="ident">state</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">59</span>) <span class="kw">as</span> <span class="ident">u32</span>;
             <span class="kw">let</span> <span class="ident">x</span> <span class="op">=</span> <span class="ident">xorshifted</span>.<span class="ident">rotate_right</span>(<span class="ident">rot</span>).<span class="ident">to_le</span>();
 
@@ -210,25 +209,25 @@
             }
         }
 
-        <span class="self">Self</span>::<span class="ident">from_seed</span>(<span class="ident">seed</span>)
+        <span class="self">Self</span><span class="ident">::from_seed</span>(<span class="ident">seed</span>)
     }
 
     <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="kw">fn</span> <span class="ident">sample_u64</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u64</span>;
 }
 
-<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy</span>::<span class="ident">inline_always</span>, <span class="ident">clippy</span>::<span class="ident">inline_fn_without_body</span>)]</span>
-<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy</span>::<span class="ident">module_name_repetitions</span>)]</span>
+<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::inline_always</span>, <span class="ident">clippy::inline_fn_without_body</span>)]</span>
+<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::module_name_repetitions</span>)]</span>
 <span class="attribute">#[<span class="ident">contract_trait</span>]</span>
 <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">RngSampler</span>: <span class="ident">RngCore</span> {
     <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">fn</span> <span class="ident">sample_uniform</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ClosedUnitF64</span> {
         <span class="comment">// http://prng.di.unimi.it -&gt; Generating uniform doubles in the unit interval</span>
-        <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy</span>::<span class="ident">cast_precision_loss</span>)]</span>
-        <span class="kw">let</span> <span class="ident">u01</span> <span class="op">=</span> ((<span class="self">self</span>.<span class="ident">sample_u64</span>() <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">11</span>) <span class="kw">as</span> <span class="ident">f64</span>) <span class="op">*</span> <span class="ident">f64</span>::<span class="ident">from_bits</span>(<span class="number">0x3CA0_0000_0000_0000_u64</span>); <span class="comment">// 0x1.0p-53</span>
+        <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::cast_precision_loss</span>)]</span>
+        <span class="kw">let</span> <span class="ident">u01</span> <span class="op">=</span> ((<span class="self">self</span>.<span class="ident">sample_u64</span>() <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">11</span>) <span class="kw">as</span> <span class="ident">f64</span>) <span class="op">*</span> <span class="ident">f64::from_bits</span>(<span class="number">0x3CA0_0000_0000_0000_u64</span>); <span class="comment">// 0x1.0p-53</span>
 
-        <span class="kw">unsafe</span> { <span class="ident">ClosedUnitF64</span>::<span class="ident">new_unchecked</span>(<span class="ident">u01</span>) }
+        <span class="kw">unsafe</span> { <span class="ident">ClosedUnitF64::new_unchecked</span>(<span class="ident">u01</span>) }
     }
 
     <span class="attribute">#[<span class="ident">must_use</span>]</span>
@@ -238,9 +237,9 @@
         <span class="comment">// attributes on expressions are experimental</span>
         <span class="comment">// see https://github.com/rust-lang/rust/issues/15701</span>
         <span class="attribute">#[<span class="ident">allow</span>(
-            <span class="ident">clippy</span>::<span class="ident">cast_precision_loss</span>,
-            <span class="ident">clippy</span>::<span class="ident">cast_possible_truncation</span>,
-            <span class="ident">clippy</span>::<span class="ident">cast_sign_loss</span>
+            <span class="ident">clippy::cast_precision_loss</span>,
+            <span class="ident">clippy::cast_possible_truncation</span>,
+            <span class="ident">clippy::cast_sign_loss</span>
         )]</span>
         <span class="kw">let</span> <span class="ident">index</span> <span class="op">=</span> <span class="ident">floor</span>(<span class="self">self</span>.<span class="ident">sample_uniform</span>().<span class="ident">get</span>() <span class="op">*</span> (<span class="ident">length</span> <span class="kw">as</span> <span class="ident">f64</span>)) <span class="kw">as</span> <span class="ident">usize</span>;
         <span class="ident">index</span>
@@ -253,11 +252,11 @@
         <span class="comment">// attributes on expressions are experimental</span>
         <span class="comment">// see https://github.com/rust-lang/rust/issues/15701</span>
         <span class="attribute">#[<span class="ident">allow</span>(
-            <span class="ident">clippy</span>::<span class="ident">cast_precision_loss</span>,
-            <span class="ident">clippy</span>::<span class="ident">cast_possible_truncation</span>,
-            <span class="ident">clippy</span>::<span class="ident">cast_sign_loss</span>
+            <span class="ident">clippy::cast_precision_loss</span>,
+            <span class="ident">clippy::cast_possible_truncation</span>,
+            <span class="ident">clippy::cast_sign_loss</span>
         )]</span>
-        <span class="kw">let</span> <span class="ident">index</span> <span class="op">=</span> <span class="ident">floor</span>(<span class="self">self</span>.<span class="ident">sample_uniform</span>().<span class="ident">get</span>() <span class="op">*</span> <span class="ident">f64</span>::<span class="ident">from</span>(<span class="ident">length</span>)) <span class="kw">as</span> <span class="ident">u32</span>;
+        <span class="kw">let</span> <span class="ident">index</span> <span class="op">=</span> <span class="ident">floor</span>(<span class="self">self</span>.<span class="ident">sample_uniform</span>().<span class="ident">get</span>() <span class="op">*</span> <span class="ident">f64::from</span>(<span class="ident">length</span>)) <span class="kw">as</span> <span class="ident">u32</span>;
         <span class="ident">index</span>
     }
 
@@ -266,7 +265,7 @@
     <span class="kw">fn</span> <span class="ident">sample_exponential</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">lambda</span>: <span class="ident">PositiveF64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">NonNegativeF64</span> {
         <span class="kw">let</span> <span class="ident">exp</span> <span class="op">=</span> <span class="op">-</span><span class="ident">ln</span>(<span class="self">self</span>.<span class="ident">sample_uniform</span>().<span class="ident">get</span>()) <span class="op">/</span> <span class="ident">lambda</span>.<span class="ident">get</span>();
 
-        <span class="kw">unsafe</span> { <span class="ident">NonNegativeF64</span>::<span class="ident">new_unchecked</span>(<span class="ident">exp</span>) }
+        <span class="kw">unsafe</span> { <span class="ident">NonNegativeF64::new_unchecked</span>(<span class="ident">exp</span>) }
     }
 
     <span class="attribute">#[<span class="ident">must_use</span>]</span>
@@ -283,7 +282,7 @@
         <span class="kw">let</span> <span class="ident">u1</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">sample_uniform</span>();
 
         <span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">sqrt</span>(<span class="op">-</span><span class="number">2.0_f64</span> <span class="op">*</span> <span class="ident">ln</span>(<span class="ident">u0</span>.<span class="ident">get</span>()));
-        <span class="kw">let</span> <span class="ident">theta</span> <span class="op">=</span> <span class="op">-</span><span class="ident">core</span>::<span class="ident">f64</span>::<span class="ident">consts</span>::<span class="ident">TAU</span> <span class="op">*</span> <span class="ident">u1</span>.<span class="ident">get</span>();
+        <span class="kw">let</span> <span class="ident">theta</span> <span class="op">=</span> <span class="op">-</span><span class="ident">core::f64::consts::TAU</span> <span class="op">*</span> <span class="ident">u1</span>.<span class="ident">get</span>();
 
         (<span class="ident">r</span> <span class="op">*</span> <span class="ident">sin</span>(<span class="ident">theta</span>), <span class="ident">r</span> <span class="op">*</span> <span class="ident">cos</span>(<span class="ident">theta</span>))
     }
@@ -299,12 +298,12 @@
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">R</span>: <span class="ident">RngCore</span><span class="op">&gt;</span> <span class="ident">RngSampler</span> <span class="kw">for</span> <span class="ident">R</span> {}
 
-<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy</span>::<span class="ident">module_name_repetitions</span>)]</span>
+<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::module_name_repetitions</span>)]</span>
 <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">PrimeableRng</span>: <span class="ident">RngCore</span> {
     <span class="kw">fn</span> <span class="ident">prime_with</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">location_index</span>: <span class="ident">u64</span>, <span class="ident">time_index</span>: <span class="ident">u64</span>);
 }
 
-<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy</span>::<span class="ident">module_name_repetitions</span>)]</span>
+<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::module_name_repetitions</span>)]</span>
 <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">HabitatPrimeableRng</span><span class="op">&lt;</span><span class="ident">H</span>: <span class="ident">Habitat</span><span class="op">&gt;</span>: <span class="ident">PrimeableRng</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">fn</span> <span class="ident">prime_with_habitat</span>(
@@ -316,18 +315,17 @@
         <span class="self">self</span>.<span class="ident">prime_with</span>(
             <span class="ident">habitat</span>.<span class="ident">map_indexed_location_to_u64_injective</span>(<span class="ident">indexed_location</span>),
             <span class="ident">time_index</span>,
-        )
+        );
     }
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">R</span>: <span class="ident">PrimeableRng</span>, <span class="ident">H</span>: <span class="ident">Habitat</span><span class="op">&gt;</span> <span class="ident">HabitatPrimeableRng</span><span class="op">&lt;</span><span class="ident">H</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">R</span> {}
 
-<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy</span>::<span class="ident">module_name_repetitions</span>)]</span>
+<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::module_name_repetitions</span>)]</span>
 <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">SplittableRng</span>: <span class="ident">RngCore</span> {
     <span class="kw">fn</span> <span class="ident">split</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> (<span class="self">Self</span>, <span class="self">Self</span>);
 
     <span class="kw">fn</span> <span class="ident">split_to_stream</span>(<span class="self">self</span>, <span class="ident">stream</span>: <span class="ident">u64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>;
 }
 </pre></div>
-</section><section id="search" class="content hidden"></section><section class="footer"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="necsim_core"></div>
-    <script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script><script defer src="../../../search-index.js"></script></body></html>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="necsim_core" data-search-index-js="../../../search-index.js" data-search-js="../../../search.js"></div><script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script></body></html>

@@ -1,7 +1,6 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `necsim/plugins/core/src/import/combinator.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>combinator.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../storage.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../favicon.svg">
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `necsim/plugins/core/src/import/combinator.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>combinator.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../favicon.svg">
 <link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png">
-<link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../necsim_plugins_core/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu"><img src="../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" class="help-button">?</button>
-                <a id="settings-menu" href="../../../settings.html"><img src="../../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
+<link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../necsim_plugins_core/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img src="../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../settings.html" title="settings"><img src="../../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -217,12 +216,11 @@
 <span id="214">214</span>
 <span id="215">215</span>
 <span id="216">216</span>
-<span id="217">217</span>
-</pre><div class="example-wrap"><pre class="rust ">
+</pre><pre class="rust">
 <span class="kw">use</span> <span class="ident">std</span>::{
     <span class="ident">fmt</span>,
     <span class="ident">iter</span>::{<span class="ident">FromIterator</span>, <span class="ident">IntoIterator</span>},
-    <span class="ident">marker</span>::<span class="ident">PhantomData</span>,
+    <span class="ident">marker::PhantomData</span>,
 };
 
 <span class="kw">use</span> <span class="ident">necsim_core</span>::{
@@ -233,7 +231,7 @@
     },
 };
 
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">import</span>::<span class="ident">ReporterPlugin</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::import::ReporterPlugin</span>;
 
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ReporterPluginVec</span><span class="op">&lt;</span>
     <span class="ident">ReportSpeciation</span>: <span class="ident">Boolean</span>,
@@ -244,10 +242,10 @@
     <span class="ident">marker</span>: <span class="ident">PhantomData</span><span class="op">&lt;</span>(<span class="ident">ReportSpeciation</span>, <span class="ident">ReportDispersal</span>, <span class="ident">ReportProgress</span>)<span class="op">&gt;</span>,
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">ReportSpeciation</span>: <span class="ident">Boolean</span>, <span class="ident">ReportDispersal</span>: <span class="ident">Boolean</span>, <span class="ident">ReportProgress</span>: <span class="ident">Boolean</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="ident">Debug</span>
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">ReportSpeciation</span>: <span class="ident">Boolean</span>, <span class="ident">ReportDispersal</span>: <span class="ident">Boolean</span>, <span class="ident">ReportProgress</span>: <span class="ident">Boolean</span><span class="op">&gt;</span> <span class="ident">fmt::Debug</span>
     <span class="kw">for</span> <span class="ident">ReporterPluginVec</span><span class="op">&lt;</span><span class="ident">ReportSpeciation</span>, <span class="ident">ReportDispersal</span>, <span class="ident">ReportProgress</span><span class="op">&gt;</span>
 {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">fmt</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">fmt</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
         <span class="ident">fmt</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;ReporterPluginVec&quot;</span>)
             .<span class="ident">field</span>(<span class="string">&quot;plugins&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">plugins</span>)
             .<span class="ident">finish</span>()
@@ -268,9 +266,9 @@
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">plugins</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">ReporterPlugin</span><span class="op">&gt;</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">plugins</span>.<span class="ident">into_vec</span>();
 
         <span class="ident">plugins</span>.<span class="ident">retain</span>(<span class="op">|</span><span class="ident">plugin</span><span class="op">|</span> {
-            (<span class="ident">plugin</span>.<span class="ident">filter</span>.<span class="ident">report_speciation</span> <span class="op">&amp;&amp;</span> <span class="ident">KeepSpeciation</span>::<span class="ident">VALUE</span>)
-                <span class="op">|</span><span class="op">|</span> (<span class="ident">plugin</span>.<span class="ident">filter</span>.<span class="ident">report_dispersal</span> <span class="op">&amp;&amp;</span> <span class="ident">KeepDispersal</span>::<span class="ident">VALUE</span>)
-                <span class="op">|</span><span class="op">|</span> (<span class="ident">plugin</span>.<span class="ident">filter</span>.<span class="ident">report_progress</span> <span class="op">&amp;&amp;</span> <span class="ident">KeepProgress</span>::<span class="ident">VALUE</span>)
+            (<span class="ident">plugin</span>.<span class="ident">filter</span>.<span class="ident">report_speciation</span> <span class="op">&amp;&amp;</span> <span class="ident">KeepSpeciation::VALUE</span>)
+                <span class="op">|</span><span class="op">|</span> (<span class="ident">plugin</span>.<span class="ident">filter</span>.<span class="ident">report_dispersal</span> <span class="op">&amp;&amp;</span> <span class="ident">KeepDispersal::VALUE</span>)
+                <span class="op">|</span><span class="op">|</span> (<span class="ident">plugin</span>.<span class="ident">filter</span>.<span class="ident">report_progress</span> <span class="op">&amp;&amp;</span> <span class="ident">KeepProgress::VALUE</span>)
         });
 
         <span class="self">Self</span> {
@@ -283,7 +281,7 @@
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">ReportSpeciation</span>: <span class="ident">Boolean</span>, <span class="ident">ReportDispersal</span>: <span class="ident">Boolean</span>, <span class="ident">ReportProgress</span>: <span class="ident">Boolean</span><span class="op">&gt;</span> <span class="ident">Reporter</span>
     <span class="kw">for</span> <span class="ident">ReporterPluginVec</span><span class="op">&lt;</span><span class="ident">ReportSpeciation</span>, <span class="ident">ReportDispersal</span>, <span class="ident">ReportProgress</span><span class="op">&gt;</span>
 {
-    <span class="macro">impl_report</span><span class="macro">!</span>(<span class="ident">speciation</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">speciation</span>: <span class="ident">MaybeUsed</span><span class="op">&lt;</span><span class="ident">ReportSpeciation</span><span class="op">&gt;</span>) {
+    <span class="macro">impl_report!</span>(<span class="ident">speciation</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">speciation</span>: <span class="ident">MaybeUsed</span><span class="op">&lt;</span><span class="ident">ReportSpeciation</span><span class="op">&gt;</span>) {
         <span class="kw">for</span> <span class="ident">plugin</span> <span class="kw">in</span> <span class="self">self</span>.<span class="ident">plugins</span>.<span class="ident">iter_mut</span>() {
             <span class="kw">if</span> <span class="ident">plugin</span>.<span class="ident">filter</span>.<span class="ident">report_speciation</span> {
                 <span class="ident">plugin</span>.<span class="ident">reporter</span>.<span class="ident">report_speciation</span>(<span class="ident">speciation</span>.<span class="ident">into</span>());
@@ -291,7 +289,7 @@
         }
     });
 
-    <span class="macro">impl_report</span><span class="macro">!</span>(<span class="ident">dispersal</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">dispersal</span>: <span class="ident">MaybeUsed</span><span class="op">&lt;</span><span class="ident">ReportDispersal</span><span class="op">&gt;</span>) {
+    <span class="macro">impl_report!</span>(<span class="ident">dispersal</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">dispersal</span>: <span class="ident">MaybeUsed</span><span class="op">&lt;</span><span class="ident">ReportDispersal</span><span class="op">&gt;</span>) {
         <span class="kw">for</span> <span class="ident">plugin</span> <span class="kw">in</span> <span class="self">self</span>.<span class="ident">plugins</span>.<span class="ident">iter_mut</span>() {
             <span class="kw">if</span> <span class="ident">plugin</span>.<span class="ident">filter</span>.<span class="ident">report_dispersal</span> {
                 <span class="ident">plugin</span>.<span class="ident">reporter</span>.<span class="ident">report_dispersal</span>(<span class="ident">dispersal</span>.<span class="ident">into</span>());
@@ -299,7 +297,7 @@
         }
     });
 
-    <span class="macro">impl_report</span><span class="macro">!</span>(<span class="ident">progress</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">progress</span>: <span class="ident">MaybeUsed</span><span class="op">&lt;</span><span class="ident">ReportProgress</span><span class="op">&gt;</span>) {
+    <span class="macro">impl_report!</span>(<span class="ident">progress</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">progress</span>: <span class="ident">MaybeUsed</span><span class="op">&lt;</span><span class="ident">ReportProgress</span><span class="op">&gt;</span>) {
         <span class="kw">for</span> <span class="ident">plugin</span> <span class="kw">in</span> <span class="self">self</span>.<span class="ident">plugins</span>.<span class="ident">iter_mut</span>() {
             <span class="kw">if</span> <span class="ident">plugin</span>.<span class="ident">filter</span>.<span class="ident">report_progress</span> {
                 <span class="ident">plugin</span>.<span class="ident">reporter</span>.<span class="ident">report_progress</span>(<span class="ident">progress</span>.<span class="ident">into</span>());
@@ -307,9 +305,9 @@
         }
     });
 
-    <span class="macro">impl_finalise</span><span class="macro">!</span>((<span class="self">self</span>) {
+    <span class="macro">impl_finalise!</span>((<span class="self">self</span>) {
         <span class="kw">for</span> <span class="ident">plugin</span> <span class="kw">in</span> <span class="self">self</span>.<span class="ident">plugins</span>.<span class="ident">into_vec</span>() {
-            <span class="ident">plugin</span>.<span class="ident">finalise</span>()
+            <span class="ident">plugin</span>.<span class="ident">finalise</span>();
         }
     });
 
@@ -322,7 +320,6 @@
     }
 }
 
-<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy</span>::<span class="ident">pub_enum_variant_names</span>)]</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">AnyReporterPluginVec</span> {
     <span class="ident">IgnoreSpeciationIgnoreDispersalIgnoreProgress</span>(<span class="ident">ReporterPluginVec</span><span class="op">&lt;</span><span class="ident">False</span>, <span class="ident">False</span>, <span class="ident">False</span><span class="op">&gt;</span>),
@@ -354,49 +351,49 @@
 
         <span class="kw">match</span> (<span class="ident">report_speciation</span>, <span class="ident">report_dispersal</span>, <span class="ident">report_progress</span>) {
             (<span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>) <span class="op">=</span><span class="op">&gt;</span> {
-                <span class="self">Self</span>::<span class="ident">IgnoreSpeciationIgnoreDispersalIgnoreProgress</span>(<span class="ident">ReporterPluginVec</span> {
+                <span class="self">Self</span><span class="ident">::IgnoreSpeciationIgnoreDispersalIgnoreProgress</span>(<span class="ident">ReporterPluginVec</span> {
                     <span class="ident">plugins</span>,
                     <span class="ident">marker</span>: <span class="ident">PhantomData</span>,
                 })
             },
             (<span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">true</span>) <span class="op">=</span><span class="op">&gt;</span> {
-                <span class="self">Self</span>::<span class="ident">IgnoreSpeciationIgnoreDispersalReportProgress</span>(<span class="ident">ReporterPluginVec</span> {
+                <span class="self">Self</span><span class="ident">::IgnoreSpeciationIgnoreDispersalReportProgress</span>(<span class="ident">ReporterPluginVec</span> {
                     <span class="ident">plugins</span>,
                     <span class="ident">marker</span>: <span class="ident">PhantomData</span>,
                 })
             },
             (<span class="bool-val">false</span>, <span class="bool-val">true</span>, <span class="bool-val">false</span>) <span class="op">=</span><span class="op">&gt;</span> {
-                <span class="self">Self</span>::<span class="ident">IgnoreSpeciationReportDispersalIgnoreProgress</span>(<span class="ident">ReporterPluginVec</span> {
+                <span class="self">Self</span><span class="ident">::IgnoreSpeciationReportDispersalIgnoreProgress</span>(<span class="ident">ReporterPluginVec</span> {
                     <span class="ident">plugins</span>,
                     <span class="ident">marker</span>: <span class="ident">PhantomData</span>,
                 })
             },
             (<span class="bool-val">false</span>, <span class="bool-val">true</span>, <span class="bool-val">true</span>) <span class="op">=</span><span class="op">&gt;</span> {
-                <span class="self">Self</span>::<span class="ident">IgnoreSpeciationReportDispersalReportProgress</span>(<span class="ident">ReporterPluginVec</span> {
+                <span class="self">Self</span><span class="ident">::IgnoreSpeciationReportDispersalReportProgress</span>(<span class="ident">ReporterPluginVec</span> {
                     <span class="ident">plugins</span>,
                     <span class="ident">marker</span>: <span class="ident">PhantomData</span>,
                 })
             },
             (<span class="bool-val">true</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>) <span class="op">=</span><span class="op">&gt;</span> {
-                <span class="self">Self</span>::<span class="ident">ReportSpeciationIgnoreDispersalIgnoreProgress</span>(<span class="ident">ReporterPluginVec</span> {
+                <span class="self">Self</span><span class="ident">::ReportSpeciationIgnoreDispersalIgnoreProgress</span>(<span class="ident">ReporterPluginVec</span> {
                     <span class="ident">plugins</span>,
                     <span class="ident">marker</span>: <span class="ident">PhantomData</span>,
                 })
             },
             (<span class="bool-val">true</span>, <span class="bool-val">false</span>, <span class="bool-val">true</span>) <span class="op">=</span><span class="op">&gt;</span> {
-                <span class="self">Self</span>::<span class="ident">ReportSpeciationIgnoreDispersalReportProgress</span>(<span class="ident">ReporterPluginVec</span> {
+                <span class="self">Self</span><span class="ident">::ReportSpeciationIgnoreDispersalReportProgress</span>(<span class="ident">ReporterPluginVec</span> {
                     <span class="ident">plugins</span>,
                     <span class="ident">marker</span>: <span class="ident">PhantomData</span>,
                 })
             },
             (<span class="bool-val">true</span>, <span class="bool-val">true</span>, <span class="bool-val">false</span>) <span class="op">=</span><span class="op">&gt;</span> {
-                <span class="self">Self</span>::<span class="ident">ReportSpeciationReportDispersalIgnoreProgress</span>(<span class="ident">ReporterPluginVec</span> {
+                <span class="self">Self</span><span class="ident">::ReportSpeciationReportDispersalIgnoreProgress</span>(<span class="ident">ReporterPluginVec</span> {
                     <span class="ident">plugins</span>,
                     <span class="ident">marker</span>: <span class="ident">PhantomData</span>,
                 })
             },
             (<span class="bool-val">true</span>, <span class="bool-val">true</span>, <span class="bool-val">true</span>) <span class="op">=</span><span class="op">&gt;</span> {
-                <span class="self">Self</span>::<span class="ident">ReportSpeciationReportDispersalReportProgress</span>(<span class="ident">ReporterPluginVec</span> {
+                <span class="self">Self</span><span class="ident">::ReportSpeciationReportDispersalReportProgress</span>(<span class="ident">ReporterPluginVec</span> {
                     <span class="ident">plugins</span>,
                     <span class="ident">marker</span>: <span class="ident">PhantomData</span>,
                 })
@@ -406,9 +403,9 @@
 }
 
 <span class="attribute">#[<span class="ident">macro_export</span>]</span>
-<span class="macro">macro_rules</span><span class="macro">!</span> <span class="ident">match_any_reporter_plugin_vec</span> {
+<span class="macro">macro_rules!</span> <span class="ident">match_any_reporter_plugin_vec</span> {
     (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">any</span>:<span class="ident">expr</span> <span class="op">=</span><span class="op">&gt;</span> <span class="op">|</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">inner</span>:<span class="ident">ident</span> <span class="op">|</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span>:<span class="ident">block</span>) <span class="op">=</span><span class="op">&gt;</span> {{
-        <span class="kw">use</span> <span class="macro-nonterminal">$</span><span class="kw">crate</span>::<span class="macro-nonterminal">import</span>::<span class="ident">AnyReporterPluginVec</span>::<span class="kw-2">*</span>;
+        <span class="kw">use</span> <span class="macro-nonterminal">$</span><span class="kw">crate</span><span class="macro-nonterminal">::import::AnyReporterPluginVec</span>::<span class="kw-2">*</span>;
 
         <span class="kw">match</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">any</span> {
             <span class="ident">IgnoreSpeciationIgnoreDispersalIgnoreProgress</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">inner</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span>,
@@ -422,7 +419,7 @@
         }
     }};
     (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">any</span>:<span class="ident">expr</span> <span class="op">=</span><span class="op">&gt;</span> <span class="op">|</span> <span class="kw-2">mut</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">inner</span>:<span class="ident">ident</span> <span class="op">|</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span>:<span class="ident">block</span>) <span class="op">=</span><span class="op">&gt;</span> {{
-        <span class="kw">use</span> <span class="macro-nonterminal">$</span><span class="kw">crate</span>::<span class="macro-nonterminal">import</span>::<span class="ident">AnyReporterPluginVec</span>::<span class="kw-2">*</span>;
+        <span class="kw">use</span> <span class="macro-nonterminal">$</span><span class="kw">crate</span><span class="macro-nonterminal">::import::AnyReporterPluginVec</span>::<span class="kw-2">*</span>;
 
         <span class="kw">match</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">any</span> {
             <span class="ident">IgnoreSpeciationIgnoreDispersalIgnoreProgress</span>(<span class="kw-2">mut</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">inner</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span>,
@@ -437,5 +434,4 @@
     }};
 }
 </pre></div>
-</section><section id="search" class="content hidden"></section><section class="footer"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="necsim_plugins_core"></div>
-    <script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script><script defer src="../../../search-index.js"></script></body></html>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="necsim_plugins_core" data-search-index-js="../../../search-index.js" data-search-js="../../../search.js"></div><script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script></body></html>

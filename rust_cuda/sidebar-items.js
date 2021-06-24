@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["common",""],["host",""],["utils",""]]});
+initSidebarItems({"externcrate":[["rustacuda",""],["rustacuda_core",""]],"mod":[["common",""],["host",""],["utils",""]]});

@@ -1,7 +1,6 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `third-party/RustaCUDA/src/memory/malloc.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>malloc.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../storage.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../favicon.svg">
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `third-party/RustaCUDA/src/memory/malloc.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>malloc.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../favicon.svg">
 <link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png">
-<link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../rustacuda/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu"><img src="../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" class="help-button">?</button>
-                <a id="settings-menu" href="../../../settings.html"><img src="../../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
+<link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../rustacuda/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img src="../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../settings.html" title="settings"><img src="../../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -428,14 +427,14 @@
 <span id="425">425</span>
 <span id="426">426</span>
 <span id="427">427</span>
-</pre><div class="example-wrap"><pre class="rust ">
-<span class="kw">use</span> <span class="kw">super</span>::<span class="ident">DeviceCopy</span>;
+</pre><pre class="rust">
+<span class="kw">use</span> <span class="kw">super</span><span class="ident">::DeviceCopy</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::{
     <span class="ident">error</span>::<span class="kw-2">*</span>,
     <span class="ident">memory</span>::{<span class="ident">DevicePointer</span>, <span class="ident">UnifiedPointer</span>},
 };
 <span class="kw">use</span> <span class="ident">cuda_driver_sys</span> <span class="kw">as</span> <span class="ident">cuda</span>;
-<span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">mem</span>, <span class="ident">os</span>::<span class="ident">raw</span>::<span class="ident">c_void</span>, <span class="ident">ptr</span>};
+<span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">mem</span>, <span class="ident">os::raw::c_void</span>, <span class="ident">ptr</span>};
 
 <span class="doccomment">/// Unsafe wrapper around the `cuMemAlloc` function, which allocates some device</span>
 <span class="doccomment">/// memory and returns a [`DevicePointer`](struct.DevicePointer.html) pointing</span>
@@ -473,15 +472,15 @@
 <span class="doccomment">/// }</span>
 <span class="doccomment">/// ```</span>
 <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">cuda_malloc</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="ident">count</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">CudaResult</span><span class="op">&lt;</span><span class="ident">DevicePointer</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-    <span class="kw">let</span> <span class="ident">size</span> <span class="op">=</span> <span class="ident">count</span>.<span class="ident">checked_mul</span>(<span class="ident">mem</span>::<span class="ident">size_of</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>()).<span class="ident">unwrap_or</span>(<span class="number">0</span>);
+    <span class="kw">let</span> <span class="ident">size</span> <span class="op">=</span> <span class="ident">count</span>.<span class="ident">checked_mul</span>(<span class="ident">mem::size_of</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>()).<span class="ident">unwrap_or</span>(<span class="number">0</span>);
     <span class="kw">if</span> <span class="ident">size</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> {
-        <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">CudaError</span>::<span class="ident">InvalidMemoryAllocation</span>);
+        <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">CudaError::InvalidMemoryAllocation</span>);
     }
 
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">c_void</span> <span class="op">=</span> <span class="ident">ptr</span>::<span class="ident">null_mut</span>();
-    <span class="ident">cuda</span>::<span class="ident">cuMemAlloc_v2</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ptr</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">c_void</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u64</span>, <span class="ident">size</span>).<span class="ident">into_result</span>()<span class="question-mark">?</span>;
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">c_void</span> <span class="op">=</span> <span class="ident">ptr::null_mut</span>();
+    <span class="ident">cuda::cuMemAlloc_v2</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ptr</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">c_void</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u64</span>, <span class="ident">size</span>).<span class="ident">into_result</span>()<span class="question-mark">?</span>;
     <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="ident">ptr</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">T</span>;
-    <span class="prelude-val">Ok</span>(<span class="ident">DevicePointer</span>::<span class="ident">wrap</span>(<span class="ident">ptr</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">T</span>))
+    <span class="prelude-val">Ok</span>(<span class="ident">DevicePointer::wrap</span>(<span class="ident">ptr</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">T</span>))
 }
 
 <span class="doccomment">/// Unsafe wrapper around the `cuMemAllocManaged` function, which allocates some</span>
@@ -522,20 +521,20 @@
 <span class="doccomment">/// }</span>
 <span class="doccomment">/// ```</span>
 <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">cuda_malloc_unified</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">DeviceCopy</span><span class="op">&gt;</span>(<span class="ident">count</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">CudaResult</span><span class="op">&lt;</span><span class="ident">UnifiedPointer</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-    <span class="kw">let</span> <span class="ident">size</span> <span class="op">=</span> <span class="ident">count</span>.<span class="ident">checked_mul</span>(<span class="ident">mem</span>::<span class="ident">size_of</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>()).<span class="ident">unwrap_or</span>(<span class="number">0</span>);
+    <span class="kw">let</span> <span class="ident">size</span> <span class="op">=</span> <span class="ident">count</span>.<span class="ident">checked_mul</span>(<span class="ident">mem::size_of</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>()).<span class="ident">unwrap_or</span>(<span class="number">0</span>);
     <span class="kw">if</span> <span class="ident">size</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> {
-        <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">CudaError</span>::<span class="ident">InvalidMemoryAllocation</span>);
+        <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">CudaError::InvalidMemoryAllocation</span>);
     }
 
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">c_void</span> <span class="op">=</span> <span class="ident">ptr</span>::<span class="ident">null_mut</span>();
-    <span class="ident">cuda</span>::<span class="ident">cuMemAllocManaged</span>(
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">c_void</span> <span class="op">=</span> <span class="ident">ptr::null_mut</span>();
+    <span class="ident">cuda::cuMemAllocManaged</span>(
         <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ptr</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">c_void</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u64</span>,
         <span class="ident">size</span>,
-        <span class="ident">cuda</span>::<span class="ident">CUmemAttach_flags_enum</span>::<span class="ident">CU_MEM_ATTACH_GLOBAL</span> <span class="kw">as</span> <span class="ident">u32</span>,
+        <span class="ident">cuda::CUmemAttach_flags_enum::CU_MEM_ATTACH_GLOBAL</span> <span class="kw">as</span> <span class="ident">u32</span>,
     )
     .<span class="ident">into_result</span>()<span class="question-mark">?</span>;
     <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="ident">ptr</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">T</span>;
-    <span class="prelude-val">Ok</span>(<span class="ident">UnifiedPointer</span>::<span class="ident">wrap</span>(<span class="ident">ptr</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">T</span>))
+    <span class="prelude-val">Ok</span>(<span class="ident">UnifiedPointer::wrap</span>(<span class="ident">ptr</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">T</span>))
 }
 
 <span class="doccomment">/// Free memory allocated with [`cuda_malloc`](fn.cuda_malloc.html).</span>
@@ -565,10 +564,10 @@
 <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">cuda_free</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="kw-2">mut</span> <span class="ident">p</span>: <span class="ident">DevicePointer</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">CudaResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="ident">p</span>.<span class="ident">as_raw_mut</span>();
     <span class="kw">if</span> <span class="ident">ptr</span>.<span class="ident">is_null</span>() {
-        <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">CudaError</span>::<span class="ident">InvalidMemoryAllocation</span>);
+        <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">CudaError::InvalidMemoryAllocation</span>);
     }
 
-    <span class="ident">cuda</span>::<span class="ident">cuMemFree_v2</span>(<span class="ident">ptr</span> <span class="kw">as</span> <span class="ident">u64</span>).<span class="ident">into_result</span>()<span class="question-mark">?</span>;
+    <span class="ident">cuda::cuMemFree_v2</span>(<span class="ident">ptr</span> <span class="kw">as</span> <span class="ident">u64</span>).<span class="ident">into_result</span>()<span class="question-mark">?</span>;
     <span class="prelude-val">Ok</span>(())
 }
 
@@ -600,10 +599,10 @@
 <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">cuda_free_unified</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">DeviceCopy</span><span class="op">&gt;</span>(<span class="kw-2">mut</span> <span class="ident">p</span>: <span class="ident">UnifiedPointer</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">CudaResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="ident">p</span>.<span class="ident">as_raw_mut</span>();
     <span class="kw">if</span> <span class="ident">ptr</span>.<span class="ident">is_null</span>() {
-        <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">CudaError</span>::<span class="ident">InvalidMemoryAllocation</span>);
+        <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">CudaError::InvalidMemoryAllocation</span>);
     }
 
-    <span class="ident">cuda</span>::<span class="ident">cuMemFree_v2</span>(<span class="ident">ptr</span> <span class="kw">as</span> <span class="ident">u64</span>).<span class="ident">into_result</span>()<span class="question-mark">?</span>;
+    <span class="ident">cuda::cuMemFree_v2</span>(<span class="ident">ptr</span> <span class="kw">as</span> <span class="ident">u64</span>).<span class="ident">into_result</span>()<span class="question-mark">?</span>;
     <span class="prelude-val">Ok</span>(())
 }
 
@@ -643,13 +642,13 @@
 <span class="doccomment">/// }</span>
 <span class="doccomment">/// ```</span>
 <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">cuda_malloc_locked</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="ident">count</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">CudaResult</span><span class="op">&lt;</span><span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">T</span><span class="op">&gt;</span> {
-    <span class="kw">let</span> <span class="ident">size</span> <span class="op">=</span> <span class="ident">count</span>.<span class="ident">checked_mul</span>(<span class="ident">mem</span>::<span class="ident">size_of</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>()).<span class="ident">unwrap_or</span>(<span class="number">0</span>);
+    <span class="kw">let</span> <span class="ident">size</span> <span class="op">=</span> <span class="ident">count</span>.<span class="ident">checked_mul</span>(<span class="ident">mem::size_of</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>()).<span class="ident">unwrap_or</span>(<span class="number">0</span>);
     <span class="kw">if</span> <span class="ident">size</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> {
-        <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">CudaError</span>::<span class="ident">InvalidMemoryAllocation</span>);
+        <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">CudaError::InvalidMemoryAllocation</span>);
     }
 
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">c_void</span> <span class="op">=</span> <span class="ident">ptr</span>::<span class="ident">null_mut</span>();
-    <span class="ident">cuda</span>::<span class="ident">cuMemAllocHost_v2</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ptr</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">c_void</span>, <span class="ident">size</span>).<span class="ident">into_result</span>()<span class="question-mark">?</span>;
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">c_void</span> <span class="op">=</span> <span class="ident">ptr::null_mut</span>();
+    <span class="ident">cuda::cuMemAllocHost_v2</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ptr</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">c_void</span>, <span class="ident">size</span>).<span class="ident">into_result</span>()<span class="question-mark">?</span>;
     <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="ident">ptr</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">T</span>;
     <span class="prelude-val">Ok</span>(<span class="ident">ptr</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">T</span>)
 }
@@ -681,10 +680,10 @@
 <span class="doccomment">/// ```</span>
 <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">cuda_free_locked</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">CudaResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
     <span class="kw">if</span> <span class="ident">ptr</span>.<span class="ident">is_null</span>() {
-        <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">CudaError</span>::<span class="ident">InvalidMemoryAllocation</span>);
+        <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">CudaError::InvalidMemoryAllocation</span>);
     }
 
-    <span class="ident">cuda</span>::<span class="ident">cuMemFreeHost</span>(<span class="ident">ptr</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">c_void</span>).<span class="ident">into_result</span>()<span class="question-mark">?</span>;
+    <span class="ident">cuda::cuMemFreeHost</span>(<span class="ident">ptr</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">c_void</span>).<span class="ident">into_result</span>()<span class="question-mark">?</span>;
     <span class="prelude-val">Ok</span>(())
 }
 
@@ -698,20 +697,20 @@
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_cuda_malloc</span>() {
-        <span class="kw">let</span> <span class="ident">_context</span> <span class="op">=</span> <span class="kw">crate</span>::<span class="ident">quick_init</span>().<span class="ident">unwrap</span>();
+        <span class="kw">let</span> <span class="ident">_context</span> <span class="op">=</span> <span class="kw">crate</span><span class="ident">::quick_init</span>().<span class="ident">unwrap</span>();
         <span class="kw">unsafe</span> {
             <span class="kw">let</span> <span class="ident">device_mem</span> <span class="op">=</span> <span class="ident">cuda_malloc</span>::<span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span>(<span class="number">1</span>).<span class="ident">unwrap</span>();
-            <span class="macro">assert</span><span class="macro">!</span>(<span class="op">!</span><span class="ident">device_mem</span>.<span class="ident">is_null</span>());
+            <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">device_mem</span>.<span class="ident">is_null</span>());
             <span class="ident">cuda_free</span>(<span class="ident">device_mem</span>).<span class="ident">unwrap</span>();
         }
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_cuda_malloc_zero_bytes</span>() {
-        <span class="kw">let</span> <span class="ident">_context</span> <span class="op">=</span> <span class="kw">crate</span>::<span class="ident">quick_init</span>().<span class="ident">unwrap</span>();
+        <span class="kw">let</span> <span class="ident">_context</span> <span class="op">=</span> <span class="kw">crate</span><span class="ident">::quick_init</span>().<span class="ident">unwrap</span>();
         <span class="kw">unsafe</span> {
-            <span class="macro">assert_eq</span><span class="macro">!</span>(
-                <span class="ident">CudaError</span>::<span class="ident">InvalidMemoryAllocation</span>,
+            <span class="macro">assert_eq!</span>(
+                <span class="ident">CudaError::InvalidMemoryAllocation</span>,
                 <span class="ident">cuda_malloc</span>::<span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span>(<span class="number">0</span>).<span class="ident">unwrap_err</span>()
             );
         }
@@ -719,10 +718,10 @@
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_cuda_malloc_zero_sized</span>() {
-        <span class="kw">let</span> <span class="ident">_context</span> <span class="op">=</span> <span class="kw">crate</span>::<span class="ident">quick_init</span>().<span class="ident">unwrap</span>();
+        <span class="kw">let</span> <span class="ident">_context</span> <span class="op">=</span> <span class="kw">crate</span><span class="ident">::quick_init</span>().<span class="ident">unwrap</span>();
         <span class="kw">unsafe</span> {
-            <span class="macro">assert_eq</span><span class="macro">!</span>(
-                <span class="ident">CudaError</span>::<span class="ident">InvalidMemoryAllocation</span>,
+            <span class="macro">assert_eq!</span>(
+                <span class="ident">CudaError::InvalidMemoryAllocation</span>,
                 <span class="ident">cuda_malloc</span>::<span class="op">&lt;</span><span class="ident">ZeroSizedType</span><span class="op">&gt;</span>(<span class="number">10</span>).<span class="ident">unwrap_err</span>()
             );
         }
@@ -730,21 +729,21 @@
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_cuda_alloc_overflow</span>() {
-        <span class="kw">let</span> <span class="ident">_context</span> <span class="op">=</span> <span class="kw">crate</span>::<span class="ident">quick_init</span>().<span class="ident">unwrap</span>();
+        <span class="kw">let</span> <span class="ident">_context</span> <span class="op">=</span> <span class="kw">crate</span><span class="ident">::quick_init</span>().<span class="ident">unwrap</span>();
         <span class="kw">unsafe</span> {
-            <span class="macro">assert_eq</span><span class="macro">!</span>(
-                <span class="ident">CudaError</span>::<span class="ident">InvalidMemoryAllocation</span>,
-                <span class="ident">cuda_malloc</span>::<span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span>(::<span class="ident">std</span>::<span class="ident">usize</span>::<span class="ident">MAX</span> <span class="op">-</span> <span class="number">1</span>).<span class="ident">unwrap_err</span>()
+            <span class="macro">assert_eq!</span>(
+                <span class="ident">CudaError::InvalidMemoryAllocation</span>,
+                <span class="ident">cuda_malloc</span>::<span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span>(<span class="ident">::std::usize::MAX</span> <span class="op">-</span> <span class="number">1</span>).<span class="ident">unwrap_err</span>()
             );
         }
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_cuda_malloc_unified</span>() {
-        <span class="kw">let</span> <span class="ident">_context</span> <span class="op">=</span> <span class="kw">crate</span>::<span class="ident">quick_init</span>().<span class="ident">unwrap</span>();
+        <span class="kw">let</span> <span class="ident">_context</span> <span class="op">=</span> <span class="kw">crate</span><span class="ident">::quick_init</span>().<span class="ident">unwrap</span>();
         <span class="kw">unsafe</span> {
             <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">unified</span> <span class="op">=</span> <span class="ident">cuda_malloc_unified</span>::<span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span>(<span class="number">1</span>).<span class="ident">unwrap</span>();
-            <span class="macro">assert</span><span class="macro">!</span>(<span class="op">!</span><span class="ident">unified</span>.<span class="ident">is_null</span>());
+            <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">unified</span>.<span class="ident">is_null</span>());
 
             <span class="comment">// Write to the allocated memory</span>
             <span class="kw-2">*</span><span class="ident">unified</span>.<span class="ident">as_raw_mut</span>() <span class="op">=</span> <span class="number">64</span>;
@@ -755,10 +754,10 @@
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_cuda_malloc_unified_zero_bytes</span>() {
-        <span class="kw">let</span> <span class="ident">_context</span> <span class="op">=</span> <span class="kw">crate</span>::<span class="ident">quick_init</span>().<span class="ident">unwrap</span>();
+        <span class="kw">let</span> <span class="ident">_context</span> <span class="op">=</span> <span class="kw">crate</span><span class="ident">::quick_init</span>().<span class="ident">unwrap</span>();
         <span class="kw">unsafe</span> {
-            <span class="macro">assert_eq</span><span class="macro">!</span>(
-                <span class="ident">CudaError</span>::<span class="ident">InvalidMemoryAllocation</span>,
+            <span class="macro">assert_eq!</span>(
+                <span class="ident">CudaError::InvalidMemoryAllocation</span>,
                 <span class="ident">cuda_malloc_unified</span>::<span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span>(<span class="number">0</span>).<span class="ident">unwrap_err</span>()
             );
         }
@@ -766,10 +765,10 @@
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_cuda_malloc_unified_zero_sized</span>() {
-        <span class="kw">let</span> <span class="ident">_context</span> <span class="op">=</span> <span class="kw">crate</span>::<span class="ident">quick_init</span>().<span class="ident">unwrap</span>();
+        <span class="kw">let</span> <span class="ident">_context</span> <span class="op">=</span> <span class="kw">crate</span><span class="ident">::quick_init</span>().<span class="ident">unwrap</span>();
         <span class="kw">unsafe</span> {
-            <span class="macro">assert_eq</span><span class="macro">!</span>(
-                <span class="ident">CudaError</span>::<span class="ident">InvalidMemoryAllocation</span>,
+            <span class="macro">assert_eq!</span>(
+                <span class="ident">CudaError::InvalidMemoryAllocation</span>,
                 <span class="ident">cuda_malloc_unified</span>::<span class="op">&lt;</span><span class="ident">ZeroSizedType</span><span class="op">&gt;</span>(<span class="number">10</span>).<span class="ident">unwrap_err</span>()
             );
         }
@@ -777,33 +776,33 @@
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_cuda_malloc_unified_overflow</span>() {
-        <span class="kw">let</span> <span class="ident">_context</span> <span class="op">=</span> <span class="kw">crate</span>::<span class="ident">quick_init</span>().<span class="ident">unwrap</span>();
+        <span class="kw">let</span> <span class="ident">_context</span> <span class="op">=</span> <span class="kw">crate</span><span class="ident">::quick_init</span>().<span class="ident">unwrap</span>();
         <span class="kw">unsafe</span> {
-            <span class="macro">assert_eq</span><span class="macro">!</span>(
-                <span class="ident">CudaError</span>::<span class="ident">InvalidMemoryAllocation</span>,
-                <span class="ident">cuda_malloc_unified</span>::<span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span>(::<span class="ident">std</span>::<span class="ident">usize</span>::<span class="ident">MAX</span> <span class="op">-</span> <span class="number">1</span>).<span class="ident">unwrap_err</span>()
+            <span class="macro">assert_eq!</span>(
+                <span class="ident">CudaError::InvalidMemoryAllocation</span>,
+                <span class="ident">cuda_malloc_unified</span>::<span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span>(<span class="ident">::std::usize::MAX</span> <span class="op">-</span> <span class="number">1</span>).<span class="ident">unwrap_err</span>()
             );
         }
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_cuda_free_null</span>() {
-        <span class="kw">let</span> <span class="ident">_context</span> <span class="op">=</span> <span class="kw">crate</span>::<span class="ident">quick_init</span>().<span class="ident">unwrap</span>();
-        <span class="kw">let</span> <span class="ident">null</span> <span class="op">=</span> ::<span class="ident">std</span>::<span class="ident">ptr</span>::<span class="ident">null_mut</span>::<span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span>();
+        <span class="kw">let</span> <span class="ident">_context</span> <span class="op">=</span> <span class="kw">crate</span><span class="ident">::quick_init</span>().<span class="ident">unwrap</span>();
+        <span class="kw">let</span> <span class="ident">null</span> <span class="op">=</span> <span class="ident">::std::ptr::null_mut</span>::<span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span>();
         <span class="kw">unsafe</span> {
-            <span class="macro">assert_eq</span><span class="macro">!</span>(
-                <span class="ident">CudaError</span>::<span class="ident">InvalidMemoryAllocation</span>,
-                <span class="ident">cuda_free</span>(<span class="ident">DevicePointer</span>::<span class="ident">wrap</span>(<span class="ident">null</span>)).<span class="ident">unwrap_err</span>()
+            <span class="macro">assert_eq!</span>(
+                <span class="ident">CudaError::InvalidMemoryAllocation</span>,
+                <span class="ident">cuda_free</span>(<span class="ident">DevicePointer::wrap</span>(<span class="ident">null</span>)).<span class="ident">unwrap_err</span>()
             );
         }
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_cuda_malloc_locked</span>() {
-        <span class="kw">let</span> <span class="ident">_context</span> <span class="op">=</span> <span class="kw">crate</span>::<span class="ident">quick_init</span>().<span class="ident">unwrap</span>();
+        <span class="kw">let</span> <span class="ident">_context</span> <span class="op">=</span> <span class="kw">crate</span><span class="ident">::quick_init</span>().<span class="ident">unwrap</span>();
         <span class="kw">unsafe</span> {
             <span class="kw">let</span> <span class="ident">locked</span> <span class="op">=</span> <span class="ident">cuda_malloc_locked</span>::<span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span>(<span class="number">1</span>).<span class="ident">unwrap</span>();
-            <span class="macro">assert</span><span class="macro">!</span>(<span class="op">!</span><span class="ident">locked</span>.<span class="ident">is_null</span>());
+            <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">locked</span>.<span class="ident">is_null</span>());
 
             <span class="comment">// Write to the allocated memory</span>
             <span class="kw-2">*</span><span class="ident">locked</span> <span class="op">=</span> <span class="number">64</span>;
@@ -814,10 +813,10 @@
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_cuda_malloc_locked_zero_bytes</span>() {
-        <span class="kw">let</span> <span class="ident">_context</span> <span class="op">=</span> <span class="kw">crate</span>::<span class="ident">quick_init</span>().<span class="ident">unwrap</span>();
+        <span class="kw">let</span> <span class="ident">_context</span> <span class="op">=</span> <span class="kw">crate</span><span class="ident">::quick_init</span>().<span class="ident">unwrap</span>();
         <span class="kw">unsafe</span> {
-            <span class="macro">assert_eq</span><span class="macro">!</span>(
-                <span class="ident">CudaError</span>::<span class="ident">InvalidMemoryAllocation</span>,
+            <span class="macro">assert_eq!</span>(
+                <span class="ident">CudaError::InvalidMemoryAllocation</span>,
                 <span class="ident">cuda_malloc_locked</span>::<span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span>(<span class="number">0</span>).<span class="ident">unwrap_err</span>()
             );
         }
@@ -825,10 +824,10 @@
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_cuda_malloc_locked_zero_sized</span>() {
-        <span class="kw">let</span> <span class="ident">_context</span> <span class="op">=</span> <span class="kw">crate</span>::<span class="ident">quick_init</span>().<span class="ident">unwrap</span>();
+        <span class="kw">let</span> <span class="ident">_context</span> <span class="op">=</span> <span class="kw">crate</span><span class="ident">::quick_init</span>().<span class="ident">unwrap</span>();
         <span class="kw">unsafe</span> {
-            <span class="macro">assert_eq</span><span class="macro">!</span>(
-                <span class="ident">CudaError</span>::<span class="ident">InvalidMemoryAllocation</span>,
+            <span class="macro">assert_eq!</span>(
+                <span class="ident">CudaError::InvalidMemoryAllocation</span>,
                 <span class="ident">cuda_malloc_locked</span>::<span class="op">&lt;</span><span class="ident">ZeroSizedType</span><span class="op">&gt;</span>(<span class="number">10</span>).<span class="ident">unwrap_err</span>()
             );
         }
@@ -836,26 +835,25 @@
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_cuda_malloc_locked_overflow</span>() {
-        <span class="kw">let</span> <span class="ident">_context</span> <span class="op">=</span> <span class="kw">crate</span>::<span class="ident">quick_init</span>().<span class="ident">unwrap</span>();
+        <span class="kw">let</span> <span class="ident">_context</span> <span class="op">=</span> <span class="kw">crate</span><span class="ident">::quick_init</span>().<span class="ident">unwrap</span>();
         <span class="kw">unsafe</span> {
-            <span class="macro">assert_eq</span><span class="macro">!</span>(
-                <span class="ident">CudaError</span>::<span class="ident">InvalidMemoryAllocation</span>,
-                <span class="ident">cuda_malloc_locked</span>::<span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span>(::<span class="ident">std</span>::<span class="ident">usize</span>::<span class="ident">MAX</span> <span class="op">-</span> <span class="number">1</span>).<span class="ident">unwrap_err</span>()
+            <span class="macro">assert_eq!</span>(
+                <span class="ident">CudaError::InvalidMemoryAllocation</span>,
+                <span class="ident">cuda_malloc_locked</span>::<span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span>(<span class="ident">::std::usize::MAX</span> <span class="op">-</span> <span class="number">1</span>).<span class="ident">unwrap_err</span>()
             );
         }
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_cuda_free_locked_null</span>() {
-        <span class="kw">let</span> <span class="ident">_context</span> <span class="op">=</span> <span class="kw">crate</span>::<span class="ident">quick_init</span>().<span class="ident">unwrap</span>();
+        <span class="kw">let</span> <span class="ident">_context</span> <span class="op">=</span> <span class="kw">crate</span><span class="ident">::quick_init</span>().<span class="ident">unwrap</span>();
         <span class="kw">unsafe</span> {
-            <span class="macro">assert_eq</span><span class="macro">!</span>(
-                <span class="ident">CudaError</span>::<span class="ident">InvalidMemoryAllocation</span>,
-                <span class="ident">cuda_free_locked</span>(::<span class="ident">std</span>::<span class="ident">ptr</span>::<span class="ident">null_mut</span>::<span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span>()).<span class="ident">unwrap_err</span>()
+            <span class="macro">assert_eq!</span>(
+                <span class="ident">CudaError::InvalidMemoryAllocation</span>,
+                <span class="ident">cuda_free_locked</span>(<span class="ident">::std::ptr::null_mut</span>::<span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span>()).<span class="ident">unwrap_err</span>()
             );
         }
     }
 }
 </pre></div>
-</section><section id="search" class="content hidden"></section><section class="footer"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="rustacuda"></div>
-    <script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script><script defer src="../../../search-index.js"></script></body></html>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="rustacuda" data-search-index-js="../../../search-index.js" data-search-js="../../../search.js"></div><script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script></body></html>

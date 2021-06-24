@@ -1,7 +1,6 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `third-party/float-next-after-no-std/src/lib.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>lib.rs - source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script id="default-settings"></script><script src="../../storage.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `third-party/float-next-after-no-std/src/lib.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>lib.rs - source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script id="default-settings"></script><script src="../../storage.js"></script><script src="../../crates.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../favicon.svg">
 <link rel="alternate icon" type="image/png" href="../../favicon-16x16.png">
-<link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../float_next_after/index.html'><div class='logo-container rust-logo'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu"><img src="../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><script src="../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" class="help-button">?</button>
-                <a id="settings-menu" href="../../settings.html"><img src="../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
+<link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../float_next_after/index.html'><div class='logo-container rust-logo'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img src="../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img src="../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -533,12 +532,12 @@
 <span id="530">530</span>
 <span id="531">531</span>
 <span id="532">532</span>
-</pre><div class="example-wrap"><pre class="rust ">
-<span class="attribute">#![<span class="ident">deny</span>(<span class="ident">clippy</span>::<span class="ident">pedantic</span>)]</span>
-<span class="attribute">#![<span class="ident">allow</span>(<span class="ident">clippy</span>::<span class="ident">float_cmp</span>)]</span>
+</pre><pre class="rust">
+<span class="attribute">#![<span class="ident">deny</span>(<span class="ident">clippy::pedantic</span>)]</span>
+<span class="attribute">#![<span class="ident">allow</span>(<span class="ident">clippy::float_cmp</span>)]</span>
 <span class="attribute">#![<span class="ident">no_std</span>]</span>
 
-<span class="kw">use</span> <span class="ident">num_traits</span>::<span class="ident">Float</span>;
+<span class="kw">use</span> <span class="ident">num_traits::Float</span>;
 
 <span class="doccomment">/// Returns the next representable float value in the direction of y</span>
 <span class="doccomment">///</span>
@@ -610,15 +609,15 @@
         <span class="kw">let</span> <span class="ident">zero</span> <span class="op">=</span> <span class="number">0_f64</span>;
 
         <span class="kw">if</span> <span class="self">self</span> <span class="op">=</span><span class="op">=</span> <span class="ident">zero</span> {
-            <span class="kw">let</span> <span class="ident">return_value</span> <span class="op">=</span> <span class="ident">f64</span>::<span class="ident">from_bits</span>(<span class="number">1</span>);
+            <span class="kw">let</span> <span class="ident">return_value</span> <span class="op">=</span> <span class="ident">f64::from_bits</span>(<span class="number">1</span>);
             <span class="ident">copy_sign</span>(<span class="ident">return_value</span>, <span class="ident">y</span>)
         } <span class="kw">else</span> {
             <span class="comment">// Use trick f64 -&gt; u64 +- 1 -&gt; f64; increment or decrement depending on same</span>
             <span class="comment">// sign.</span>
             <span class="kw">let</span> <span class="ident">return_value</span> <span class="op">=</span> <span class="kw">if</span> (<span class="ident">y</span> <span class="op">&gt;</span> <span class="self">self</span>) <span class="op">=</span><span class="op">=</span> (<span class="self">self</span> <span class="op">&gt;</span> <span class="ident">zero</span>) {
-                <span class="ident">f64</span>::<span class="ident">from_bits</span>(<span class="self">self</span>.<span class="ident">to_bits</span>() <span class="op">+</span> <span class="number">1</span>)
+                <span class="ident">f64::from_bits</span>(<span class="self">self</span>.<span class="ident">to_bits</span>() <span class="op">+</span> <span class="number">1</span>)
             } <span class="kw">else</span> {
-                <span class="ident">f64</span>::<span class="ident">from_bits</span>(<span class="self">self</span>.<span class="ident">to_bits</span>() <span class="op">-</span> <span class="number">1</span>)
+                <span class="ident">f64::from_bits</span>(<span class="self">self</span>.<span class="ident">to_bits</span>() <span class="op">-</span> <span class="number">1</span>)
             };
             <span class="comment">// If return value is zero remember its original sign.</span>
             <span class="kw">if</span> <span class="ident">return_value</span> <span class="op">=</span><span class="op">=</span> <span class="ident">zero</span> {
@@ -640,15 +639,15 @@
         <span class="kw">let</span> <span class="ident">zero</span> <span class="op">=</span> <span class="number">0_f32</span>;
 
         <span class="kw">if</span> <span class="self">self</span> <span class="op">=</span><span class="op">=</span> <span class="ident">zero</span> {
-            <span class="kw">let</span> <span class="ident">return_value</span> <span class="op">=</span> <span class="ident">f32</span>::<span class="ident">from_bits</span>(<span class="number">1</span>);
+            <span class="kw">let</span> <span class="ident">return_value</span> <span class="op">=</span> <span class="ident">f32::from_bits</span>(<span class="number">1</span>);
             <span class="ident">copy_sign</span>(<span class="ident">return_value</span>, <span class="ident">y</span>)
         } <span class="kw">else</span> {
             <span class="comment">// Use trick f64 -&gt; u64 +- 1 -&gt; f64; increment or decrement depending on same</span>
             <span class="comment">// sign.</span>
             <span class="kw">let</span> <span class="ident">return_value</span> <span class="op">=</span> <span class="kw">if</span> (<span class="ident">y</span> <span class="op">&gt;</span> <span class="self">self</span>) <span class="op">=</span><span class="op">=</span> (<span class="self">self</span> <span class="op">&gt;</span> <span class="ident">zero</span>) {
-                <span class="ident">f32</span>::<span class="ident">from_bits</span>(<span class="self">self</span>.<span class="ident">to_bits</span>() <span class="op">+</span> <span class="number">1</span>)
+                <span class="ident">f32::from_bits</span>(<span class="self">self</span>.<span class="ident">to_bits</span>() <span class="op">+</span> <span class="number">1</span>)
             } <span class="kw">else</span> {
-                <span class="ident">f32</span>::<span class="ident">from_bits</span>(<span class="self">self</span>.<span class="ident">to_bits</span>() <span class="op">-</span> <span class="number">1</span>)
+                <span class="ident">f32::from_bits</span>(<span class="self">self</span>.<span class="ident">to_bits</span>() <span class="op">-</span> <span class="number">1</span>)
             };
             <span class="comment">// If return value is zero remember its original sign.</span>
             <span class="kw">if</span> <span class="ident">return_value</span> <span class="op">=</span><span class="op">=</span> <span class="ident">zero</span> {
@@ -672,17 +671,17 @@
 
     <span class="comment">// If x or y is NaN return NaN</span>
     <span class="kw">if</span> <span class="ident">x</span>.<span class="ident">is_nan</span>() <span class="op">|</span><span class="op">|</span> <span class="ident">y</span>.<span class="ident">is_nan</span>() {
-        <span class="kw">return</span> <span class="prelude-val">Some</span>(<span class="ident">T</span>::<span class="ident">nan</span>());
+        <span class="kw">return</span> <span class="prelude-val">Some</span>(<span class="ident">T::nan</span>());
     }
 
     <span class="comment">// If x is infinite or somehow greater</span>
-    <span class="kw">if</span> <span class="ident">x</span> <span class="op">&gt;</span><span class="op">=</span> <span class="ident">T</span>::<span class="ident">infinity</span>() {
-        <span class="kw">return</span> <span class="prelude-val">Some</span>(<span class="ident">T</span>::<span class="ident">infinity</span>());
+    <span class="kw">if</span> <span class="ident">x</span> <span class="op">&gt;</span><span class="op">=</span> <span class="ident">T::infinity</span>() {
+        <span class="kw">return</span> <span class="prelude-val">Some</span>(<span class="ident">T::infinity</span>());
     }
 
     <span class="comment">// If x is negative infinite or somehow lower</span>
-    <span class="kw">if</span> <span class="ident">x</span> <span class="op">&lt;</span><span class="op">=</span> <span class="ident">T</span>::<span class="ident">neg_infinity</span>() {
-        <span class="kw">return</span> <span class="prelude-val">Some</span>(<span class="ident">T</span>::<span class="ident">neg_infinity</span>());
+    <span class="kw">if</span> <span class="ident">x</span> <span class="op">&lt;</span><span class="op">=</span> <span class="ident">T::neg_infinity</span>() {
+        <span class="kw">return</span> <span class="prelude-val">Some</span>(<span class="ident">T::neg_infinity</span>());
     }
 
     <span class="prelude-val">None</span>
@@ -703,8 +702,8 @@
 
     <span class="kw">type</span> <span class="ident">T</span> <span class="op">=</span> <span class="ident">f64</span>;
 
-    <span class="kw">const</span> <span class="ident">POS_INF</span>: <span class="ident">T</span> <span class="op">=</span> <span class="ident">f64</span>::<span class="ident">INFINITY</span>;
-    <span class="kw">const</span> <span class="ident">NEG_INF</span>: <span class="ident">T</span> <span class="op">=</span> <span class="ident">f64</span>::<span class="ident">NEG_INFINITY</span>;
+    <span class="kw">const</span> <span class="ident">POS_INF</span>: <span class="ident">T</span> <span class="op">=</span> <span class="ident">f64::INFINITY</span>;
+    <span class="kw">const</span> <span class="ident">NEG_INF</span>: <span class="ident">T</span> <span class="op">=</span> <span class="ident">f64::NEG_INFINITY</span>;
     <span class="kw">const</span> <span class="ident">POS_ZERO</span>: <span class="ident">T</span> <span class="op">=</span> <span class="number">0.0</span>;
     <span class="kw">const</span> <span class="ident">NEG_ZERO</span>: <span class="ident">T</span> <span class="op">=</span> <span class="op">-</span><span class="number">0.0</span>;
 
@@ -712,17 +711,17 @@
     <span class="comment">// *normal* number.</span>
     <span class="kw">const</span> <span class="ident">SMALLEST_POS</span>: <span class="ident">T</span> <span class="op">=</span> <span class="number">5e-324</span>;
     <span class="kw">const</span> <span class="ident">SMALLEST_NEG</span>: <span class="ident">T</span> <span class="op">=</span> <span class="op">-</span><span class="number">5e-324</span>;
-    <span class="kw">const</span> <span class="ident">LARGEST_POS</span>: <span class="ident">T</span> <span class="op">=</span> <span class="ident">f64</span>::<span class="ident">MAX</span>;
-    <span class="kw">const</span> <span class="ident">LARGEST_NEG</span>: <span class="ident">T</span> <span class="op">=</span> <span class="ident">f64</span>::<span class="ident">MIN</span>;
+    <span class="kw">const</span> <span class="ident">LARGEST_POS</span>: <span class="ident">T</span> <span class="op">=</span> <span class="ident">f64::MAX</span>;
+    <span class="kw">const</span> <span class="ident">LARGEST_NEG</span>: <span class="ident">T</span> <span class="op">=</span> <span class="ident">f64::MIN</span>;
 
     <span class="kw">const</span> <span class="ident">POS_ONE</span>: <span class="ident">T</span> <span class="op">=</span> <span class="number">1.0</span>;
     <span class="kw">const</span> <span class="ident">NEG_ONE</span>: <span class="ident">T</span> <span class="op">=</span> <span class="op">-</span><span class="number">1.0</span>;
-    <span class="kw">const</span> <span class="ident">NEXT_LARGER_THAN_ONE</span>: <span class="ident">T</span> <span class="op">=</span> <span class="number">1.0</span> <span class="op">+</span> <span class="ident">f64</span>::<span class="ident">EPSILON</span>;
+    <span class="kw">const</span> <span class="ident">NEXT_LARGER_THAN_ONE</span>: <span class="ident">T</span> <span class="op">=</span> <span class="number">1.0</span> <span class="op">+</span> <span class="ident">f64::EPSILON</span>;
     <span class="kw">const</span> <span class="ident">NEXT_SMALLER_THAN_ONE</span>: <span class="ident">T</span> <span class="op">=</span> <span class="number">0.999_999_999_999_999_9</span>;
 
     <span class="kw">const</span> <span class="ident">SEQUENCE_BIG_NUM</span>: (<span class="ident">T</span>, <span class="ident">T</span>) <span class="op">=</span> (<span class="number">16_237_485_966.000_004</span>, <span class="number">16_237_485_966.000_006</span>);
 
-    <span class="kw">const</span> <span class="ident">NAN</span>: <span class="ident">T</span> <span class="op">=</span> <span class="ident">f64</span>::<span class="ident">NAN</span>;
+    <span class="kw">const</span> <span class="ident">NAN</span>: <span class="ident">T</span> <span class="op">=</span> <span class="ident">f64::NAN</span>;
 
     <span class="kw">fn</span> <span class="ident">is_pos_zero</span>(<span class="ident">x</span>: <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
         <span class="ident">x</span>.<span class="ident">to_bits</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">POS_ZERO</span>.<span class="ident">to_bits</span>()
@@ -734,43 +733,43 @@
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_copy_sign</span>() {
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">copy_sign</span>(<span class="ident">POS_ONE</span>, <span class="ident">POS_ZERO</span>), <span class="ident">POS_ONE</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">copy_sign</span>(<span class="ident">NEG_ONE</span>, <span class="ident">POS_ZERO</span>), <span class="ident">POS_ONE</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">copy_sign</span>(<span class="ident">POS_ONE</span>, <span class="ident">NEG_ZERO</span>), <span class="ident">NEG_ONE</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">copy_sign</span>(<span class="ident">NEG_ONE</span>, <span class="ident">NEG_ZERO</span>), <span class="ident">NEG_ONE</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">copy_sign</span>(<span class="ident">POS_ONE</span>, <span class="ident">POS_ZERO</span>), <span class="ident">POS_ONE</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">copy_sign</span>(<span class="ident">NEG_ONE</span>, <span class="ident">POS_ZERO</span>), <span class="ident">POS_ONE</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">copy_sign</span>(<span class="ident">POS_ONE</span>, <span class="ident">NEG_ZERO</span>), <span class="ident">NEG_ONE</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">copy_sign</span>(<span class="ident">NEG_ONE</span>, <span class="ident">NEG_ZERO</span>), <span class="ident">NEG_ONE</span>);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">verify_constants</span>() {
-        <span class="macro">assert_ne</span><span class="macro">!</span>(<span class="ident">POS_ZERO</span>.<span class="ident">to_bits</span>(), <span class="ident">NEG_ZERO</span>.<span class="ident">to_bits</span>());
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">SMALLEST_POS</span> <span class="op">&gt;</span> <span class="ident">POS_ZERO</span>);
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">SMALLEST_NEG</span> <span class="op">&lt;</span> <span class="ident">NEG_ZERO</span>);
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="op">!</span><span class="ident">SMALLEST_POS</span>.<span class="ident">is_normal</span>());
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="op">!</span><span class="ident">SMALLEST_NEG</span>.<span class="ident">is_normal</span>());
+        <span class="macro">assert_ne!</span>(<span class="ident">POS_ZERO</span>.<span class="ident">to_bits</span>(), <span class="ident">NEG_ZERO</span>.<span class="ident">to_bits</span>());
+        <span class="macro">assert!</span>(<span class="ident">SMALLEST_POS</span> <span class="op">&gt;</span> <span class="ident">POS_ZERO</span>);
+        <span class="macro">assert!</span>(<span class="ident">SMALLEST_NEG</span> <span class="op">&lt;</span> <span class="ident">NEG_ZERO</span>);
+        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">SMALLEST_POS</span>.<span class="ident">is_normal</span>());
+        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">SMALLEST_NEG</span>.<span class="ident">is_normal</span>());
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">next_larger_than_0</span>() {
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">POS_ZERO</span>.<span class="ident">next_after</span>(<span class="ident">POS_INF</span>), <span class="ident">SMALLEST_POS</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">NEG_ZERO</span>.<span class="ident">next_after</span>(<span class="ident">POS_INF</span>), <span class="ident">SMALLEST_POS</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">POS_ZERO</span>.<span class="ident">next_after</span>(<span class="ident">POS_INF</span>), <span class="ident">SMALLEST_POS</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">NEG_ZERO</span>.<span class="ident">next_after</span>(<span class="ident">POS_INF</span>), <span class="ident">SMALLEST_POS</span>);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">next_smaller_than_0</span>() {
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">POS_ZERO</span>.<span class="ident">next_after</span>(<span class="ident">NEG_INF</span>), <span class="ident">SMALLEST_NEG</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">NEG_ZERO</span>.<span class="ident">next_after</span>(<span class="ident">NEG_INF</span>), <span class="ident">SMALLEST_NEG</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">POS_ZERO</span>.<span class="ident">next_after</span>(<span class="ident">NEG_INF</span>), <span class="ident">SMALLEST_NEG</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">NEG_ZERO</span>.<span class="ident">next_after</span>(<span class="ident">NEG_INF</span>), <span class="ident">SMALLEST_NEG</span>);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">step_towards_zero</span>() {
         <span class="comment">// For steps towards zero, the sign of the zero reflects the direction</span>
         <span class="comment">// from where zero was approached.</span>
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">is_pos_zero</span>(<span class="ident">SMALLEST_POS</span>.<span class="ident">next_after</span>(<span class="ident">POS_ZERO</span>)));
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">is_pos_zero</span>(<span class="ident">SMALLEST_POS</span>.<span class="ident">next_after</span>(<span class="ident">NEG_ZERO</span>)));
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">is_pos_zero</span>(<span class="ident">SMALLEST_POS</span>.<span class="ident">next_after</span>(<span class="ident">NEG_INF</span>)));
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">is_neg_zero</span>(<span class="ident">SMALLEST_NEG</span>.<span class="ident">next_after</span>(<span class="ident">NEG_ZERO</span>)));
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">is_neg_zero</span>(<span class="ident">SMALLEST_NEG</span>.<span class="ident">next_after</span>(<span class="ident">POS_ZERO</span>)));
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">is_neg_zero</span>(<span class="ident">SMALLEST_NEG</span>.<span class="ident">next_after</span>(<span class="ident">POS_INF</span>)));
+        <span class="macro">assert!</span>(<span class="ident">is_pos_zero</span>(<span class="ident">SMALLEST_POS</span>.<span class="ident">next_after</span>(<span class="ident">POS_ZERO</span>)));
+        <span class="macro">assert!</span>(<span class="ident">is_pos_zero</span>(<span class="ident">SMALLEST_POS</span>.<span class="ident">next_after</span>(<span class="ident">NEG_ZERO</span>)));
+        <span class="macro">assert!</span>(<span class="ident">is_pos_zero</span>(<span class="ident">SMALLEST_POS</span>.<span class="ident">next_after</span>(<span class="ident">NEG_INF</span>)));
+        <span class="macro">assert!</span>(<span class="ident">is_neg_zero</span>(<span class="ident">SMALLEST_NEG</span>.<span class="ident">next_after</span>(<span class="ident">NEG_ZERO</span>)));
+        <span class="macro">assert!</span>(<span class="ident">is_neg_zero</span>(<span class="ident">SMALLEST_NEG</span>.<span class="ident">next_after</span>(<span class="ident">POS_ZERO</span>)));
+        <span class="macro">assert!</span>(<span class="ident">is_neg_zero</span>(<span class="ident">SMALLEST_NEG</span>.<span class="ident">next_after</span>(<span class="ident">POS_INF</span>)));
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
@@ -778,64 +777,64 @@
         <span class="comment">// For a non-zero dest, stepping away from either POS_ZERO or NEG_ZERO</span>
         <span class="comment">// has a non-zero result. Only if the destination itself points to the</span>
         <span class="comment">// &quot;other zero&quot;, the next_after call performs a zero sign switch.</span>
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">is_neg_zero</span>(<span class="ident">POS_ZERO</span>.<span class="ident">next_after</span>(<span class="ident">NEG_ZERO</span>)));
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">is_pos_zero</span>(<span class="ident">NEG_ZERO</span>.<span class="ident">next_after</span>(<span class="ident">POS_ZERO</span>)));
+        <span class="macro">assert!</span>(<span class="ident">is_neg_zero</span>(<span class="ident">POS_ZERO</span>.<span class="ident">next_after</span>(<span class="ident">NEG_ZERO</span>)));
+        <span class="macro">assert!</span>(<span class="ident">is_pos_zero</span>(<span class="ident">NEG_ZERO</span>.<span class="ident">next_after</span>(<span class="ident">POS_ZERO</span>)));
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">nextafter_around_one</span>() {
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">POS_ONE</span>.<span class="ident">next_after</span>(<span class="ident">POS_INF</span>), <span class="ident">NEXT_LARGER_THAN_ONE</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">POS_ONE</span>.<span class="ident">next_after</span>(<span class="ident">NEG_INF</span>), <span class="ident">NEXT_SMALLER_THAN_ONE</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">NEG_ONE</span>.<span class="ident">next_after</span>(<span class="ident">NEG_INF</span>), <span class="op">-</span><span class="ident">NEXT_LARGER_THAN_ONE</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">NEG_ONE</span>.<span class="ident">next_after</span>(<span class="ident">POS_INF</span>), <span class="op">-</span><span class="ident">NEXT_SMALLER_THAN_ONE</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">POS_ONE</span>.<span class="ident">next_after</span>(<span class="ident">POS_INF</span>), <span class="ident">NEXT_LARGER_THAN_ONE</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">POS_ONE</span>.<span class="ident">next_after</span>(<span class="ident">NEG_INF</span>), <span class="ident">NEXT_SMALLER_THAN_ONE</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">NEG_ONE</span>.<span class="ident">next_after</span>(<span class="ident">NEG_INF</span>), <span class="op">-</span><span class="ident">NEXT_LARGER_THAN_ONE</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">NEG_ONE</span>.<span class="ident">next_after</span>(<span class="ident">POS_INF</span>), <span class="op">-</span><span class="ident">NEXT_SMALLER_THAN_ONE</span>);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">nextafter_for_big_pos_number</span>() {
         <span class="kw">let</span> (<span class="ident">lo</span>, <span class="ident">hi</span>) <span class="op">=</span> <span class="ident">SEQUENCE_BIG_NUM</span>;
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">lo</span>.<span class="ident">next_after</span>(<span class="ident">POS_INF</span>), <span class="ident">hi</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">hi</span>.<span class="ident">next_after</span>(<span class="ident">NEG_INF</span>), <span class="ident">lo</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">lo</span>.<span class="ident">next_after</span>(<span class="ident">hi</span>), <span class="ident">hi</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">hi</span>.<span class="ident">next_after</span>(<span class="ident">lo</span>), <span class="ident">lo</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">lo</span>.<span class="ident">next_after</span>(<span class="ident">POS_INF</span>), <span class="ident">hi</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">hi</span>.<span class="ident">next_after</span>(<span class="ident">NEG_INF</span>), <span class="ident">lo</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">lo</span>.<span class="ident">next_after</span>(<span class="ident">hi</span>), <span class="ident">hi</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">hi</span>.<span class="ident">next_after</span>(<span class="ident">lo</span>), <span class="ident">lo</span>);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">nextafter_for_big_neg_number</span>() {
         <span class="kw">let</span> (<span class="ident">lo</span>, <span class="ident">hi</span>) <span class="op">=</span> <span class="ident">SEQUENCE_BIG_NUM</span>;
         <span class="kw">let</span> (<span class="ident">lo</span>, <span class="ident">hi</span>) <span class="op">=</span> (<span class="op">-</span><span class="ident">lo</span>, <span class="op">-</span><span class="ident">hi</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">lo</span>.<span class="ident">next_after</span>(<span class="ident">NEG_INF</span>), <span class="ident">hi</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">hi</span>.<span class="ident">next_after</span>(<span class="ident">POS_INF</span>), <span class="ident">lo</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">lo</span>.<span class="ident">next_after</span>(<span class="ident">hi</span>), <span class="ident">hi</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">hi</span>.<span class="ident">next_after</span>(<span class="ident">lo</span>), <span class="ident">lo</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">lo</span>.<span class="ident">next_after</span>(<span class="ident">NEG_INF</span>), <span class="ident">hi</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">hi</span>.<span class="ident">next_after</span>(<span class="ident">POS_INF</span>), <span class="ident">lo</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">lo</span>.<span class="ident">next_after</span>(<span class="ident">hi</span>), <span class="ident">hi</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">hi</span>.<span class="ident">next_after</span>(<span class="ident">lo</span>), <span class="ident">lo</span>);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">step_to_largest_is_possible</span>() {
         <span class="kw">let</span> <span class="ident">smaller</span> <span class="op">=</span> <span class="ident">LARGEST_POS</span>.<span class="ident">next_after</span>(<span class="ident">NEG_INF</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">smaller</span>.<span class="ident">next_after</span>(<span class="ident">POS_INF</span>), <span class="ident">LARGEST_POS</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">smaller</span>.<span class="ident">next_after</span>(<span class="ident">POS_INF</span>), <span class="ident">LARGEST_POS</span>);
         <span class="kw">let</span> <span class="ident">smaller2</span> <span class="op">=</span> <span class="ident">LARGEST_NEG</span>.<span class="ident">next_after</span>(<span class="ident">POS_INF</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">smaller2</span>.<span class="ident">next_after</span>(<span class="ident">NEG_INF</span>), <span class="ident">LARGEST_NEG</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">smaller2</span>.<span class="ident">next_after</span>(<span class="ident">NEG_INF</span>), <span class="ident">LARGEST_NEG</span>);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">jump_to_infinity</span>() {
         <span class="comment">// Incrementing the max representable number has to go to infinity.</span>
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">LARGEST_POS</span>.<span class="ident">next_after</span>(<span class="ident">POS_INF</span>), <span class="ident">POS_INF</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">LARGEST_NEG</span>.<span class="ident">next_after</span>(<span class="ident">NEG_INF</span>), <span class="ident">NEG_INF</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">LARGEST_POS</span>.<span class="ident">next_after</span>(<span class="ident">POS_INF</span>), <span class="ident">POS_INF</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">LARGEST_NEG</span>.<span class="ident">next_after</span>(<span class="ident">NEG_INF</span>), <span class="ident">NEG_INF</span>);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">stays_at_infinity</span>() {
         <span class="comment">// Once infinity is reached, there is not going back to normal numbers</span>
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">POS_INF</span>.<span class="ident">next_after</span>(<span class="ident">NEG_INF</span>), <span class="ident">POS_INF</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">NEG_INF</span>.<span class="ident">next_after</span>(<span class="ident">POS_INF</span>), <span class="ident">NEG_INF</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">POS_INF</span>.<span class="ident">next_after</span>(<span class="ident">NEG_INF</span>), <span class="ident">POS_INF</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">NEG_INF</span>.<span class="ident">next_after</span>(<span class="ident">POS_INF</span>), <span class="ident">NEG_INF</span>);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">returns_nan_for_any_nan_involved</span>() {
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">NAN</span>.<span class="ident">next_after</span>(<span class="ident">POS_ONE</span>).<span class="ident">is_nan</span>());
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">POS_ONE</span>.<span class="ident">next_after</span>(<span class="ident">NAN</span>).<span class="ident">is_nan</span>());
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">NAN</span>.<span class="ident">next_after</span>(<span class="ident">NAN</span>).<span class="ident">is_nan</span>());
+        <span class="macro">assert!</span>(<span class="ident">NAN</span>.<span class="ident">next_after</span>(<span class="ident">POS_ONE</span>).<span class="ident">is_nan</span>());
+        <span class="macro">assert!</span>(<span class="ident">POS_ONE</span>.<span class="ident">next_after</span>(<span class="ident">NAN</span>).<span class="ident">is_nan</span>());
+        <span class="macro">assert!</span>(<span class="ident">NAN</span>.<span class="ident">next_after</span>(<span class="ident">NAN</span>).<span class="ident">is_nan</span>());
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
@@ -855,7 +854,7 @@
             <span class="ident">LARGEST_NEG</span>,
         ];
         <span class="kw">for</span> <span class="ident">x</span> <span class="kw">in</span> <span class="kw-2">&amp;</span><span class="ident">values</span> {
-            <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">x</span>.<span class="ident">next_after</span>(<span class="kw-2">*</span><span class="ident">x</span>), <span class="kw-2">*</span><span class="ident">x</span>);
+            <span class="macro">assert_eq!</span>(<span class="ident">x</span>.<span class="ident">next_after</span>(<span class="kw-2">*</span><span class="ident">x</span>), <span class="kw-2">*</span><span class="ident">x</span>);
         }
     }
 
@@ -870,14 +869,14 @@
             <span class="ident">SMALLEST_NEG</span>,
         ];
         <span class="kw">for</span> <span class="ident">orig</span> <span class="kw">in</span> <span class="ident">values</span>.<span class="ident">to_vec</span>() {
-            <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">orig</span>.<span class="ident">next_after</span>(<span class="ident">POS_INF</span>).<span class="ident">next_after</span>(<span class="ident">NEG_INF</span>), <span class="ident">orig</span>);
-            <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">orig</span>.<span class="ident">next_after</span>(<span class="ident">NEG_INF</span>).<span class="ident">next_after</span>(<span class="ident">POS_INF</span>), <span class="ident">orig</span>);
+            <span class="macro">assert_eq!</span>(<span class="ident">orig</span>.<span class="ident">next_after</span>(<span class="ident">POS_INF</span>).<span class="ident">next_after</span>(<span class="ident">NEG_INF</span>), <span class="ident">orig</span>);
+            <span class="macro">assert_eq!</span>(<span class="ident">orig</span>.<span class="ident">next_after</span>(<span class="ident">NEG_INF</span>).<span class="ident">next_after</span>(<span class="ident">POS_INF</span>), <span class="ident">orig</span>);
 
             <span class="kw">let</span> <span class="ident">upper</span> <span class="op">=</span> <span class="ident">orig</span>.<span class="ident">next_after</span>(<span class="ident">POS_INF</span>);
             <span class="kw">let</span> <span class="ident">lower</span> <span class="op">=</span> <span class="ident">orig</span>.<span class="ident">next_after</span>(<span class="ident">NEG_INF</span>);
 
-            <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">orig</span>.<span class="ident">next_after</span>(<span class="ident">upper</span>).<span class="ident">next_after</span>(<span class="ident">lower</span>), <span class="ident">orig</span>);
-            <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">orig</span>.<span class="ident">next_after</span>(<span class="ident">lower</span>).<span class="ident">next_after</span>(<span class="ident">upper</span>), <span class="ident">orig</span>);
+            <span class="macro">assert_eq!</span>(<span class="ident">orig</span>.<span class="ident">next_after</span>(<span class="ident">upper</span>).<span class="ident">next_after</span>(<span class="ident">lower</span>), <span class="ident">orig</span>);
+            <span class="macro">assert_eq!</span>(<span class="ident">orig</span>.<span class="ident">next_after</span>(<span class="ident">lower</span>).<span class="ident">next_after</span>(<span class="ident">upper</span>), <span class="ident">orig</span>);
         }
     }
 }
@@ -888,8 +887,8 @@
 
     <span class="kw">type</span> <span class="ident">T</span> <span class="op">=</span> <span class="ident">f32</span>;
 
-    <span class="kw">const</span> <span class="ident">POS_INF</span>: <span class="ident">T</span> <span class="op">=</span> <span class="ident">f32</span>::<span class="ident">INFINITY</span>;
-    <span class="kw">const</span> <span class="ident">NEG_INF</span>: <span class="ident">T</span> <span class="op">=</span> <span class="ident">f32</span>::<span class="ident">NEG_INFINITY</span>;
+    <span class="kw">const</span> <span class="ident">POS_INF</span>: <span class="ident">T</span> <span class="op">=</span> <span class="ident">f32::INFINITY</span>;
+    <span class="kw">const</span> <span class="ident">NEG_INF</span>: <span class="ident">T</span> <span class="op">=</span> <span class="ident">f32::NEG_INFINITY</span>;
     <span class="kw">const</span> <span class="ident">POS_ZERO</span>: <span class="ident">T</span> <span class="op">=</span> <span class="number">0.0</span>;
     <span class="kw">const</span> <span class="ident">NEG_ZERO</span>: <span class="ident">T</span> <span class="op">=</span> <span class="op">-</span><span class="number">0.0</span>;
 
@@ -897,17 +896,17 @@
     <span class="comment">// *normal* number.</span>
     <span class="kw">const</span> <span class="ident">SMALLEST_POS</span>: <span class="ident">T</span> <span class="op">=</span> <span class="number">1e-45</span>;
     <span class="kw">const</span> <span class="ident">SMALLEST_NEG</span>: <span class="ident">T</span> <span class="op">=</span> <span class="op">-</span><span class="number">1e-45</span>;
-    <span class="kw">const</span> <span class="ident">LARGEST_POS</span>: <span class="ident">T</span> <span class="op">=</span> <span class="ident">f32</span>::<span class="ident">MAX</span>;
-    <span class="kw">const</span> <span class="ident">LARGEST_NEG</span>: <span class="ident">T</span> <span class="op">=</span> <span class="ident">f32</span>::<span class="ident">MIN</span>;
+    <span class="kw">const</span> <span class="ident">LARGEST_POS</span>: <span class="ident">T</span> <span class="op">=</span> <span class="ident">f32::MAX</span>;
+    <span class="kw">const</span> <span class="ident">LARGEST_NEG</span>: <span class="ident">T</span> <span class="op">=</span> <span class="ident">f32::MIN</span>;
 
     <span class="kw">const</span> <span class="ident">POS_ONE</span>: <span class="ident">T</span> <span class="op">=</span> <span class="number">1.0</span>;
     <span class="kw">const</span> <span class="ident">NEG_ONE</span>: <span class="ident">T</span> <span class="op">=</span> <span class="op">-</span><span class="number">1.0</span>;
-    <span class="kw">const</span> <span class="ident">NEXT_LARGER_THAN_ONE</span>: <span class="ident">T</span> <span class="op">=</span> <span class="number">1.0</span> <span class="op">+</span> <span class="ident">f32</span>::<span class="ident">EPSILON</span>;
+    <span class="kw">const</span> <span class="ident">NEXT_LARGER_THAN_ONE</span>: <span class="ident">T</span> <span class="op">=</span> <span class="number">1.0</span> <span class="op">+</span> <span class="ident">f32::EPSILON</span>;
     <span class="kw">const</span> <span class="ident">NEXT_SMALLER_THAN_ONE</span>: <span class="ident">T</span> <span class="op">=</span> <span class="number">0.999_999_94</span>;
 
     <span class="kw">const</span> <span class="ident">SEQUENCE_BIG_NUM</span>: (<span class="ident">T</span>, <span class="ident">T</span>) <span class="op">=</span> (<span class="number">1.230_000_1e34</span>, <span class="number">1.230_000_3e34</span>);
 
-    <span class="kw">const</span> <span class="ident">NAN</span>: <span class="ident">T</span> <span class="op">=</span> <span class="ident">f32</span>::<span class="ident">NAN</span>;
+    <span class="kw">const</span> <span class="ident">NAN</span>: <span class="ident">T</span> <span class="op">=</span> <span class="ident">f32::NAN</span>;
 
     <span class="kw">fn</span> <span class="ident">is_pos_zero</span>(<span class="ident">x</span>: <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
         <span class="ident">x</span>.<span class="ident">to_bits</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">POS_ZERO</span>.<span class="ident">to_bits</span>()
@@ -919,43 +918,43 @@
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_copy_sign</span>() {
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">copy_sign</span>(<span class="ident">POS_ONE</span>, <span class="ident">POS_ZERO</span>), <span class="ident">POS_ONE</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">copy_sign</span>(<span class="ident">NEG_ONE</span>, <span class="ident">POS_ZERO</span>), <span class="ident">POS_ONE</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">copy_sign</span>(<span class="ident">POS_ONE</span>, <span class="ident">NEG_ZERO</span>), <span class="ident">NEG_ONE</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">copy_sign</span>(<span class="ident">NEG_ONE</span>, <span class="ident">NEG_ZERO</span>), <span class="ident">NEG_ONE</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">copy_sign</span>(<span class="ident">POS_ONE</span>, <span class="ident">POS_ZERO</span>), <span class="ident">POS_ONE</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">copy_sign</span>(<span class="ident">NEG_ONE</span>, <span class="ident">POS_ZERO</span>), <span class="ident">POS_ONE</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">copy_sign</span>(<span class="ident">POS_ONE</span>, <span class="ident">NEG_ZERO</span>), <span class="ident">NEG_ONE</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">copy_sign</span>(<span class="ident">NEG_ONE</span>, <span class="ident">NEG_ZERO</span>), <span class="ident">NEG_ONE</span>);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">verify_constants</span>() {
-        <span class="macro">assert_ne</span><span class="macro">!</span>(<span class="ident">POS_ZERO</span>.<span class="ident">to_bits</span>(), <span class="ident">NEG_ZERO</span>.<span class="ident">to_bits</span>());
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">SMALLEST_POS</span> <span class="op">&gt;</span> <span class="ident">POS_ZERO</span>);
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">SMALLEST_NEG</span> <span class="op">&lt;</span> <span class="ident">NEG_ZERO</span>);
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="op">!</span><span class="ident">SMALLEST_POS</span>.<span class="ident">is_normal</span>());
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="op">!</span><span class="ident">SMALLEST_NEG</span>.<span class="ident">is_normal</span>());
+        <span class="macro">assert_ne!</span>(<span class="ident">POS_ZERO</span>.<span class="ident">to_bits</span>(), <span class="ident">NEG_ZERO</span>.<span class="ident">to_bits</span>());
+        <span class="macro">assert!</span>(<span class="ident">SMALLEST_POS</span> <span class="op">&gt;</span> <span class="ident">POS_ZERO</span>);
+        <span class="macro">assert!</span>(<span class="ident">SMALLEST_NEG</span> <span class="op">&lt;</span> <span class="ident">NEG_ZERO</span>);
+        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">SMALLEST_POS</span>.<span class="ident">is_normal</span>());
+        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">SMALLEST_NEG</span>.<span class="ident">is_normal</span>());
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">next_larger_than_0</span>() {
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">POS_ZERO</span>.<span class="ident">next_after</span>(<span class="ident">POS_INF</span>), <span class="ident">SMALLEST_POS</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">NEG_ZERO</span>.<span class="ident">next_after</span>(<span class="ident">POS_INF</span>), <span class="ident">SMALLEST_POS</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">POS_ZERO</span>.<span class="ident">next_after</span>(<span class="ident">POS_INF</span>), <span class="ident">SMALLEST_POS</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">NEG_ZERO</span>.<span class="ident">next_after</span>(<span class="ident">POS_INF</span>), <span class="ident">SMALLEST_POS</span>);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">next_smaller_than_0</span>() {
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">POS_ZERO</span>.<span class="ident">next_after</span>(<span class="ident">NEG_INF</span>), <span class="ident">SMALLEST_NEG</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">NEG_ZERO</span>.<span class="ident">next_after</span>(<span class="ident">NEG_INF</span>), <span class="ident">SMALLEST_NEG</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">POS_ZERO</span>.<span class="ident">next_after</span>(<span class="ident">NEG_INF</span>), <span class="ident">SMALLEST_NEG</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">NEG_ZERO</span>.<span class="ident">next_after</span>(<span class="ident">NEG_INF</span>), <span class="ident">SMALLEST_NEG</span>);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">step_towards_zero</span>() {
         <span class="comment">// For steps towards zero, the sign of the zero reflects the direction</span>
         <span class="comment">// from where zero was approached.</span>
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">is_pos_zero</span>(<span class="ident">SMALLEST_POS</span>.<span class="ident">next_after</span>(<span class="ident">POS_ZERO</span>)));
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">is_pos_zero</span>(<span class="ident">SMALLEST_POS</span>.<span class="ident">next_after</span>(<span class="ident">NEG_ZERO</span>)));
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">is_pos_zero</span>(<span class="ident">SMALLEST_POS</span>.<span class="ident">next_after</span>(<span class="ident">NEG_INF</span>)));
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">is_neg_zero</span>(<span class="ident">SMALLEST_NEG</span>.<span class="ident">next_after</span>(<span class="ident">NEG_ZERO</span>)));
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">is_neg_zero</span>(<span class="ident">SMALLEST_NEG</span>.<span class="ident">next_after</span>(<span class="ident">POS_ZERO</span>)));
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">is_neg_zero</span>(<span class="ident">SMALLEST_NEG</span>.<span class="ident">next_after</span>(<span class="ident">POS_INF</span>)));
+        <span class="macro">assert!</span>(<span class="ident">is_pos_zero</span>(<span class="ident">SMALLEST_POS</span>.<span class="ident">next_after</span>(<span class="ident">POS_ZERO</span>)));
+        <span class="macro">assert!</span>(<span class="ident">is_pos_zero</span>(<span class="ident">SMALLEST_POS</span>.<span class="ident">next_after</span>(<span class="ident">NEG_ZERO</span>)));
+        <span class="macro">assert!</span>(<span class="ident">is_pos_zero</span>(<span class="ident">SMALLEST_POS</span>.<span class="ident">next_after</span>(<span class="ident">NEG_INF</span>)));
+        <span class="macro">assert!</span>(<span class="ident">is_neg_zero</span>(<span class="ident">SMALLEST_NEG</span>.<span class="ident">next_after</span>(<span class="ident">NEG_ZERO</span>)));
+        <span class="macro">assert!</span>(<span class="ident">is_neg_zero</span>(<span class="ident">SMALLEST_NEG</span>.<span class="ident">next_after</span>(<span class="ident">POS_ZERO</span>)));
+        <span class="macro">assert!</span>(<span class="ident">is_neg_zero</span>(<span class="ident">SMALLEST_NEG</span>.<span class="ident">next_after</span>(<span class="ident">POS_INF</span>)));
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
@@ -963,64 +962,64 @@
         <span class="comment">// For a non-zero dest, stepping away from either POS_ZERO or NEG_ZERO</span>
         <span class="comment">// has a non-zero result. Only if the destination itself points to the</span>
         <span class="comment">// &quot;other zero&quot;, the next_after call performs a zero sign switch.</span>
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">is_neg_zero</span>(<span class="ident">POS_ZERO</span>.<span class="ident">next_after</span>(<span class="ident">NEG_ZERO</span>)));
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">is_pos_zero</span>(<span class="ident">NEG_ZERO</span>.<span class="ident">next_after</span>(<span class="ident">POS_ZERO</span>)));
+        <span class="macro">assert!</span>(<span class="ident">is_neg_zero</span>(<span class="ident">POS_ZERO</span>.<span class="ident">next_after</span>(<span class="ident">NEG_ZERO</span>)));
+        <span class="macro">assert!</span>(<span class="ident">is_pos_zero</span>(<span class="ident">NEG_ZERO</span>.<span class="ident">next_after</span>(<span class="ident">POS_ZERO</span>)));
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">nextafter_around_one</span>() {
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">POS_ONE</span>.<span class="ident">next_after</span>(<span class="ident">POS_INF</span>), <span class="ident">NEXT_LARGER_THAN_ONE</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">POS_ONE</span>.<span class="ident">next_after</span>(<span class="ident">NEG_INF</span>), <span class="ident">NEXT_SMALLER_THAN_ONE</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">NEG_ONE</span>.<span class="ident">next_after</span>(<span class="ident">NEG_INF</span>), <span class="op">-</span><span class="ident">NEXT_LARGER_THAN_ONE</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">NEG_ONE</span>.<span class="ident">next_after</span>(<span class="ident">POS_INF</span>), <span class="op">-</span><span class="ident">NEXT_SMALLER_THAN_ONE</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">POS_ONE</span>.<span class="ident">next_after</span>(<span class="ident">POS_INF</span>), <span class="ident">NEXT_LARGER_THAN_ONE</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">POS_ONE</span>.<span class="ident">next_after</span>(<span class="ident">NEG_INF</span>), <span class="ident">NEXT_SMALLER_THAN_ONE</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">NEG_ONE</span>.<span class="ident">next_after</span>(<span class="ident">NEG_INF</span>), <span class="op">-</span><span class="ident">NEXT_LARGER_THAN_ONE</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">NEG_ONE</span>.<span class="ident">next_after</span>(<span class="ident">POS_INF</span>), <span class="op">-</span><span class="ident">NEXT_SMALLER_THAN_ONE</span>);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">nextafter_for_big_pos_number</span>() {
         <span class="kw">let</span> (<span class="ident">lo</span>, <span class="ident">hi</span>) <span class="op">=</span> <span class="ident">SEQUENCE_BIG_NUM</span>;
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">lo</span>.<span class="ident">next_after</span>(<span class="ident">POS_INF</span>), <span class="ident">hi</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">hi</span>.<span class="ident">next_after</span>(<span class="ident">NEG_INF</span>), <span class="ident">lo</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">lo</span>.<span class="ident">next_after</span>(<span class="ident">hi</span>), <span class="ident">hi</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">hi</span>.<span class="ident">next_after</span>(<span class="ident">lo</span>), <span class="ident">lo</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">lo</span>.<span class="ident">next_after</span>(<span class="ident">POS_INF</span>), <span class="ident">hi</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">hi</span>.<span class="ident">next_after</span>(<span class="ident">NEG_INF</span>), <span class="ident">lo</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">lo</span>.<span class="ident">next_after</span>(<span class="ident">hi</span>), <span class="ident">hi</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">hi</span>.<span class="ident">next_after</span>(<span class="ident">lo</span>), <span class="ident">lo</span>);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">nextafter_for_big_neg_number</span>() {
         <span class="kw">let</span> (<span class="ident">lo</span>, <span class="ident">hi</span>) <span class="op">=</span> <span class="ident">SEQUENCE_BIG_NUM</span>;
         <span class="kw">let</span> (<span class="ident">lo</span>, <span class="ident">hi</span>) <span class="op">=</span> (<span class="op">-</span><span class="ident">lo</span>, <span class="op">-</span><span class="ident">hi</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">lo</span>.<span class="ident">next_after</span>(<span class="ident">NEG_INF</span>), <span class="ident">hi</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">hi</span>.<span class="ident">next_after</span>(<span class="ident">POS_INF</span>), <span class="ident">lo</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">lo</span>.<span class="ident">next_after</span>(<span class="ident">hi</span>), <span class="ident">hi</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">hi</span>.<span class="ident">next_after</span>(<span class="ident">lo</span>), <span class="ident">lo</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">lo</span>.<span class="ident">next_after</span>(<span class="ident">NEG_INF</span>), <span class="ident">hi</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">hi</span>.<span class="ident">next_after</span>(<span class="ident">POS_INF</span>), <span class="ident">lo</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">lo</span>.<span class="ident">next_after</span>(<span class="ident">hi</span>), <span class="ident">hi</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">hi</span>.<span class="ident">next_after</span>(<span class="ident">lo</span>), <span class="ident">lo</span>);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">step_to_largest_is_possible</span>() {
         <span class="kw">let</span> <span class="ident">smaller</span> <span class="op">=</span> <span class="ident">LARGEST_POS</span>.<span class="ident">next_after</span>(<span class="ident">NEG_INF</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">smaller</span>.<span class="ident">next_after</span>(<span class="ident">POS_INF</span>), <span class="ident">LARGEST_POS</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">smaller</span>.<span class="ident">next_after</span>(<span class="ident">POS_INF</span>), <span class="ident">LARGEST_POS</span>);
         <span class="kw">let</span> <span class="ident">smaller2</span> <span class="op">=</span> <span class="ident">LARGEST_NEG</span>.<span class="ident">next_after</span>(<span class="ident">POS_INF</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">smaller2</span>.<span class="ident">next_after</span>(<span class="ident">NEG_INF</span>), <span class="ident">LARGEST_NEG</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">smaller2</span>.<span class="ident">next_after</span>(<span class="ident">NEG_INF</span>), <span class="ident">LARGEST_NEG</span>);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">jump_to_infinity</span>() {
         <span class="comment">// Incrementing the max representable number has to go to infinity.</span>
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">LARGEST_POS</span>.<span class="ident">next_after</span>(<span class="ident">POS_INF</span>), <span class="ident">POS_INF</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">LARGEST_NEG</span>.<span class="ident">next_after</span>(<span class="ident">NEG_INF</span>), <span class="ident">NEG_INF</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">LARGEST_POS</span>.<span class="ident">next_after</span>(<span class="ident">POS_INF</span>), <span class="ident">POS_INF</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">LARGEST_NEG</span>.<span class="ident">next_after</span>(<span class="ident">NEG_INF</span>), <span class="ident">NEG_INF</span>);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">stays_at_infinity</span>() {
         <span class="comment">// Once infinity is reached, there is not going back to normal numbers</span>
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">POS_INF</span>.<span class="ident">next_after</span>(<span class="ident">NEG_INF</span>), <span class="ident">POS_INF</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">NEG_INF</span>.<span class="ident">next_after</span>(<span class="ident">POS_INF</span>), <span class="ident">NEG_INF</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">POS_INF</span>.<span class="ident">next_after</span>(<span class="ident">NEG_INF</span>), <span class="ident">POS_INF</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">NEG_INF</span>.<span class="ident">next_after</span>(<span class="ident">POS_INF</span>), <span class="ident">NEG_INF</span>);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">returns_nan_for_any_nan_involved</span>() {
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">NAN</span>.<span class="ident">next_after</span>(<span class="ident">POS_ONE</span>).<span class="ident">is_nan</span>());
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">POS_ONE</span>.<span class="ident">next_after</span>(<span class="ident">NAN</span>).<span class="ident">is_nan</span>());
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">NAN</span>.<span class="ident">next_after</span>(<span class="ident">NAN</span>).<span class="ident">is_nan</span>());
+        <span class="macro">assert!</span>(<span class="ident">NAN</span>.<span class="ident">next_after</span>(<span class="ident">POS_ONE</span>).<span class="ident">is_nan</span>());
+        <span class="macro">assert!</span>(<span class="ident">POS_ONE</span>.<span class="ident">next_after</span>(<span class="ident">NAN</span>).<span class="ident">is_nan</span>());
+        <span class="macro">assert!</span>(<span class="ident">NAN</span>.<span class="ident">next_after</span>(<span class="ident">NAN</span>).<span class="ident">is_nan</span>());
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
@@ -1040,7 +1039,7 @@
             <span class="ident">LARGEST_NEG</span>,
         ];
         <span class="kw">for</span> <span class="ident">x</span> <span class="kw">in</span> <span class="kw-2">&amp;</span><span class="ident">values</span> {
-            <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">x</span>.<span class="ident">next_after</span>(<span class="kw-2">*</span><span class="ident">x</span>), <span class="kw-2">*</span><span class="ident">x</span>);
+            <span class="macro">assert_eq!</span>(<span class="ident">x</span>.<span class="ident">next_after</span>(<span class="kw-2">*</span><span class="ident">x</span>), <span class="kw-2">*</span><span class="ident">x</span>);
         }
     }
 
@@ -1055,17 +1054,16 @@
             <span class="ident">SMALLEST_NEG</span>,
         ];
         <span class="kw">for</span> <span class="ident">orig</span> <span class="kw">in</span> <span class="ident">values</span>.<span class="ident">to_vec</span>() {
-            <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">orig</span>.<span class="ident">next_after</span>(<span class="ident">POS_INF</span>).<span class="ident">next_after</span>(<span class="ident">NEG_INF</span>), <span class="ident">orig</span>);
-            <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">orig</span>.<span class="ident">next_after</span>(<span class="ident">NEG_INF</span>).<span class="ident">next_after</span>(<span class="ident">POS_INF</span>), <span class="ident">orig</span>);
+            <span class="macro">assert_eq!</span>(<span class="ident">orig</span>.<span class="ident">next_after</span>(<span class="ident">POS_INF</span>).<span class="ident">next_after</span>(<span class="ident">NEG_INF</span>), <span class="ident">orig</span>);
+            <span class="macro">assert_eq!</span>(<span class="ident">orig</span>.<span class="ident">next_after</span>(<span class="ident">NEG_INF</span>).<span class="ident">next_after</span>(<span class="ident">POS_INF</span>), <span class="ident">orig</span>);
 
             <span class="kw">let</span> <span class="ident">upper</span> <span class="op">=</span> <span class="ident">orig</span>.<span class="ident">next_after</span>(<span class="ident">POS_INF</span>);
             <span class="kw">let</span> <span class="ident">lower</span> <span class="op">=</span> <span class="ident">orig</span>.<span class="ident">next_after</span>(<span class="ident">NEG_INF</span>);
 
-            <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">orig</span>.<span class="ident">next_after</span>(<span class="ident">upper</span>).<span class="ident">next_after</span>(<span class="ident">lower</span>), <span class="ident">orig</span>);
-            <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">orig</span>.<span class="ident">next_after</span>(<span class="ident">lower</span>).<span class="ident">next_after</span>(<span class="ident">upper</span>), <span class="ident">orig</span>);
+            <span class="macro">assert_eq!</span>(<span class="ident">orig</span>.<span class="ident">next_after</span>(<span class="ident">upper</span>).<span class="ident">next_after</span>(<span class="ident">lower</span>), <span class="ident">orig</span>);
+            <span class="macro">assert_eq!</span>(<span class="ident">orig</span>.<span class="ident">next_after</span>(<span class="ident">lower</span>).<span class="ident">next_after</span>(<span class="ident">upper</span>), <span class="ident">orig</span>);
         }
     }
 }
 </pre></div>
-</section><section id="search" class="content hidden"></section><section class="footer"></section><div id="rustdoc-vars" data-root-path="../../" data-current-crate="float_next_after"></div>
-    <script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script><script defer src="../../search-index.js"></script></body></html>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../" data-current-crate="float_next_after" data-search-index-js="../../search-index.js" data-search-js="../../search.js"></div><script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script></body></html>

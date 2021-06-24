@@ -1,7 +1,6 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `third-party/RustaCUDA/rustacuda_core/src/memory/pointer.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>pointer.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../storage.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../favicon.svg">
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `third-party/RustaCUDA/rustacuda_core/src/memory/pointer.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>pointer.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../favicon.svg">
 <link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png">
-<link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../rustacuda_core/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu"><img src="../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" class="help-button">?</button>
-                <a id="settings-menu" href="../../../settings.html"><img src="../../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
+<link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../rustacuda_core/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img src="../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../settings.html" title="settings"><img src="../../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -734,38 +733,38 @@
 <span id="731">731</span>
 <span id="732">732</span>
 <span id="733">733</span>
-</pre><div class="example-wrap"><pre class="rust ">
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">memory</span>::<span class="ident">DeviceCopy</span>;
+</pre><pre class="rust">
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::memory::DeviceCopy</span>;
 
 <span class="kw">use</span> <span class="ident">core</span>::{
-    <span class="ident">cmp</span>::<span class="ident">Ordering</span>,
+    <span class="ident">cmp::Ordering</span>,
     <span class="ident">fmt</span>::{<span class="self">self</span>, <span class="ident">Debug</span>, <span class="ident">Pointer</span>},
     <span class="ident">hash</span>::{<span class="ident">Hash</span>, <span class="ident">Hasher</span>},
     <span class="ident">ptr</span>,
 };
 
-<span class="macro">macro_rules</span><span class="macro">!</span> <span class="ident">derive_traits</span> {
+<span class="macro">macro_rules!</span> <span class="ident">derive_traits</span> {
     ( $( <span class="macro-nonterminal">$</span><span class="macro-nonterminal">Ptr</span>:<span class="ident">ty</span> )<span class="op">*</span> ) <span class="op">=</span><span class="op">&gt;</span> ($(
         <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="question-mark">?</span><span class="ident">Sized</span><span class="op">&gt;</span> <span class="ident">Debug</span> <span class="kw">for</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">Ptr</span> {
-            <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
-                <span class="ident">Debug</span>::<span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="number">0</span>, <span class="ident">f</span>)
+            <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+                <span class="ident">Debug::fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="number">0</span>, <span class="ident">f</span>)
             }
         }
         <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="question-mark">?</span><span class="ident">Sized</span><span class="op">&gt;</span> <span class="ident">Pointer</span> <span class="kw">for</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">Ptr</span> {
-            <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
-                <span class="ident">Pointer</span>::<span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="number">0</span>, <span class="ident">f</span>)
+            <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+                <span class="ident">Pointer::fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="number">0</span>, <span class="ident">f</span>)
             }
         }
 
         <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="question-mark">?</span><span class="ident">Sized</span><span class="op">&gt;</span> <span class="ident">Hash</span> <span class="kw">for</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">Ptr</span> {
             <span class="kw">fn</span> <span class="ident">hash</span><span class="op">&lt;</span><span class="ident">H</span>: <span class="ident">Hasher</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">h</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">H</span>) {
-                <span class="ident">Hash</span>::<span class="ident">hash</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="number">0</span>, <span class="ident">h</span>);
+                <span class="ident">Hash::hash</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="number">0</span>, <span class="ident">h</span>);
             }
         }
 
         <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="question-mark">?</span><span class="ident">Sized</span><span class="op">&gt;</span> <span class="ident">PartialEq</span> <span class="kw">for</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">Ptr</span> {
             <span class="kw">fn</span> <span class="ident">eq</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">Ptr</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-                <span class="ident">PartialEq</span>::<span class="ident">eq</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="number">0</span>, <span class="kw-2">&amp;</span><span class="ident">other</span>.<span class="number">0</span>)
+                <span class="ident">PartialEq::eq</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="number">0</span>, <span class="kw-2">&amp;</span><span class="ident">other</span>.<span class="number">0</span>)
             }
         }
 
@@ -773,13 +772,13 @@
 
         <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="question-mark">?</span><span class="ident">Sized</span><span class="op">&gt;</span> <span class="ident">PartialOrd</span> <span class="kw">for</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">Ptr</span> {
             <span class="kw">fn</span> <span class="ident">partial_cmp</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">Ptr</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Ordering</span><span class="op">&gt;</span> {
-                <span class="ident">PartialOrd</span>::<span class="ident">partial_cmp</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="number">0</span>, <span class="kw-2">&amp;</span><span class="ident">other</span>.<span class="number">0</span>)
+                <span class="ident">PartialOrd::partial_cmp</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="number">0</span>, <span class="kw-2">&amp;</span><span class="ident">other</span>.<span class="number">0</span>)
             }
         }
 
         <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="question-mark">?</span><span class="ident">Sized</span><span class="op">&gt;</span> <span class="ident">Ord</span> <span class="kw">for</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">Ptr</span> {
             <span class="kw">fn</span> <span class="ident">cmp</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">Ptr</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Ordering</span> {
-                <span class="ident">Ord</span>::<span class="ident">cmp</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="number">0</span>, <span class="kw-2">&amp;</span><span class="ident">other</span>.<span class="number">0</span>)
+                <span class="ident">Ord::cmp</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="number">0</span>, <span class="kw-2">&amp;</span><span class="ident">other</span>.<span class="number">0</span>)
             }
         }
 
@@ -791,7 +790,7 @@
         <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="question-mark">?</span><span class="ident">Sized</span><span class="op">&gt;</span> <span class="ident">Copy</span> <span class="kw">for</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">Ptr</span> {}
     )<span class="kw-2">*</span>)
 }
-<span class="macro">derive_traits</span><span class="macro">!</span>(<span class="ident">DevicePointer</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">UnifiedPointer</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>);
+<span class="macro">derive_traits!</span>(<span class="ident">DevicePointer</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">UnifiedPointer</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>);
 
 <span class="doccomment">/// A pointer to device memory.</span>
 <span class="doccomment">///</span>
@@ -901,7 +900,7 @@
     <span class="kw">where</span>
         <span class="ident">T</span>: <span class="ident">Sized</span>,
     {
-        <span class="kw">unsafe</span> { <span class="self">Self</span>::<span class="ident">wrap</span>(<span class="ident">ptr</span>::<span class="ident">null_mut</span>()) }
+        <span class="kw">unsafe</span> { <span class="self">Self</span><span class="ident">::wrap</span>(<span class="ident">ptr::null_mut</span>()) }
     }
 
     <span class="doccomment">/// Calculates the offset from a device pointer.</span>
@@ -942,7 +941,7 @@
     <span class="kw">where</span>
         <span class="ident">T</span>: <span class="ident">Sized</span>,
     {
-        <span class="self">Self</span>::<span class="ident">wrap</span>(<span class="self">self</span>.<span class="number">0</span>.<span class="ident">offset</span>(<span class="ident">count</span>))
+        <span class="self">Self</span><span class="ident">::wrap</span>(<span class="self">self</span>.<span class="number">0</span>.<span class="ident">offset</span>(<span class="ident">count</span>))
     }
 
     <span class="doccomment">/// Calculates the offset from a device pointer using wrapping arithmetic.</span>
@@ -979,7 +978,7 @@
     <span class="kw">where</span>
         <span class="ident">T</span>: <span class="ident">Sized</span>,
     {
-        <span class="kw">unsafe</span> { <span class="self">Self</span>::<span class="ident">wrap</span>(<span class="self">self</span>.<span class="number">0</span>.<span class="ident">wrapping_offset</span>(<span class="ident">count</span>)) }
+        <span class="kw">unsafe</span> { <span class="self">Self</span><span class="ident">::wrap</span>(<span class="self">self</span>.<span class="number">0</span>.<span class="ident">wrapping_offset</span>(<span class="ident">count</span>)) }
     }
 
     <span class="doccomment">/// Calculates the offset from a pointer (convenience for `.offset(count as</span>
@@ -1017,7 +1016,7 @@
     <span class="doccomment">///     cuda_free(dev_ptr); // Must free the buffer using the original pointer</span>
     <span class="doccomment">/// }</span>
     <span class="doccomment">/// ```</span>
-    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy</span>::<span class="ident">should_implement_trait</span>)]</span>
+    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::should_implement_trait</span>)]</span>
     <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">add</span>(<span class="self">self</span>, <span class="ident">count</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>
     <span class="kw">where</span>
         <span class="ident">T</span>: <span class="ident">Sized</span>,
@@ -1059,7 +1058,7 @@
     <span class="doccomment">///     let offset = dev_ptr.add(4).sub(3); // Points to the 2nd u64 in the buffer</span>
     <span class="doccomment">///     cuda_free(dev_ptr); // Must free the buffer using the original pointer</span>
     <span class="doccomment">/// }</span>
-    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy</span>::<span class="ident">should_implement_trait</span>)]</span>
+    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::should_implement_trait</span>)]</span>
     <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">sub</span>(<span class="self">self</span>, <span class="ident">count</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>
     <span class="kw">where</span>
         <span class="ident">T</span>: <span class="ident">Sized</span>,
@@ -1238,7 +1237,7 @@
     <span class="kw">where</span>
         <span class="ident">T</span>: <span class="ident">Sized</span>,
     {
-        <span class="kw">unsafe</span> { <span class="self">Self</span>::<span class="ident">wrap</span>(<span class="ident">ptr</span>::<span class="ident">null_mut</span>()) }
+        <span class="kw">unsafe</span> { <span class="self">Self</span><span class="ident">::wrap</span>(<span class="ident">ptr::null_mut</span>()) }
     }
 
     <span class="doccomment">/// Calculates the offset from a unified pointer.</span>
@@ -1279,7 +1278,7 @@
     <span class="kw">where</span>
         <span class="ident">T</span>: <span class="ident">Sized</span>,
     {
-        <span class="self">Self</span>::<span class="ident">wrap</span>(<span class="self">self</span>.<span class="number">0</span>.<span class="ident">offset</span>(<span class="ident">count</span>))
+        <span class="self">Self</span><span class="ident">::wrap</span>(<span class="self">self</span>.<span class="number">0</span>.<span class="ident">offset</span>(<span class="ident">count</span>))
     }
 
     <span class="doccomment">/// Calculates the offset from a unified pointer using wrapping arithmetic.</span>
@@ -1316,7 +1315,7 @@
     <span class="kw">where</span>
         <span class="ident">T</span>: <span class="ident">Sized</span>,
     {
-        <span class="kw">unsafe</span> { <span class="self">Self</span>::<span class="ident">wrap</span>(<span class="self">self</span>.<span class="number">0</span>.<span class="ident">wrapping_offset</span>(<span class="ident">count</span>)) }
+        <span class="kw">unsafe</span> { <span class="self">Self</span><span class="ident">::wrap</span>(<span class="self">self</span>.<span class="number">0</span>.<span class="ident">wrapping_offset</span>(<span class="ident">count</span>)) }
     }
 
     <span class="doccomment">/// Calculates the offset from a pointer (convenience for `.offset(count as</span>
@@ -1354,7 +1353,7 @@
     <span class="doccomment">///     cuda_free_unified(unified_ptr); // Must free the buffer using the original pointer</span>
     <span class="doccomment">/// }</span>
     <span class="doccomment">/// ```</span>
-    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy</span>::<span class="ident">should_implement_trait</span>)]</span>
+    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::should_implement_trait</span>)]</span>
     <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">add</span>(<span class="self">self</span>, <span class="ident">count</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>
     <span class="kw">where</span>
         <span class="ident">T</span>: <span class="ident">Sized</span>,
@@ -1396,7 +1395,7 @@
     <span class="doccomment">///     let offset = unified_ptr.add(4).sub(3); // Points to the 2nd u64 in the buffer</span>
     <span class="doccomment">///     cuda_free_unified(unified_ptr); // Must free the buffer using the original pointer</span>
     <span class="doccomment">/// }</span>
-    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy</span>::<span class="ident">should_implement_trait</span>)]</span>
+    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::should_implement_trait</span>)]</span>
     <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">sub</span>(<span class="self">self</span>, <span class="ident">count</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>
     <span class="kw">where</span>
         <span class="ident">T</span>: <span class="ident">Sized</span>,
@@ -1469,5 +1468,4 @@
     }
 }
 </pre></div>
-</section><section id="search" class="content hidden"></section><section class="footer"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="rustacuda_core"></div>
-    <script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script><script defer src="../../../search-index.js"></script></body></html>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="rustacuda_core" data-search-index-js="../../../search-index.js" data-search-js="../../../search.js"></div><script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script></body></html>

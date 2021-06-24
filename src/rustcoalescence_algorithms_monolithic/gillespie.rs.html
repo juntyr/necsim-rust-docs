@@ -1,7 +1,6 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `rustcoalescence/algorithms/monolithic/src/gillespie.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>gillespie.rs - source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script id="default-settings"></script><script src="../../storage.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `rustcoalescence/algorithms/monolithic/src/gillespie.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>gillespie.rs - source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script id="default-settings"></script><script src="../../storage.js"></script><script src="../../crates.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../favicon.svg">
 <link rel="alternate icon" type="image/png" href="../../favicon-16x16.png">
-<link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../rustcoalescence_algorithms_monolithic/index.html'><div class='logo-container rust-logo'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu"><img src="../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><script src="../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" class="help-button">?</button>
-                <a id="settings-menu" href="../../settings.html"><img src="../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
+<link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../rustcoalescence_algorithms_monolithic/index.html'><div class='logo-container rust-logo'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img src="../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img src="../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -227,97 +226,97 @@
 <span id="224">224</span>
 <span id="225">225</span>
 <span id="226">226</span>
-</pre><div class="example-wrap"><pre class="rust ">
-<span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">hint</span>::<span class="ident">unreachable_unchecked</span>, <span class="ident">marker</span>::<span class="ident">PhantomData</span>};
+</pre><pre class="rust">
+<span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">hint::unreachable_unchecked</span>, <span class="ident">marker::PhantomData</span>};
 
 <span class="kw">use</span> <span class="ident">necsim_core</span>::{
     <span class="ident">cogs</span>::{<span class="ident">GloballyCoherentLineageStore</span>, <span class="ident">LineageStore</span>, <span class="ident">RngCore</span>, <span class="ident">SplittableRng</span>},
-    <span class="ident">reporter</span>::<span class="ident">Reporter</span>,
-    <span class="ident">simulation</span>::<span class="ident">Simulation</span>,
+    <span class="ident">reporter::Reporter</span>,
+    <span class="ident">simulation::Simulation</span>,
 };
-<span class="kw">use</span> <span class="ident">necsim_core_bond</span>::<span class="ident">NonNegativeF64</span>;
+<span class="kw">use</span> <span class="ident">necsim_core_bond::NonNegativeF64</span>;
 
 <span class="kw">use</span> <span class="ident">necsim_impls_no_std</span>::{
     <span class="ident">cogs</span>::{
-        <span class="ident">coalescence_sampler</span>::<span class="ident">unconditional</span>::<span class="ident">UnconditionalCoalescenceSampler</span>,
-        <span class="ident">dispersal_sampler</span>::<span class="ident">in_memory</span>::<span class="ident">alias</span>::<span class="ident">InMemoryAliasDispersalSampler</span>,
-        <span class="ident">emigration_exit</span>::{<span class="ident">domain</span>::<span class="ident">DomainEmigrationExit</span>, <span class="ident">never</span>::<span class="ident">NeverEmigrationExit</span>},
-        <span class="ident">event_sampler</span>::<span class="ident">gillespie</span>::{
-            <span class="ident">unconditional</span>::<span class="ident">UnconditionalGillespieEventSampler</span>, <span class="ident">GillespiePartialSimulation</span>,
+        <span class="ident">coalescence_sampler::unconditional::UnconditionalCoalescenceSampler</span>,
+        <span class="ident">dispersal_sampler::in_memory::alias::InMemoryAliasDispersalSampler</span>,
+        <span class="ident">emigration_exit</span>::{<span class="ident">domain::DomainEmigrationExit</span>, <span class="ident">never::NeverEmigrationExit</span>},
+        <span class="ident">event_sampler::gillespie</span>::{
+            <span class="ident">unconditional::UnconditionalGillespieEventSampler</span>, <span class="ident">GillespiePartialSimulation</span>,
         },
-        <span class="ident">immigration_entry</span>::{<span class="ident">buffered</span>::<span class="ident">BufferedImmigrationEntry</span>, <span class="ident">never</span>::<span class="ident">NeverImmigrationEntry</span>},
-        <span class="ident">lineage_reference</span>::<span class="ident">in_memory</span>::<span class="ident">InMemoryLineageReference</span>,
-        <span class="ident">lineage_store</span>::<span class="ident">coherent</span>::<span class="ident">globally</span>::<span class="ident">gillespie</span>::<span class="ident">GillespieLineageStore</span>,
+        <span class="ident">immigration_entry</span>::{<span class="ident">buffered::BufferedImmigrationEntry</span>, <span class="ident">never::NeverImmigrationEntry</span>},
+        <span class="ident">lineage_reference::in_memory::InMemoryLineageReference</span>,
+        <span class="ident">lineage_store::coherent::globally::gillespie::GillespieLineageStore</span>,
         <span class="ident">origin_sampler</span>::{
-            <span class="ident">decomposition</span>::<span class="ident">DecompositionOriginSampler</span>, <span class="ident">pre_sampler</span>::<span class="ident">OriginPreSampler</span>,
+            <span class="ident">decomposition::DecompositionOriginSampler</span>, <span class="ident">pre_sampler::OriginPreSampler</span>,
         },
     },
     <span class="ident">parallelisation</span>,
 };
-<span class="kw">use</span> <span class="ident">necsim_impls_std</span>::<span class="ident">cogs</span>::{
-    <span class="ident">active_lineage_sampler</span>::<span class="ident">gillespie</span>::<span class="ident">GillespieActiveLineageSampler</span>, <span class="ident">rng</span>::<span class="ident">pcg</span>::<span class="ident">Pcg</span>,
+<span class="kw">use</span> <span class="ident">necsim_impls_std::cogs</span>::{
+    <span class="ident">active_lineage_sampler::gillespie::GillespieActiveLineageSampler</span>, <span class="ident">rng::pcg::Pcg</span>,
 };
-<span class="kw">use</span> <span class="ident">necsim_partitioning_core</span>::<span class="ident">LocalPartition</span>;
+<span class="kw">use</span> <span class="ident">necsim_partitioning_core::LocalPartition</span>;
 
 <span class="kw">use</span> <span class="ident">rustcoalescence_algorithms</span>::{<span class="ident">Algorithm</span>, <span class="ident">AlgorithmArguments</span>};
-<span class="kw">use</span> <span class="ident">rustcoalescence_scenarios</span>::<span class="ident">Scenario</span>;
+<span class="kw">use</span> <span class="ident">rustcoalescence_scenarios::Scenario</span>;
 
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">arguments</span>::{
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::arguments</span>::{
     <span class="ident">AveragingParallelismMode</span>, <span class="ident">MonolithicArguments</span>, <span class="ident">OptimisticParallelismMode</span>, <span class="ident">ParallelismMode</span>,
 };
 
-<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy</span>::<span class="ident">module_name_repetitions</span>, <span class="ident">clippy</span>::<span class="ident">empty_enum</span>)]</span>
+<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::module_name_repetitions</span>, <span class="ident">clippy::empty_enum</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">GillespieAlgorithm</span> {}
 
 <span class="kw">impl</span> <span class="ident">AlgorithmArguments</span> <span class="kw">for</span> <span class="ident">GillespieAlgorithm</span> {
     <span class="kw">type</span> <span class="ident">Arguments</span> <span class="op">=</span> <span class="ident">MonolithicArguments</span>;
 }
 
-<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy</span>::<span class="ident">type_complexity</span>)]</span>
+<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::type_complexity</span>)]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">O</span>: <span class="ident">Scenario</span><span class="op">&lt;</span><span class="ident">Pcg</span>, <span class="ident">LineageReference</span> <span class="op">=</span> <span class="ident">InMemoryLineageReference</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="ident">Algorithm</span><span class="op">&lt;</span><span class="ident">O</span><span class="op">&gt;</span>
     <span class="kw">for</span> <span class="ident">GillespieAlgorithm</span>
 <span class="kw">where</span>
-    <span class="ident">O</span>::<span class="ident">LineageStore</span><span class="op">&lt;</span><span class="ident">GillespieLineageStore</span><span class="op">&lt;</span><span class="ident">O</span>::<span class="ident">Habitat</span><span class="op">&gt;</span><span class="op">&gt;</span>:
-        <span class="ident">GloballyCoherentLineageStore</span><span class="op">&lt;</span><span class="ident">O</span>::<span class="ident">Habitat</span>, <span class="ident">InMemoryLineageReference</span><span class="op">&gt;</span>,
+    <span class="ident">O::LineageStore</span><span class="op">&lt;</span><span class="ident">GillespieLineageStore</span><span class="op">&lt;</span><span class="ident">O::Habitat</span><span class="op">&gt;</span><span class="op">&gt;</span>:
+        <span class="ident">GloballyCoherentLineageStore</span><span class="op">&lt;</span><span class="ident">O::Habitat</span>, <span class="ident">InMemoryLineageReference</span><span class="op">&gt;</span>,
 {
     <span class="kw">type</span> <span class="ident">Error</span> <span class="op">=</span> <span class="op">!</span>;
     <span class="kw">type</span> <span class="ident">LineageReference</span> <span class="op">=</span> <span class="ident">InMemoryLineageReference</span>;
-    <span class="kw">type</span> <span class="ident">LineageStore</span> <span class="op">=</span> <span class="ident">O</span>::<span class="ident">LineageStore</span><span class="op">&lt;</span><span class="ident">GillespieLineageStore</span><span class="op">&lt;</span><span class="ident">O</span>::<span class="ident">Habitat</span><span class="op">&gt;</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">LineageStore</span> <span class="op">=</span> <span class="ident">O::LineageStore</span><span class="op">&lt;</span><span class="ident">GillespieLineageStore</span><span class="op">&lt;</span><span class="ident">O::Habitat</span><span class="op">&gt;</span><span class="op">&gt;</span>;
     <span class="kw">type</span> <span class="ident">Rng</span> <span class="op">=</span> <span class="ident">Pcg</span>;
 
-    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy</span>::<span class="ident">shadow_unrelated</span>, <span class="ident">clippy</span>::<span class="ident">too_many_lines</span>)]</span>
+    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::shadow_unrelated</span>, <span class="ident">clippy::too_many_lines</span>)]</span>
     <span class="kw">fn</span> <span class="ident">initialise_and_simulate</span><span class="op">&lt;</span><span class="ident">I</span>: <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">u64</span><span class="op">&gt;</span>, <span class="ident">R</span>: <span class="ident">Reporter</span>, <span class="ident">P</span>: <span class="ident">LocalPartition</span><span class="op">&lt;</span><span class="ident">R</span><span class="op">&gt;</span><span class="op">&gt;</span>(
-        <span class="ident">args</span>: <span class="self">Self</span>::<span class="ident">Arguments</span>,
+        <span class="ident">args</span>: <span class="self">Self</span><span class="ident">::Arguments</span>,
         <span class="ident">seed</span>: <span class="ident">u64</span>,
         <span class="ident">scenario</span>: <span class="ident">O</span>,
         <span class="ident">pre_sampler</span>: <span class="ident">OriginPreSampler</span><span class="op">&lt;</span><span class="ident">I</span><span class="op">&gt;</span>,
         <span class="ident">local_partition</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">P</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(<span class="ident">NonNegativeF64</span>, <span class="ident">u64</span>), <span class="self">Self</span>::<span class="ident">Error</span><span class="op">&gt;</span> {
+    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(<span class="ident">NonNegativeF64</span>, <span class="ident">u64</span>), <span class="self">Self</span><span class="ident">::Error</span><span class="op">&gt;</span> {
         <span class="kw">match</span> <span class="ident">args</span>.<span class="ident">parallelism_mode</span> {
-            <span class="ident">ParallelismMode</span>::<span class="ident">Monolithic</span> <span class="op">=</span><span class="op">&gt;</span> {
-                <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">rng</span> <span class="op">=</span> <span class="ident">Pcg</span>::<span class="ident">seed_from_u64</span>(<span class="ident">seed</span>);
+            <span class="ident">ParallelismMode::Monolithic</span> <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">rng</span> <span class="op">=</span> <span class="ident">Pcg::seed_from_u64</span>(<span class="ident">seed</span>);
                 <span class="kw">let</span> <span class="ident">lineage_store</span> <span class="op">=</span>
-                    <span class="self">Self</span>::<span class="ident">LineageStore</span>::<span class="ident">from_origin_sampler</span>(<span class="ident">scenario</span>.<span class="ident">sample_habitat</span>(<span class="ident">pre_sampler</span>));
+                    <span class="self">Self</span><span class="ident">::LineageStore::from_origin_sampler</span>(<span class="ident">scenario</span>.<span class="ident">sample_habitat</span>(<span class="ident">pre_sampler</span>));
                 <span class="kw">let</span> (<span class="ident">habitat</span>, <span class="ident">dispersal_sampler</span>, <span class="ident">turnover_rate</span>, <span class="ident">speciation_probability</span>) <span class="op">=</span>
-                    <span class="ident">scenario</span>.<span class="ident">build</span>::<span class="op">&lt;</span><span class="ident">InMemoryAliasDispersalSampler</span><span class="op">&lt;</span><span class="ident">O</span>::<span class="ident">Habitat</span>, <span class="ident">Pcg</span><span class="op">&gt;</span><span class="op">&gt;</span>();
-                <span class="kw">let</span> <span class="ident">coalescence_sampler</span> <span class="op">=</span> <span class="ident">UnconditionalCoalescenceSampler</span>::<span class="ident">default</span>();
-                <span class="kw">let</span> <span class="ident">emigration_exit</span> <span class="op">=</span> <span class="ident">NeverEmigrationExit</span>::<span class="ident">default</span>();
-                <span class="kw">let</span> <span class="ident">event_sampler</span> <span class="op">=</span> <span class="ident">UnconditionalGillespieEventSampler</span>::<span class="ident">default</span>();
-                <span class="kw">let</span> <span class="ident">immigration_entry</span> <span class="op">=</span> <span class="ident">NeverImmigrationEntry</span>::<span class="ident">default</span>();
+                    <span class="ident">scenario</span>.<span class="ident">build</span>::<span class="op">&lt;</span><span class="ident">InMemoryAliasDispersalSampler</span><span class="op">&lt;</span><span class="ident">O::Habitat</span>, <span class="ident">Pcg</span><span class="op">&gt;</span><span class="op">&gt;</span>();
+                <span class="kw">let</span> <span class="ident">coalescence_sampler</span> <span class="op">=</span> <span class="ident">UnconditionalCoalescenceSampler::default</span>();
+                <span class="kw">let</span> <span class="ident">emigration_exit</span> <span class="op">=</span> <span class="ident">NeverEmigrationExit::default</span>();
+                <span class="kw">let</span> <span class="ident">event_sampler</span> <span class="op">=</span> <span class="ident">UnconditionalGillespieEventSampler::default</span>();
+                <span class="kw">let</span> <span class="ident">immigration_entry</span> <span class="op">=</span> <span class="ident">NeverImmigrationEntry::default</span>();
 
                 <span class="comment">// Pack a PartialSimulation to initialise the GillespieActiveLineageSampler</span>
                 <span class="kw">let</span> <span class="ident">partial_simulation</span> <span class="op">=</span> <span class="ident">GillespiePartialSimulation</span> {
                     <span class="ident">habitat</span>,
                     <span class="ident">speciation_probability</span>,
                     <span class="ident">dispersal_sampler</span>,
-                    <span class="ident">lineage_reference</span>: <span class="ident">PhantomData</span>::<span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">LineageReference</span><span class="op">&gt;</span>,
+                    <span class="ident">lineage_reference</span>: <span class="ident">PhantomData</span>::<span class="op">&lt;</span><span class="self">Self</span><span class="ident">::LineageReference</span><span class="op">&gt;</span>,
                     <span class="ident">lineage_store</span>,
                     <span class="ident">coalescence_sampler</span>,
                     <span class="ident">turnover_rate</span>,
                     <span class="ident">_rng</span>: <span class="ident">PhantomData</span>::<span class="op">&lt;</span><span class="ident">Pcg</span><span class="op">&gt;</span>,
                 };
 
-                <span class="kw">let</span> <span class="ident">active_lineage_sampler</span> <span class="op">=</span> <span class="ident">GillespieActiveLineageSampler</span>::<span class="ident">new</span>(
+                <span class="kw">let</span> <span class="ident">active_lineage_sampler</span> <span class="op">=</span> <span class="ident">GillespieActiveLineageSampler::new</span>(
                     <span class="kw-2">&amp;</span><span class="ident">partial_simulation</span>,
                     <span class="kw-2">&amp;</span><span class="ident">event_sampler</span>,
                     <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">rng</span>,
@@ -335,12 +334,12 @@
                     <span class="ident">_rng</span>: <span class="kw">_</span>,
                 } <span class="op">=</span> <span class="ident">partial_simulation</span>;
 
-                <span class="kw">let</span> <span class="ident">simulation</span> <span class="op">=</span> <span class="ident">Simulation</span>::<span class="ident">builder</span>()
+                <span class="kw">let</span> <span class="ident">simulation</span> <span class="op">=</span> <span class="ident">Simulation::builder</span>()
                     .<span class="ident">habitat</span>(<span class="ident">habitat</span>)
                     .<span class="ident">rng</span>(<span class="ident">rng</span>)
                     .<span class="ident">speciation_probability</span>(<span class="ident">speciation_probability</span>)
                     .<span class="ident">dispersal_sampler</span>(<span class="ident">dispersal_sampler</span>)
-                    .<span class="ident">lineage_reference</span>(<span class="ident">PhantomData</span>::<span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">LineageReference</span><span class="op">&gt;</span>)
+                    .<span class="ident">lineage_reference</span>(<span class="ident">PhantomData</span>::<span class="op">&lt;</span><span class="self">Self</span><span class="ident">::LineageReference</span><span class="op">&gt;</span>)
                     .<span class="ident">lineage_store</span>(<span class="ident">lineage_store</span>)
                     .<span class="ident">emigration_exit</span>(<span class="ident">emigration_exit</span>)
                     .<span class="ident">coalescence_sampler</span>(<span class="ident">coalescence_sampler</span>)
@@ -350,45 +349,45 @@
                     .<span class="ident">active_lineage_sampler</span>(<span class="ident">active_lineage_sampler</span>)
                     .<span class="ident">build</span>();
 
-                <span class="prelude-val">Ok</span>(<span class="ident">parallelisation</span>::<span class="ident">monolithic</span>::<span class="ident">monolithic</span>::<span class="ident">simulate</span>(
+                <span class="prelude-val">Ok</span>(<span class="ident">parallelisation::monolithic::monolithic::simulate</span>(
                     <span class="ident">simulation</span>,
                     <span class="ident">local_partition</span>,
                 ))
             },
             <span class="ident">non_monolithic_parallelism_mode</span> <span class="op">=</span><span class="op">&gt;</span> {
-                <span class="kw">let</span> <span class="ident">decomposition</span> <span class="op">=</span> <span class="ident">O</span>::<span class="ident">decompose</span>(
+                <span class="kw">let</span> <span class="ident">decomposition</span> <span class="op">=</span> <span class="ident">O::decompose</span>(
                     <span class="ident">scenario</span>.<span class="ident">habitat</span>(),
                     <span class="ident">local_partition</span>.<span class="ident">get_partition_rank</span>(),
                     <span class="ident">local_partition</span>.<span class="ident">get_number_of_partitions</span>(),
                 );
 
-                <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">rng</span> <span class="op">=</span> <span class="ident">Pcg</span>::<span class="ident">seed_from_u64</span>(<span class="ident">seed</span>)
-                    .<span class="ident">split_to_stream</span>(<span class="ident">u64</span>::<span class="ident">from</span>(<span class="ident">local_partition</span>.<span class="ident">get_partition_rank</span>()));
+                <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">rng</span> <span class="op">=</span> <span class="ident">Pcg::seed_from_u64</span>(<span class="ident">seed</span>)
+                    .<span class="ident">split_to_stream</span>(<span class="ident">u64::from</span>(<span class="ident">local_partition</span>.<span class="ident">get_partition_rank</span>()));
                 <span class="kw">let</span> <span class="ident">lineage_store</span> <span class="op">=</span>
-                    <span class="self">Self</span>::<span class="ident">LineageStore</span>::<span class="ident">from_origin_sampler</span>(<span class="ident">DecompositionOriginSampler</span>::<span class="ident">new</span>(
+                    <span class="self">Self</span><span class="ident">::LineageStore::from_origin_sampler</span>(<span class="ident">DecompositionOriginSampler::new</span>(
                         <span class="ident">scenario</span>.<span class="ident">sample_habitat</span>(<span class="ident">pre_sampler</span>),
                         <span class="kw-2">&amp;</span><span class="ident">decomposition</span>,
                     ));
                 <span class="kw">let</span> (<span class="ident">habitat</span>, <span class="ident">dispersal_sampler</span>, <span class="ident">turnover_rate</span>, <span class="ident">speciation_probability</span>) <span class="op">=</span>
-                    <span class="ident">scenario</span>.<span class="ident">build</span>::<span class="op">&lt;</span><span class="ident">InMemoryAliasDispersalSampler</span><span class="op">&lt;</span><span class="ident">O</span>::<span class="ident">Habitat</span>, <span class="ident">Pcg</span><span class="op">&gt;</span><span class="op">&gt;</span>();
-                <span class="kw">let</span> <span class="ident">coalescence_sampler</span> <span class="op">=</span> <span class="ident">UnconditionalCoalescenceSampler</span>::<span class="ident">default</span>();
-                <span class="kw">let</span> <span class="ident">emigration_exit</span> <span class="op">=</span> <span class="ident">DomainEmigrationExit</span>::<span class="ident">new</span>(<span class="ident">decomposition</span>);
-                <span class="kw">let</span> <span class="ident">event_sampler</span> <span class="op">=</span> <span class="ident">UnconditionalGillespieEventSampler</span>::<span class="ident">default</span>();
-                <span class="kw">let</span> <span class="ident">immigration_entry</span> <span class="op">=</span> <span class="ident">BufferedImmigrationEntry</span>::<span class="ident">default</span>();
+                    <span class="ident">scenario</span>.<span class="ident">build</span>::<span class="op">&lt;</span><span class="ident">InMemoryAliasDispersalSampler</span><span class="op">&lt;</span><span class="ident">O::Habitat</span>, <span class="ident">Pcg</span><span class="op">&gt;</span><span class="op">&gt;</span>();
+                <span class="kw">let</span> <span class="ident">coalescence_sampler</span> <span class="op">=</span> <span class="ident">UnconditionalCoalescenceSampler::default</span>();
+                <span class="kw">let</span> <span class="ident">emigration_exit</span> <span class="op">=</span> <span class="ident">DomainEmigrationExit::new</span>(<span class="ident">decomposition</span>);
+                <span class="kw">let</span> <span class="ident">event_sampler</span> <span class="op">=</span> <span class="ident">UnconditionalGillespieEventSampler::default</span>();
+                <span class="kw">let</span> <span class="ident">immigration_entry</span> <span class="op">=</span> <span class="ident">BufferedImmigrationEntry::default</span>();
 
                 <span class="comment">// Pack a PartialSimulation to initialise the GillespieActiveLineageSampler</span>
                 <span class="kw">let</span> <span class="ident">partial_simulation</span> <span class="op">=</span> <span class="ident">GillespiePartialSimulation</span> {
                     <span class="ident">habitat</span>,
                     <span class="ident">speciation_probability</span>,
                     <span class="ident">dispersal_sampler</span>,
-                    <span class="ident">lineage_reference</span>: <span class="ident">PhantomData</span>::<span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">LineageReference</span><span class="op">&gt;</span>,
+                    <span class="ident">lineage_reference</span>: <span class="ident">PhantomData</span>::<span class="op">&lt;</span><span class="self">Self</span><span class="ident">::LineageReference</span><span class="op">&gt;</span>,
                     <span class="ident">lineage_store</span>,
                     <span class="ident">coalescence_sampler</span>,
                     <span class="ident">turnover_rate</span>,
                     <span class="ident">_rng</span>: <span class="ident">PhantomData</span>::<span class="op">&lt;</span><span class="ident">Pcg</span><span class="op">&gt;</span>,
                 };
 
-                <span class="kw">let</span> <span class="ident">active_lineage_sampler</span> <span class="op">=</span> <span class="ident">GillespieActiveLineageSampler</span>::<span class="ident">new</span>(
+                <span class="kw">let</span> <span class="ident">active_lineage_sampler</span> <span class="op">=</span> <span class="ident">GillespieActiveLineageSampler::new</span>(
                     <span class="kw-2">&amp;</span><span class="ident">partial_simulation</span>,
                     <span class="kw-2">&amp;</span><span class="ident">event_sampler</span>,
                     <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">rng</span>,
@@ -406,12 +405,12 @@
                     <span class="ident">_rng</span>: <span class="kw">_</span>,
                 } <span class="op">=</span> <span class="ident">partial_simulation</span>;
 
-                <span class="kw">let</span> <span class="ident">simulation</span> <span class="op">=</span> <span class="ident">Simulation</span>::<span class="ident">builder</span>()
+                <span class="kw">let</span> <span class="ident">simulation</span> <span class="op">=</span> <span class="ident">Simulation::builder</span>()
                     .<span class="ident">habitat</span>(<span class="ident">habitat</span>)
                     .<span class="ident">rng</span>(<span class="ident">rng</span>)
                     .<span class="ident">speciation_probability</span>(<span class="ident">speciation_probability</span>)
                     .<span class="ident">dispersal_sampler</span>(<span class="ident">dispersal_sampler</span>)
-                    .<span class="ident">lineage_reference</span>(<span class="ident">PhantomData</span>::<span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">LineageReference</span><span class="op">&gt;</span>)
+                    .<span class="ident">lineage_reference</span>(<span class="ident">PhantomData</span>::<span class="op">&lt;</span><span class="self">Self</span><span class="ident">::LineageReference</span><span class="op">&gt;</span>)
                     .<span class="ident">lineage_store</span>(<span class="ident">lineage_store</span>)
                     .<span class="ident">emigration_exit</span>(<span class="ident">emigration_exit</span>)
                     .<span class="ident">coalescence_sampler</span>(<span class="ident">coalescence_sampler</span>)
@@ -422,28 +421,28 @@
                     .<span class="ident">build</span>();
 
                 <span class="kw">match</span> <span class="ident">non_monolithic_parallelism_mode</span> {
-                    <span class="ident">ParallelismMode</span>::<span class="ident">Monolithic</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">unsafe</span> { <span class="ident">unreachable_unchecked</span>() },
-                    <span class="ident">ParallelismMode</span>::<span class="ident">Optimistic</span>(<span class="ident">OptimisticParallelismMode</span> { <span class="ident">delta_sync</span> }) <span class="op">=</span><span class="op">&gt;</span> {
-                        <span class="prelude-val">Ok</span>(<span class="ident">parallelisation</span>::<span class="ident">monolithic</span>::<span class="ident">optimistic</span>::<span class="ident">simulate</span>(
+                    <span class="ident">ParallelismMode::Monolithic</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">unsafe</span> { <span class="ident">unreachable_unchecked</span>() },
+                    <span class="ident">ParallelismMode::Optimistic</span>(<span class="ident">OptimisticParallelismMode</span> { <span class="ident">delta_sync</span> }) <span class="op">=</span><span class="op">&gt;</span> {
+                        <span class="prelude-val">Ok</span>(<span class="ident">parallelisation::monolithic::optimistic::simulate</span>(
                             <span class="ident">simulation</span>,
                             <span class="ident">delta_sync</span>,
                             <span class="ident">local_partition</span>,
                         ))
                     },
-                    <span class="ident">ParallelismMode</span>::<span class="ident">Lockstep</span> <span class="op">=</span><span class="op">&gt;</span> {
-                        <span class="prelude-val">Ok</span>(<span class="ident">parallelisation</span>::<span class="ident">monolithic</span>::<span class="ident">lockstep</span>::<span class="ident">simulate</span>(
+                    <span class="ident">ParallelismMode::Lockstep</span> <span class="op">=</span><span class="op">&gt;</span> {
+                        <span class="prelude-val">Ok</span>(<span class="ident">parallelisation::monolithic::lockstep::simulate</span>(
                             <span class="ident">simulation</span>,
                             <span class="ident">local_partition</span>,
                         ))
                     },
-                    <span class="ident">ParallelismMode</span>::<span class="ident">OptimisticLockstep</span> <span class="op">=</span><span class="op">&gt;</span> {
-                        <span class="prelude-val">Ok</span>(<span class="ident">parallelisation</span>::<span class="ident">monolithic</span>::<span class="ident">optimistic_lockstep</span>::<span class="ident">simulate</span>(
+                    <span class="ident">ParallelismMode::OptimisticLockstep</span> <span class="op">=</span><span class="op">&gt;</span> {
+                        <span class="prelude-val">Ok</span>(<span class="ident">parallelisation::monolithic::optimistic_lockstep::simulate</span>(
                             <span class="ident">simulation</span>,
                             <span class="ident">local_partition</span>,
                         ))
                     },
-                    <span class="ident">ParallelismMode</span>::<span class="ident">Averaging</span>(<span class="ident">AveragingParallelismMode</span> { <span class="ident">delta_sync</span> }) <span class="op">=</span><span class="op">&gt;</span> {
-                        <span class="prelude-val">Ok</span>(<span class="ident">parallelisation</span>::<span class="ident">monolithic</span>::<span class="ident">averaging</span>::<span class="ident">simulate</span>(
+                    <span class="ident">ParallelismMode::Averaging</span>(<span class="ident">AveragingParallelismMode</span> { <span class="ident">delta_sync</span> }) <span class="op">=</span><span class="op">&gt;</span> {
+                        <span class="prelude-val">Ok</span>(<span class="ident">parallelisation::monolithic::averaging::simulate</span>(
                             <span class="ident">simulation</span>,
                             <span class="ident">delta_sync</span>,
                             <span class="ident">local_partition</span>,
@@ -455,5 +454,4 @@
     }
 }
 </pre></div>
-</section><section id="search" class="content hidden"></section><section class="footer"></section><div id="rustdoc-vars" data-root-path="../../" data-current-crate="rustcoalescence_algorithms_monolithic"></div>
-    <script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script><script defer src="../../search-index.js"></script></body></html>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../" data-current-crate="rustcoalescence_algorithms_monolithic" data-search-index-js="../../search-index.js" data-search-js="../../search.js"></div><script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script></body></html>

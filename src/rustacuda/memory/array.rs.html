@@ -1,7 +1,6 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `third-party/RustaCUDA/src/memory/array.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>array.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../storage.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../favicon.svg">
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `third-party/RustaCUDA/src/memory/array.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>array.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../favicon.svg">
 <link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png">
-<link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../rustacuda/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu"><img src="../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" class="help-button">?</button>
-                <a id="settings-menu" href="../../../settings.html"><img src="../../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
+<link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../rustacuda/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img src="../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../settings.html" title="settings"><img src="../../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -813,17 +812,17 @@
 <span id="810">810</span>
 <span id="811">811</span>
 <span id="812">812</span>
-</pre><div class="example-wrap"><pre class="rust ">
+</pre><pre class="rust">
 <span class="doccomment">//! Routines for allocating and using CUDA Array Objects.</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! Detailed documentation about allocating CUDA Arrays can be found in the</span>
 <span class="doccomment">//! [CUDA Driver API](https://docs.nvidia.com/cuda/cuda-driver-api/group__CUDA__MEM.html#group__CUDA__MEM_1gc2322c70b38c2984536c90ed118bb1d7)</span>
 
-<span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">mem</span>::<span class="ident">MaybeUninit</span>, <span class="ident">os</span>::<span class="ident">raw</span>::<span class="ident">c_uint</span>};
+<span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">mem::MaybeUninit</span>, <span class="ident">os::raw::c_uint</span>};
 
 <span class="kw">use</span> <span class="ident">cuda_driver_sys</span>::{<span class="ident">CUarray</span>, <span class="ident">CUarray_format</span>, <span class="ident">CUarray_format_enum</span>};
 
-<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">context</span>::<span class="ident">CurrentContext</span>, <span class="ident">device</span>::<span class="ident">DeviceAttribute</span>, <span class="ident">error</span>::<span class="kw-2">*</span>};
+<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">context::CurrentContext</span>, <span class="ident">device::DeviceAttribute</span>, <span class="ident">error</span>::<span class="kw-2">*</span>};
 
 <span class="doccomment">/// Describes the format used for a CUDA Array.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
@@ -850,70 +849,70 @@
     <span class="doccomment">/// Creates ArrayFormat from the CUDA Driver API enum</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_raw</span>(<span class="ident">raw</span>: <span class="ident">CUarray_format</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="kw">match</span> <span class="ident">raw</span> {
-            <span class="ident">CUarray_format_enum</span>::<span class="ident">CU_AD_FORMAT_UNSIGNED_INT8</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ArrayFormat</span>::<span class="ident">UnsignedInt8</span>,
-            <span class="ident">CUarray_format_enum</span>::<span class="ident">CU_AD_FORMAT_UNSIGNED_INT16</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ArrayFormat</span>::<span class="ident">UnsignedInt16</span>,
-            <span class="ident">CUarray_format_enum</span>::<span class="ident">CU_AD_FORMAT_UNSIGNED_INT32</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ArrayFormat</span>::<span class="ident">UnsignedInt32</span>,
-            <span class="ident">CUarray_format_enum</span>::<span class="ident">CU_AD_FORMAT_SIGNED_INT8</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ArrayFormat</span>::<span class="ident">SignedInt8</span>,
-            <span class="ident">CUarray_format_enum</span>::<span class="ident">CU_AD_FORMAT_SIGNED_INT16</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ArrayFormat</span>::<span class="ident">SignedInt16</span>,
-            <span class="ident">CUarray_format_enum</span>::<span class="ident">CU_AD_FORMAT_SIGNED_INT32</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ArrayFormat</span>::<span class="ident">SignedInt32</span>,
-            <span class="ident">CUarray_format_enum</span>::<span class="ident">CU_AD_FORMAT_HALF</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ArrayFormat</span>::<span class="ident">Half</span>,
-            <span class="ident">CUarray_format_enum</span>::<span class="ident">CU_AD_FORMAT_FLOAT</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ArrayFormat</span>::<span class="ident">Float</span>,
+            <span class="ident">CUarray_format_enum::CU_AD_FORMAT_UNSIGNED_INT8</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ArrayFormat::UnsignedInt8</span>,
+            <span class="ident">CUarray_format_enum::CU_AD_FORMAT_UNSIGNED_INT16</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ArrayFormat::UnsignedInt16</span>,
+            <span class="ident">CUarray_format_enum::CU_AD_FORMAT_UNSIGNED_INT32</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ArrayFormat::UnsignedInt32</span>,
+            <span class="ident">CUarray_format_enum::CU_AD_FORMAT_SIGNED_INT8</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ArrayFormat::SignedInt8</span>,
+            <span class="ident">CUarray_format_enum::CU_AD_FORMAT_SIGNED_INT16</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ArrayFormat::SignedInt16</span>,
+            <span class="ident">CUarray_format_enum::CU_AD_FORMAT_SIGNED_INT32</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ArrayFormat::SignedInt32</span>,
+            <span class="ident">CUarray_format_enum::CU_AD_FORMAT_HALF</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ArrayFormat::Half</span>,
+            <span class="ident">CUarray_format_enum::CU_AD_FORMAT_FLOAT</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ArrayFormat::Float</span>,
         }
     }
 
     <span class="doccomment">/// Converts ArrayFormat to the CUDA Driver API enum</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">to_raw</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">CUarray_format</span> {
         <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident">ArrayFormat</span>::<span class="ident">UnsignedInt8</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">CUarray_format_enum</span>::<span class="ident">CU_AD_FORMAT_UNSIGNED_INT8</span>,
-            <span class="ident">ArrayFormat</span>::<span class="ident">UnsignedInt16</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">CUarray_format_enum</span>::<span class="ident">CU_AD_FORMAT_UNSIGNED_INT16</span>,
-            <span class="ident">ArrayFormat</span>::<span class="ident">UnsignedInt32</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">CUarray_format_enum</span>::<span class="ident">CU_AD_FORMAT_UNSIGNED_INT32</span>,
-            <span class="ident">ArrayFormat</span>::<span class="ident">SignedInt8</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">CUarray_format_enum</span>::<span class="ident">CU_AD_FORMAT_SIGNED_INT8</span>,
-            <span class="ident">ArrayFormat</span>::<span class="ident">SignedInt16</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">CUarray_format_enum</span>::<span class="ident">CU_AD_FORMAT_SIGNED_INT16</span>,
-            <span class="ident">ArrayFormat</span>::<span class="ident">SignedInt32</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">CUarray_format_enum</span>::<span class="ident">CU_AD_FORMAT_SIGNED_INT32</span>,
-            <span class="ident">ArrayFormat</span>::<span class="ident">Half</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">CUarray_format_enum</span>::<span class="ident">CU_AD_FORMAT_HALF</span>,
-            <span class="ident">ArrayFormat</span>::<span class="ident">Float</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">CUarray_format_enum</span>::<span class="ident">CU_AD_FORMAT_FLOAT</span>,
+            <span class="ident">ArrayFormat::UnsignedInt8</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">CUarray_format_enum::CU_AD_FORMAT_UNSIGNED_INT8</span>,
+            <span class="ident">ArrayFormat::UnsignedInt16</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">CUarray_format_enum::CU_AD_FORMAT_UNSIGNED_INT16</span>,
+            <span class="ident">ArrayFormat::UnsignedInt32</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">CUarray_format_enum::CU_AD_FORMAT_UNSIGNED_INT32</span>,
+            <span class="ident">ArrayFormat::SignedInt8</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">CUarray_format_enum::CU_AD_FORMAT_SIGNED_INT8</span>,
+            <span class="ident">ArrayFormat::SignedInt16</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">CUarray_format_enum::CU_AD_FORMAT_SIGNED_INT16</span>,
+            <span class="ident">ArrayFormat::SignedInt32</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">CUarray_format_enum::CU_AD_FORMAT_SIGNED_INT32</span>,
+            <span class="ident">ArrayFormat::Half</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">CUarray_format_enum::CU_AD_FORMAT_HALF</span>,
+            <span class="ident">ArrayFormat::Float</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">CUarray_format_enum::CU_AD_FORMAT_FLOAT</span>,
         }
     }
 }
 
-<span class="macro">bitflags</span><span class="macro">!</span> {
+<span class="macro">bitflags!</span> {
     <span class="doccomment">/// Flags which modify the behavior of CUDA array creation.</span>
     <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Default</span>)]</span>
     <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ArrayObjectFlags</span>: <span class="ident">c_uint</span> {
         <span class="doccomment">/// Enables creation of layered CUDA arrays. When this flag is set, depth specifies the</span>
         <span class="doccomment">/// number of layers, not the depth of a 3D array.</span>
-        <span class="kw">const</span> <span class="ident">LAYERED</span> <span class="op">=</span> <span class="ident">cuda_driver_sys</span>::<span class="ident">CUDA_ARRAY3D_LAYERED</span>;
+        <span class="kw">const</span> <span class="ident">LAYERED</span> <span class="op">=</span> <span class="ident">cuda_driver_sys::CUDA_ARRAY3D_LAYERED</span>;
 
         <span class="doccomment">/// Enables surface references to be bound to the CUDA array.</span>
-        <span class="kw">const</span> <span class="ident">SURFACE_LDST</span> <span class="op">=</span> <span class="ident">cuda_driver_sys</span>::<span class="ident">CUDA_ARRAY3D_SURFACE_LDST</span>;
+        <span class="kw">const</span> <span class="ident">SURFACE_LDST</span> <span class="op">=</span> <span class="ident">cuda_driver_sys::CUDA_ARRAY3D_SURFACE_LDST</span>;
 
         <span class="doccomment">/// Enables creation of cubemaps. If this flag is set, Width must be equal to Height, and</span>
         <span class="doccomment">/// Depth must be six. If the `LAYERED` flag is also set, then Depth must be a multiple of</span>
         <span class="doccomment">/// six.</span>
-        <span class="kw">const</span> <span class="ident">CUBEMAP</span> <span class="op">=</span> <span class="ident">cuda_driver_sys</span>::<span class="ident">CUDA_ARRAY3D_CUBEMAP</span>;
+        <span class="kw">const</span> <span class="ident">CUBEMAP</span> <span class="op">=</span> <span class="ident">cuda_driver_sys::CUDA_ARRAY3D_CUBEMAP</span>;
 
         <span class="doccomment">/// Indicates that the CUDA array will be used for texture gather. Texture gather can only</span>
         <span class="doccomment">/// be performed on 2D CUDA arrays.</span>
-        <span class="kw">const</span> <span class="ident">TEXTURE_GATHER</span> <span class="op">=</span> <span class="ident">cuda_driver_sys</span>::<span class="ident">CUDA_ARRAY3D_TEXTURE_GATHER</span>;
+        <span class="kw">const</span> <span class="ident">TEXTURE_GATHER</span> <span class="op">=</span> <span class="ident">cuda_driver_sys::CUDA_ARRAY3D_TEXTURE_GATHER</span>;
     }
 }
 
 <span class="kw">impl</span> <span class="ident">ArrayObjectFlags</span> {
     <span class="doccomment">/// Creates a default flags object with no flags set.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="self">Self</span>::<span class="ident">default</span>()
+        <span class="self">Self</span><span class="ident">::default</span>()
     }
 }
 
 <span class="doccomment">/// Describes a CUDA Array</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ArrayDescriptor</span> {
-    <span class="ident">desc</span>: <span class="ident">cuda_driver_sys</span>::<span class="ident">CUDA_ARRAY3D_DESCRIPTOR</span>,
+    <span class="ident">desc</span>: <span class="ident">cuda_driver_sys::CUDA_ARRAY3D_DESCRIPTOR</span>,
 }
 
 <span class="kw">impl</span> <span class="ident">ArrayDescriptor</span> {
     <span class="doccomment">/// Constructs an ArrayDescriptor from a CUDA Driver API Array Descriptor.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_raw</span>(<span class="ident">desc</span>: <span class="ident">cuda_driver_sys</span>::<span class="ident">CUDA_ARRAY3D_DESCRIPTOR</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_raw</span>(<span class="ident">desc</span>: <span class="ident">cuda_driver_sys::CUDA_ARRAY3D_DESCRIPTOR</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="self">Self</span> { <span class="ident">desc</span> }
     }
 
@@ -926,7 +925,7 @@
         <span class="ident">flags</span>: <span class="ident">ArrayObjectFlags</span>,
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="self">Self</span> {
-            <span class="ident">desc</span>: <span class="ident">cuda_driver_sys</span>::<span class="ident">CUDA_ARRAY3D_DESCRIPTOR</span> {
+            <span class="ident">desc</span>: <span class="ident">cuda_driver_sys::CUDA_ARRAY3D_DESCRIPTOR</span> {
                 <span class="ident">Width</span>: <span class="ident">dims</span>[<span class="number">0</span>],
                 <span class="ident">Height</span>: <span class="ident">dims</span>[<span class="number">1</span>],
                 <span class="ident">Depth</span>: <span class="ident">dims</span>[<span class="number">2</span>],
@@ -940,13 +939,13 @@
     <span class="doccomment">/// Creates a new ArrayDescriptor from a set of dimensions and format.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_dims_format</span>(<span class="ident">dims</span>: [<span class="ident">usize</span>; <span class="number">3</span>], <span class="ident">format</span>: <span class="ident">ArrayFormat</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="self">Self</span> {
-            <span class="ident">desc</span>: <span class="ident">cuda_driver_sys</span>::<span class="ident">CUDA_ARRAY3D_DESCRIPTOR</span> {
+            <span class="ident">desc</span>: <span class="ident">cuda_driver_sys::CUDA_ARRAY3D_DESCRIPTOR</span> {
                 <span class="ident">Width</span>: <span class="ident">dims</span>[<span class="number">0</span>],
                 <span class="ident">Height</span>: <span class="ident">dims</span>[<span class="number">1</span>],
                 <span class="ident">Depth</span>: <span class="ident">dims</span>[<span class="number">2</span>],
                 <span class="ident">Format</span>: <span class="ident">format</span>.<span class="ident">to_raw</span>(),
                 <span class="ident">NumChannels</span>: <span class="number">1</span>,
-                <span class="ident">Flags</span>: <span class="ident">ArrayObjectFlags</span>::<span class="ident">default</span>().<span class="ident">bits</span>(),
+                <span class="ident">Flags</span>: <span class="ident">ArrayObjectFlags::default</span>().<span class="ident">bits</span>(),
             },
         }
     }
@@ -995,7 +994,7 @@
 
     <span class="doccomment">/// Returns the format of the ArrayDescripor</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">format</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ArrayFormat</span> {
-        <span class="ident">ArrayFormat</span>::<span class="ident">from_raw</span>(<span class="self">self</span>.<span class="ident">desc</span>.<span class="ident">Format</span>)
+        <span class="ident">ArrayFormat::from_raw</span>(<span class="self">self</span>.<span class="ident">desc</span>.<span class="ident">Format</span>)
     }
 
     <span class="doccomment">/// Sets the format of the ArrayDescriptor</span>
@@ -1015,7 +1014,7 @@
 
     <span class="doccomment">/// Returns the flags of the ArrayDescriptor</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">flags</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ArrayObjectFlags</span> {
-        <span class="ident">ArrayObjectFlags</span>::<span class="ident">from_bits_truncate</span>(<span class="self">self</span>.<span class="ident">desc</span>.<span class="ident">Flags</span>)
+        <span class="ident">ArrayObjectFlags::from_bits_truncate</span>(<span class="self">self</span>.<span class="ident">desc</span>.<span class="ident">Flags</span>)
     }
 
     <span class="doccomment">/// Sets the flags of the ArrayDescriptor.</span>
@@ -1035,15 +1034,15 @@
         <span class="comment">// We validate the descriptor up front in debug mode. This provides a good error</span>
         <span class="comment">// message to the user when they get something wrong, but doesn&#39;t</span>
         <span class="comment">// re-validate in release mode.</span>
-        <span class="kw">if</span> <span class="macro">cfg</span><span class="macro">!</span>(<span class="ident">debug_assertions</span>) {
-            <span class="macro">assert_ne</span><span class="macro">!</span>(
+        <span class="kw">if</span> <span class="macro">cfg!</span>(<span class="ident">debug_assertions</span>) {
+            <span class="macro">assert_ne!</span>(
                 <span class="number">0</span>,
                 <span class="ident">descriptor</span>.<span class="ident">width</span>(),
                 <span class="string">&quot;Cannot allocate an array with 0 Width&quot;</span>
             );
 
-            <span class="kw">if</span> <span class="op">!</span><span class="ident">descriptor</span>.<span class="ident">flags</span>().<span class="ident">contains</span>(<span class="ident">ArrayObjectFlags</span>::<span class="ident">LAYERED</span>) <span class="op">&amp;&amp;</span> <span class="ident">descriptor</span>.<span class="ident">depth</span>() <span class="op">&gt;</span> <span class="number">0</span> {
-                <span class="macro">assert_ne</span><span class="macro">!</span>(
+            <span class="kw">if</span> <span class="op">!</span><span class="ident">descriptor</span>.<span class="ident">flags</span>().<span class="ident">contains</span>(<span class="ident">ArrayObjectFlags::LAYERED</span>) <span class="op">&amp;&amp;</span> <span class="ident">descriptor</span>.<span class="ident">depth</span>() <span class="op">&gt;</span> <span class="number">0</span> {
+                <span class="macro">assert_ne!</span>(
                     <span class="number">0</span>,
                     <span class="ident">descriptor</span>.<span class="ident">height</span>(),
                     <span class="string">&quot;If Depth is non-zero and the descriptor is not LAYERED, then Height must \
@@ -1051,22 +1050,22 @@
                 );
             }
 
-            <span class="kw">if</span> <span class="ident">descriptor</span>.<span class="ident">flags</span>().<span class="ident">contains</span>(<span class="ident">ArrayObjectFlags</span>::<span class="ident">CUBEMAP</span>) {
-                <span class="macro">assert_eq</span><span class="macro">!</span>(
+            <span class="kw">if</span> <span class="ident">descriptor</span>.<span class="ident">flags</span>().<span class="ident">contains</span>(<span class="ident">ArrayObjectFlags::CUBEMAP</span>) {
+                <span class="macro">assert_eq!</span>(
                     <span class="ident">descriptor</span>.<span class="ident">height</span>(),
                     <span class="ident">descriptor</span>.<span class="ident">width</span>(),
                     <span class="string">&quot;Height and Width must be equal for CUBEMAP arrays.&quot;</span>
                 );
 
-                <span class="kw">if</span> <span class="ident">descriptor</span>.<span class="ident">flags</span>().<span class="ident">contains</span>(<span class="ident">ArrayObjectFlags</span>::<span class="ident">LAYERED</span>) {
-                    <span class="macro">assert_eq</span><span class="macro">!</span>(
+                <span class="kw">if</span> <span class="ident">descriptor</span>.<span class="ident">flags</span>().<span class="ident">contains</span>(<span class="ident">ArrayObjectFlags::LAYERED</span>) {
+                    <span class="macro">assert_eq!</span>(
                         <span class="number">0</span>,
                         <span class="ident">descriptor</span>.<span class="ident">depth</span>() <span class="op">%</span> <span class="number">6</span>,
                         <span class="string">&quot;Depth must be a multiple of 6 when the array descriptor is for a LAYERED \
                          CUBEMAP.&quot;</span>
                     );
                 } <span class="kw">else</span> {
-                    <span class="macro">assert_eq</span><span class="macro">!</span>(
+                    <span class="macro">assert_eq!</span>(
                         <span class="number">6</span>,
                         <span class="ident">descriptor</span>.<span class="ident">depth</span>(),
                         <span class="string">&quot;Depth must be equal to 6 when the array descriptor is for a CUBEMAP.&quot;</span>
@@ -1074,7 +1073,7 @@
                 }
             }
 
-            <span class="macro">assert</span><span class="macro">!</span>(
+            <span class="macro">assert!</span>(
                 <span class="ident">descriptor</span>.<span class="ident">num_channels</span>() <span class="op">=</span><span class="op">=</span> <span class="number">1</span>
                     <span class="op">|</span><span class="op">|</span> <span class="ident">descriptor</span>.<span class="ident">num_channels</span>() <span class="op">=</span><span class="op">=</span> <span class="number">2</span>
                     <span class="op">|</span><span class="op">|</span> <span class="ident">descriptor</span>.<span class="ident">num_channels</span>() <span class="op">=</span><span class="op">=</span> <span class="number">4</span>,
@@ -1083,105 +1082,105 @@
             );
 
             <span class="comment">// Exhaustively check bounds of arrays</span>
-            <span class="kw">let</span> <span class="ident">device</span> <span class="op">=</span> <span class="ident">CurrentContext</span>::<span class="ident">get_device</span>()<span class="question-mark">?</span>;
+            <span class="kw">let</span> <span class="ident">device</span> <span class="op">=</span> <span class="ident">CurrentContext::get_device</span>()<span class="question-mark">?</span>;
 
             <span class="kw">let</span> <span class="ident">attr</span> <span class="op">=</span> <span class="op">|</span><span class="ident">attr</span><span class="op">|</span> <span class="prelude-val">Ok</span>(<span class="number">1</span>..<span class="op">=</span>(<span class="ident">device</span>.<span class="ident">get_attribute</span>(<span class="ident">attr</span>)<span class="question-mark">?</span> <span class="kw">as</span> <span class="ident">usize</span>));
 
-            <span class="kw">let</span> (<span class="ident">description</span>, <span class="ident">bounds</span>) <span class="op">=</span> <span class="kw">if</span> <span class="ident">descriptor</span>.<span class="ident">flags</span>().<span class="ident">contains</span>(<span class="ident">ArrayObjectFlags</span>::<span class="ident">CUBEMAP</span>) {
-                <span class="kw">if</span> <span class="ident">descriptor</span>.<span class="ident">flags</span>().<span class="ident">contains</span>(<span class="ident">ArrayObjectFlags</span>::<span class="ident">LAYERED</span>) {
+            <span class="kw">let</span> (<span class="ident">description</span>, <span class="ident">bounds</span>) <span class="op">=</span> <span class="kw">if</span> <span class="ident">descriptor</span>.<span class="ident">flags</span>().<span class="ident">contains</span>(<span class="ident">ArrayObjectFlags::CUBEMAP</span>) {
+                <span class="kw">if</span> <span class="ident">descriptor</span>.<span class="ident">flags</span>().<span class="ident">contains</span>(<span class="ident">ArrayObjectFlags::LAYERED</span>) {
                     (
                         <span class="string">&quot;Layered Cubemap&quot;</span>,
-                        <span class="macro">vec</span><span class="macro">!</span>[[
-                            <span class="ident">attr</span>(<span class="ident">DeviceAttribute</span>::<span class="ident">MaximumTextureCubemapLayeredWidth</span>)<span class="question-mark">?</span>,
-                            <span class="ident">attr</span>(<span class="ident">DeviceAttribute</span>::<span class="ident">MaximumTextureCubemapLayeredWidth</span>)<span class="question-mark">?</span>,
-                            <span class="ident">attr</span>(<span class="ident">DeviceAttribute</span>::<span class="ident">MaximumTextureCubemapLayeredLayers</span>)<span class="question-mark">?</span>,
+                        <span class="macro">vec!</span>[[
+                            <span class="ident">attr</span>(<span class="ident">DeviceAttribute::MaximumTextureCubemapLayeredWidth</span>)<span class="question-mark">?</span>,
+                            <span class="ident">attr</span>(<span class="ident">DeviceAttribute::MaximumTextureCubemapLayeredWidth</span>)<span class="question-mark">?</span>,
+                            <span class="ident">attr</span>(<span class="ident">DeviceAttribute::MaximumTextureCubemapLayeredLayers</span>)<span class="question-mark">?</span>,
                         ]],
                     )
                 } <span class="kw">else</span> {
                     (
                         <span class="string">&quot;Cubemap&quot;</span>,
-                        <span class="macro">vec</span><span class="macro">!</span>[[
-                            <span class="ident">attr</span>(<span class="ident">DeviceAttribute</span>::<span class="ident">MaximumTextureCubemapWidth</span>)<span class="question-mark">?</span>,
-                            <span class="ident">attr</span>(<span class="ident">DeviceAttribute</span>::<span class="ident">MaximumTextureCubemapWidth</span>)<span class="question-mark">?</span>,
+                        <span class="macro">vec!</span>[[
+                            <span class="ident">attr</span>(<span class="ident">DeviceAttribute::MaximumTextureCubemapWidth</span>)<span class="question-mark">?</span>,
+                            <span class="ident">attr</span>(<span class="ident">DeviceAttribute::MaximumTextureCubemapWidth</span>)<span class="question-mark">?</span>,
                             <span class="number">6</span>..<span class="op">=</span><span class="number">6</span>,
                         ]],
                     )
                 }
-            } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">descriptor</span>.<span class="ident">flags</span>().<span class="ident">contains</span>(<span class="ident">ArrayObjectFlags</span>::<span class="ident">LAYERED</span>) {
+            } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">descriptor</span>.<span class="ident">flags</span>().<span class="ident">contains</span>(<span class="ident">ArrayObjectFlags::LAYERED</span>) {
                 <span class="kw">if</span> <span class="ident">descriptor</span>.<span class="ident">height</span>() <span class="op">&gt;</span> <span class="number">0</span> {
                     (
                         <span class="string">&quot;2D Layered&quot;</span>,
-                        <span class="macro">vec</span><span class="macro">!</span>[[
-                            <span class="ident">attr</span>(<span class="ident">DeviceAttribute</span>::<span class="ident">MaximumTexture2DLayeredWidth</span>)<span class="question-mark">?</span>,
-                            <span class="ident">attr</span>(<span class="ident">DeviceAttribute</span>::<span class="ident">MaximumTexture2DLayeredHeight</span>)<span class="question-mark">?</span>,
-                            <span class="ident">attr</span>(<span class="ident">DeviceAttribute</span>::<span class="ident">MaximumTexture2DLayeredLayers</span>)<span class="question-mark">?</span>,
+                        <span class="macro">vec!</span>[[
+                            <span class="ident">attr</span>(<span class="ident">DeviceAttribute::MaximumTexture2DLayeredWidth</span>)<span class="question-mark">?</span>,
+                            <span class="ident">attr</span>(<span class="ident">DeviceAttribute::MaximumTexture2DLayeredHeight</span>)<span class="question-mark">?</span>,
+                            <span class="ident">attr</span>(<span class="ident">DeviceAttribute::MaximumTexture2DLayeredLayers</span>)<span class="question-mark">?</span>,
                         ]],
                     )
                 } <span class="kw">else</span> {
                     (
                         <span class="string">&quot;1D Layered&quot;</span>,
-                        <span class="macro">vec</span><span class="macro">!</span>[[
-                            <span class="ident">attr</span>(<span class="ident">DeviceAttribute</span>::<span class="ident">MaximumTexture1DLayeredWidth</span>)<span class="question-mark">?</span>,
+                        <span class="macro">vec!</span>[[
+                            <span class="ident">attr</span>(<span class="ident">DeviceAttribute::MaximumTexture1DLayeredWidth</span>)<span class="question-mark">?</span>,
                             <span class="number">0</span>..<span class="op">=</span><span class="number">0</span>,
-                            <span class="ident">attr</span>(<span class="ident">DeviceAttribute</span>::<span class="ident">MaximumTexture1DLayeredLayers</span>)<span class="question-mark">?</span>,
+                            <span class="ident">attr</span>(<span class="ident">DeviceAttribute::MaximumTexture1DLayeredLayers</span>)<span class="question-mark">?</span>,
                         ]],
                     )
                 }
             } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">descriptor</span>.<span class="ident">depth</span>() <span class="op">&gt;</span> <span class="number">0</span> {
                 (
                     <span class="string">&quot;3D&quot;</span>,
-                    <span class="macro">vec</span><span class="macro">!</span>[
+                    <span class="macro">vec!</span>[
                         [
-                            <span class="ident">attr</span>(<span class="ident">DeviceAttribute</span>::<span class="ident">MaximumTexture3DWidth</span>)<span class="question-mark">?</span>,
-                            <span class="ident">attr</span>(<span class="ident">DeviceAttribute</span>::<span class="ident">MaximumTexture3DHeight</span>)<span class="question-mark">?</span>,
-                            <span class="ident">attr</span>(<span class="ident">DeviceAttribute</span>::<span class="ident">MaximumTexture3DDepth</span>)<span class="question-mark">?</span>,
+                            <span class="ident">attr</span>(<span class="ident">DeviceAttribute::MaximumTexture3DWidth</span>)<span class="question-mark">?</span>,
+                            <span class="ident">attr</span>(<span class="ident">DeviceAttribute::MaximumTexture3DHeight</span>)<span class="question-mark">?</span>,
+                            <span class="ident">attr</span>(<span class="ident">DeviceAttribute::MaximumTexture3DDepth</span>)<span class="question-mark">?</span>,
                         ],
                         [
-                            <span class="ident">attr</span>(<span class="ident">DeviceAttribute</span>::<span class="ident">MaximumTexture3DWidthAlternate</span>)<span class="question-mark">?</span>,
-                            <span class="ident">attr</span>(<span class="ident">DeviceAttribute</span>::<span class="ident">MaximumTexture3DHeightAlternate</span>)<span class="question-mark">?</span>,
-                            <span class="ident">attr</span>(<span class="ident">DeviceAttribute</span>::<span class="ident">MaximumTexture3DDepthAlternate</span>)<span class="question-mark">?</span>,
+                            <span class="ident">attr</span>(<span class="ident">DeviceAttribute::MaximumTexture3DWidthAlternate</span>)<span class="question-mark">?</span>,
+                            <span class="ident">attr</span>(<span class="ident">DeviceAttribute::MaximumTexture3DHeightAlternate</span>)<span class="question-mark">?</span>,
+                            <span class="ident">attr</span>(<span class="ident">DeviceAttribute::MaximumTexture3DDepthAlternate</span>)<span class="question-mark">?</span>,
                         ],
                     ],
                 )
             } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">descriptor</span>.<span class="ident">height</span>() <span class="op">&gt;</span> <span class="number">0</span> {
                 <span class="kw">if</span> <span class="ident">descriptor</span>
                     .<span class="ident">flags</span>()
-                    .<span class="ident">contains</span>(<span class="ident">ArrayObjectFlags</span>::<span class="ident">TEXTURE_GATHER</span>)
+                    .<span class="ident">contains</span>(<span class="ident">ArrayObjectFlags::TEXTURE_GATHER</span>)
                 {
                     (
                         <span class="string">&quot;2D Texture Gather&quot;</span>,
-                        <span class="macro">vec</span><span class="macro">!</span>[[
-                            <span class="ident">attr</span>(<span class="ident">DeviceAttribute</span>::<span class="ident">MaximumTexture2DGatherWidth</span>)<span class="question-mark">?</span>,
-                            <span class="ident">attr</span>(<span class="ident">DeviceAttribute</span>::<span class="ident">MaximumTexture2DGatherHeight</span>)<span class="question-mark">?</span>,
+                        <span class="macro">vec!</span>[[
+                            <span class="ident">attr</span>(<span class="ident">DeviceAttribute::MaximumTexture2DGatherWidth</span>)<span class="question-mark">?</span>,
+                            <span class="ident">attr</span>(<span class="ident">DeviceAttribute::MaximumTexture2DGatherHeight</span>)<span class="question-mark">?</span>,
                             <span class="number">0</span>..<span class="op">=</span><span class="number">0</span>,
                         ]],
                     )
                 } <span class="kw">else</span> {
                     (
                         <span class="string">&quot;2D&quot;</span>,
-                        <span class="macro">vec</span><span class="macro">!</span>[[
-                            <span class="ident">attr</span>(<span class="ident">DeviceAttribute</span>::<span class="ident">MaximumTexture2DWidth</span>)<span class="question-mark">?</span>,
-                            <span class="ident">attr</span>(<span class="ident">DeviceAttribute</span>::<span class="ident">MaximumTexture2DHeight</span>)<span class="question-mark">?</span>,
+                        <span class="macro">vec!</span>[[
+                            <span class="ident">attr</span>(<span class="ident">DeviceAttribute::MaximumTexture2DWidth</span>)<span class="question-mark">?</span>,
+                            <span class="ident">attr</span>(<span class="ident">DeviceAttribute::MaximumTexture2DHeight</span>)<span class="question-mark">?</span>,
                             <span class="number">0</span>..<span class="op">=</span><span class="number">0</span>,
                         ]],
                     )
                 }
             } <span class="kw">else</span> {
-                <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">descriptor</span>.<span class="ident">width</span>() <span class="op">&gt;</span> <span class="number">0</span>);
+                <span class="macro">assert!</span>(<span class="ident">descriptor</span>.<span class="ident">width</span>() <span class="op">&gt;</span> <span class="number">0</span>);
                 (
                     <span class="string">&quot;1D&quot;</span>,
-                    <span class="macro">vec</span><span class="macro">!</span>[[<span class="ident">attr</span>(<span class="ident">DeviceAttribute</span>::<span class="ident">MaximumTexture1DWidth</span>)<span class="question-mark">?</span>, <span class="number">0</span>..<span class="op">=</span><span class="number">0</span>, <span class="number">0</span>..<span class="op">=</span><span class="number">0</span>]],
+                    <span class="macro">vec!</span>[[<span class="ident">attr</span>(<span class="ident">DeviceAttribute::MaximumTexture1DWidth</span>)<span class="question-mark">?</span>, <span class="number">0</span>..<span class="op">=</span><span class="number">0</span>, <span class="number">0</span>..<span class="op">=</span><span class="number">0</span>]],
                 )
             };
 
-            <span class="kw">let</span> <span class="ident">bounds_invalid</span> <span class="op">=</span> <span class="op">|</span><span class="ident">x</span>: <span class="kw-2">&amp;</span>[::<span class="ident">std</span>::<span class="ident">ops</span>::<span class="ident">RangeInclusive</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>; <span class="number">3</span>]<span class="op">|</span> {
+            <span class="kw">let</span> <span class="ident">bounds_invalid</span> <span class="op">=</span> <span class="op">|</span><span class="ident">x</span>: <span class="kw-2">&amp;</span>[<span class="ident">::std::ops::RangeInclusive</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>; <span class="number">3</span>]<span class="op">|</span> {
                 (<span class="ident">descriptor</span>.<span class="ident">width</span>() <span class="op">&gt;</span><span class="op">=</span> <span class="kw-2">*</span><span class="ident">x</span>[<span class="number">0</span>].<span class="ident">start</span>() <span class="op">&amp;&amp;</span> <span class="ident">descriptor</span>.<span class="ident">width</span>() <span class="op">&lt;</span><span class="op">=</span> <span class="kw-2">*</span><span class="ident">x</span>[<span class="number">0</span>].<span class="ident">end</span>())
                     <span class="op">&amp;&amp;</span> (<span class="ident">descriptor</span>.<span class="ident">height</span>() <span class="op">&gt;</span><span class="op">=</span> <span class="kw-2">*</span><span class="ident">x</span>[<span class="number">1</span>].<span class="ident">start</span>() <span class="op">&amp;&amp;</span> <span class="ident">descriptor</span>.<span class="ident">height</span>() <span class="op">&lt;</span><span class="op">=</span> <span class="kw-2">*</span><span class="ident">x</span>[<span class="number">1</span>].<span class="ident">end</span>())
                     <span class="op">&amp;&amp;</span> (<span class="ident">descriptor</span>.<span class="ident">depth</span>() <span class="op">&gt;</span><span class="op">=</span> <span class="kw-2">*</span><span class="ident">x</span>[<span class="number">2</span>].<span class="ident">start</span>() <span class="op">&amp;&amp;</span> <span class="ident">descriptor</span>.<span class="ident">depth</span>() <span class="op">&lt;</span><span class="op">=</span> <span class="kw-2">*</span><span class="ident">x</span>[<span class="number">2</span>].<span class="ident">end</span>())
             };
 
             <span class="kw">if</span> <span class="op">!</span><span class="ident">bounds</span>.<span class="ident">iter</span>().<span class="ident">any</span>(<span class="ident">bounds_invalid</span>) {
-                <span class="macro">panic</span><span class="macro">!</span>(
+                <span class="macro">panic!</span>(
                     <span class="string">&quot;The dimensions of the {} ArrayObject did not fall within the valid bounds \
                      for the array. descriptor = {:?}, dims = {:?}, valid bounds = {:?}&quot;</span>,
                     <span class="ident">description</span>,
@@ -1192,8 +1191,8 @@
             }
         }
 
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">handle</span> <span class="op">=</span> <span class="ident">MaybeUninit</span>::<span class="ident">uninit</span>();
-        <span class="kw">unsafe</span> { <span class="ident">cuda_driver_sys</span>::<span class="ident">cuArray3DCreate_v2</span>(<span class="ident">handle</span>.<span class="ident">as_mut_ptr</span>(), <span class="kw-2">&amp;</span><span class="ident">descriptor</span>.<span class="ident">desc</span>) }
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">handle</span> <span class="op">=</span> <span class="ident">MaybeUninit::uninit</span>();
+        <span class="kw">unsafe</span> { <span class="ident">cuda_driver_sys::cuArray3DCreate_v2</span>(<span class="ident">handle</span>.<span class="ident">as_mut_ptr</span>(), <span class="kw-2">&amp;</span><span class="ident">descriptor</span>.<span class="ident">desc</span>) }
             .<span class="ident">into_result</span>()<span class="question-mark">?</span>;
         <span class="prelude-val">Ok</span>(<span class="self">Self</span> {
             <span class="ident">handle</span>: <span class="kw">unsafe</span> { <span class="ident">handle</span>.<span class="ident">assume_init</span>() },
@@ -1225,11 +1224,11 @@
     <span class="doccomment">/// # }</span>
     <span class="doccomment">/// ```</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">dims</span>: [<span class="ident">usize</span>; <span class="number">3</span>], <span class="ident">format</span>: <span class="ident">ArrayFormat</span>, <span class="ident">num_channels</span>: <span class="ident">c_uint</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">CudaResult</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
-        <span class="self">Self</span>::<span class="ident">from_descriptor</span>(<span class="kw-2">&amp;</span><span class="ident">ArrayDescriptor</span>::<span class="ident">new</span>(
+        <span class="self">Self</span><span class="ident">::from_descriptor</span>(<span class="kw-2">&amp;</span><span class="ident">ArrayDescriptor::new</span>(
             <span class="ident">dims</span>,
             <span class="ident">format</span>,
             <span class="ident">num_channels</span>,
-            <span class="ident">Default</span>::<span class="ident">default</span>(),
+            <span class="ident">Default::default</span>(),
         ))
     }
 
@@ -1255,11 +1254,11 @@
     <span class="doccomment">/// # }</span>
     <span class="doccomment">/// ```</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_1d</span>(<span class="ident">width</span>: <span class="ident">usize</span>, <span class="ident">format</span>: <span class="ident">ArrayFormat</span>, <span class="ident">num_channels</span>: <span class="ident">c_uint</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">CudaResult</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
-        <span class="self">Self</span>::<span class="ident">from_descriptor</span>(<span class="kw-2">&amp;</span><span class="ident">ArrayDescriptor</span>::<span class="ident">new</span>(
+        <span class="self">Self</span><span class="ident">::from_descriptor</span>(<span class="kw-2">&amp;</span><span class="ident">ArrayDescriptor::new</span>(
             [<span class="ident">width</span>, <span class="number">0</span>, <span class="number">0</span>],
             <span class="ident">format</span>,
             <span class="ident">num_channels</span>,
-            <span class="ident">Default</span>::<span class="ident">default</span>(),
+            <span class="ident">Default::default</span>(),
         ))
     }
 
@@ -1286,11 +1285,11 @@
     <span class="doccomment">/// # }</span>
     <span class="doccomment">/// ```</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_2d</span>(<span class="ident">dims</span>: [<span class="ident">usize</span>; <span class="number">2</span>], <span class="ident">format</span>: <span class="ident">ArrayFormat</span>, <span class="ident">num_channels</span>: <span class="ident">c_uint</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">CudaResult</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
-        <span class="self">Self</span>::<span class="ident">from_descriptor</span>(<span class="kw-2">&amp;</span><span class="ident">ArrayDescriptor</span>::<span class="ident">new</span>(
+        <span class="self">Self</span><span class="ident">::from_descriptor</span>(<span class="kw-2">&amp;</span><span class="ident">ArrayDescriptor::new</span>(
             [<span class="ident">dims</span>[<span class="number">0</span>], <span class="ident">dims</span>[<span class="number">1</span>], <span class="number">0</span>],
             <span class="ident">format</span>,
             <span class="ident">num_channels</span>,
-            <span class="ident">Default</span>::<span class="ident">default</span>(),
+            <span class="ident">Default::default</span>(),
         ))
     }
 
@@ -1326,11 +1325,11 @@
         <span class="ident">format</span>: <span class="ident">ArrayFormat</span>,
         <span class="ident">num_channels</span>: <span class="ident">c_uint</span>,
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">CudaResult</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
-        <span class="self">Self</span>::<span class="ident">from_descriptor</span>(<span class="kw-2">&amp;</span><span class="ident">ArrayDescriptor</span>::<span class="ident">new</span>(
+        <span class="self">Self</span><span class="ident">::from_descriptor</span>(<span class="kw-2">&amp;</span><span class="ident">ArrayDescriptor::new</span>(
             [<span class="ident">dims</span>[<span class="number">0</span>], <span class="ident">dims</span>[<span class="number">1</span>], <span class="ident">num_layers</span>],
             <span class="ident">format</span>,
             <span class="ident">num_channels</span>,
-            <span class="ident">ArrayObjectFlags</span>::<span class="ident">LAYERED</span>,
+            <span class="ident">ArrayObjectFlags::LAYERED</span>,
         ))
     }
 
@@ -1364,11 +1363,11 @@
         <span class="ident">format</span>: <span class="ident">ArrayFormat</span>,
         <span class="ident">num_channels</span>: <span class="ident">c_uint</span>,
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">CudaResult</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
-        <span class="self">Self</span>::<span class="ident">from_descriptor</span>(<span class="kw-2">&amp;</span><span class="ident">ArrayDescriptor</span>::<span class="ident">new</span>(
+        <span class="self">Self</span><span class="ident">::from_descriptor</span>(<span class="kw-2">&amp;</span><span class="ident">ArrayDescriptor::new</span>(
             [<span class="ident">width</span>, <span class="number">0</span>, <span class="ident">num_layers</span>],
             <span class="ident">format</span>,
             <span class="ident">num_channels</span>,
-            <span class="ident">ArrayObjectFlags</span>::<span class="ident">LAYERED</span>,
+            <span class="ident">ArrayObjectFlags::LAYERED</span>,
         ))
     }
 
@@ -1399,11 +1398,11 @@
     <span class="doccomment">/// # }</span>
     <span class="doccomment">/// ```</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_cubemap</span>(<span class="ident">side</span>: <span class="ident">usize</span>, <span class="ident">format</span>: <span class="ident">ArrayFormat</span>, <span class="ident">num_channels</span>: <span class="ident">c_uint</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">CudaResult</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
-        <span class="self">Self</span>::<span class="ident">from_descriptor</span>(<span class="kw-2">&amp;</span><span class="ident">ArrayDescriptor</span>::<span class="ident">new</span>(
+        <span class="self">Self</span><span class="ident">::from_descriptor</span>(<span class="kw-2">&amp;</span><span class="ident">ArrayDescriptor::new</span>(
             [<span class="ident">side</span>, <span class="ident">side</span>, <span class="number">6</span>],
             <span class="ident">format</span>,
             <span class="ident">num_channels</span>,
-            <span class="ident">ArrayObjectFlags</span>::<span class="ident">CUBEMAP</span>,
+            <span class="ident">ArrayObjectFlags::CUBEMAP</span>,
         ))
     }
 
@@ -1442,24 +1441,24 @@
         <span class="ident">format</span>: <span class="ident">ArrayFormat</span>,
         <span class="ident">num_channels</span>: <span class="ident">c_uint</span>,
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">CudaResult</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
-        <span class="self">Self</span>::<span class="ident">from_descriptor</span>(<span class="kw-2">&amp;</span><span class="ident">ArrayDescriptor</span>::<span class="ident">new</span>(
+        <span class="self">Self</span><span class="ident">::from_descriptor</span>(<span class="kw-2">&amp;</span><span class="ident">ArrayDescriptor::new</span>(
             [<span class="ident">side</span>, <span class="ident">side</span>, <span class="ident">num_layers</span> <span class="op">*</span> <span class="number">6</span>],
             <span class="ident">format</span>,
             <span class="ident">num_channels</span>,
-            <span class="ident">ArrayObjectFlags</span>::<span class="ident">CUBEMAP</span> <span class="op">|</span> <span class="ident">ArrayObjectFlags</span>::<span class="ident">LAYERED</span>,
+            <span class="ident">ArrayObjectFlags::CUBEMAP</span> <span class="op">|</span> <span class="ident">ArrayObjectFlags::LAYERED</span>,
         ))
     }
 
     <span class="doccomment">/// Gets the descriptor associated with this array.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">descriptor</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">CudaResult</span><span class="op">&lt;</span><span class="ident">ArrayDescriptor</span><span class="op">&gt;</span> {
         <span class="comment">// Use &quot;zeroed&quot; incase CUDA_ARRAY3D_DESCRIPTOR has uninitialized padding</span>
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">raw_descriptor</span> <span class="op">=</span> <span class="ident">MaybeUninit</span>::<span class="ident">zeroed</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">raw_descriptor</span> <span class="op">=</span> <span class="ident">MaybeUninit::zeroed</span>();
         <span class="kw">unsafe</span> {
-            <span class="ident">cuda_driver_sys</span>::<span class="ident">cuArray3DGetDescriptor_v2</span>(<span class="ident">raw_descriptor</span>.<span class="ident">as_mut_ptr</span>(), <span class="self">self</span>.<span class="ident">handle</span>)
+            <span class="ident">cuda_driver_sys::cuArray3DGetDescriptor_v2</span>(<span class="ident">raw_descriptor</span>.<span class="ident">as_mut_ptr</span>(), <span class="self">self</span>.<span class="ident">handle</span>)
         }
         .<span class="ident">into_result</span>()<span class="question-mark">?</span>;
 
-        <span class="prelude-val">Ok</span>(<span class="ident">ArrayDescriptor</span>::<span class="ident">from_raw</span>(<span class="kw">unsafe</span> {
+        <span class="prelude-val">Ok</span>(<span class="ident">ArrayDescriptor::from_raw</span>(<span class="kw">unsafe</span> {
             <span class="ident">raw_descriptor</span>.<span class="ident">assume_init</span>()
         }))
     }
@@ -1467,22 +1466,22 @@
     <span class="doccomment">/// Try to destroy an `ArrayObject`. Can fail - if it does, returns the CUDA</span>
     <span class="doccomment">/// error and the un-destroyed array object</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">drop</span>(<span class="ident">array</span>: <span class="ident">ArrayObject</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">DropResult</span><span class="op">&lt;</span><span class="ident">ArrayObject</span><span class="op">&gt;</span> {
-        <span class="kw">match</span> <span class="kw">unsafe</span> { <span class="ident">cuda_driver_sys</span>::<span class="ident">cuArrayDestroy</span>(<span class="ident">array</span>.<span class="ident">handle</span>) }.<span class="ident">into_result</span>() {
+        <span class="kw">match</span> <span class="kw">unsafe</span> { <span class="ident">cuda_driver_sys::cuArrayDestroy</span>(<span class="ident">array</span>.<span class="ident">handle</span>) }.<span class="ident">into_result</span>() {
             <span class="prelude-val">Ok</span>(()) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(()),
             <span class="prelude-val">Err</span>(<span class="ident">e</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>((<span class="ident">e</span>, <span class="ident">array</span>)),
         }
     }
 }
 
-<span class="kw">impl</span> <span class="ident">std</span>::<span class="ident">fmt</span>::<span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">ArrayObject</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">std</span>::<span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">std</span>::<span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+<span class="kw">impl</span> <span class="ident">std::fmt::Debug</span> <span class="kw">for</span> <span class="ident">ArrayObject</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">std::fmt::Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">std::fmt::Result</span> {
         <span class="self">self</span>.<span class="ident">descriptor</span>().<span class="ident">fmt</span>(<span class="ident">f</span>)
     }
 }
 
 <span class="kw">impl</span> <span class="ident">Drop</span> <span class="kw">for</span> <span class="ident">ArrayObject</span> {
     <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
-        <span class="kw">unsafe</span> { <span class="ident">cuda_driver_sys</span>::<span class="ident">cuArrayDestroy</span>(<span class="self">self</span>.<span class="ident">handle</span>) }
+        <span class="kw">unsafe</span> { <span class="ident">cuda_driver_sys::cuArrayDestroy</span>(<span class="self">self</span>.<span class="ident">handle</span>) }
             .<span class="ident">into_result</span>()
             .<span class="ident">expect</span>(<span class="string">&quot;Failed to destroy CUDA Array&quot;</span>)
     }
@@ -1494,69 +1493,69 @@
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">descriptor_round_trip</span>() {
-        <span class="kw">let</span> <span class="ident">_context</span> <span class="op">=</span> <span class="kw">crate</span>::<span class="ident">quick_init</span>().<span class="ident">unwrap</span>();
+        <span class="kw">let</span> <span class="ident">_context</span> <span class="op">=</span> <span class="kw">crate</span><span class="ident">::quick_init</span>().<span class="ident">unwrap</span>();
 
-        <span class="kw">let</span> <span class="ident">obj</span> <span class="op">=</span> <span class="ident">ArrayObject</span>::<span class="ident">new</span>([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>], <span class="ident">ArrayFormat</span>::<span class="ident">Float</span>, <span class="number">2</span>).<span class="ident">unwrap</span>();
+        <span class="kw">let</span> <span class="ident">obj</span> <span class="op">=</span> <span class="ident">ArrayObject::new</span>([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>], <span class="ident">ArrayFormat::Float</span>, <span class="number">2</span>).<span class="ident">unwrap</span>();
 
         <span class="kw">let</span> <span class="ident">descriptor</span> <span class="op">=</span> <span class="ident">obj</span>.<span class="ident">descriptor</span>().<span class="ident">unwrap</span>();
-        <span class="macro">assert_eq</span><span class="macro">!</span>([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>], <span class="ident">descriptor</span>.<span class="ident">dims</span>());
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">ArrayFormat</span>::<span class="ident">Float</span>, <span class="ident">descriptor</span>.<span class="ident">format</span>());
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="number">2</span>, <span class="ident">descriptor</span>.<span class="ident">num_channels</span>());
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">ArrayObjectFlags</span>::<span class="ident">default</span>(), <span class="ident">descriptor</span>.<span class="ident">flags</span>());
+        <span class="macro">assert_eq!</span>([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>], <span class="ident">descriptor</span>.<span class="ident">dims</span>());
+        <span class="macro">assert_eq!</span>(<span class="ident">ArrayFormat::Float</span>, <span class="ident">descriptor</span>.<span class="ident">format</span>());
+        <span class="macro">assert_eq!</span>(<span class="number">2</span>, <span class="ident">descriptor</span>.<span class="ident">num_channels</span>());
+        <span class="macro">assert_eq!</span>(<span class="ident">ArrayObjectFlags::default</span>(), <span class="ident">descriptor</span>.<span class="ident">flags</span>());
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">allow_1d_arrays</span>() {
-        <span class="kw">let</span> <span class="ident">_context</span> <span class="op">=</span> <span class="kw">crate</span>::<span class="ident">quick_init</span>().<span class="ident">unwrap</span>();
+        <span class="kw">let</span> <span class="ident">_context</span> <span class="op">=</span> <span class="kw">crate</span><span class="ident">::quick_init</span>().<span class="ident">unwrap</span>();
 
-        <span class="kw">let</span> <span class="ident">obj</span> <span class="op">=</span> <span class="ident">ArrayObject</span>::<span class="ident">new</span>([<span class="number">10</span>, <span class="number">0</span>, <span class="number">0</span>], <span class="ident">ArrayFormat</span>::<span class="ident">Float</span>, <span class="number">1</span>).<span class="ident">unwrap</span>();
+        <span class="kw">let</span> <span class="ident">obj</span> <span class="op">=</span> <span class="ident">ArrayObject::new</span>([<span class="number">10</span>, <span class="number">0</span>, <span class="number">0</span>], <span class="ident">ArrayFormat::Float</span>, <span class="number">1</span>).<span class="ident">unwrap</span>();
 
         <span class="kw">let</span> <span class="ident">descriptor</span> <span class="op">=</span> <span class="ident">obj</span>.<span class="ident">descriptor</span>().<span class="ident">unwrap</span>();
-        <span class="macro">assert_eq</span><span class="macro">!</span>([<span class="number">10</span>, <span class="number">0</span>, <span class="number">0</span>], <span class="ident">descriptor</span>.<span class="ident">dims</span>());
+        <span class="macro">assert_eq!</span>([<span class="number">10</span>, <span class="number">0</span>, <span class="number">0</span>], <span class="ident">descriptor</span>.<span class="ident">dims</span>());
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">allow_2d_arrays</span>() {
-        <span class="kw">let</span> <span class="ident">_context</span> <span class="op">=</span> <span class="kw">crate</span>::<span class="ident">quick_init</span>().<span class="ident">unwrap</span>();
+        <span class="kw">let</span> <span class="ident">_context</span> <span class="op">=</span> <span class="kw">crate</span><span class="ident">::quick_init</span>().<span class="ident">unwrap</span>();
 
-        <span class="kw">let</span> <span class="ident">obj</span> <span class="op">=</span> <span class="ident">ArrayObject</span>::<span class="ident">new</span>([<span class="number">10</span>, <span class="number">20</span>, <span class="number">0</span>], <span class="ident">ArrayFormat</span>::<span class="ident">Float</span>, <span class="number">1</span>).<span class="ident">unwrap</span>();
+        <span class="kw">let</span> <span class="ident">obj</span> <span class="op">=</span> <span class="ident">ArrayObject::new</span>([<span class="number">10</span>, <span class="number">20</span>, <span class="number">0</span>], <span class="ident">ArrayFormat::Float</span>, <span class="number">1</span>).<span class="ident">unwrap</span>();
 
         <span class="kw">let</span> <span class="ident">descriptor</span> <span class="op">=</span> <span class="ident">obj</span>.<span class="ident">descriptor</span>().<span class="ident">unwrap</span>();
-        <span class="macro">assert_eq</span><span class="macro">!</span>([<span class="number">10</span>, <span class="number">20</span>, <span class="number">0</span>], <span class="ident">descriptor</span>.<span class="ident">dims</span>());
+        <span class="macro">assert_eq!</span>([<span class="number">10</span>, <span class="number">20</span>, <span class="number">0</span>], <span class="ident">descriptor</span>.<span class="ident">dims</span>());
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">allow_1d_layered_arrays</span>() {
-        <span class="kw">let</span> <span class="ident">_context</span> <span class="op">=</span> <span class="kw">crate</span>::<span class="ident">quick_init</span>().<span class="ident">unwrap</span>();
+        <span class="kw">let</span> <span class="ident">_context</span> <span class="op">=</span> <span class="kw">crate</span><span class="ident">::quick_init</span>().<span class="ident">unwrap</span>();
 
-        <span class="kw">let</span> <span class="ident">obj</span> <span class="op">=</span> <span class="ident">ArrayObject</span>::<span class="ident">new_layered</span>([<span class="number">10</span>, <span class="number">0</span>], <span class="number">20</span>, <span class="ident">ArrayFormat</span>::<span class="ident">Float</span>, <span class="number">1</span>).<span class="ident">unwrap</span>();
+        <span class="kw">let</span> <span class="ident">obj</span> <span class="op">=</span> <span class="ident">ArrayObject::new_layered</span>([<span class="number">10</span>, <span class="number">0</span>], <span class="number">20</span>, <span class="ident">ArrayFormat::Float</span>, <span class="number">1</span>).<span class="ident">unwrap</span>();
 
         <span class="kw">let</span> <span class="ident">descriptor</span> <span class="op">=</span> <span class="ident">obj</span>.<span class="ident">descriptor</span>().<span class="ident">unwrap</span>();
-        <span class="macro">assert_eq</span><span class="macro">!</span>([<span class="number">10</span>, <span class="number">0</span>, <span class="number">20</span>], <span class="ident">descriptor</span>.<span class="ident">dims</span>());
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">ArrayObjectFlags</span>::<span class="ident">LAYERED</span>, <span class="ident">descriptor</span>.<span class="ident">flags</span>());
+        <span class="macro">assert_eq!</span>([<span class="number">10</span>, <span class="number">0</span>, <span class="number">20</span>], <span class="ident">descriptor</span>.<span class="ident">dims</span>());
+        <span class="macro">assert_eq!</span>(<span class="ident">ArrayObjectFlags::LAYERED</span>, <span class="ident">descriptor</span>.<span class="ident">flags</span>());
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">allow_cubemaps</span>() {
-        <span class="kw">let</span> <span class="ident">_context</span> <span class="op">=</span> <span class="kw">crate</span>::<span class="ident">quick_init</span>().<span class="ident">unwrap</span>();
+        <span class="kw">let</span> <span class="ident">_context</span> <span class="op">=</span> <span class="kw">crate</span><span class="ident">::quick_init</span>().<span class="ident">unwrap</span>();
 
-        <span class="kw">let</span> <span class="ident">obj</span> <span class="op">=</span> <span class="ident">ArrayObject</span>::<span class="ident">new_cubemap</span>(<span class="number">4</span>, <span class="ident">ArrayFormat</span>::<span class="ident">Float</span>, <span class="number">1</span>).<span class="ident">unwrap</span>();
+        <span class="kw">let</span> <span class="ident">obj</span> <span class="op">=</span> <span class="ident">ArrayObject::new_cubemap</span>(<span class="number">4</span>, <span class="ident">ArrayFormat::Float</span>, <span class="number">1</span>).<span class="ident">unwrap</span>();
 
         <span class="kw">let</span> <span class="ident">descriptor</span> <span class="op">=</span> <span class="ident">obj</span>.<span class="ident">descriptor</span>().<span class="ident">unwrap</span>();
-        <span class="macro">assert_eq</span><span class="macro">!</span>([<span class="number">4</span>, <span class="number">4</span>, <span class="number">6</span>], <span class="ident">descriptor</span>.<span class="ident">dims</span>());
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">ArrayObjectFlags</span>::<span class="ident">CUBEMAP</span>, <span class="ident">descriptor</span>.<span class="ident">flags</span>());
+        <span class="macro">assert_eq!</span>([<span class="number">4</span>, <span class="number">4</span>, <span class="number">6</span>], <span class="ident">descriptor</span>.<span class="ident">dims</span>());
+        <span class="macro">assert_eq!</span>(<span class="ident">ArrayObjectFlags::CUBEMAP</span>, <span class="ident">descriptor</span>.<span class="ident">flags</span>());
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">allow_layered_cubemaps</span>() {
-        <span class="kw">let</span> <span class="ident">_context</span> <span class="op">=</span> <span class="kw">crate</span>::<span class="ident">quick_init</span>().<span class="ident">unwrap</span>();
+        <span class="kw">let</span> <span class="ident">_context</span> <span class="op">=</span> <span class="kw">crate</span><span class="ident">::quick_init</span>().<span class="ident">unwrap</span>();
 
-        <span class="kw">let</span> <span class="ident">obj</span> <span class="op">=</span> <span class="ident">ArrayObject</span>::<span class="ident">new_layered_cubemap</span>(<span class="number">4</span>, <span class="number">4</span>, <span class="ident">ArrayFormat</span>::<span class="ident">Float</span>, <span class="number">1</span>).<span class="ident">unwrap</span>();
+        <span class="kw">let</span> <span class="ident">obj</span> <span class="op">=</span> <span class="ident">ArrayObject::new_layered_cubemap</span>(<span class="number">4</span>, <span class="number">4</span>, <span class="ident">ArrayFormat::Float</span>, <span class="number">1</span>).<span class="ident">unwrap</span>();
 
         <span class="kw">let</span> <span class="ident">descriptor</span> <span class="op">=</span> <span class="ident">obj</span>.<span class="ident">descriptor</span>().<span class="ident">unwrap</span>();
-        <span class="macro">assert_eq</span><span class="macro">!</span>([<span class="number">4</span>, <span class="number">4</span>, <span class="number">24</span>], <span class="ident">descriptor</span>.<span class="ident">dims</span>());
-        <span class="macro">assert_eq</span><span class="macro">!</span>(
-            <span class="ident">ArrayObjectFlags</span>::<span class="ident">CUBEMAP</span> <span class="op">|</span> <span class="ident">ArrayObjectFlags</span>::<span class="ident">LAYERED</span>,
+        <span class="macro">assert_eq!</span>([<span class="number">4</span>, <span class="number">4</span>, <span class="number">24</span>], <span class="ident">descriptor</span>.<span class="ident">dims</span>());
+        <span class="macro">assert_eq!</span>(
+            <span class="ident">ArrayObjectFlags::CUBEMAP</span> <span class="op">|</span> <span class="ident">ArrayObjectFlags::LAYERED</span>,
             <span class="ident">descriptor</span>.<span class="ident">flags</span>()
         );
     }
@@ -1564,68 +1563,67 @@
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="attribute">#[<span class="ident">should_panic</span>]</span>
     <span class="kw">fn</span> <span class="ident">fail_on_zero_width_1d_array</span>() {
-        <span class="kw">let</span> <span class="ident">_context</span> <span class="op">=</span> <span class="kw">crate</span>::<span class="ident">quick_init</span>().<span class="ident">unwrap</span>();
+        <span class="kw">let</span> <span class="ident">_context</span> <span class="op">=</span> <span class="kw">crate</span><span class="ident">::quick_init</span>().<span class="ident">unwrap</span>();
 
-        <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">ArrayObject</span>::<span class="ident">new_1d</span>(<span class="number">0</span>, <span class="ident">ArrayFormat</span>::<span class="ident">Float</span>, <span class="number">1</span>).<span class="ident">unwrap</span>();
+        <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">ArrayObject::new_1d</span>(<span class="number">0</span>, <span class="ident">ArrayFormat::Float</span>, <span class="number">1</span>).<span class="ident">unwrap</span>();
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="attribute">#[<span class="ident">should_panic</span>]</span>
     <span class="kw">fn</span> <span class="ident">fail_on_zero_size_widths</span>() {
-        <span class="kw">let</span> <span class="ident">_context</span> <span class="op">=</span> <span class="kw">crate</span>::<span class="ident">quick_init</span>().<span class="ident">unwrap</span>();
+        <span class="kw">let</span> <span class="ident">_context</span> <span class="op">=</span> <span class="kw">crate</span><span class="ident">::quick_init</span>().<span class="ident">unwrap</span>();
 
-        <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">ArrayObject</span>::<span class="ident">new</span>([<span class="number">0</span>, <span class="number">10</span>, <span class="number">20</span>], <span class="ident">ArrayFormat</span>::<span class="ident">Float</span>, <span class="number">1</span>).<span class="ident">unwrap</span>();
+        <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">ArrayObject::new</span>([<span class="number">0</span>, <span class="number">10</span>, <span class="number">20</span>], <span class="ident">ArrayFormat::Float</span>, <span class="number">1</span>).<span class="ident">unwrap</span>();
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="attribute">#[<span class="ident">should_panic</span>]</span>
     <span class="kw">fn</span> <span class="ident">fail_cubemaps_with_unmatching_width_height</span>() {
-        <span class="kw">let</span> <span class="ident">_context</span> <span class="op">=</span> <span class="kw">crate</span>::<span class="ident">quick_init</span>().<span class="ident">unwrap</span>();
+        <span class="kw">let</span> <span class="ident">_context</span> <span class="op">=</span> <span class="kw">crate</span><span class="ident">::quick_init</span>().<span class="ident">unwrap</span>();
 
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">descriptor</span> <span class="op">=</span> <span class="ident">ArrayDescriptor</span>::<span class="ident">from_dims_format</span>([<span class="number">2</span>, <span class="number">3</span>, <span class="number">6</span>], <span class="ident">ArrayFormat</span>::<span class="ident">Float</span>);
-        <span class="ident">descriptor</span>.<span class="ident">set_flags</span>(<span class="ident">ArrayObjectFlags</span>::<span class="ident">CUBEMAP</span>);
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">descriptor</span> <span class="op">=</span> <span class="ident">ArrayDescriptor::from_dims_format</span>([<span class="number">2</span>, <span class="number">3</span>, <span class="number">6</span>], <span class="ident">ArrayFormat::Float</span>);
+        <span class="ident">descriptor</span>.<span class="ident">set_flags</span>(<span class="ident">ArrayObjectFlags::CUBEMAP</span>);
 
-        <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">ArrayObject</span>::<span class="ident">from_descriptor</span>(<span class="kw-2">&amp;</span><span class="ident">descriptor</span>).<span class="ident">unwrap</span>();
+        <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">ArrayObject::from_descriptor</span>(<span class="kw-2">&amp;</span><span class="ident">descriptor</span>).<span class="ident">unwrap</span>();
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="attribute">#[<span class="ident">should_panic</span>]</span>
     <span class="kw">fn</span> <span class="ident">fail_cubemaps_with_non_six_depth</span>() {
-        <span class="kw">let</span> <span class="ident">_context</span> <span class="op">=</span> <span class="kw">crate</span>::<span class="ident">quick_init</span>().<span class="ident">unwrap</span>();
+        <span class="kw">let</span> <span class="ident">_context</span> <span class="op">=</span> <span class="kw">crate</span><span class="ident">::quick_init</span>().<span class="ident">unwrap</span>();
 
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">descriptor</span> <span class="op">=</span> <span class="ident">ArrayDescriptor</span>::<span class="ident">from_dims_format</span>([<span class="number">4</span>, <span class="number">4</span>, <span class="number">5</span>], <span class="ident">ArrayFormat</span>::<span class="ident">Float</span>);
-        <span class="ident">descriptor</span>.<span class="ident">set_flags</span>(<span class="ident">ArrayObjectFlags</span>::<span class="ident">CUBEMAP</span>);
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">descriptor</span> <span class="op">=</span> <span class="ident">ArrayDescriptor::from_dims_format</span>([<span class="number">4</span>, <span class="number">4</span>, <span class="number">5</span>], <span class="ident">ArrayFormat::Float</span>);
+        <span class="ident">descriptor</span>.<span class="ident">set_flags</span>(<span class="ident">ArrayObjectFlags::CUBEMAP</span>);
 
-        <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">ArrayObject</span>::<span class="ident">from_descriptor</span>(<span class="kw-2">&amp;</span><span class="ident">descriptor</span>).<span class="ident">unwrap</span>();
+        <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">ArrayObject::from_descriptor</span>(<span class="kw-2">&amp;</span><span class="ident">descriptor</span>).<span class="ident">unwrap</span>();
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="attribute">#[<span class="ident">should_panic</span>]</span>
     <span class="kw">fn</span> <span class="ident">fail_cubemaps_with_non_six_multiple_depth</span>() {
-        <span class="kw">let</span> <span class="ident">_context</span> <span class="op">=</span> <span class="kw">crate</span>::<span class="ident">quick_init</span>().<span class="ident">unwrap</span>();
+        <span class="kw">let</span> <span class="ident">_context</span> <span class="op">=</span> <span class="kw">crate</span><span class="ident">::quick_init</span>().<span class="ident">unwrap</span>();
 
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">descriptor</span> <span class="op">=</span> <span class="ident">ArrayDescriptor</span>::<span class="ident">from_dims_format</span>([<span class="number">4</span>, <span class="number">4</span>, <span class="number">10</span>], <span class="ident">ArrayFormat</span>::<span class="ident">Float</span>);
-        <span class="ident">descriptor</span>.<span class="ident">set_flags</span>(<span class="ident">ArrayObjectFlags</span>::<span class="ident">LAYERED</span> <span class="op">|</span> <span class="ident">ArrayObjectFlags</span>::<span class="ident">CUBEMAP</span>);
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">descriptor</span> <span class="op">=</span> <span class="ident">ArrayDescriptor::from_dims_format</span>([<span class="number">4</span>, <span class="number">4</span>, <span class="number">10</span>], <span class="ident">ArrayFormat::Float</span>);
+        <span class="ident">descriptor</span>.<span class="ident">set_flags</span>(<span class="ident">ArrayObjectFlags::LAYERED</span> <span class="op">|</span> <span class="ident">ArrayObjectFlags::CUBEMAP</span>);
 
-        <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">ArrayObject</span>::<span class="ident">from_descriptor</span>(<span class="kw-2">&amp;</span><span class="ident">descriptor</span>).<span class="ident">unwrap</span>();
+        <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">ArrayObject::from_descriptor</span>(<span class="kw-2">&amp;</span><span class="ident">descriptor</span>).<span class="ident">unwrap</span>();
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="attribute">#[<span class="ident">should_panic</span>]</span>
     <span class="kw">fn</span> <span class="ident">fail_with_depth_without_height</span>() {
-        <span class="kw">let</span> <span class="ident">_context</span> <span class="op">=</span> <span class="kw">crate</span>::<span class="ident">quick_init</span>().<span class="ident">unwrap</span>();
+        <span class="kw">let</span> <span class="ident">_context</span> <span class="op">=</span> <span class="kw">crate</span><span class="ident">::quick_init</span>().<span class="ident">unwrap</span>();
 
-        <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">ArrayObject</span>::<span class="ident">new</span>([<span class="number">10</span>, <span class="number">0</span>, <span class="number">20</span>], <span class="ident">ArrayFormat</span>::<span class="ident">Float</span>, <span class="number">1</span>).<span class="ident">unwrap</span>();
+        <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">ArrayObject::new</span>([<span class="number">10</span>, <span class="number">0</span>, <span class="number">20</span>], <span class="ident">ArrayFormat::Float</span>, <span class="number">1</span>).<span class="ident">unwrap</span>();
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="attribute">#[<span class="ident">should_panic</span>]</span>
     <span class="kw">fn</span> <span class="ident">fails_on_invalid_num_channels</span>() {
-        <span class="kw">let</span> <span class="ident">_context</span> <span class="op">=</span> <span class="kw">crate</span>::<span class="ident">quick_init</span>().<span class="ident">unwrap</span>();
+        <span class="kw">let</span> <span class="ident">_context</span> <span class="op">=</span> <span class="kw">crate</span><span class="ident">::quick_init</span>().<span class="ident">unwrap</span>();
 
-        <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">ArrayObject</span>::<span class="ident">new</span>([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>], <span class="ident">ArrayFormat</span>::<span class="ident">Float</span>, <span class="number">3</span>).<span class="ident">unwrap</span>();
+        <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">ArrayObject::new</span>([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>], <span class="ident">ArrayFormat::Float</span>, <span class="number">3</span>).<span class="ident">unwrap</span>();
     }
 }
 </pre></div>
-</section><section id="search" class="content hidden"></section><section class="footer"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="rustacuda"></div>
-    <script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script><script defer src="../../../search-index.js"></script></body></html>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="rustacuda" data-search-index-js="../../../search-index.js" data-search-js="../../../search.js"></div><script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script></body></html>
