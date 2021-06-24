@@ -576,9 +576,9 @@
 <span class="doccomment">/// A `Value` to `Value` map.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// This structure either uses a [BTreeMap](std::collections::BTreeMap) or the</span>
-<span class="doccomment">/// [IndexMap](indexmap::IndexMap) internally.</span>
-<span class="doccomment">/// The latter can be used by enabling the `indexmap` feature. This can be used</span>
-<span class="doccomment">/// to preserve the order of the parsed map.</span>
+<span class="doccomment">/// [IndexMap](https://docs.rs/indexmap/1.6.2/indexmap/map/struct.IndexMap.html)</span>
+<span class="doccomment">/// internally. The latter can be used by enabling the `indexmap` feature. This</span>
+<span class="doccomment">/// can be used to preserve the order of the parsed map.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">Default</span>, <span class="ident">Deserialize</span>, <span class="ident">Serialize</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Map</span>(<span class="ident">MapInner</span>);
 

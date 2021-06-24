@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["ProgressReporter",""]]});
+initSidebarItems({"fn":[["display_progress",""]],"struct":[["ProgressReporter",""],["ProgressUpdater",""]]});

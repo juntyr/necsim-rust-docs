@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["AlmostInfiniteOriginSampler",""]]});
+initSidebarItems({"constant":[["HABITAT_CENTRE",""]],"struct":[["AlmostInfiniteOriginSampler",""]]});

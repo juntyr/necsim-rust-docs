@@ -1,0 +1,1 @@
+initSidebarItems({"static":[["MPI_GLOBAL_CONTINUE",""],["MPI_LOCAL_CONTINUE",""],["MPI_LOCAL_REMAINING",""],["MPI_MIGRATION_BUFFERS",""]],"struct":[["MpiParallelPartition",""]]});

@@ -1,0 +1,3 @@
+(function() {var implementors = {};
+implementors["necsim_plugins_core"] = [{"text":"impl&lt;'de&gt; <a class=\"trait\" href=\"https://docs.rs/serde/1.0.125/serde/de/trait.DeserializeSeed.html\" title=\"trait serde::de::DeserializeSeed\">DeserializeSeed</a>&lt;'de&gt; for <a class=\"struct\" href=\"necsim_plugins_core/import/serde/struct.RcPluginLibrary.html\" title=\"struct necsim_plugins_core::import::serde::RcPluginLibrary\">RcPluginLibrary</a>","synthetic":false,"types":["necsim_plugins_core::import::serde::RcPluginLibrary"]}];
+if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

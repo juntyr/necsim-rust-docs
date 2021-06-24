@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["Error","An error that can arise during the use of an `Array2D`."]],"struct":[["Array2D","A fixed sized two-dimensional array."],["Array2DCudaRepresentation","A fixed sized two-dimensional array."]]});
+initSidebarItems({"enum":[["Error","An error that can arise during the use of an `Array2D`."]],"fn":[["flatten",""]],"struct":[["Array2D","A fixed sized two-dimensional array."],["Array2DCudaRepresentation","A fixed sized two-dimensional array."]]});

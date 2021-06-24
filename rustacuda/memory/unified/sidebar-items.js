@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["UnifiedBox","A pointer type for heap-allocation in CUDA unified memory."],["UnifiedBuffer","Fixed-size buffer in unified memory."]]});

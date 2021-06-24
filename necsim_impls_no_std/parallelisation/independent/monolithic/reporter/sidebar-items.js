@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["WaterLevelReporterStrategy",""]],"trait":[["WaterLevelReporterConstructor",""],["WaterLevelReporterProxy",""]]});
+initSidebarItems({"enum":[["WaterLevelReporterStrategy",""]],"mod":[["live",""],["recorded",""]],"trait":[["WaterLevelReporterConstructor",""],["WaterLevelReporterProxy",""]]});

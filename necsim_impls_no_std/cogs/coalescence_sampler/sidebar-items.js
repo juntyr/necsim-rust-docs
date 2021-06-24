@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["conditional",""],["independent",""],["unconditional",""]]});
+initSidebarItems({"mod":[["conditional",""],["independent",""],["optional_coalescence",""],["unconditional",""]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["DeviceBuffer","Fixed-size device-side buffer. Provides basic access to device memory."]]});

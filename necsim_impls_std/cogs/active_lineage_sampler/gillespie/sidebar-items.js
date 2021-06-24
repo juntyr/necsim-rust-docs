@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["GillespieActiveLineageSampler",""]]});
+initSidebarItems({"mod":[["event_time",""],["sampler",""]],"struct":[["GillespieActiveLineageSampler",""]]});

@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["False",""],["True",""]],"trait":[["And",""],["Boolean",""],["Or",""]]});
+initSidebarItems({"mod":[["private",""]],"struct":[["False",""],["True",""]],"trait":[["And",""],["Boolean",""],["Or",""]]});

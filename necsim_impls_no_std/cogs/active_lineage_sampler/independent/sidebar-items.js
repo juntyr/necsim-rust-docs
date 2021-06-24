@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["event_time_sampler",""]],"struct":[["IndependentActiveLineageSampler",""],["IndependentActiveLineageSamplerCudaRepresentation",""]]});
+initSidebarItems({"mod":[["event_time_sampler",""],["sampler",""],["singular",""]],"struct":[["IndependentActiveLineageSampler",""],["IndependentActiveLineageSamplerCudaRepresentation",""]]});

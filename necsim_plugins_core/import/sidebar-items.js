@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["AnyReporterPluginVec",""]],"struct":[["ReporterPlugin",""],["ReporterPluginLibrary",""],["ReporterPluginVec",""]]});
+initSidebarItems({"enum":[["AnyReporterPluginVec",""]],"mod":[["combinator",""],["plugin",""],["serde",""]],"struct":[["ReporterPlugin",""],["ReporterPluginLibrary",""],["ReporterPluginVec",""]]});

@@ -1,1 +1,1 @@
-initSidebarItems({"derive":[["LendToCuda",""]],"struct":[["CombinedCudaAlloc",""],["CudaDropWrapper",""],["HostDeviceBoxConst",""],["HostDeviceBoxMut",""],["NullCudaAlloc",""]],"trait":[["CudaAlloc",""],["EmptyCudaAlloc",""],["LendToCuda","Safety"]]});
+initSidebarItems({"derive":[["LendToCuda",""]],"mod":[["private",""]],"struct":[["CombinedCudaAlloc",""],["CudaDropWrapper",""],["HostDeviceBoxConst",""],["HostDeviceBoxMut",""],["NullCudaAlloc",""]],"trait":[["CudaAlloc",""],["EmptyCudaAlloc",""],["LendToCuda","Safety"]]});

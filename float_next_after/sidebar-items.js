@@ -1,1 +1,1 @@
-initSidebarItems({"trait":[["NextAfter","Returns the next representable float value in the direction of y"]]});
+initSidebarItems({"fn":[["copy_sign",""],["short_circuit_operands",""]],"trait":[["NextAfter","Returns the next representable float value in the direction of y"]]});

@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["CargoAdapter","Cargo integration adapter."],["ErrorLogPrinter","Nice error log printer."]]});
+initSidebarItems({"struct":[["CargoAdapter","Cargo integration adapter."],["ErrorLogPrinter","Nice error log printer."]],"trait":[["StringExt",""]]});

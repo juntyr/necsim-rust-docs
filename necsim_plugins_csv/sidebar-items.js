@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["CsvReporter",""]]});
+initSidebarItems({"struct":[["CsvReporter",""],["CsvReporterArgs",""]]});

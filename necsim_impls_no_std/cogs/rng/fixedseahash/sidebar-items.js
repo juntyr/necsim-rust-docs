@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["FixedSeaHash",""]]});
+initSidebarItems({"fn":[["diffuse",""]],"struct":[["FixedSeaHash",""]]});

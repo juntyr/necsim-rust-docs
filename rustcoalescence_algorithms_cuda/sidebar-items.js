@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["CudaAlgorithm",""]]});
+initSidebarItems({"enum":[["CudaAlgorithm",""]],"mod":[["arguments",""],["cuda",""],["info",""],["kernel",""],["parallelisation",""]]});

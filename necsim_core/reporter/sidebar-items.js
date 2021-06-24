@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["boolean",""],["used",""]],"struct":[["FilteredReporter",""],["NullReporter",""],["ReporterCombinator",""]],"trait":[["Reporter",""]]});
+initSidebarItems({"mod":[["boolean",""],["combinator",""],["filter",""],["group",""],["impl",""],["null",""],["used",""]],"struct":[["FilteredReporter",""],["NullReporter",""],["ReporterCombinator",""]],"trait":[["Reporter",""]]});

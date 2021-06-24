@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["InMemoryPackedAliasDispersalSampler",""],["InMemoryPackedAliasDispersalSamplerCudaRepresentation",""]]});
+initSidebarItems({"mod":[["dispersal",""]],"struct":[["InMemoryPackedAliasDispersalSampler",""],["InMemoryPackedAliasDispersalSamplerCudaRepresentation",""]]});

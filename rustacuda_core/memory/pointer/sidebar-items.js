@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["DevicePointer","A pointer to device memory."],["UnifiedPointer","A pointer to unified memory."]]});

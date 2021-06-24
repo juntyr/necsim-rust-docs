@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["averaging",""],["lockstep",""],["monolithic",""],["optimistic",""],["optimistic_lockstep",""]]});
+initSidebarItems({"mod":[["averaging",""],["lockstep",""],["monolithic",""],["optimistic",""],["optimistic_lockstep",""],["reporter",""]]});

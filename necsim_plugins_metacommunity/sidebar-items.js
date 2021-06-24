@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["MetacommunityMigrationReporter",""]]});
+initSidebarItems({"enum":[["Metacommunity",""]],"struct":[["MetacommunityMigrationReporter",""],["MetacommunityMigrationReporterArgs",""]]});

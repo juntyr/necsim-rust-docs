@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["OriginPreSampler",""]]});
+initSidebarItems({"constant":[["INV_PHI",""]],"struct":[["OriginPreSampler",""]]});
