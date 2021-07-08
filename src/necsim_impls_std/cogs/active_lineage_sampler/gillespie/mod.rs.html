@@ -155,11 +155,13 @@
 <span id="153">153</span>
 <span id="154">154</span>
 <span id="155">155</span>
+<span id="156">156</span>
 </pre><pre class="rust">
-<span class="kw">use</span> <span class="ident">std::marker::PhantomData</span>;
+<span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">hash::BuildHasherDefault</span>, <span class="ident">iter::FromIterator</span>, <span class="ident">marker::PhantomData</span>};
 
+<span class="kw">use</span> <span class="ident">fxhash::FxHasher32</span>;
+<span class="kw">use</span> <span class="ident">keyed_priority_queue::KeyedPriorityQueue</span>;
 <span class="kw">use</span> <span class="ident">necsim_core_bond</span>::{<span class="ident">NonNegativeF64</span>, <span class="ident">PositiveF64</span>};
-<span class="kw">use</span> <span class="ident">priority_queue::PriorityQueue</span>;
 
 <span class="kw">use</span> <span class="ident">necsim_core</span>::{
     <span class="ident">cogs</span>::{
@@ -193,7 +195,7 @@
     <span class="ident">E</span>: <span class="ident">GillespieEventSampler</span><span class="op">&lt;</span><span class="ident">H</span>, <span class="ident">G</span>, <span class="ident">R</span>, <span class="ident">S</span>, <span class="ident">X</span>, <span class="ident">D</span>, <span class="ident">C</span>, <span class="ident">T</span>, <span class="ident">N</span><span class="op">&gt;</span>,
     <span class="ident">I</span>: <span class="ident">ImmigrationEntry</span>,
 <span class="op">&gt;</span> {
-    <span class="ident">active_locations</span>: <span class="ident">PriorityQueue</span><span class="op">&lt;</span><span class="ident">Location</span>, <span class="ident">EventTime</span><span class="op">&gt;</span>,
+    <span class="ident">active_locations</span>: <span class="ident">KeyedPriorityQueue</span><span class="op">&lt;</span><span class="ident">Location</span>, <span class="ident">EventTime</span>, <span class="ident">BuildHasherDefault</span><span class="op">&lt;</span><span class="ident">FxHasher32</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     <span class="ident">number_active_lineages</span>: <span class="ident">usize</span>,
     <span class="ident">last_event_time</span>: <span class="ident">NonNegativeF64</span>,
     <span class="ident">marker</span>: <span class="ident">PhantomData</span><span class="op">&lt;</span>(<span class="ident">H</span>, <span class="ident">G</span>, <span class="ident">R</span>, <span class="ident">S</span>, <span class="ident">X</span>, <span class="ident">D</span>, <span class="ident">C</span>, <span class="ident">T</span>, <span class="ident">N</span>, <span class="ident">E</span>, <span class="ident">I</span>)<span class="op">&gt;</span>,
@@ -256,7 +258,7 @@
             });
 
         <span class="self">Self</span> {
-            <span class="ident">active_locations</span>: <span class="ident">PriorityQueue::from</span>(<span class="ident">active_locations</span>),
+            <span class="ident">active_locations</span>: <span class="ident">KeyedPriorityQueue::from_iter</span>(<span class="ident">active_locations</span>),
             <span class="ident">number_active_lineages</span>,
             <span class="ident">last_event_time</span>: <span class="ident">NonNegativeF64::zero</span>(),
             <span class="ident">marker</span>: <span class="ident">PhantomData</span>::<span class="op">&lt;</span>(<span class="ident">H</span>, <span class="ident">G</span>, <span class="ident">R</span>, <span class="ident">S</span>, <span class="ident">X</span>, <span class="ident">D</span>, <span class="ident">C</span>, <span class="ident">T</span>, <span class="ident">N</span>, <span class="ident">E</span>, <span class="ident">I</span>)<span class="op">&gt;</span>,
