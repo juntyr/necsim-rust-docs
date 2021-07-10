@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["SpeciesLocationsReporter",""]]});
+initSidebarItems({});
