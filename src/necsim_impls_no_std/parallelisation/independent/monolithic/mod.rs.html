@@ -188,9 +188,11 @@
 <span id="186">186</span>
 <span id="187">187</span>
 <span id="188">188</span>
+<span id="189">189</span>
+<span id="190">190</span>
 </pre><pre class="rust">
 <span class="kw">use</span> <span class="ident">alloc::collections::VecDeque</span>;
-<span class="kw">use</span> <span class="ident">core::num</span>::{<span class="ident">NonZeroU64</span>, <span class="ident">NonZeroUsize</span>, <span class="ident">Wrapping</span>};
+<span class="kw">use</span> <span class="ident">core::num</span>::{<span class="ident">NonZeroU64</span>, <span class="ident">Wrapping</span>};
 <span class="kw">use</span> <span class="ident">necsim_core_bond::NonNegativeF64</span>;
 
 <span class="kw">use</span> <span class="ident">necsim_core</span>::{
@@ -216,7 +218,7 @@
     <span class="ident">lineage_store::independent::IndependentLineageStore</span>,
 };
 
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::parallelisation::independent::DedupCache</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::parallelisation::independent</span>::{<span class="ident">DedupCache</span>, <span class="ident">EventSlice</span>};
 
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">reporter</span>;
 
@@ -252,13 +254,15 @@
     <span class="ident">lineages</span>: <span class="ident">VecDeque</span><span class="op">&lt;</span><span class="ident">Lineage</span><span class="op">&gt;</span>,
     <span class="ident">dedup_cache</span>: <span class="ident">DedupCache</span>,
     <span class="ident">step_slice</span>: <span class="ident">NonZeroU64</span>,
-    <span class="ident">event_slice</span>: <span class="ident">NonZeroUsize</span>,
+    <span class="ident">event_slice</span>: <span class="ident">EventSlice</span>,
     <span class="ident">local_partition</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">P</span>,
 ) <span class="op">-</span><span class="op">&gt;</span> (<span class="ident">NonNegativeF64</span>, <span class="ident">u64</span>) {
     <span class="comment">// Ensure that the progress bar starts with the expected target</span>
     <span class="ident">local_partition</span>.<span class="ident">report_progress_sync</span>(
         (<span class="ident">Wrapping</span>(<span class="ident">lineages</span>.<span class="ident">len</span>() <span class="kw">as</span> <span class="ident">u64</span>) <span class="op">+</span> <span class="ident">simulation</span>.<span class="ident">get_balanced_remaining_work</span>()).<span class="number">0</span>,
     );
+
+    <span class="kw">let</span> <span class="ident">event_slice</span> <span class="op">=</span> <span class="ident">event_slice</span>.<span class="ident">capacity</span>(<span class="ident">lineages</span>.<span class="ident">len</span>());
 
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">proxy</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ident">WaterLevelReporterStrategy</span> <span class="kw">as</span> <span class="ident">WaterLevelReporterConstructor</span><span class="op">&lt;</span>
         <span class="ident">P::IsLive</span>,

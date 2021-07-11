@@ -55,6 +55,33 @@
 <span id="53">53</span>
 <span id="54">54</span>
 <span id="55">55</span>
+<span id="56">56</span>
+<span id="57">57</span>
+<span id="58">58</span>
+<span id="59">59</span>
+<span id="60">60</span>
+<span id="61">61</span>
+<span id="62">62</span>
+<span id="63">63</span>
+<span id="64">64</span>
+<span id="65">65</span>
+<span id="66">66</span>
+<span id="67">67</span>
+<span id="68">68</span>
+<span id="69">69</span>
+<span id="70">70</span>
+<span id="71">71</span>
+<span id="72">72</span>
+<span id="73">73</span>
+<span id="74">74</span>
+<span id="75">75</span>
+<span id="76">76</span>
+<span id="77">77</span>
+<span id="78">78</span>
+<span id="79">79</span>
+<span id="80">80</span>
+<span id="81">81</span>
+<span id="82">82</span>
 </pre><pre class="rust">
 <span class="kw">use</span> <span class="ident">core::num::NonZeroUsize</span>;
 
@@ -64,28 +91,29 @@
 
 <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::cache::DirectMappedCache</span>;
 
+<span class="kw">mod</span> <span class="ident">event_slice</span>;
 <span class="kw">mod</span> <span class="ident">reporter</span>;
 
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">individuals</span>;
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">landscape</span>;
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">monolithic</span>;
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Deserialize</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">Deserialize</span>)]</span>
 <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">AbsoluteDedupCache</span> {
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">AbsoluteCapacity</span> {
     <span class="kw">pub</span> <span class="ident">capacity</span>: <span class="ident">NonZeroUsize</span>,
 }
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Deserialize</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">Deserialize</span>)]</span>
 <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">RelativeDedupCache</span> {
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">RelativeCapacity</span> {
     <span class="kw">pub</span> <span class="ident">factor</span>: <span class="ident">PositiveF64</span>,
 }
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Deserialize</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">Deserialize</span>)]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">DedupCache</span> {
-    <span class="ident">Absolute</span>(<span class="ident">AbsoluteDedupCache</span>),
-    <span class="ident">Relative</span>(<span class="ident">RelativeDedupCache</span>),
+    <span class="ident">Absolute</span>(<span class="ident">AbsoluteCapacity</span>),
+    <span class="ident">Relative</span>(<span class="ident">RelativeCapacity</span>),
     <span class="prelude-val">None</span>,
 }
 
@@ -96,8 +124,8 @@
         <span class="ident">workload</span>: <span class="ident">usize</span>,
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">DirectMappedCache</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
         <span class="ident">DirectMappedCache::with_capacity</span>(<span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident">DedupCache::Absolute</span>(<span class="ident">AbsoluteDedupCache</span> { <span class="ident">capacity</span> }) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">capacity</span>.<span class="ident">get</span>(),
-            <span class="ident">DedupCache::Relative</span>(<span class="ident">RelativeDedupCache</span> { <span class="ident">factor</span> }) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">DedupCache::Absolute</span>(<span class="ident">AbsoluteCapacity</span> { <span class="ident">capacity</span> }) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">capacity</span>.<span class="ident">get</span>(),
+            <span class="ident">DedupCache::Relative</span>(<span class="ident">RelativeCapacity</span> { <span class="ident">factor</span> }) <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="attribute">#[<span class="ident">allow</span>(
                     <span class="ident">clippy::cast_precision_loss</span>,
                     <span class="ident">clippy::cast_sign_loss</span>,
@@ -109,6 +137,32 @@
             },
             <span class="ident">DedupCache::None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="number">0_usize</span>,
         })
+    }
+}
+
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
+<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">EventSlice</span> {
+    <span class="ident">Absolute</span>(<span class="ident">AbsoluteCapacity</span>),
+    <span class="ident">Relative</span>(<span class="ident">RelativeCapacity</span>),
+}
+
+<span class="kw">impl</span> <span class="ident">EventSlice</span> {
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">capacity</span>(<span class="self">self</span>, <span class="ident">workload</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">NonZeroUsize</span> {
+        <span class="kw">match</span> <span class="self">self</span> {
+            <span class="ident">EventSlice::Absolute</span>(<span class="ident">AbsoluteCapacity</span> { <span class="ident">capacity</span> }) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">capacity</span>,
+            <span class="ident">EventSlice::Relative</span>(<span class="ident">RelativeCapacity</span> { <span class="ident">factor</span> }) <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="attribute">#[<span class="ident">allow</span>(
+                    <span class="ident">clippy::cast_precision_loss</span>,
+                    <span class="ident">clippy::cast_sign_loss</span>,
+                    <span class="ident">clippy::cast_possible_truncation</span>
+                )]</span>
+                <span class="kw">let</span> <span class="ident">capacity</span> <span class="op">=</span> ((<span class="ident">workload</span> <span class="kw">as</span> <span class="ident">f64</span>) <span class="op">*</span> <span class="ident">factor</span>.<span class="ident">get</span>()) <span class="kw">as</span> <span class="ident">usize</span>;
+
+                <span class="comment">// Safety: max(c, 1) &gt;= 1</span>
+                <span class="kw">unsafe</span> { <span class="ident">NonZeroUsize::new_unchecked</span>(<span class="ident">capacity</span>.<span class="ident">max</span>(<span class="number">1_usize</span>)) }
+            },
+        }
     }
 }
 </pre></div>

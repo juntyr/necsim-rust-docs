@@ -130,26 +130,28 @@
 <span id="128">128</span>
 <span id="129">129</span>
 <span id="130">130</span>
+<span id="131">131</span>
+<span id="132">132</span>
 </pre><pre class="rust">
-<span class="kw">use</span> <span class="ident">std::num</span>::{<span class="ident">NonZeroU64</span>, <span class="ident">NonZeroUsize</span>};
+<span class="kw">use</span> <span class="ident">std::num::NonZeroU64</span>;
 
 <span class="kw">use</span> <span class="ident">serde::Deserialize</span>;
 <span class="kw">use</span> <span class="ident">serde_state::DeserializeState</span>;
 
 <span class="kw">use</span> <span class="ident">necsim_core_bond</span>::{<span class="ident">Partition</span>, <span class="ident">PositiveF64</span>};
 
-<span class="kw">use</span> <span class="ident">necsim_impls_no_std::parallelisation::independent</span>::{<span class="ident">DedupCache</span>, <span class="ident">RelativeDedupCache</span>};
+<span class="kw">use</span> <span class="ident">necsim_impls_no_std::parallelisation::independent</span>::{<span class="ident">DedupCache</span>, <span class="ident">EventSlice</span>, <span class="ident">RelativeCapacity</span>};
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Deserialize</span>)]</span>
 <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">MonolithicParallelismMode</span> {
-    <span class="kw">pub</span> <span class="ident">event_slice</span>: <span class="ident">NonZeroUsize</span>,
+    <span class="kw">pub</span> <span class="ident">event_slice</span>: <span class="ident">EventSlice</span>,
 }
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Deserialize</span>)]</span>
 <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">IsolatedParallelismMode</span> {
-    <span class="kw">pub</span> <span class="ident">event_slice</span>: <span class="ident">NonZeroUsize</span>,
+    <span class="kw">pub</span> <span class="ident">event_slice</span>: <span class="ident">EventSlice</span>,
     <span class="kw">pub</span> <span class="ident">partition</span>: <span class="ident">Partition</span>,
 }
 
@@ -213,7 +215,9 @@
             ));
         } <span class="kw">else</span> {
             <span class="ident">ParallelismMode::Monolithic</span>(<span class="ident">MonolithicParallelismMode</span> {
-                <span class="ident">event_slice</span>: <span class="ident">NonZeroUsize::new</span>(<span class="number">1_000_000_usize</span>).<span class="ident">unwrap</span>(),
+                <span class="ident">event_slice</span>: <span class="ident">EventSlice::Relative</span>(<span class="ident">RelativeCapacity</span> {
+                    <span class="ident">factor</span>: <span class="ident">PositiveF64::new</span>(<span class="number">20.0_f64</span>).<span class="ident">unwrap</span>(),
+                }),
             })
         };
 
@@ -249,13 +253,13 @@
     <span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="self">Self</span> {
             <span class="ident">device</span>: <span class="number">0_u32</span>,
-            <span class="ident">ptx_jit</span>: <span class="bool-val">false</span>,
-            <span class="ident">delta_t</span>: <span class="ident">PositiveF64::new</span>(<span class="number">1.0_f64</span>).<span class="ident">unwrap</span>(),
-            <span class="ident">block_size</span>: <span class="number">32_u32</span>,
-            <span class="ident">grid_size</span>: <span class="number">256_u32</span>,
-            <span class="ident">step_slice</span>: <span class="ident">NonZeroU64::new</span>(<span class="number">200_u64</span>).<span class="ident">unwrap</span>(),
-            <span class="ident">dedup_cache</span>: <span class="ident">DedupCache::Relative</span>(<span class="ident">RelativeDedupCache</span> {
-                <span class="ident">factor</span>: <span class="ident">PositiveF64::new</span>(<span class="number">2.0_f64</span>).<span class="ident">unwrap</span>(),
+            <span class="ident">ptx_jit</span>: <span class="bool-val">true</span>,
+            <span class="ident">delta_t</span>: <span class="ident">PositiveF64::new</span>(<span class="number">3.0_f64</span>).<span class="ident">unwrap</span>(),
+            <span class="ident">block_size</span>: <span class="number">64_u32</span>,
+            <span class="ident">grid_size</span>: <span class="number">64_u32</span>,
+            <span class="ident">step_slice</span>: <span class="ident">NonZeroU64::new</span>(<span class="number">150_u64</span>).<span class="ident">unwrap</span>(),
+            <span class="ident">dedup_cache</span>: <span class="ident">DedupCache::Relative</span>(<span class="ident">RelativeCapacity</span> {
+                <span class="ident">factor</span>: <span class="ident">PositiveF64::new</span>(<span class="number">0.1_f64</span>).<span class="ident">unwrap</span>(),
             }),
             <span class="ident">parallelism_mode</span>: <span class="prelude-val">None</span>,
         }

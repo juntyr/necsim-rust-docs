@@ -114,7 +114,7 @@
             <span class="prelude-val">Some</span>(<span class="ident">parallelism_mode</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">parallelism_mode</span>,
             <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="kw">if</span> <span class="ident">partition</span>.<span class="ident">partitions</span>().<span class="ident">get</span>() <span class="op">&gt;</span> <span class="number">1</span> {
-                    <span class="ident">ParallelismMode::OptimisticLockstep</span>
+                    <span class="ident">ParallelismMode::Lockstep</span>
                 } <span class="kw">else</span> {
                     <span class="ident">ParallelismMode::Monolithic</span>
                 }

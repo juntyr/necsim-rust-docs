@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["DedupCache",""]],"mod":[["individuals",""],["landscape",""],["monolithic",""]],"struct":[["AbsoluteDedupCache",""],["RelativeDedupCache",""]]});
+initSidebarItems({"enum":[["DedupCache",""],["EventSlice",""]],"mod":[["individuals",""],["landscape",""],["monolithic",""]],"struct":[["AbsoluteCapacity",""],["RelativeCapacity",""]]});
