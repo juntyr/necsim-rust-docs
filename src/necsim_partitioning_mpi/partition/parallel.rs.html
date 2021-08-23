@@ -408,15 +408,6 @@
 <span id="406">406</span>
 <span id="407">407</span>
 <span id="408">408</span>
-<span id="409">409</span>
-<span id="410">410</span>
-<span id="411">411</span>
-<span id="412">412</span>
-<span id="413">413</span>
-<span id="414">414</span>
-<span id="415">415</span>
-<span id="416">416</span>
-<span id="417">417</span>
 </pre><pre class="rust">
 <span class="kw">use</span> <span class="ident">std</span>::{
     <span class="ident">fmt</span>,
@@ -426,7 +417,7 @@
 };
 
 <span class="kw">use</span> <span class="ident">mpi</span>::{
-    <span class="ident">collective</span>::{<span class="ident">CommunicatorCollectives</span>, <span class="ident">Root</span>, <span class="ident">SystemOperation</span>, <span class="ident">UserOperation</span>},
+    <span class="ident">collective</span>::{<span class="ident">CommunicatorCollectives</span>, <span class="ident">Root</span>, <span class="ident">SystemOperation</span>},
     <span class="ident">datatype::Equivalence</span>,
     <span class="ident">environment::Universe</span>,
     <span class="ident">point_to_point</span>::{<span class="ident">Destination</span>, <span class="ident">Source</span>},
@@ -447,7 +438,10 @@
 <span class="kw">use</span> <span class="ident">necsim_impls_std::event_log::recorder::EventLogRecorder</span>;
 <span class="kw">use</span> <span class="ident">necsim_partitioning_core</span>::{<span class="ident">iterator::ImmigrantPopIterator</span>, <span class="ident">LocalPartition</span>, <span class="ident">MigrationMode</span>};
 
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::MpiPartitioning</span>;
+<span class="kw">use</span> <span class="kw">crate</span>::{
+    <span class="ident">partition::utils</span>::{<span class="ident">reduce_lexicographic_min_time_partition</span>, <span class="ident">TimePartition</span>},
+    <span class="ident">MpiPartitioning</span>,
+};
 
 <span class="kw">static</span> <span class="kw-2">mut</span> <span class="ident">MPI_LOCAL_CONTINUE</span>: <span class="ident">bool</span> <span class="op">=</span> <span class="bool-val">false</span>;
 <span class="kw">static</span> <span class="kw-2">mut</span> <span class="ident">MPI_GLOBAL_CONTINUE</span>: <span class="ident">bool</span> <span class="op">=</span> <span class="bool-val">false</span>;
@@ -683,32 +677,20 @@
     }
 
     <span class="kw">fn</span> <span class="ident">reduce_vote_min_time</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">local_time</span>: <span class="ident">PositiveF64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">PositiveF64</span>, <span class="ident">PositiveF64</span><span class="op">&gt;</span> {
-        <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">mpi::traits::Equivalence</span>, <span class="ident">PartialEq</span>, <span class="ident">Copy</span>, <span class="ident">Clone</span>)]</span>
-        <span class="kw">struct</span> <span class="ident">TimePartition</span>(<span class="ident">PositiveF64</span>, <span class="ident">u32</span>);
+        <span class="kw">let</span> <span class="ident">local_partition_rank</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">get_partition_rank</span>();
 
-        <span class="kw">let</span> <span class="ident">local_time_partition</span> <span class="op">=</span> <span class="ident">TimePartition</span>(<span class="ident">local_time</span>, <span class="self">self</span>.<span class="ident">get_partition_rank</span>());
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">global_min_time_partition</span> <span class="op">=</span> <span class="ident">local_time_partition</span>;
-
-        <span class="self">self</span>.<span class="ident">world</span>.<span class="ident">all_reduce_into</span>(
-            <span class="kw-2">&amp;</span><span class="ident">local_time_partition</span>,
-            <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">global_min_time_partition</span>,
-            <span class="kw-2">&amp;</span><span class="ident">UserOperation::commutative</span>(<span class="op">|</span><span class="ident">x</span>, <span class="ident">acc</span><span class="op">|</span> {
-                <span class="kw">let</span> <span class="ident">x</span>: <span class="kw-2">&amp;</span>[<span class="ident">TimePartition</span>] <span class="op">=</span> <span class="ident">x</span>.<span class="ident">downcast</span>().<span class="ident">unwrap</span>();
-                <span class="kw">let</span> <span class="ident">acc</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">TimePartition</span>] <span class="op">=</span> <span class="ident">acc</span>.<span class="ident">downcast</span>().<span class="ident">unwrap</span>();
-
-                <span class="comment">// Lexicographic min reduction, by time first then partition rank</span>
-                <span class="kw">for</span> (<span class="kw-2">&amp;</span><span class="ident">x</span>, <span class="ident">acc</span>) <span class="kw">in</span> <span class="ident">x</span>.<span class="ident">iter</span>().<span class="ident">zip</span>(<span class="ident">acc</span>) {
-                    <span class="kw">if</span> <span class="ident">x</span>.<span class="number">0</span> <span class="op">&lt;</span><span class="op">=</span> <span class="ident">acc</span>.<span class="number">0</span> <span class="op">&amp;&amp;</span> <span class="ident">x</span>.<span class="number">1</span> <span class="op">&lt;</span> <span class="ident">acc</span>.<span class="number">1</span> {
-                        <span class="kw-2">*</span><span class="ident">acc</span> <span class="op">=</span> <span class="ident">x</span>;
-                    }
-                }
-            }),
+        <span class="kw">let</span> <span class="ident">global_min_time_partition</span> <span class="op">=</span> <span class="ident">reduce_lexicographic_min_time_partition</span>(
+            <span class="self">self</span>.<span class="ident">world</span>,
+            <span class="ident">TimePartition</span> {
+                <span class="ident">time</span>: <span class="ident">local_time</span>,
+                <span class="ident">partition</span>: <span class="ident">local_partition_rank</span>,
+            },
         );
 
-        <span class="kw">if</span> <span class="ident">global_min_time_partition</span>.<span class="number">1</span> <span class="op">=</span><span class="op">=</span> <span class="ident">local_time_partition</span>.<span class="number">1</span> {
+        <span class="kw">if</span> <span class="ident">global_min_time_partition</span>.<span class="ident">partition</span> <span class="op">=</span><span class="op">=</span> <span class="ident">local_partition_rank</span> {
             <span class="prelude-val">Ok</span>(<span class="ident">local_time</span>)
         } <span class="kw">else</span> {
-            <span class="prelude-val">Err</span>(<span class="ident">global_min_time_partition</span>.<span class="number">0</span>)
+            <span class="prelude-val">Err</span>(<span class="ident">global_min_time_partition</span>.<span class="ident">time</span>)
         }
     }
 
