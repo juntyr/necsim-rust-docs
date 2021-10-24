@@ -1,1 +1,1 @@
-initSidebarItems({"trait":[["HabitatPrimeableRng",""],["PrimeableRng",""],["RngCore",""],["RngSampler",""],["SplittableRng",""]]});
+initSidebarItems({"trait":[["HabitatPrimeableRng",""],["PrimeableRng",""],["RngCore",""],["RngSampler",""],["SeedableRng",""],["SplittableRng",""]]});

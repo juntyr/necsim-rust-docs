@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["ValueBuffer",""]]});
+initSidebarItems({"struct":[["ValueBuffer",""],["ValueRefMut",""]]});

@@ -1,6 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `rustcoalescence/algorithms/cuda/src/lib.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>lib.rs - source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script id="default-settings"></script><script src="../../storage.js"></script><script src="../../crates.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../favicon.svg">
-<link rel="alternate icon" type="image/png" href="../../favicon-16x16.png">
-<link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../rustcoalescence_algorithms_cuda/index.html'><div class='logo-container rust-logo'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img src="../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img src="../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `rustcoalescence&#x2F;algorithms&#x2F;cuda&#x2F;src&#x2F;lib.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>lib.rs - source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../storage.js"></script><script src="../../crates.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../rustcoalescence_algorithms_cuda/index.html'><div class='logo-container rust-logo'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -172,25 +170,152 @@
 <span id="170">170</span>
 <span id="171">171</span>
 <span id="172">172</span>
-</pre><pre class="rust">
-<span class="attribute">#![<span class="ident">deny</span>(<span class="ident">clippy::pedantic</span>)]</span>
+<span id="173">173</span>
+<span id="174">174</span>
+<span id="175">175</span>
+<span id="176">176</span>
+<span id="177">177</span>
+<span id="178">178</span>
+<span id="179">179</span>
+<span id="180">180</span>
+<span id="181">181</span>
+<span id="182">182</span>
+<span id="183">183</span>
+<span id="184">184</span>
+<span id="185">185</span>
+<span id="186">186</span>
+<span id="187">187</span>
+<span id="188">188</span>
+<span id="189">189</span>
+<span id="190">190</span>
+<span id="191">191</span>
+<span id="192">192</span>
+<span id="193">193</span>
+<span id="194">194</span>
+<span id="195">195</span>
+<span id="196">196</span>
+<span id="197">197</span>
+<span id="198">198</span>
+<span id="199">199</span>
+<span id="200">200</span>
+<span id="201">201</span>
+<span id="202">202</span>
+<span id="203">203</span>
+<span id="204">204</span>
+<span id="205">205</span>
+<span id="206">206</span>
+<span id="207">207</span>
+<span id="208">208</span>
+<span id="209">209</span>
+<span id="210">210</span>
+<span id="211">211</span>
+<span id="212">212</span>
+<span id="213">213</span>
+<span id="214">214</span>
+<span id="215">215</span>
+<span id="216">216</span>
+<span id="217">217</span>
+<span id="218">218</span>
+<span id="219">219</span>
+<span id="220">220</span>
+<span id="221">221</span>
+<span id="222">222</span>
+<span id="223">223</span>
+<span id="224">224</span>
+<span id="225">225</span>
+<span id="226">226</span>
+<span id="227">227</span>
+<span id="228">228</span>
+<span id="229">229</span>
+<span id="230">230</span>
+<span id="231">231</span>
+<span id="232">232</span>
+<span id="233">233</span>
+<span id="234">234</span>
+<span id="235">235</span>
+<span id="236">236</span>
+<span id="237">237</span>
+<span id="238">238</span>
+<span id="239">239</span>
+<span id="240">240</span>
+<span id="241">241</span>
+<span id="242">242</span>
+<span id="243">243</span>
+<span id="244">244</span>
+<span id="245">245</span>
+<span id="246">246</span>
+<span id="247">247</span>
+<span id="248">248</span>
+<span id="249">249</span>
+<span id="250">250</span>
+<span id="251">251</span>
+<span id="252">252</span>
+<span id="253">253</span>
+<span id="254">254</span>
+<span id="255">255</span>
+<span id="256">256</span>
+<span id="257">257</span>
+<span id="258">258</span>
+<span id="259">259</span>
+<span id="260">260</span>
+<span id="261">261</span>
+<span id="262">262</span>
+<span id="263">263</span>
+<span id="264">264</span>
+<span id="265">265</span>
+<span id="266">266</span>
+<span id="267">267</span>
+<span id="268">268</span>
+<span id="269">269</span>
+<span id="270">270</span>
+<span id="271">271</span>
+<span id="272">272</span>
+<span id="273">273</span>
+<span id="274">274</span>
+<span id="275">275</span>
+<span id="276">276</span>
+<span id="277">277</span>
+<span id="278">278</span>
+<span id="279">279</span>
+<span id="280">280</span>
+<span id="281">281</span>
+<span id="282">282</span>
+<span id="283">283</span>
+<span id="284">284</span>
+<span id="285">285</span>
+<span id="286">286</span>
+<span id="287">287</span>
+<span id="288">288</span>
+<span id="289">289</span>
+<span id="290">290</span>
+<span id="291">291</span>
+<span id="292">292</span>
+<span id="293">293</span>
+<span id="294">294</span>
+<span id="295">295</span>
+</pre><pre class="rust"><code><span class="attribute">#![<span class="ident">deny</span>(<span class="ident">clippy::pedantic</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">option_result_unwrap_unchecked</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">drain_filter</span>)]</span>
+<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">associated_type_defaults</span>)]</span>
+<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_eval_limit</span>)]</span>
+<span class="attribute">#![<span class="ident">const_eval_limit</span> <span class="op">=</span> <span class="string">&quot;1000000000000&quot;</span>]</span>
+<span class="attribute">#![<span class="ident">allow</span>(<span class="ident">incomplete_features</span>)]</span>
+<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">specialization</span>)]</span>
 
 <span class="attribute">#[<span class="ident">macro_use</span>]</span>
 <span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">serde_derive_state</span>;
 
-<span class="kw">use</span> <span class="ident">std::collections::VecDeque</span>;
+<span class="kw">use</span> <span class="ident">std::marker::PhantomData</span>;
 
 <span class="kw">use</span> <span class="ident">necsim_core</span>::{
-    <span class="ident">cogs::RngCore</span>,
+    <span class="ident">cogs::SeedableRng</span>,
     <span class="ident">lineage</span>::{<span class="ident">GlobalLineageReference</span>, <span class="ident">Lineage</span>},
     <span class="ident">reporter::Reporter</span>,
-    <span class="ident">simulation::Simulation</span>,
+    <span class="ident">simulation::SimulationBuilder</span>,
 };
 <span class="kw">use</span> <span class="ident">necsim_core_bond::NonNegativeF64</span>;
 
-<span class="kw">use</span> <span class="ident">necsim_impls_cuda::cogs::rng::CudaRng</span>;
+<span class="kw">use</span> <span class="ident">necsim_impls_cuda::cogs</span>::{<span class="ident">maths::NvptxMathsCore</span>, <span class="ident">rng::CudaRng</span>};
 <span class="kw">use</span> <span class="ident">necsim_impls_no_std::cogs</span>::{
     <span class="ident">active_lineage_sampler::independent</span>::{
         <span class="ident">event_time_sampler::exp::ExpEventTimeSampler</span>, <span class="ident">IndependentActiveLineageSampler</span>,
@@ -211,7 +336,6 @@
 
 <span class="kw">use</span> <span class="ident">rust_cuda</span>::{
     <span class="ident">common::RustToCuda</span>,
-    <span class="ident">host::CudaDropWrapper</span>,
     <span class="ident">rustacuda</span>::{
         <span class="ident">function</span>::{<span class="ident">BlockSize</span>, <span class="ident">GridSize</span>},
         <span class="ident">prelude</span>::{<span class="ident">Stream</span>, <span class="ident">StreamFlags</span>},
@@ -228,8 +352,9 @@
     <span class="ident">CudaArguments</span>, <span class="ident">IsolatedParallelismMode</span>, <span class="ident">MonolithicParallelismMode</span>, <span class="ident">ParallelismMode</span>,
 };
 
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::kernel::SimulationKernel</span>;
 <span class="kw">use</span> <span class="ident">cuda::with_initialised_cuda</span>;
+
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::kernel::SimulationKernel</span>;
 
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::module_name_repetitions</span>, <span class="ident">clippy::empty_enum</span>)]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">CudaAlgorithm</span> {}
@@ -239,27 +364,140 @@
 }
 
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::type_complexity</span>)]</span>
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">O</span>: <span class="ident">Scenario</span><span class="op">&lt;</span><span class="ident">CudaRng</span><span class="op">&lt;</span><span class="ident">WyHash</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="ident">Algorithm</span><span class="op">&lt;</span><span class="ident">O</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">CudaAlgorithm</span>
+<span class="kw">impl</span><span class="op">&lt;</span>
+        <span class="ident">O</span>: <span class="ident">Scenario</span><span class="op">&lt;</span><span class="ident">NvptxMathsCore</span>, <span class="ident">CudaRng</span><span class="op">&lt;</span><span class="ident">NvptxMathsCore</span>, <span class="ident">WyHash</span><span class="op">&lt;</span><span class="ident">NvptxMathsCore</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+        <span class="ident">R</span>: <span class="ident">Reporter</span>,
+        <span class="ident">P</span>: <span class="ident">LocalPartition</span><span class="op">&lt;</span><span class="ident">R</span><span class="op">&gt;</span>,
+    <span class="op">&gt;</span> <span class="ident">Algorithm</span><span class="op">&lt;</span><span class="ident">O</span>, <span class="ident">R</span>, <span class="ident">P</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">CudaAlgorithm</span>
 <span class="kw">where</span>
     <span class="ident">O::Habitat</span>: <span class="ident">RustToCuda</span>,
-    <span class="ident">O::DispersalSampler</span><span class="op">&lt;</span><span class="ident">InMemoryPackedAliasDispersalSampler</span><span class="op">&lt;</span><span class="ident">O::Habitat</span>, <span class="ident">CudaRng</span><span class="op">&lt;</span><span class="ident">WyHash</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>:
-        <span class="ident">RustToCuda</span>,
+    <span class="ident">O::DispersalSampler</span><span class="op">&lt;</span>
+        <span class="ident">InMemoryPackedAliasDispersalSampler</span><span class="op">&lt;</span>
+            <span class="ident">NvptxMathsCore</span>,
+            <span class="ident">O::Habitat</span>,
+            <span class="ident">CudaRng</span><span class="op">&lt;</span><span class="ident">NvptxMathsCore</span>, <span class="ident">WyHash</span><span class="op">&lt;</span><span class="ident">NvptxMathsCore</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+        <span class="op">&gt;</span>,
+    <span class="op">&gt;</span>: <span class="ident">RustToCuda</span>,
     <span class="ident">O::TurnoverRate</span>: <span class="ident">RustToCuda</span>,
     <span class="ident">O::SpeciationProbability</span>: <span class="ident">RustToCuda</span>,
+    <span class="ident">SimulationKernel</span><span class="op">&lt;</span>
+        <span class="ident">NvptxMathsCore</span>,
+        <span class="ident">O::Habitat</span>,
+        <span class="ident">CudaRng</span><span class="op">&lt;</span><span class="ident">NvptxMathsCore</span>, <span class="ident">WyHash</span><span class="op">&lt;</span><span class="ident">NvptxMathsCore</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+        <span class="ident">GlobalLineageReference</span>,
+        <span class="ident">IndependentLineageStore</span><span class="op">&lt;</span><span class="ident">NvptxMathsCore</span>, <span class="ident">O::Habitat</span><span class="op">&gt;</span>,
+        <span class="ident">NeverEmigrationExit</span>,
+        <span class="ident">O::DispersalSampler</span><span class="op">&lt;</span>
+            <span class="ident">InMemoryPackedAliasDispersalSampler</span><span class="op">&lt;</span>
+                <span class="ident">NvptxMathsCore</span>,
+                <span class="ident">O::Habitat</span>,
+                <span class="ident">CudaRng</span><span class="op">&lt;</span><span class="ident">NvptxMathsCore</span>, <span class="ident">WyHash</span><span class="op">&lt;</span><span class="ident">NvptxMathsCore</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+            <span class="op">&gt;</span>,
+        <span class="op">&gt;</span>,
+        <span class="ident">IndependentCoalescenceSampler</span><span class="op">&lt;</span><span class="ident">NvptxMathsCore</span>, <span class="ident">O::Habitat</span><span class="op">&gt;</span>,
+        <span class="ident">O::TurnoverRate</span>,
+        <span class="ident">O::SpeciationProbability</span>,
+        <span class="ident">IndependentEventSampler</span><span class="op">&lt;</span>
+            <span class="ident">NvptxMathsCore</span>,
+            <span class="ident">O::Habitat</span>,
+            <span class="ident">CudaRng</span><span class="op">&lt;</span><span class="ident">NvptxMathsCore</span>, <span class="ident">WyHash</span><span class="op">&lt;</span><span class="ident">NvptxMathsCore</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+            <span class="ident">NeverEmigrationExit</span>,
+            <span class="ident">O::DispersalSampler</span><span class="op">&lt;</span>
+                <span class="ident">InMemoryPackedAliasDispersalSampler</span><span class="op">&lt;</span>
+                    <span class="ident">NvptxMathsCore</span>,
+                    <span class="ident">O::Habitat</span>,
+                    <span class="ident">CudaRng</span><span class="op">&lt;</span><span class="ident">NvptxMathsCore</span>, <span class="ident">WyHash</span><span class="op">&lt;</span><span class="ident">NvptxMathsCore</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+                <span class="op">&gt;</span>,
+            <span class="op">&gt;</span>,
+            <span class="ident">O::TurnoverRate</span>,
+            <span class="ident">O::SpeciationProbability</span>,
+        <span class="op">&gt;</span>,
+        <span class="ident">NeverImmigrationEntry</span>,
+        <span class="ident">IndependentActiveLineageSampler</span><span class="op">&lt;</span>
+            <span class="ident">NvptxMathsCore</span>,
+            <span class="ident">O::Habitat</span>,
+            <span class="ident">CudaRng</span><span class="op">&lt;</span><span class="ident">NvptxMathsCore</span>, <span class="ident">WyHash</span><span class="op">&lt;</span><span class="ident">NvptxMathsCore</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+            <span class="ident">NeverEmigrationExit</span>,
+            <span class="ident">O::DispersalSampler</span><span class="op">&lt;</span>
+                <span class="ident">InMemoryPackedAliasDispersalSampler</span><span class="op">&lt;</span>
+                    <span class="ident">NvptxMathsCore</span>,
+                    <span class="ident">O::Habitat</span>,
+                    <span class="ident">CudaRng</span><span class="op">&lt;</span><span class="ident">NvptxMathsCore</span>, <span class="ident">WyHash</span><span class="op">&lt;</span><span class="ident">NvptxMathsCore</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+                <span class="op">&gt;</span>,
+            <span class="op">&gt;</span>,
+            <span class="ident">O::TurnoverRate</span>,
+            <span class="ident">O::SpeciationProbability</span>,
+            <span class="ident">ExpEventTimeSampler</span>,
+        <span class="op">&gt;</span>,
+        <span class="ident">R::ReportSpeciation</span>,
+        <span class="ident">R::ReportDispersal</span>,
+    <span class="op">&gt;</span>: <span class="ident">rustcoalescence_algorithms_cuda_kernel::Kernel</span><span class="op">&lt;</span>
+        <span class="ident">NvptxMathsCore</span>,
+        <span class="ident">O::Habitat</span>,
+        <span class="ident">CudaRng</span><span class="op">&lt;</span><span class="ident">NvptxMathsCore</span>, <span class="ident">WyHash</span><span class="op">&lt;</span><span class="ident">NvptxMathsCore</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+        <span class="ident">GlobalLineageReference</span>,
+        <span class="ident">IndependentLineageStore</span><span class="op">&lt;</span><span class="ident">NvptxMathsCore</span>, <span class="ident">O::Habitat</span><span class="op">&gt;</span>,
+        <span class="ident">NeverEmigrationExit</span>,
+        <span class="ident">O::DispersalSampler</span><span class="op">&lt;</span>
+            <span class="ident">InMemoryPackedAliasDispersalSampler</span><span class="op">&lt;</span>
+                <span class="ident">NvptxMathsCore</span>,
+                <span class="ident">O::Habitat</span>,
+                <span class="ident">CudaRng</span><span class="op">&lt;</span><span class="ident">NvptxMathsCore</span>, <span class="ident">WyHash</span><span class="op">&lt;</span><span class="ident">NvptxMathsCore</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+            <span class="op">&gt;</span>,
+        <span class="op">&gt;</span>,
+        <span class="ident">IndependentCoalescenceSampler</span><span class="op">&lt;</span><span class="ident">NvptxMathsCore</span>, <span class="ident">O::Habitat</span><span class="op">&gt;</span>,
+        <span class="ident">O::TurnoverRate</span>,
+        <span class="ident">O::SpeciationProbability</span>,
+        <span class="ident">IndependentEventSampler</span><span class="op">&lt;</span>
+            <span class="ident">NvptxMathsCore</span>,
+            <span class="ident">O::Habitat</span>,
+            <span class="ident">CudaRng</span><span class="op">&lt;</span><span class="ident">NvptxMathsCore</span>, <span class="ident">WyHash</span><span class="op">&lt;</span><span class="ident">NvptxMathsCore</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+            <span class="ident">NeverEmigrationExit</span>,
+            <span class="ident">O::DispersalSampler</span><span class="op">&lt;</span>
+                <span class="ident">InMemoryPackedAliasDispersalSampler</span><span class="op">&lt;</span>
+                    <span class="ident">NvptxMathsCore</span>,
+                    <span class="ident">O::Habitat</span>,
+                    <span class="ident">CudaRng</span><span class="op">&lt;</span><span class="ident">NvptxMathsCore</span>, <span class="ident">WyHash</span><span class="op">&lt;</span><span class="ident">NvptxMathsCore</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+                <span class="op">&gt;</span>,
+            <span class="op">&gt;</span>,
+            <span class="ident">O::TurnoverRate</span>,
+            <span class="ident">O::SpeciationProbability</span>,
+        <span class="op">&gt;</span>,
+        <span class="ident">NeverImmigrationEntry</span>,
+        <span class="ident">IndependentActiveLineageSampler</span><span class="op">&lt;</span>
+            <span class="ident">NvptxMathsCore</span>,
+            <span class="ident">O::Habitat</span>,
+            <span class="ident">CudaRng</span><span class="op">&lt;</span><span class="ident">NvptxMathsCore</span>, <span class="ident">WyHash</span><span class="op">&lt;</span><span class="ident">NvptxMathsCore</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+            <span class="ident">NeverEmigrationExit</span>,
+            <span class="ident">O::DispersalSampler</span><span class="op">&lt;</span>
+                <span class="ident">InMemoryPackedAliasDispersalSampler</span><span class="op">&lt;</span>
+                    <span class="ident">NvptxMathsCore</span>,
+                    <span class="ident">O::Habitat</span>,
+                    <span class="ident">CudaRng</span><span class="op">&lt;</span><span class="ident">NvptxMathsCore</span>, <span class="ident">WyHash</span><span class="op">&lt;</span><span class="ident">NvptxMathsCore</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+                <span class="op">&gt;</span>,
+            <span class="op">&gt;</span>,
+            <span class="ident">O::TurnoverRate</span>,
+            <span class="ident">O::SpeciationProbability</span>,
+            <span class="ident">ExpEventTimeSampler</span>,
+        <span class="op">&gt;</span>,
+        <span class="ident">R::ReportSpeciation</span>,
+        <span class="ident">R::ReportDispersal</span>,
+    <span class="op">&gt;</span>,
 {
     <span class="kw">type</span> <span class="ident">Error</span> <span class="op">=</span> <span class="ident">anyhow::Error</span>;
     <span class="kw">type</span> <span class="ident">LineageReference</span> <span class="op">=</span> <span class="ident">GlobalLineageReference</span>;
-    <span class="kw">type</span> <span class="ident">LineageStore</span> <span class="op">=</span> <span class="ident">IndependentLineageStore</span><span class="op">&lt;</span><span class="ident">O::Habitat</span><span class="op">&gt;</span>;
-    <span class="kw">type</span> <span class="ident">Rng</span> <span class="op">=</span> <span class="ident">CudaRng</span><span class="op">&lt;</span><span class="ident">WyHash</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">LineageStore</span> <span class="op">=</span> <span class="ident">IndependentLineageStore</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::MathsCore</span>, <span class="ident">O::Habitat</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">MathsCore</span> <span class="op">=</span> <span class="ident">NvptxMathsCore</span>;
+    <span class="kw">type</span> <span class="ident">Rng</span> <span class="op">=</span> <span class="ident">CudaRng</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::MathsCore</span>, <span class="ident">WyHash</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::MathsCore</span><span class="op">&gt;</span><span class="op">&gt;</span>;
 
-    <span class="kw">fn</span> <span class="ident">initialise_and_simulate</span><span class="op">&lt;</span><span class="ident">I</span>: <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">u64</span><span class="op">&gt;</span>, <span class="ident">R</span>: <span class="ident">Reporter</span>, <span class="ident">P</span>: <span class="ident">LocalPartition</span><span class="op">&lt;</span><span class="ident">R</span><span class="op">&gt;</span><span class="op">&gt;</span>(
-        <span class="ident">args</span>: <span class="self">Self</span><span class="ident">::Arguments</span>,
+    <span class="kw">fn</span> <span class="ident">initialise_and_simulate</span><span class="op">&lt;</span><span class="ident">I</span>: <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">u64</span><span class="op">&gt;</span><span class="op">&gt;</span>(
+        <span class="ident">args</span>: <span class="ident"><span class="self">Self</span>::Arguments</span>,
         <span class="ident">seed</span>: <span class="ident">u64</span>,
         <span class="ident">scenario</span>: <span class="ident">O</span>,
-        <span class="ident">pre_sampler</span>: <span class="ident">OriginPreSampler</span><span class="op">&lt;</span><span class="ident">I</span><span class="op">&gt;</span>,
+        <span class="ident">pre_sampler</span>: <span class="ident">OriginPreSampler</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::MathsCore</span>, <span class="ident">I</span><span class="op">&gt;</span>,
         <span class="ident">local_partition</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">P</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(<span class="ident">NonNegativeF64</span>, <span class="ident">u64</span>), <span class="self">Self</span><span class="ident">::Error</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">lineages</span>: <span class="ident">VecDeque</span><span class="op">&lt;</span><span class="ident">Lineage</span><span class="op">&gt;</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">args</span>.<span class="ident">parallelism_mode</span> {
+    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(<span class="ident">NonNegativeF64</span>, <span class="ident">u64</span>), <span class="ident"><span class="self">Self</span>::Error</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="ident">lineages</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Lineage</span><span class="op">&gt;</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">args</span>.<span class="ident">parallelism_mode</span> {
             <span class="comment">// Apply no lineage origin partitioning in the `Monolithic` mode</span>
             <span class="ident">ParallelismMode::Monolithic</span>(..) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">scenario</span>
                 .<span class="ident">sample_habitat</span>(<span class="ident">pre_sampler</span>)
@@ -286,7 +524,11 @@
         };
 
         <span class="kw">let</span> (<span class="ident">habitat</span>, <span class="ident">dispersal_sampler</span>, <span class="ident">turnover_rate</span>, <span class="ident">speciation_probability</span>) <span class="op">=</span>
-            <span class="ident">scenario</span>.<span class="ident">build</span>::<span class="op">&lt;</span><span class="ident">InMemoryPackedAliasDispersalSampler</span><span class="op">&lt;</span><span class="ident">O::Habitat</span>, <span class="ident">CudaRng</span><span class="op">&lt;</span><span class="ident">WyHash</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>();
+            <span class="ident">scenario</span>.<span class="ident">build</span>::<span class="op">&lt;</span><span class="ident">InMemoryPackedAliasDispersalSampler</span><span class="op">&lt;</span>
+                <span class="ident"><span class="self">Self</span>::MathsCore</span>,
+                <span class="ident">O::Habitat</span>,
+                <span class="ident">CudaRng</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::MathsCore</span>, <span class="ident">WyHash</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::MathsCore</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+            <span class="op">&gt;</span><span class="op">&gt;</span>();
         <span class="kw">let</span> <span class="ident">rng</span> <span class="op">=</span> <span class="ident">CudaRng::from</span>(<span class="ident">WyHash::seed_from_u64</span>(<span class="ident">seed</span>));
         <span class="kw">let</span> <span class="ident">lineage_store</span> <span class="op">=</span> <span class="ident">IndependentLineageStore::default</span>();
         <span class="kw">let</span> <span class="ident">emigration_exit</span> <span class="op">=</span> <span class="ident">NeverEmigrationExit::default</span>();
@@ -297,20 +539,22 @@
         <span class="kw">let</span> <span class="ident">active_lineage_sampler</span> <span class="op">=</span>
             <span class="ident">IndependentActiveLineageSampler::empty</span>(<span class="ident">ExpEventTimeSampler::new</span>(<span class="ident">args</span>.<span class="ident">delta_t</span>));
 
-        <span class="kw">let</span> <span class="ident">simulation</span> <span class="op">=</span> <span class="ident">Simulation::builder</span>()
-            .<span class="ident">habitat</span>(<span class="ident">habitat</span>)
-            .<span class="ident">rng</span>(<span class="ident">rng</span>)
-            .<span class="ident">speciation_probability</span>(<span class="ident">speciation_probability</span>)
-            .<span class="ident">dispersal_sampler</span>(<span class="ident">dispersal_sampler</span>)
-            .<span class="ident">lineage_reference</span>(<span class="ident">std::marker::PhantomData</span>::<span class="op">&lt;</span><span class="ident">GlobalLineageReference</span><span class="op">&gt;</span>)
-            .<span class="ident">lineage_store</span>(<span class="ident">lineage_store</span>)
-            .<span class="ident">emigration_exit</span>(<span class="ident">emigration_exit</span>)
-            .<span class="ident">coalescence_sampler</span>(<span class="ident">coalescence_sampler</span>)
-            .<span class="ident">turnover_rate</span>(<span class="ident">turnover_rate</span>)
-            .<span class="ident">event_sampler</span>(<span class="ident">event_sampler</span>)
-            .<span class="ident">immigration_entry</span>(<span class="ident">immigration_entry</span>)
-            .<span class="ident">active_lineage_sampler</span>(<span class="ident">active_lineage_sampler</span>)
-            .<span class="ident">build</span>();
+        <span class="kw">let</span> <span class="ident">simulation</span> <span class="op">=</span> <span class="ident">SimulationBuilder</span> {
+            <span class="ident">maths</span>: <span class="ident">PhantomData</span>::<span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::MathsCore</span><span class="op">&gt;</span>,
+            <span class="ident">habitat</span>,
+            <span class="ident">lineage_reference</span>: <span class="ident">PhantomData</span>::<span class="op">&lt;</span><span class="ident">GlobalLineageReference</span><span class="op">&gt;</span>,
+            <span class="ident">lineage_store</span>,
+            <span class="ident">dispersal_sampler</span>,
+            <span class="ident">coalescence_sampler</span>,
+            <span class="ident">turnover_rate</span>,
+            <span class="ident">speciation_probability</span>,
+            <span class="ident">emigration_exit</span>,
+            <span class="ident">event_sampler</span>,
+            <span class="ident">active_lineage_sampler</span>,
+            <span class="ident">rng</span>,
+            <span class="ident">immigration_entry</span>,
+        }
+        .<span class="ident">build</span>();
 
         <span class="comment">// Note: It seems to be more performant to spawn smaller blocks</span>
         <span class="kw">let</span> <span class="ident">block_size</span> <span class="op">=</span> <span class="ident">BlockSize::x</span>(<span class="ident">args</span>.<span class="ident">block_size</span>);
@@ -327,23 +571,24 @@
         };
 
         <span class="ident">with_initialised_cuda</span>(<span class="ident">args</span>.<span class="ident">device</span>, <span class="op">|</span><span class="op">|</span> {
-            <span class="kw">let</span> <span class="ident">stream</span> <span class="op">=</span> <span class="ident">CudaDropWrapper::from</span>(<span class="ident">Stream::new</span>(<span class="ident">StreamFlags::NON_BLOCKING</span>, <span class="prelude-val">None</span>)<span class="question-mark">?</span>);
+            <span class="kw">let</span> <span class="ident">kernel</span> <span class="op">=</span> <span class="ident">SimulationKernel::try_new</span>(
+                <span class="ident">Stream::new</span>(<span class="ident">StreamFlags::NON_BLOCKING</span>, <span class="prelude-val">None</span>)<span class="question-mark">?</span>,
+                <span class="ident">grid_size</span>.<span class="ident">clone</span>(),
+                <span class="ident">block_size</span>.<span class="ident">clone</span>(),
+            )<span class="question-mark">?</span>;
 
-            <span class="ident">SimulationKernel::with_kernel</span>(<span class="ident">args</span>.<span class="ident">ptx_jit</span>, <span class="op">|</span><span class="ident">kernel</span><span class="op">|</span> {
-                <span class="ident">info::print_kernel_function_attributes</span>(<span class="ident">kernel</span>.<span class="ident">function</span>());
-
-                <span class="ident">parallelisation::monolithic::simulate</span>(
-                    <span class="ident">simulation</span>,
-                    <span class="ident">kernel</span>,
-                    <span class="kw-2">&amp;</span><span class="ident">stream</span>,
-                    (<span class="ident">grid_size</span>, <span class="ident">block_size</span>, <span class="ident">args</span>.<span class="ident">dedup_cache</span>, <span class="ident">args</span>.<span class="ident">step_slice</span>),
-                    <span class="ident">lineages</span>,
-                    <span class="ident">event_slice</span>,
-                    <span class="ident">local_partition</span>,
-                )
-            })
+            <span class="ident">parallelisation::monolithic::simulate</span>(
+                <span class="ident">simulation</span>,
+                <span class="ident">kernel</span>,
+                (<span class="ident">grid_size</span>, <span class="ident">block_size</span>, <span class="ident">args</span>.<span class="ident">dedup_cache</span>, <span class="ident">args</span>.<span class="ident">step_slice</span>),
+                <span class="ident">lineages</span>,
+                <span class="ident">event_slice</span>,
+                <span class="ident">local_partition</span>,
+            )
         })
     }
 }
-</pre></div>
-</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../" data-current-crate="rustcoalescence_algorithms_cuda" data-search-index-js="../../search-index.js" data-search-js="../../search.js"></div><script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script></body></html>
+</code></pre></div>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../" data-current-crate="rustcoalescence_algorithms_cuda" data-search-index-js="../../search-index.js" data-search-js="../../search.js"></div>
+    <script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script>
+</body></html>

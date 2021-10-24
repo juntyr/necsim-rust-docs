@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["GlobalLineageReference",""],["Lineage",""],["MigratingLineage",""]]});
+initSidebarItems({"struct":[["GlobalLineageReference",""],["Lineage",""],["LineageInteraction",""],["MigratingLineage",""]]});

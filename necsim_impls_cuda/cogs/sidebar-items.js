@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["rng",""]]});
+initSidebarItems({"mod":[["maths",""],["rng",""]]});

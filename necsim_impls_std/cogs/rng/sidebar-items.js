@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["pcg",""],["std",""]]});
+initSidebarItems({"mod":[["pcg",""]]});

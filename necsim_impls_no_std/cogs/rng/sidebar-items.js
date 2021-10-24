@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["aes",""],["fixedseahash",""],["seahash",""],["wyhash",""],["wyrand",""]]});
+initSidebarItems({"mod":[["seahash",""],["wyhash",""]]});

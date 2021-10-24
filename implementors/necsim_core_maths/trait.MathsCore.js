@@ -1,0 +1,4 @@
+(function() {var implementors = {};
+implementors["necsim_core_maths"] = [];
+implementors["necsim_impls_cuda"] = [{"text":"impl <a class=\"trait\" href=\"necsim_core_maths/trait.MathsCore.html\" title=\"trait necsim_core_maths::MathsCore\">MathsCore</a> for <a class=\"enum\" href=\"necsim_impls_cuda/cogs/maths/enum.NvptxMathsCore.html\" title=\"enum necsim_impls_cuda::cogs::maths::NvptxMathsCore\">NvptxMathsCore</a>","synthetic":false,"types":["necsim_impls_cuda::cogs::maths::NvptxMathsCore"]}];
+if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

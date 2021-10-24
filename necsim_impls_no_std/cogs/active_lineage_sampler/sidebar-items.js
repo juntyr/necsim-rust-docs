@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["classical",""],["independent",""]]});
+initSidebarItems({"mod":[["classical",""],["independent",""],["singular",""]]});

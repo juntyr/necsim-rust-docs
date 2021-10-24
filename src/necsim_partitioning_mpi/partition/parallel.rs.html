@@ -1,6 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `necsim/partitioning/mpi/src/partition/parallel.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>parallel.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../favicon.svg">
-<link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png">
-<link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../necsim_partitioning_mpi/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img src="../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../settings.html" title="settings"><img src="../../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `necsim&#x2F;partitioning&#x2F;mpi&#x2F;src&#x2F;partition&#x2F;parallel.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>parallel.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../necsim_partitioning_mpi/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -408,8 +406,23 @@
 <span id="406">406</span>
 <span id="407">407</span>
 <span id="408">408</span>
-</pre><pre class="rust">
-<span class="kw">use</span> <span class="ident">std</span>::{
+<span id="409">409</span>
+<span id="410">410</span>
+<span id="411">411</span>
+<span id="412">412</span>
+<span id="413">413</span>
+<span id="414">414</span>
+<span id="415">415</span>
+<span id="416">416</span>
+<span id="417">417</span>
+<span id="418">418</span>
+<span id="419">419</span>
+<span id="420">420</span>
+<span id="421">421</span>
+<span id="422">422</span>
+<span id="423">423</span>
+<span id="424">424</span>
+</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">std</span>::{
     <span class="ident">fmt</span>,
     <span class="ident">marker::PhantomData</span>,
     <span class="ident">num::NonZeroU32</span>,
@@ -439,7 +452,7 @@
 <span class="kw">use</span> <span class="ident">necsim_partitioning_core</span>::{<span class="ident">iterator::ImmigrantPopIterator</span>, <span class="ident">LocalPartition</span>, <span class="ident">MigrationMode</span>};
 
 <span class="kw">use</span> <span class="kw">crate</span>::{
-    <span class="ident">partition::utils</span>::{<span class="ident">reduce_lexicographic_min_time_partition</span>, <span class="ident">TimePartition</span>},
+    <span class="ident">partition::utils</span>::{<span class="ident">reduce_lexicographic_min_time_rank</span>, <span class="ident">MpiMigratingLineage</span>},
     <span class="ident">MpiPartitioning</span>,
 };
 
@@ -466,7 +479,7 @@
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">R</span>: <span class="ident">Reporter</span><span class="op">&gt;</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">MpiParallelPartition</span><span class="op">&lt;</span><span class="ident">R</span><span class="op">&gt;</span> {
     <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">fmt</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
-        <span class="ident">fmt</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;MpiParallelPartition&quot;</span>).<span class="ident">finish</span>()
+        <span class="ident">fmt</span>.<span class="ident">debug_struct</span>(<span class="macro">stringify!</span>(<span class="ident">MpiParallelPartition</span>)).<span class="ident">finish</span>()
     }
 }
 
@@ -521,7 +534,7 @@
         <span class="self">Self</span> {
             <span class="ident">_universe</span>: <span class="ident">universe</span>,
             <span class="ident">world</span>,
-            <span class="ident">last_report_time</span>: <span class="ident">now</span>.<span class="ident">checked_sub</span>(<span class="self">Self</span><span class="ident">::MPI_PROGRESS_WAIT_TIME</span>).<span class="ident">unwrap_or</span>(<span class="ident">now</span>),
+            <span class="ident">last_report_time</span>: <span class="ident">now</span>.<span class="ident">checked_sub</span>(<span class="ident"><span class="self">Self</span>::MPI_PROGRESS_WAIT_TIME</span>).<span class="ident">unwrap_or</span>(<span class="ident">now</span>),
             <span class="ident">progress</span>: <span class="prelude-val">None</span>,
             <span class="ident">migration_buffers</span>: <span class="ident">migration_buffers</span>.<span class="ident">into_boxed_slice</span>(),
             <span class="ident">last_migration_times</span>: <span class="macro">vec!</span>[<span class="ident">now</span>; <span class="ident">world_size</span>].<span class="ident">into_boxed_slice</span>(),
@@ -540,7 +553,7 @@
     <span class="kw">type</span> <span class="ident">IsLive</span> <span class="op">=</span> <span class="ident">False</span>;
     <span class="kw">type</span> <span class="ident">Reporter</span> <span class="op">=</span> <span class="self">Self</span>;
 
-    <span class="kw">fn</span> <span class="ident">get_reporter</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span><span class="ident">::Reporter</span> {
+    <span class="kw">fn</span> <span class="ident">get_reporter</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident"><span class="self">Self</span>::Reporter</span> {
         <span class="self">self</span>
     }
 
@@ -565,7 +578,7 @@
         <span class="ident">emigrants</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">E</span>,
         <span class="ident">emigration_mode</span>: <span class="ident">MigrationMode</span>,
         <span class="ident">immigration_mode</span>: <span class="ident">MigrationMode</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span><span class="ident">::ImmigrantIterator</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
+    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::ImmigrantIterator</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
         <span class="kw">for</span> (<span class="ident">partition</span>, <span class="ident">emigrant</span>) <span class="kw">in</span> <span class="ident">emigrants</span> {
             <span class="self">self</span>.<span class="ident">migration_buffers</span>[<span class="ident">partition</span> <span class="kw">as</span> <span class="ident">usize</span>].<span class="ident">push</span>(<span class="ident">emigrant</span>);
         }
@@ -579,7 +592,7 @@
             <span class="ident">MigrationMode::Force</span> <span class="op">=</span><span class="op">&gt;</span> <span class="bool-val">true</span>,
             <span class="ident">MigrationMode::Default</span> <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="ident">now</span>.<span class="ident">duration_since</span>(<span class="self">self</span>.<span class="ident">last_migration_times</span>[<span class="ident">self_rank_index</span>])
-                    <span class="op">&gt;</span><span class="op">=</span> <span class="self">Self</span><span class="ident">::MPI_MIGRATION_WAIT_TIME</span>
+                    <span class="op">&gt;</span><span class="op">=</span> <span class="ident"><span class="self">Self</span>::MPI_MIGRATION_WAIT_TIME</span>
             },
             <span class="ident">MigrationMode::Hold</span> <span class="op">=</span><span class="op">&gt;</span> <span class="bool-val">false</span>,
         } {
@@ -595,7 +608,7 @@
             {
                 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::cast_sign_loss</span>)]</span>
                 <span class="kw">let</span> <span class="ident">number_immigrants</span> <span class="op">=</span>
-                    <span class="ident">status</span>.<span class="ident">count</span>(<span class="ident">MigratingLineage::equivalent_datatype</span>()) <span class="kw">as</span> <span class="ident">usize</span>;
+                    <span class="ident">status</span>.<span class="ident">count</span>(<span class="ident">MpiMigratingLineage::equivalent_datatype</span>()) <span class="kw">as</span> <span class="ident">usize</span>;
 
                 <span class="kw">let</span> <span class="ident">receive_start</span> <span class="op">=</span> <span class="ident">immigration_buffer</span>.<span class="ident">len</span>();
 
@@ -605,7 +618,19 @@
                     <span class="ident">immigration_buffer</span>.<span class="ident">set_len</span>(<span class="ident">receive_start</span> <span class="op">+</span> <span class="ident">number_immigrants</span>);
                 }
 
-                <span class="ident">msg</span>.<span class="ident">matched_receive_into</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">immigration_buffer</span>[<span class="ident">receive_start</span>..]);
+                <span class="comment">// Safety: `MpiMigratingLineage` is a transparent newtype wrapper around</span>
+                <span class="comment">//         `MigratingLineage`</span>
+                <span class="kw">let</span> <span class="ident">immigration_slice</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">MpiMigratingLineage</span>] <span class="op">=</span> <span class="kw">unsafe</span> {
+                    <span class="ident">std::slice::from_raw_parts_mut</span>(
+                        <span class="ident">immigration_buffer</span>
+                            .<span class="ident">as_mut_ptr</span>()
+                            .<span class="ident">cast</span>::<span class="op">&lt;</span><span class="ident">MpiMigratingLineage</span><span class="op">&gt;</span>()
+                            .<span class="ident">add</span>(<span class="ident">receive_start</span>),
+                        <span class="ident">number_immigrants</span>,
+                    )
+                };
+
+                <span class="ident">msg</span>.<span class="ident">matched_receive_into</span>(<span class="ident">immigration_slice</span>);
             }
         }
 
@@ -618,7 +643,7 @@
                     <span class="ident">MigrationMode::Force</span> <span class="op">=</span><span class="op">&gt;</span> <span class="bool-val">true</span>,
                     <span class="ident">MigrationMode::Default</span> <span class="op">=</span><span class="op">&gt;</span> {
                         <span class="ident">now</span>.<span class="ident">duration_since</span>(<span class="self">self</span>.<span class="ident">last_migration_times</span>[<span class="ident">rank_index</span>])
-                            <span class="op">&gt;</span><span class="op">=</span> <span class="self">Self</span><span class="ident">::MPI_PROGRESS_WAIT_TIME</span>
+                            <span class="op">&gt;</span><span class="op">=</span> <span class="ident"><span class="self">Self</span>::MPI_PROGRESS_WAIT_TIME</span>
                     },
                     <span class="ident">MigrationMode::Hold</span> <span class="op">=</span><span class="op">&gt;</span> <span class="bool-val">false</span>,
                 }
@@ -648,13 +673,22 @@
 
                     <span class="ident">std::mem::swap</span>(<span class="ident">emigration_buffer</span>, <span class="ident">local_emigration_buffer</span>);
 
+                    <span class="comment">// Safety: `MpiMigratingLineage` is a transparent newtype wrapper around</span>
+                    <span class="comment">//         `MigratingLineage`</span>
+                    <span class="kw">let</span> <span class="ident">local_emigration_slice</span>: <span class="kw-2">&amp;</span>[<span class="ident">MpiMigratingLineage</span>] <span class="op">=</span> <span class="kw">unsafe</span> {
+                        <span class="ident">std::slice::from_raw_parts</span>(
+                            <span class="ident">local_emigration_buffer</span>.<span class="ident">as_ptr</span>().<span class="ident">cast</span>(),
+                            <span class="ident">local_emigration_buffer</span>.<span class="ident">len</span>(),
+                        )
+                    };
+
                     <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::cast_possible_wrap</span>)]</span>
                     <span class="kw">let</span> <span class="ident">receiver_process</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">world</span>.<span class="ident">process_at_rank</span>(<span class="ident">rank</span> <span class="kw">as</span> <span class="ident">i32</span>);
 
                     <span class="self">self</span>.<span class="ident">emigration_requests</span>[<span class="ident">rank_index</span>] <span class="op">=</span>
                         <span class="prelude-val">Some</span>(<span class="ident">receiver_process</span>.<span class="ident">immediate_synchronous_send_with_tag</span>(
                             <span class="ident">StaticScope</span>,
-                            <span class="kw-2">&amp;</span><span class="ident">local_emigration_buffer</span>[..],
+                            <span class="ident">local_emigration_slice</span>,
                             <span class="ident">MpiPartitioning::MPI_MIGRATION_TAG</span>,
                         ));
                 }
@@ -679,18 +713,13 @@
     <span class="kw">fn</span> <span class="ident">reduce_vote_min_time</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">local_time</span>: <span class="ident">PositiveF64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">PositiveF64</span>, <span class="ident">PositiveF64</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">local_partition_rank</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">get_partition_rank</span>();
 
-        <span class="kw">let</span> <span class="ident">global_min_time_partition</span> <span class="op">=</span> <span class="ident">reduce_lexicographic_min_time_partition</span>(
-            <span class="self">self</span>.<span class="ident">world</span>,
-            <span class="ident">TimePartition</span> {
-                <span class="ident">time</span>: <span class="ident">local_time</span>,
-                <span class="ident">partition</span>: <span class="ident">local_partition_rank</span>,
-            },
-        );
+        <span class="kw">let</span> (<span class="ident">global_min_time</span>, <span class="ident">global_min_rank</span>) <span class="op">=</span>
+            <span class="ident">reduce_lexicographic_min_time_rank</span>(<span class="self">self</span>.<span class="ident">world</span>, <span class="ident">local_time</span>, <span class="ident">local_partition_rank</span>);
 
-        <span class="kw">if</span> <span class="ident">global_min_time_partition</span>.<span class="ident">partition</span> <span class="op">=</span><span class="op">=</span> <span class="ident">local_partition_rank</span> {
+        <span class="kw">if</span> <span class="ident">global_min_rank</span> <span class="op">=</span><span class="op">=</span> <span class="ident">local_partition_rank</span> {
             <span class="prelude-val">Ok</span>(<span class="ident">local_time</span>)
         } <span class="kw">else</span> {
-            <span class="prelude-val">Err</span>(<span class="ident">global_min_time_partition</span>.<span class="ident">time</span>)
+            <span class="prelude-val">Err</span>(<span class="ident">global_min_time</span>)
         }
     }
 
@@ -794,7 +823,7 @@
         <span class="kw">if</span> <span class="kw-2">*</span><span class="ident">remaining</span> <span class="op">&gt;</span> <span class="number">0</span> <span class="op">|</span><span class="op">|</span> <span class="self">self</span>.<span class="ident">barrier</span>.<span class="ident">is_none</span>() {
             <span class="kw">let</span> <span class="ident">now</span> <span class="op">=</span> <span class="ident">Instant::now</span>();
 
-            <span class="kw">if</span> <span class="ident">now</span>.<span class="ident">duration_since</span>(<span class="self">self</span>.<span class="ident">last_report_time</span>) <span class="op">&gt;</span><span class="op">=</span> <span class="self">Self</span><span class="ident">::MPI_PROGRESS_WAIT_TIME</span> {
+            <span class="kw">if</span> <span class="ident">now</span>.<span class="ident">duration_since</span>(<span class="self">self</span>.<span class="ident">last_report_time</span>) <span class="op">&gt;</span><span class="op">=</span> <span class="ident"><span class="self">Self</span>::MPI_PROGRESS_WAIT_TIME</span> {
                 <span class="kw">let</span> <span class="ident">progress</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">progress</span>.<span class="ident">take</span>().<span class="ident">unwrap_or_else</span>(<span class="op">|</span><span class="op">|</span> {
                     <span class="kw">let</span> <span class="ident">local_remaining</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="kw-2">mut</span> <span class="ident">u64</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">MPI_LOCAL_REMAINING</span> };
 
@@ -817,5 +846,7 @@
         }
     });
 }
-</pre></div>
-</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="necsim_partitioning_mpi" data-search-index-js="../../../search-index.js" data-search-js="../../../search.js"></div><script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script></body></html>
+</code></pre></div>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="necsim_partitioning_mpi" data-search-index-js="../../../search-index.js" data-search-js="../../../search.js"></div>
+    <script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script>
+</body></html>

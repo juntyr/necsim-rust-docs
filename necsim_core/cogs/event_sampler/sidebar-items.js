@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["SpeciationSample",""]],"trait":[["EventSampler",""],["MinSpeciationTrackingEventSampler",""]]});
+initSidebarItems({"struct":[["EventHandler",""]],"trait":[["EventSampler",""]]});

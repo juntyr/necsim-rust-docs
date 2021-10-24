@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["alias",""],["cache",""],["cogs",""],["decomposition",""],["parallelisation",""]]});
+initSidebarItems({"mod":[["alias",""],["array2d",""],["cache",""],["cogs",""],["decomposition",""],["parallelisation",""]]});

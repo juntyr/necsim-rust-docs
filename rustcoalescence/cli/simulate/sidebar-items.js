@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["simulate_with_logger",""]],"mod":[["impl",""],["monolithic",""]]});
+initSidebarItems({"fn":[["simulate_with_logger",""]],"mod":[["dispatch",""],["impl",""],["mpi",""]]});

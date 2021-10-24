@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["partial",""]],"struct":[["Simulation",""]]});
+initSidebarItems({"mod":[["partial",""]],"struct":[["Simulation",""],["SimulationBuilder",""]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["simulate_with_logger",""]],"macro":[["impl_sealed_dispatch",""]],"struct":[["Dispatcher",""]],"trait":[["SimulateSealedBooleanDispatch",""]]});
