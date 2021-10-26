@@ -157,8 +157,12 @@
 <span id="157">157</span>
 <span id="158">158</span>
 <span id="159">159</span>
+<span id="160">160</span>
+<span id="161">161</span>
 </pre><pre class="rust"><code><span class="attribute">#![<span class="ident">deny</span>(<span class="ident">clippy::pedantic</span>)]</span>
 <span class="attribute">#![<span class="ident">no_std</span>]</span>
+<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_eval_limit</span>)]</span>
+<span class="attribute">#![<span class="ident">const_eval_limit</span> <span class="op">=</span> <span class="string">&quot;1000000000000&quot;</span>]</span>
 <span class="attribute">#![<span class="ident">cfg_attr</span>(<span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;cuda&quot;</span>, <span class="ident">feature</span>(<span class="ident">abi_ptx</span>))]</span>
 <span class="attribute">#![<span class="ident">cfg_attr</span>(<span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;cuda&quot;</span>, <span class="ident">feature</span>(<span class="ident">alloc_error_handler</span>))]</span>
 <span class="attribute">#![<span class="ident">cfg_attr</span>(<span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;cuda&quot;</span>, <span class="ident">feature</span>(<span class="ident">panic_info_message</span>))]</span>
