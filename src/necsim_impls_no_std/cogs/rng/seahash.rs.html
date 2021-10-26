@@ -81,6 +81,8 @@
 <span id="81">81</span>
 <span id="82">82</span>
 <span id="83">83</span>
+<span id="84">84</span>
+<span id="85">85</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">core::marker::PhantomData</span>;
 
 <span class="kw">use</span> <span class="ident">necsim_core::cogs</span>::{<span class="ident">Backup</span>, <span class="ident">MathsCore</span>, <span class="ident">PrimeableRng</span>, <span class="ident">RngCore</span>};
@@ -89,11 +91,13 @@
 
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::module_name_repetitions</span>, <span class="ident">clippy::unsafe_derive_deserialize</span>)]</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">TypeLayout</span>)]</span>
+<span class="attribute">#[<span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">SeaHash</span><span class="op">&lt;</span><span class="ident">M</span>: <span class="ident">MathsCore</span><span class="op">&gt;</span> {
     <span class="ident">seed</span>: <span class="ident">u64</span>,
     <span class="ident">location</span>: <span class="ident">u64</span>,
     <span class="ident">time</span>: <span class="ident">u64</span>,
     <span class="ident">offset</span>: <span class="ident">u64</span>,
+    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">skip</span>)]</span>
     <span class="ident">marker</span>: <span class="ident">PhantomData</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span>,
 }
 

@@ -52,12 +52,19 @@
 <span id="52">52</span>
 <span id="53">53</span>
 <span id="54">54</span>
+<span id="55">55</span>
+<span id="56">56</span>
+<span id="57">57</span>
+<span id="58">58</span>
+<span id="59">59</span>
+<span id="60">60</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">necsim_core::cogs</span>::{
     <span class="ident">DispersalSampler</span>, <span class="ident">EmigrationExit</span>, <span class="ident">Habitat</span>, <span class="ident">MathsCore</span>, <span class="ident">PrimeableRng</span>, <span class="ident">SpeciationProbability</span>,
     <span class="ident">TurnoverRate</span>,
 };
 
 <span class="kw">use</span> <span class="ident">necsim_core::lineage</span>::{<span class="ident">GlobalLineageReference</span>, <span class="ident">Lineage</span>};
+<span class="kw">use</span> <span class="ident">necsim_core_bond::NonNegativeF64</span>;
 
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::cogs</span>::{
     <span class="ident">active_lineage_sampler::singular::SingularActiveLineageSampler</span>,
@@ -102,6 +109,11 @@
         <span class="kw">let</span> <span class="ident">old_active_lineage</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">active_lineage</span>.<span class="ident">clone</span>();
 
         <span class="self">self</span>.<span class="ident">active_lineage</span> <span class="op">=</span> <span class="ident">active_lineage</span>;
+
+        <span class="self">self</span>.<span class="ident">last_event_time</span> <span class="op">=</span> <span class="kw">match</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">active_lineage</span> {
+            <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">NonNegativeF64::zero</span>(),
+            <span class="prelude-val">Some</span>(<span class="ident">lineage</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">lineage</span>.<span class="ident">last_event_time</span>,
+        };
 
         <span class="ident">old_active_lineage</span>
     }

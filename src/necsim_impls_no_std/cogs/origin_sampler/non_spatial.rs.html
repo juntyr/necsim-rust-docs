@@ -102,6 +102,7 @@
 <span id="102">102</span>
 <span id="103">103</span>
 <span id="104">104</span>
+<span id="105">105</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">core</span>::{
     <span class="ident">convert::TryFrom</span>,
     <span class="ident">fmt</span>,
@@ -111,6 +112,7 @@
 <span class="kw">use</span> <span class="ident">necsim_core</span>::{
     <span class="ident">cogs</span>::{<span class="ident">Habitat</span>, <span class="ident">MathsCore</span>, <span class="ident">OriginSampler</span>},
     <span class="ident">landscape</span>::{<span class="ident">IndexedLocation</span>, <span class="ident">LocationIterator</span>},
+    <span class="ident">lineage::Lineage</span>,
 };
 
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::cogs</span>::{
@@ -127,8 +129,8 @@
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;h</span>, <span class="ident">M</span>: <span class="ident">MathsCore</span>, <span class="ident">I</span>: <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">u64</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">NonSpatialOriginSampler</span><span class="op">&lt;</span><span class="lifetime">&#39;h</span>, <span class="ident">M</span>, <span class="ident">I</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
-        <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="macro">stringify!</span>(<span class="ident">NonSpatialOriginSampler</span>))
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">fmt</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+        <span class="ident">fmt</span>.<span class="ident">debug_struct</span>(<span class="macro">stringify!</span>(<span class="ident">NonSpatialOriginSampler</span>))
             .<span class="ident">field</span>(<span class="string">&quot;pre_sampler&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">pre_sampler</span>)
             .<span class="ident">field</span>(<span class="string">&quot;last_index&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">last_index</span>)
             .<span class="ident">field</span>(<span class="string">&quot;location_iterator&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">location_iterator</span>)
@@ -175,7 +177,7 @@
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;h</span>, <span class="ident">M</span>: <span class="ident">MathsCore</span>, <span class="ident">I</span>: <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">u64</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="ident">Iterator</span> <span class="kw">for</span> <span class="ident">NonSpatialOriginSampler</span><span class="op">&lt;</span><span class="lifetime">&#39;h</span>, <span class="ident">M</span>, <span class="ident">I</span><span class="op">&gt;</span> {
-    <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="ident">IndexedLocation</span>;
+    <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="ident">Lineage</span>;
 
     <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Item</span><span class="op">&gt;</span> {
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">habitat</span>.<span class="ident">get_deme</span>() <span class="op">=</span><span class="op">=</span> <span class="number">0</span> {
@@ -200,9 +202,9 @@
 
         <span class="self">self</span>.<span class="ident">next_location_index</span> <span class="op">+</span><span class="op">=</span> <span class="ident">u32::try_from</span>(<span class="ident">index_difference</span>).<span class="ident">unwrap</span>();
 
-        <span class="prelude-val">Some</span>(<span class="ident">IndexedLocation::new</span>(
-            <span class="ident">next_location</span>.<span class="ident">clone</span>(),
-            <span class="self">self</span>.<span class="ident">next_location_index</span>,
+        <span class="prelude-val">Some</span>(<span class="ident">Lineage::new</span>(
+            <span class="ident">IndexedLocation::new</span>(<span class="ident">next_location</span>.<span class="ident">clone</span>(), <span class="self">self</span>.<span class="ident">next_location_index</span>),
+            <span class="self">self</span>.<span class="ident">habitat</span>,
         ))
     }
 }

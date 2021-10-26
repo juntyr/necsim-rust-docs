@@ -74,7 +74,6 @@
 <span id="74">74</span>
 <span id="75">75</span>
 <span id="76">76</span>
-<span id="77">77</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">core</span>::{<span class="ident">marker::PhantomData</span>, <span class="ident">ops::Index</span>};
 
 <span class="kw">use</span> <span class="ident">hashbrown::hash_map::HashMap</span>;
@@ -113,7 +112,7 @@
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;h</span>, <span class="ident">M</span>: <span class="ident">MathsCore</span>, <span class="ident">H</span>: <span class="lifetime">&#39;h</span> <span class="op">+</span> <span class="ident">Habitat</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="ident">ClassicalLineageStore</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span><span class="op">&gt;</span> {
     <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span><span class="op">&lt;</span><span class="ident">O</span>: <span class="ident">OriginSampler</span><span class="op">&lt;</span><span class="lifetime">&#39;h</span>, <span class="ident">M</span>, <span class="ident">Habitat</span> <span class="op">=</span> <span class="ident">H</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="kw-2">mut</span> <span class="ident">origin_sampler</span>: <span class="ident">O</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span><span class="op">&lt;</span><span class="ident">O</span>: <span class="ident">OriginSampler</span><span class="op">&lt;</span><span class="lifetime">&#39;h</span>, <span class="ident">M</span>, <span class="ident">Habitat</span> <span class="op">=</span> <span class="ident">H</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="ident">origin_sampler</span>: <span class="ident">O</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::cast_possible_truncation</span>)]</span>
         <span class="kw">let</span> <span class="ident">lineages_amount_hint</span> <span class="op">=</span> <span class="ident">origin_sampler</span>.<span class="ident">full_upper_bound_size_hint</span>() <span class="kw">as</span> <span class="ident">usize</span>;
 
@@ -122,11 +121,10 @@
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">indexed_location_to_lineage_reference</span> <span class="op">=</span>
             <span class="ident">HashMap::with_capacity</span>(<span class="ident">lineages_amount_hint</span>);
 
-        <span class="kw">while</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">indexed_location</span>) <span class="op">=</span> <span class="ident">origin_sampler</span>.<span class="ident">next</span>() {
-            <span class="kw">let</span> <span class="ident">lineage</span> <span class="op">=</span> <span class="ident">Lineage::new</span>(<span class="ident">indexed_location</span>.<span class="ident">clone</span>(), <span class="ident">origin_sampler</span>.<span class="ident">habitat</span>());
+        <span class="kw">for</span> <span class="ident">lineage</span> <span class="kw">in</span> <span class="ident">origin_sampler</span> {
+            <span class="kw">let</span> <span class="ident">indexed_location</span> <span class="op">=</span> <span class="ident">lineage</span>.<span class="ident">indexed_location</span>.<span class="ident">clone</span>();
 
             <span class="kw">let</span> <span class="ident">local_reference</span> <span class="op">=</span> <span class="ident">InMemoryLineageReference::from</span>(<span class="ident">lineages_store</span>.<span class="ident">insert</span>(<span class="ident">lineage</span>));
-
             <span class="ident">indexed_location_to_lineage_reference</span>.<span class="ident">insert</span>(<span class="ident">indexed_location</span>, <span class="ident">local_reference</span>);
         }
 

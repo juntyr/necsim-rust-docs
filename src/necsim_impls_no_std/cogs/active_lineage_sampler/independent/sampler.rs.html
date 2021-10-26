@@ -131,6 +131,9 @@
 <span id="131">131</span>
 <span id="132">132</span>
 <span id="133">133</span>
+<span id="134">134</span>
+<span id="135">135</span>
+<span id="136">136</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">necsim_core</span>::{
     <span class="ident">cogs</span>::{
         <span class="ident">ActiveLineageSampler</span>, <span class="ident">DispersalSampler</span>, <span class="ident">EmigrationExit</span>, <span class="ident">Habitat</span>, <span class="ident">MathsCore</span>, <span class="ident">PrimeableRng</span>,
@@ -182,9 +185,7 @@
     }
 
     <span class="kw">fn</span> <span class="ident">get_last_event_time</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">NonNegativeF64</span> {
-        <span class="self">self</span>.<span class="ident">active_lineage</span>
-            .<span class="ident">as_ref</span>()
-            .<span class="ident">map_or</span>(<span class="ident">NonNegativeF64::zero</span>(), <span class="op">|</span><span class="ident">lineage</span><span class="op">|</span> <span class="ident">lineage</span>.<span class="ident">last_event_time</span>)
+        <span class="self">self</span>.<span class="ident">last_event_time</span>
     }
 
     <span class="attribute">#[<span class="ident">must_use</span>]</span>
@@ -227,9 +228,12 @@
                 <span class="kw">return</span> <span class="prelude-val">None</span>;
             }
 
+            <span class="self">self</span>.<span class="ident">last_event_time</span> <span class="op">=</span> <span class="ident">next_event_time</span>.<span class="ident">into</span>();
+
             <span class="comment">// Note: Option::take would be better but uses local memory</span>
-            <span class="kw">let</span> <span class="ident">chosen_lineage</span> <span class="op">=</span> <span class="ident">active_lineage</span>.<span class="ident">clone</span>();
+            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">chosen_lineage</span> <span class="op">=</span> <span class="ident">active_lineage</span>.<span class="ident">clone</span>();
             <span class="self">self</span>.<span class="ident">active_lineage</span> <span class="op">=</span> <span class="prelude-val">None</span>;
+            <span class="ident">chosen_lineage</span>.<span class="ident">last_event_time</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">last_event_time</span>;
 
             <span class="prelude-val">Some</span>((<span class="ident">chosen_lineage</span>, <span class="ident">next_event_time</span>))
         } <span class="kw">else</span> {
@@ -261,6 +265,8 @@
         <span class="op">&gt;</span>,
         <span class="ident">_rng</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">G</span>,
     ) {
+        <span class="self">self</span>.<span class="ident">last_event_time</span> <span class="op">=</span> <span class="ident">lineage</span>.<span class="ident">last_event_time</span>;
+
         <span class="self">self</span>.<span class="ident">active_lineage</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">lineage</span>);
     }
 }

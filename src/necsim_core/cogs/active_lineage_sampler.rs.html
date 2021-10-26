@@ -111,6 +111,10 @@
 <span id="111">111</span>
 <span id="112">112</span>
 <span id="113">113</span>
+<span id="114">114</span>
+<span id="115">115</span>
+<span id="116">116</span>
+<span id="117">117</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">necsim_core_bond</span>::{<span class="ident">NonNegativeF64</span>, <span class="ident">PositiveF64</span>};
 
 <span class="kw">use</span> <span class="kw">super</span>::{
@@ -177,6 +181,10 @@
     <span class="attribute">#[<span class="ident">debug_ensures</span>(
         <span class="self">self</span>.<span class="ident">number_active_lineages</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">old</span>(<span class="self">self</span>.<span class="ident">number_active_lineages</span>()) <span class="op">+</span> <span class="number">1</span>,
         <span class="string">&quot;adds an active lineage&quot;</span>
+    )]</span>
+    <span class="attribute">#[<span class="ident">debug_ensures</span>(
+        <span class="self">self</span>.<span class="ident">get_last_event_time</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">old</span>(<span class="ident">lineage</span>.<span class="ident">last_event_time</span>),
+        <span class="string">&quot;updates the time of the last event&quot;</span>
     )]</span>
     <span class="kw">fn</span> <span class="ident">push_active_lineage</span>(
         <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,

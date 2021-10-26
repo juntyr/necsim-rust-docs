@@ -130,6 +130,7 @@
 <span id="130">130</span>
 <span id="131">131</span>
 <span id="132">132</span>
+<span id="133">133</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">fmt</span>, <span class="ident">marker::PhantomData</span>};
 
 <span class="kw">use</span> <span class="ident">pcg_rand</span>::{<span class="ident">seeds::PcgSeeder</span>, <span class="ident">PCGStateInfo</span>, <span class="ident">Pcg64</span>};
@@ -224,6 +225,7 @@
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
 <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;Pcg&quot;</span>)]</span>
+<span class="attribute">#[<span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>)]</span>
 <span class="kw">struct</span> <span class="ident">PcgState</span> {
     <span class="ident">state</span>: <span class="ident">u128</span>,
     <span class="ident">increment</span>: <span class="ident">u128</span>,

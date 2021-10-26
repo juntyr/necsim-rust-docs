@@ -255,17 +255,10 @@
 <span id="255">255</span>
 <span id="256">256</span>
 <span id="257">257</span>
-<span id="258">258</span>
-<span id="259">259</span>
-<span id="260">260</span>
-<span id="261">261</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">hint::unreachable_unchecked</span>, <span class="ident">marker::PhantomData</span>};
 
 <span class="kw">use</span> <span class="ident">necsim_core</span>::{
-    <span class="ident">cogs</span>::{
-        <span class="ident">GloballyCoherentLineageStore</span>, <span class="ident">LineageStore</span>, <span class="ident">SeedableRng</span>, <span class="ident">SeparableDispersalSampler</span>,
-        <span class="ident">SplittableRng</span>,
-    },
+    <span class="ident">cogs</span>::{<span class="ident">GloballyCoherentLineageStore</span>, <span class="ident">LineageStore</span>, <span class="ident">SeparableDispersalSampler</span>, <span class="ident">SplittableRng</span>},
     <span class="ident">reporter::Reporter</span>,
     <span class="ident">simulation::SimulationBuilder</span>,
 };
@@ -338,14 +331,14 @@
     <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::shadow_unrelated</span>, <span class="ident">clippy::too_many_lines</span>)]</span>
     <span class="kw">fn</span> <span class="ident">initialise_and_simulate</span><span class="op">&lt;</span><span class="ident">I</span>: <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">u64</span><span class="op">&gt;</span><span class="op">&gt;</span>(
         <span class="ident">args</span>: <span class="ident"><span class="self">Self</span>::Arguments</span>,
-        <span class="ident">seed</span>: <span class="ident">u64</span>,
+        <span class="ident">rng</span>: <span class="ident"><span class="self">Self</span>::Rng</span>,
         <span class="ident">scenario</span>: <span class="ident">O</span>,
         <span class="ident">pre_sampler</span>: <span class="ident">OriginPreSampler</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::MathsCore</span>, <span class="ident">I</span><span class="op">&gt;</span>,
         <span class="ident">local_partition</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">P</span>,
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(<span class="ident">NonNegativeF64</span>, <span class="ident">u64</span>), <span class="ident"><span class="self">Self</span>::Error</span><span class="op">&gt;</span> {
         <span class="kw">match</span> <span class="ident">args</span>.<span class="ident">parallelism_mode</span> {
             <span class="ident">ParallelismMode::Monolithic</span> <span class="op">=</span><span class="op">&gt;</span> {
-                <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">rng</span> <span class="op">=</span> <span class="ident">Pcg::seed_from_u64</span>(<span class="ident">seed</span>);
+                <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">rng</span> <span class="op">=</span> <span class="ident">rng</span>;
                 <span class="kw">let</span> <span class="ident">lineage_store</span> <span class="op">=</span>
                     <span class="ident"><span class="self">Self</span>::LineageStore::from_origin_sampler</span>(<span class="ident">scenario</span>.<span class="ident">sample_habitat</span>(<span class="ident">pre_sampler</span>));
                 <span class="kw">let</span> (<span class="ident">habitat</span>, <span class="ident">dispersal_sampler</span>, <span class="ident">turnover_rate</span>, <span class="ident">speciation_probability</span>) <span class="op">=</span>
@@ -420,8 +413,7 @@
                     <span class="ident">local_partition</span>.<span class="ident">get_number_of_partitions</span>(),
                 );
 
-                <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">rng</span> <span class="op">=</span> <span class="ident">Pcg::seed_from_u64</span>(<span class="ident">seed</span>)
-                    .<span class="ident">split_to_stream</span>(<span class="ident">u64::from</span>(<span class="ident">local_partition</span>.<span class="ident">get_partition_rank</span>()));
+                <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">rng</span> <span class="op">=</span> <span class="ident">rng</span>.<span class="ident">split_to_stream</span>(<span class="ident">u64::from</span>(<span class="ident">local_partition</span>.<span class="ident">get_partition_rank</span>()));
                 <span class="kw">let</span> <span class="ident">lineage_store</span> <span class="op">=</span>
                     <span class="ident"><span class="self">Self</span>::LineageStore::from_origin_sampler</span>(<span class="ident">DecompositionOriginSampler::new</span>(
                         <span class="ident">scenario</span>.<span class="ident">sample_habitat</span>(<span class="ident">pre_sampler</span>),

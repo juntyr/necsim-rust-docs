@@ -213,28 +213,7 @@
 <span id="213">213</span>
 <span id="214">214</span>
 <span id="215">215</span>
-<span id="216">216</span>
-<span id="217">217</span>
-<span id="218">218</span>
-<span id="219">219</span>
-<span id="220">220</span>
-<span id="221">221</span>
-<span id="222">222</span>
-<span id="223">223</span>
-<span id="224">224</span>
-<span id="225">225</span>
-<span id="226">226</span>
-<span id="227">227</span>
-<span id="228">228</span>
-<span id="229">229</span>
-<span id="230">230</span>
-<span id="231">231</span>
-<span id="232">232</span>
-<span id="233">233</span>
-<span id="234">234</span>
-<span id="235">235</span>
-<span id="236">236</span>
-</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">anyhow::Result</span>;
+</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">anyhow</span>::{<span class="ident">Context</span>, <span class="prelude-ty">Result</span>};
 
 <span class="kw">use</span> <span class="ident">rustcoalescence_algorithms::Algorithm</span>;
 
@@ -248,9 +227,12 @@
     <span class="ident">skipping_gillespie::SkippingGillespieAlgorithm</span>,
 };
 
-<span class="kw">use</span> <span class="ident">necsim_core::reporter</span>::{
-    <span class="ident">boolean</span>::{<span class="ident">Boolean</span>, <span class="ident">False</span>, <span class="ident">True</span>},
-    <span class="ident">Reporter</span>,
+<span class="kw">use</span> <span class="ident">necsim_core</span>::{
+    <span class="ident">cogs::SeedableRng</span>,
+    <span class="ident">reporter</span>::{
+        <span class="ident">boolean</span>::{<span class="ident">Boolean</span>, <span class="ident">False</span>, <span class="ident">True</span>},
+        <span class="ident">Reporter</span>,
+    },
 };
 <span class="kw">use</span> <span class="ident">necsim_core_bond::NonNegativeF64</span>;
 <span class="kw">use</span> <span class="ident">necsim_impls_no_std::cogs::origin_sampler::pre_sampler::OriginPreSampler</span>;
@@ -262,7 +244,9 @@
     <span class="ident">Scenario</span>,
 };
 
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::args</span>::{<span class="ident">Algorithm</span> <span class="kw">as</span> <span class="ident">AlgorithmArgs</span>, <span class="ident">CommonArgs</span>, <span class="ident">Scenario</span> <span class="kw">as</span> <span class="ident">ScenarioArgs</span>};
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::args</span>::{
+    <span class="ident">Algorithm</span> <span class="kw">as</span> <span class="ident">AlgorithmArgs</span>, <span class="ident">CommonArgs</span>, <span class="ident">Rng</span> <span class="kw">as</span> <span class="ident">RngArgs</span>, <span class="ident">Scenario</span> <span class="kw">as</span> <span class="ident">ScenarioArgs</span>,
+};
 
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">simulate_with_logger</span><span class="op">&lt;</span><span class="ident">R</span>: <span class="ident">Reporter</span>, <span class="ident">P</span>: <span class="ident">LocalPartition</span><span class="op">&lt;</span><span class="ident">R</span><span class="op">&gt;</span><span class="op">&gt;</span>(
     <span class="ident">local_partition</span>: <span class="ident">Box</span><span class="op">&lt;</span><span class="ident">P</span><span class="op">&gt;</span>,
@@ -294,6 +278,24 @@
 
 <span class="kw">struct</span> <span class="ident">Dispatcher</span>;
 
+<span class="macro">macro_rules!</span> <span class="ident">initialise_and_simulate</span> {
+    (
+        <span class="macro-nonterminal">$</span><span class="macro-nonterminal">algorithm</span>:<span class="ident">ident</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">common_args</span>:<span class="ident">ident</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">algorithm_args</span>:<span class="ident">ident</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">scenario</span>:<span class="ident">ident</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">local_partition</span>:<span class="ident">ident</span>)
+    ) <span class="op">=</span><span class="op">&gt;</span> {
+        <span class="macro-nonterminal">$</span><span class="macro-nonterminal">algorithm::initialise_and_simulate</span>(
+            <span class="macro-nonterminal">$</span><span class="macro-nonterminal">algorithm_args</span>,
+            <span class="kw">match</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">common_args</span>.<span class="ident">rng</span> {
+                <span class="ident">RngArgs::Seed</span>(<span class="ident">seed</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">SeedableRng::seed_from_u64</span>(<span class="ident">seed</span>),
+                <span class="ident">RngArgs::State</span>(<span class="ident">state</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">bincode::deserialize</span>(<span class="kw-2">&amp;</span><span class="ident">state</span>)
+                    .<span class="ident">context</span>(<span class="string">&quot;Failed to initialise the RNG from the given state&quot;</span>)<span class="question-mark">?</span>,
+            },
+            <span class="macro-nonterminal">$</span><span class="macro-nonterminal">scenario</span>,
+            <span class="ident">OriginPreSampler::all</span>().<span class="ident">percentage</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">common_args</span>.<span class="ident">sample_percentage</span>.<span class="ident">get</span>()),
+            <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">*</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">local_partition</span>,
+        )
+    };
+}
+
 <span class="macro">macro_rules!</span> <span class="ident">impl_sealed_dispatch</span> {
     (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">report_speciation</span>:<span class="ident">ty</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">report_dispersal</span>:<span class="ident">ty</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">report_progress</span>:<span class="ident">ty</span>) <span class="op">=</span><span class="op">&gt;</span> {
         <span class="kw">impl</span> <span class="ident">SimulateSealedBooleanDispatch</span><span class="op">&lt;</span>
@@ -322,69 +324,25 @@
                     (<span class="ident">common_args</span>.<span class="ident">algorithm</span>, <span class="ident">scenario</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">scenario</span>)
                 {
                     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rustcoalescence-algorithms-monolithic&quot;</span>)]</span>
-                    <span class="ident">AlgorithmArgs::Classical</span>(<span class="ident">algorithm_args</span>) <span class="op">=</span><span class="op">&gt;</span> {
-                        <span class="ident">ClassicalAlgorithm::initialise_and_simulate</span>(
-                            <span class="ident">algorithm_args</span>,
-                            <span class="ident">common_args</span>.<span class="ident">seed</span>,
-                            <span class="ident">scenario</span>,
-                            <span class="ident">OriginPreSampler::all</span>().<span class="ident">percentage</span>(
-                                <span class="ident">common_args</span>.<span class="ident">sample_percentage</span>.<span class="ident">get</span>()
-                            ),
-                            <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">*</span><span class="ident">local_partition</span>,
-                        )
-                        .<span class="ident">into_ok</span>()
-                    },
+                    <span class="ident">AlgorithmArgs::Classical</span>(<span class="ident">algorithm_args</span>) <span class="op">=</span><span class="op">&gt;</span> { <span class="macro">initialise_and_simulate!</span>(
+                        <span class="ident">ClassicalAlgorithm</span>(<span class="ident">common_args</span>, <span class="ident">algorithm_args</span>, <span class="ident">scenario</span>, <span class="ident">local_partition</span>)
+                    ).<span class="ident">into_ok</span>() },
                     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rustcoalescence-algorithms-monolithic&quot;</span>)]</span>
-                    <span class="ident">AlgorithmArgs::Gillespie</span>(<span class="ident">algorithm_args</span>) <span class="op">=</span><span class="op">&gt;</span> {
-                        <span class="ident">GillespieAlgorithm::initialise_and_simulate</span>(
-                            <span class="ident">algorithm_args</span>,
-                            <span class="ident">common_args</span>.<span class="ident">seed</span>,
-                            <span class="ident">scenario</span>,
-                            <span class="ident">OriginPreSampler::all</span>().<span class="ident">percentage</span>(
-                                <span class="ident">common_args</span>.<span class="ident">sample_percentage</span>.<span class="ident">get</span>()
-                            ),
-                            <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">*</span><span class="ident">local_partition</span>,
-                        )
-                        .<span class="ident">into_ok</span>()
-                    },
+                    <span class="ident">AlgorithmArgs::Gillespie</span>(<span class="ident">algorithm_args</span>) <span class="op">=</span><span class="op">&gt;</span> { <span class="macro">initialise_and_simulate!</span>(
+                        <span class="ident">GillespieAlgorithm</span>(<span class="ident">common_args</span>, <span class="ident">algorithm_args</span>, <span class="ident">scenario</span>, <span class="ident">local_partition</span>)
+                    ).<span class="ident">into_ok</span>() },
                     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rustcoalescence-algorithms-monolithic&quot;</span>)]</span>
-                    <span class="ident">AlgorithmArgs::SkippingGillespie</span>(<span class="ident">algorithm_args</span>) <span class="op">=</span><span class="op">&gt;</span> {
-                        <span class="ident">SkippingGillespieAlgorithm::initialise_and_simulate</span>(
-                            <span class="ident">algorithm_args</span>,
-                            <span class="ident">common_args</span>.<span class="ident">seed</span>,
-                            <span class="ident">scenario</span>,
-                            <span class="ident">OriginPreSampler::all</span>().<span class="ident">percentage</span>(
-                                <span class="ident">common_args</span>.<span class="ident">sample_percentage</span>.<span class="ident">get</span>()
-                            ),
-                            <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">*</span><span class="ident">local_partition</span>,
-                        )
-                        .<span class="ident">into_ok</span>()
-                    },
+                    <span class="ident">AlgorithmArgs::SkippingGillespie</span>(<span class="ident">algorithm_args</span>) <span class="op">=</span><span class="op">&gt;</span> { <span class="macro">initialise_and_simulate!</span>(
+                        <span class="ident">SkippingGillespieAlgorithm</span>(<span class="ident">common_args</span>, <span class="ident">algorithm_args</span>, <span class="ident">scenario</span>, <span class="ident">local_partition</span>)
+                    ).<span class="ident">into_ok</span>() },
                     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rustcoalescence-algorithms-independent&quot;</span>)]</span>
-                    <span class="ident">AlgorithmArgs::Independent</span>(<span class="ident">algorithm_args</span>) <span class="op">=</span><span class="op">&gt;</span> {
-                        <span class="ident">IndependentAlgorithm::initialise_and_simulate</span>(
-                            <span class="ident">algorithm_args</span>,
-                            <span class="ident">common_args</span>.<span class="ident">seed</span>,
-                            <span class="ident">scenario</span>,
-                            <span class="ident">OriginPreSampler::all</span>().<span class="ident">percentage</span>(
-                                <span class="ident">common_args</span>.<span class="ident">sample_percentage</span>.<span class="ident">get</span>()
-                            ),
-                            <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">*</span><span class="ident">local_partition</span>,
-                        )
-                        .<span class="ident">into_ok</span>()
-                    },
+                    <span class="ident">AlgorithmArgs::Independent</span>(<span class="ident">algorithm_args</span>) <span class="op">=</span><span class="op">&gt;</span> { <span class="macro">initialise_and_simulate!</span>(
+                        <span class="ident">IndependentAlgorithm</span>(<span class="ident">common_args</span>, <span class="ident">algorithm_args</span>, <span class="ident">scenario</span>, <span class="ident">local_partition</span>)
+                    ).<span class="ident">into_ok</span>() },
                     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rustcoalescence-algorithms-cuda&quot;</span>)]</span>
-                    <span class="ident">AlgorithmArgs::Cuda</span>(<span class="ident">algorithm_args</span>) <span class="op">=</span><span class="op">&gt;</span> {
-                        <span class="ident">CudaAlgorithm::initialise_and_simulate</span>(
-                            <span class="ident">algorithm_args</span>,
-                            <span class="ident">common_args</span>.<span class="ident">seed</span>,
-                            <span class="ident">scenario</span>,
-                            <span class="ident">OriginPreSampler::all</span>().<span class="ident">percentage</span>(
-                                <span class="ident">common_args</span>.<span class="ident">sample_percentage</span>.<span class="ident">get</span>()
-                            ),
-                            <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">*</span><span class="ident">local_partition</span>,
-                        )<span class="question-mark">?</span>
-                    }
+                    <span class="ident">AlgorithmArgs::Cuda</span>(<span class="ident">algorithm_args</span>) <span class="op">=</span><span class="op">&gt;</span> { <span class="macro">initialise_and_simulate!</span>(
+                        <span class="ident">CudaAlgorithm</span>(<span class="ident">common_args</span>, <span class="ident">algorithm_args</span>, <span class="ident">scenario</span>, <span class="ident">local_partition</span>)
+                    )<span class="question-mark">?</span> }
                     <span class="op">&lt;</span><span class="op">=</span><span class="op">&gt;</span>
                     <span class="ident">ScenarioArgs::SpatiallyExplicit</span>(<span class="ident">scenario_args</span>) <span class="op">=</span><span class="op">&gt;</span> {
                         <span class="ident">SpatiallyExplicitScenario::initialise</span>(
