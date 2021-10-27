@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["simulate_with_logger",""]],"macro":[["impl_sealed_dispatch",""],["initialise_and_simulate",""]],"struct":[["Dispatcher",""]],"trait":[["SimulateSealedBooleanDispatch",""]]});
+initSidebarItems({"fn":[["initialise_rng",""],["simulate_with_logger",""]],"macro":[["impl_sealed_dispatch",""],["initialise_and_simulate",""]],"struct":[["Dispatcher",""],["Sponge",""]],"trait":[["SimulateSealedBooleanDispatch",""]]});
