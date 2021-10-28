@@ -60,6 +60,9 @@
 <span id="60">60</span>
 <span id="61">61</span>
 <span id="62">62</span>
+<span id="63">63</span>
+<span id="64">64</span>
+<span id="65">65</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">anyhow::Result</span>;
 
 <span class="kw">use</span> <span class="ident">necsim_core::reporter::Reporter</span>;
@@ -116,6 +119,9 @@
         <span class="ident">std::mem::drop</span>(<span class="ident">local_partition</span>);
         <span class="ident">std::mem::drop</span>(<span class="ident">common_args</span>);
         <span class="ident">std::mem::drop</span>(<span class="ident">scenario</span>);
+        <span class="ident">std::mem::drop</span>(<span class="ident">algorithm</span>);
+        <span class="ident">std::mem::drop</span>(<span class="ident">post_validation</span>);
+        <span class="ident">std::mem::drop</span>(<span class="ident">pre_launch</span>);
 
         <span class="prelude-val">Err</span>(<span class="macro">anyhow::anyhow!</span>(
             <span class="string">&quot;rustcoalescence must be compiled to support at least one algorithm.&quot;</span>
