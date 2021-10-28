@@ -181,9 +181,6 @@
 <span id="181">181</span>
 <span id="182">182</span>
 <span id="183">183</span>
-<span id="184">184</span>
-<span id="185">185</span>
-<span id="186">186</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">hint::unreachable_unchecked</span>, <span class="ident">marker::PhantomData</span>};
 
 <span class="kw">use</span> <span class="ident">necsim_core</span>::{
@@ -296,13 +293,10 @@
                 ))
             },
             <span class="ident">non_monolithic_parallelism_mode</span> <span class="op">=</span><span class="op">&gt;</span> {
-                <span class="kw">let</span> <span class="ident">decomposition</span> <span class="op">=</span> <span class="ident">O::decompose</span>(
-                    <span class="ident">scenario</span>.<span class="ident">habitat</span>(),
-                    <span class="ident">local_partition</span>.<span class="ident">get_partition_rank</span>(),
-                    <span class="ident">local_partition</span>.<span class="ident">get_number_of_partitions</span>(),
-                );
+                <span class="kw">let</span> <span class="ident">decomposition</span> <span class="op">=</span>
+                    <span class="ident">O::decompose</span>(<span class="ident">scenario</span>.<span class="ident">habitat</span>(), <span class="ident">local_partition</span>.<span class="ident">get_partition</span>());
 
-                <span class="kw">let</span> <span class="ident">rng</span> <span class="op">=</span> <span class="ident">rng</span>.<span class="ident">split_to_stream</span>(<span class="ident">u64::from</span>(<span class="ident">local_partition</span>.<span class="ident">get_partition_rank</span>()));
+                <span class="kw">let</span> <span class="ident">rng</span> <span class="op">=</span> <span class="ident">rng</span>.<span class="ident">split_to_stream</span>(<span class="ident">u64::from</span>(<span class="ident">local_partition</span>.<span class="ident">get_partition</span>().<span class="ident">rank</span>()));
                 <span class="kw">let</span> <span class="ident">lineage_store</span> <span class="op">=</span>
                     <span class="ident"><span class="self">Self</span>::LineageStore::from_origin_sampler</span>(<span class="ident">DecompositionOriginSampler::new</span>(
                         <span class="ident">scenario</span>.<span class="ident">sample_habitat</span>(<span class="ident">pre_sampler</span>),

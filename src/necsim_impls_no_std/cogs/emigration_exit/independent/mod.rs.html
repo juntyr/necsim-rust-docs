@@ -228,7 +228,7 @@
         (
             <span class="ident">old</span>(<span class="self">self</span>.<span class="ident">decomposition</span>.<span class="ident">map_location_to_subdomain_rank</span>(
                 <span class="kw-2">&amp;</span><span class="ident">dispersal_target</span>, <span class="kw-2">&amp;</span><span class="ident">simulation</span>.<span class="ident">habitat</span>
-            )) <span class="op">=</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">decomposition</span>.<span class="ident">get_subdomain_rank</span>()
+            )) <span class="op">=</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">decomposition</span>.<span class="ident">get_subdomain</span>().<span class="ident">rank</span>()
         ) <span class="op">|</span><span class="op">|</span> <span class="op">!</span><span class="ident">old</span>(<span class="self">self</span>.<span class="ident">choice</span>.<span class="ident">should_lineage_emigrate</span>(
             <span class="kw-2">&amp;</span><span class="ident">dispersal_origin</span>,
             <span class="ident">event_time</span>,
@@ -261,7 +261,7 @@
             .<span class="ident">decomposition</span>
             .<span class="ident">map_location_to_subdomain_rank</span>(<span class="kw-2">&amp;</span><span class="ident">dispersal_target</span>, <span class="kw-2">&amp;</span><span class="ident">simulation</span>.<span class="ident">habitat</span>);
 
-        <span class="kw">if</span> (<span class="ident">target_subdomain</span> <span class="op">=</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">decomposition</span>.<span class="ident">get_subdomain_rank</span>())
+        <span class="kw">if</span> (<span class="ident">target_subdomain</span> <span class="op">=</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">decomposition</span>.<span class="ident">get_subdomain</span>().<span class="ident">rank</span>())
             <span class="op">|</span><span class="op">|</span> <span class="op">!</span><span class="self">self</span>.<span class="ident">choice</span>.<span class="ident">should_lineage_emigrate</span>(
                 <span class="kw-2">&amp;</span><span class="ident">dispersal_origin</span>,
                 <span class="ident">event_time</span>,

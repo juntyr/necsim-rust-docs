@@ -485,6 +485,41 @@
 <span id="485">485</span>
 <span id="486">486</span>
 <span id="487">487</span>
+<span id="488">488</span>
+<span id="489">489</span>
+<span id="490">490</span>
+<span id="491">491</span>
+<span id="492">492</span>
+<span id="493">493</span>
+<span id="494">494</span>
+<span id="495">495</span>
+<span id="496">496</span>
+<span id="497">497</span>
+<span id="498">498</span>
+<span id="499">499</span>
+<span id="500">500</span>
+<span id="501">501</span>
+<span id="502">502</span>
+<span id="503">503</span>
+<span id="504">504</span>
+<span id="505">505</span>
+<span id="506">506</span>
+<span id="507">507</span>
+<span id="508">508</span>
+<span id="509">509</span>
+<span id="510">510</span>
+<span id="511">511</span>
+<span id="512">512</span>
+<span id="513">513</span>
+<span id="514">514</span>
+<span id="515">515</span>
+<span id="516">516</span>
+<span id="517">517</span>
+<span id="518">518</span>
+<span id="519">519</span>
+<span id="520">520</span>
+<span id="521">521</span>
+<span id="522">522</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">convert::TryFrom</span>, <span class="ident">fmt</span>, <span class="ident">ops::Deref</span>, <span class="ident">path::PathBuf</span>};
 
 <span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">de::Deserializer</span>, <span class="ident">Deserialize</span>};
@@ -534,6 +569,7 @@
     <span class="kw">pub</span> <span class="ident">common</span>: <span class="ident">CommonArgs</span>,
     <span class="kw">pub</span> <span class="ident">scenario</span>: <span class="ident">Scenario</span>,
     <span class="kw">pub</span> <span class="ident">algorithm</span>: <span class="ident">Algorithm</span>,
+    <span class="kw">pub</span> <span class="ident">partitioning</span>: <span class="ident">Partitioning</span>,
     <span class="kw">pub</span> <span class="ident">event_log</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">EventLogRecorder</span><span class="op">&gt;</span>,
     <span class="kw">pub</span> <span class="ident">reporters</span>: <span class="ident">AnyReporterPluginVec</span>,
 }
@@ -553,6 +589,7 @@
             },
             <span class="ident">scenario</span>: <span class="ident">raw</span>.<span class="ident">scenario</span>,
             <span class="ident">algorithm</span>: <span class="ident">raw</span>.<span class="ident">algorithm</span>,
+            <span class="ident">partitioning</span>: <span class="ident">raw</span>.<span class="ident">partitioning</span>,
             <span class="ident">event_log</span>: <span class="ident">raw</span>.<span class="ident">event_log</span>,
             <span class="ident">reporters</span>: <span class="ident">raw</span>.<span class="ident">reporters</span>.<span class="ident">into_iter</span>().<span class="ident">flatten</span>().<span class="ident">collect</span>(),
         })
@@ -574,15 +611,18 @@
     <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">default</span>)]</span>
     <span class="ident">rng</span>: <span class="ident">Rng</span>,
 
+    <span class="ident">scenario</span>: <span class="ident">Scenario</span>,
+
     <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">deserialize_state</span>)]</span>
     <span class="ident">algorithm</span>: <span class="ident">Algorithm</span>,
+
+    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">default</span>)]</span>
+    <span class="ident">partitioning</span>: <span class="ident">Partitioning</span>,
 
     <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;log&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">default</span>)]</span>
     <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">deserialize_state_with</span> <span class="op">=</span> <span class="string">&quot;deserialize_state_event_log&quot;</span>)]</span>
     <span class="ident">event_log</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">EventLogRecorder</span><span class="op">&gt;</span>,
-
-    <span class="ident">scenario</span>: <span class="ident">Scenario</span>,
 
     <span class="ident">reporters</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">ReporterPluginLibrary</span><span class="op">&gt;</span>,
 }
@@ -689,6 +729,42 @@
     }
 }
 
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Deserialize</span>)]</span>
+<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Partitioning</span> {
+    <span class="ident">Monolithic</span>(<span class="ident">necsim_partitioning_monolithic::MonolithicPartitioning</span>),
+    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;necsim-partitioning-mpi&quot;</span>)]</span>
+    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;MPI&quot;</span>)]</span>
+    <span class="ident">Mpi</span>(<span class="ident">necsim_partitioning_mpi::MpiPartitioning</span>),
+}
+
+<span class="kw">impl</span> <span class="ident">Partitioning</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_root</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+        <span class="kw">use</span> <span class="ident">necsim_partitioning_core::Partitioning</span>;
+
+        <span class="kw">match</span> <span class="self">self</span> {
+            <span class="ident"><span class="self">Self</span>::Monolithic</span>(<span class="ident">partitioning</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">partitioning</span>.<span class="ident">is_root</span>(),
+            <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;necsim-partitioning-mpi&quot;</span>)]</span>
+            <span class="ident"><span class="self">Self</span>::Mpi</span>(<span class="ident">partitioning</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">partitioning</span>.<span class="ident">is_root</span>(),
+        }
+    }
+
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_partition</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Partition</span> {
+        <span class="kw">use</span> <span class="ident">necsim_partitioning_core::Partitioning</span>;
+
+        <span class="kw">match</span> <span class="self">self</span> {
+            <span class="ident"><span class="self">Self</span>::Monolithic</span>(<span class="ident">partitioning</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">partitioning</span>.<span class="ident">get_partition</span>(),
+            <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;necsim-partitioning-mpi&quot;</span>)]</span>
+            <span class="ident"><span class="self">Self</span>::Mpi</span>(<span class="ident">partitioning</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">partitioning</span>.<span class="ident">get_partition</span>(),
+        }
+    }
+}
+
+<span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">Partitioning</span> {
+    <span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+        <span class="ident"><span class="self">Self</span>::Monolithic</span>(<span class="ident">necsim_partitioning_monolithic::MonolithicPartitioning::default</span>())
+    }
+}
+
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">DeserializeState</span>)]</span>
 <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">deserialize_state</span> <span class="op">=</span> <span class="string">&quot;Partition&quot;</span>)]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Algorithm</span> {
@@ -717,20 +793,20 @@
 }
 
 <span class="kw">impl</span> <span class="ident">fmt::Display</span> <span class="kw">for</span> <span class="ident">Algorithm</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">fmt</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
         <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">unreachable_patterns</span>)]</span>
         <span class="kw">match</span> <span class="self">self</span> {
             <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;necsim-classical&quot;</span>)]</span>
-            <span class="ident">Algorithm::Classical</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">f</span>.<span class="ident">write_str</span>(<span class="string">&quot;Classical&quot;</span>),
+            <span class="ident"><span class="self">Self</span>::Classical</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">fmt</span>.<span class="ident">write_str</span>(<span class="string">&quot;Classical&quot;</span>),
             <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;necsim-gillespie&quot;</span>)]</span>
-            <span class="ident">Algorithm::Gillespie</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">f</span>.<span class="ident">write_str</span>(<span class="string">&quot;Gillespie&quot;</span>),
+            <span class="ident"><span class="self">Self</span>::Gillespie</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">fmt</span>.<span class="ident">write_str</span>(<span class="string">&quot;Gillespie&quot;</span>),
             <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;necsim-skipping-gillespie&quot;</span>)]</span>
-            <span class="ident">Algorithm::SkippingGillespie</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">f</span>.<span class="ident">write_str</span>(<span class="string">&quot;Skipping-Gillespie&quot;</span>),
+            <span class="ident"><span class="self">Self</span>::SkippingGillespie</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">fmt</span>.<span class="ident">write_str</span>(<span class="string">&quot;Skipping-Gillespie&quot;</span>),
             <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;necsim-cuda&quot;</span>)]</span>
-            <span class="ident">Algorithm::Cuda</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">f</span>.<span class="ident">write_str</span>(<span class="string">&quot;CUDA&quot;</span>),
+            <span class="ident"><span class="self">Self</span>::Cuda</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">fmt</span>.<span class="ident">write_str</span>(<span class="string">&quot;CUDA&quot;</span>),
             <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;necsim-independent&quot;</span>)]</span>
-            <span class="ident">Algorithm::Independent</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">f</span>.<span class="ident">write_str</span>(<span class="string">&quot;Independent&quot;</span>),
-            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">f</span>.<span class="ident">write_str</span>(<span class="string">&quot;Unknown&quot;</span>),
+            <span class="ident"><span class="self">Self</span>::Independent</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">fmt</span>.<span class="ident">write_str</span>(<span class="string">&quot;Independent&quot;</span>),
+            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">fmt</span>.<span class="ident">write_str</span>(<span class="string">&quot;Unknown&quot;</span>),
         }
     }
 }
@@ -885,17 +961,11 @@
     <span class="kw">pub</span> <span class="ident">reporters</span>: <span class="ident">AnyReporterPluginVec</span>,
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;de</span><span class="op">&gt;</span> <span class="ident">DeserializeState</span><span class="op">&lt;</span><span class="lifetime">&#39;de</span>, <span class="ident">Partition</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">ReplayArgs</span> {
-    <span class="kw">fn</span> <span class="ident">deserialize_state</span><span class="op">&lt;</span><span class="ident">D</span><span class="op">&gt;</span>(<span class="ident">partition</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Partition</span>, <span class="ident">deserializer</span>: <span class="ident">D</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">D::Error</span><span class="op">&gt;</span>
+<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;de</span><span class="op">&gt;</span> <span class="ident">Deserialize</span><span class="op">&lt;</span><span class="lifetime">&#39;de</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">ReplayArgs</span> {
+    <span class="kw">fn</span> <span class="ident">deserialize</span><span class="op">&lt;</span><span class="ident">D</span><span class="op">&gt;</span>(<span class="ident">deserializer</span>: <span class="ident">D</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">D::Error</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="ident">D</span>: <span class="ident">Deserializer</span><span class="op">&lt;</span><span class="lifetime">&#39;de</span><span class="op">&gt;</span>,
     {
-        <span class="kw">if</span> <span class="ident">partition</span>.<span class="ident">partitions</span>().<span class="ident">get</span>() <span class="op">&gt;</span> <span class="number">1</span> {
-            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">serde::de::Error::custom</span>(
-                <span class="string">&quot;Simulation replay mode is incompatible with external parallelisation&quot;</span>,
-            ));
-        }
-
         <span class="kw">let</span> <span class="ident">raw</span> <span class="op">=</span> <span class="ident">ReplayArgsRaw::deserialize</span>(<span class="ident">deserializer</span>)<span class="question-mark">?</span>;
 
         <span class="kw">let</span> <span class="ident">log</span> <span class="op">=</span> <span class="ident">raw</span>.<span class="ident">logs</span>;

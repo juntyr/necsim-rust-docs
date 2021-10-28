@@ -129,7 +129,7 @@
         )]</span>
         {
             ((<span class="self">self</span>.<span class="ident">origin_sampler</span>.<span class="ident">full_upper_bound_size_hint</span>() <span class="kw">as</span> <span class="ident">f64</span>)
-                <span class="op">/</span> <span class="ident">f64::from</span>(<span class="self">self</span>.<span class="ident">decomposition</span>.<span class="ident">get_number_of_subdomains</span>().<span class="ident">get</span>())) <span class="kw">as</span> <span class="ident">u64</span>
+                <span class="op">/</span> <span class="ident">f64::from</span>(<span class="self">self</span>.<span class="ident">decomposition</span>.<span class="ident">get_subdomain</span>().<span class="ident">size</span>().<span class="ident">get</span>())) <span class="kw">as</span> <span class="ident">u64</span>
         }
     }
 }
@@ -145,7 +145,7 @@
             <span class="kw">if</span> <span class="self">self</span>.<span class="ident">decomposition</span>.<span class="ident">map_location_to_subdomain_rank</span>(
                 <span class="ident">lineage</span>.<span class="ident">indexed_location</span>.<span class="ident">location</span>(),
                 <span class="self">self</span>.<span class="ident">origin_sampler</span>.<span class="ident">habitat</span>(),
-            ) <span class="op">=</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">decomposition</span>.<span class="ident">get_subdomain_rank</span>()
+            ) <span class="op">=</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">decomposition</span>.<span class="ident">get_subdomain</span>().<span class="ident">rank</span>()
             {
                 <span class="kw">return</span> <span class="prelude-val">Some</span>(<span class="ident">lineage</span>);
             }

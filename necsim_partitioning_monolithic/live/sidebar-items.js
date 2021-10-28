@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["LiveMonolithicLocalPartition",""],["LiveMonolithicPartitioning",""]]});
+initSidebarItems({"struct":[["LiveMonolithicLocalPartition",""]]});

@@ -441,9 +441,6 @@
 <span id="441">441</span>
 <span id="442">442</span>
 <span id="443">443</span>
-<span id="444">444</span>
-<span id="445">445</span>
-<span id="446">446</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">std</span>::{
     <span class="ident">fmt</span>,
     <span class="ident">mem::ManuallyDrop</span>,
@@ -468,7 +465,7 @@
         <span class="ident">FilteredReporter</span>, <span class="ident">Reporter</span>,
     },
 };
-<span class="kw">use</span> <span class="ident">necsim_core_bond</span>::{<span class="ident">NonNegativeF64</span>, <span class="ident">PositiveF64</span>};
+<span class="kw">use</span> <span class="ident">necsim_core_bond</span>::{<span class="ident">NonNegativeF64</span>, <span class="ident">Partition</span>, <span class="ident">PositiveF64</span>};
 
 <span class="kw">use</span> <span class="ident">necsim_impls_std::event_log::recorder::EventLogRecorder</span>;
 <span class="kw">use</span> <span class="ident">necsim_partitioning_core</span>::{<span class="ident">iterator::ImmigrantPopIterator</span>, <span class="ident">LocalPartition</span>, <span class="ident">MigrationMode</span>};
@@ -587,16 +584,13 @@
         <span class="bool-val">true</span>
     }
 
-    <span class="kw">fn</span> <span class="ident">get_partition_rank</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u32</span> {
+    <span class="kw">fn</span> <span class="ident">get_partition</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Partition</span> {
         <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::cast_sign_loss</span>)]</span>
-        {
-            <span class="self">self</span>.<span class="ident">world</span>.<span class="ident">rank</span>() <span class="kw">as</span> <span class="ident">u32</span>
-        }
-    }
+        <span class="kw">let</span> <span class="ident">rank</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">world</span>.<span class="ident">rank</span>() <span class="kw">as</span> <span class="ident">u32</span>;
+        <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::cast_sign_loss</span>)]</span>
+        <span class="kw">let</span> <span class="ident">size</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">NonZeroU32::new_unchecked</span>(<span class="self">self</span>.<span class="ident">world</span>.<span class="ident">size</span>() <span class="kw">as</span> <span class="ident">u32</span>) };
 
-    <span class="kw">fn</span> <span class="ident">get_number_of_partitions</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">NonZeroU32</span> {
-        <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::cast_sign_loss</span>)]</span>
-        <span class="ident">NonZeroU32::new</span>(<span class="self">self</span>.<span class="ident">world</span>.<span class="ident">size</span>() <span class="kw">as</span> <span class="ident">u32</span>).<span class="ident">unwrap</span>()
+        <span class="kw">unsafe</span> { <span class="ident">Partition::new_unchecked</span>(<span class="ident">rank</span>, <span class="ident">size</span>) }
     }
 
     <span class="kw">fn</span> <span class="ident">migrate_individuals</span><span class="op">&lt;</span><span class="ident">E</span>: <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> (<span class="ident">u32</span>, <span class="ident">MigratingLineage</span>)<span class="op">&gt;</span><span class="op">&gt;</span>(
@@ -609,7 +603,7 @@
             <span class="self">self</span>.<span class="ident">migration_buffers</span>[<span class="ident">partition</span> <span class="kw">as</span> <span class="ident">usize</span>].<span class="ident">push</span>(<span class="ident">emigrant</span>);
         }
 
-        <span class="kw">let</span> <span class="ident">self_rank_index</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">get_partition_rank</span>() <span class="kw">as</span> <span class="ident">usize</span>;
+        <span class="kw">let</span> <span class="ident">self_rank_index</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">get_partition</span>().<span class="ident">rank</span>() <span class="kw">as</span> <span class="ident">usize</span>;
 
         <span class="kw">let</span> <span class="ident">now</span> <span class="op">=</span> <span class="ident">Instant::now</span>();
 
@@ -661,7 +655,7 @@
         }
 
         <span class="comment">// Send outgoing emigrating lineages</span>
-        <span class="kw">for</span> <span class="ident">rank</span> <span class="kw">in</span> <span class="number">0</span>..<span class="self">self</span>.<span class="ident">get_number_of_partitions</span>().<span class="ident">get</span>() {
+        <span class="kw">for</span> <span class="ident">rank</span> <span class="kw">in</span> <span class="number">0</span>..<span class="self">self</span>.<span class="ident">get_partition</span>().<span class="ident">size</span>().<span class="ident">get</span>() {
             <span class="kw">let</span> <span class="ident">rank_index</span> <span class="op">=</span> <span class="ident">rank</span> <span class="kw">as</span> <span class="ident">usize</span>;
 
             <span class="kw">if</span> <span class="ident">rank_index</span> <span class="op">!</span><span class="op">=</span> <span class="ident">self_rank_index</span>
@@ -721,7 +715,7 @@
             }
         }
 
-        <span class="ident">ImmigrantPopIterator::new</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">migration_buffers</span>[<span class="self">self</span>.<span class="ident">get_partition_rank</span>() <span class="kw">as</span> <span class="ident">usize</span>])
+        <span class="ident">ImmigrantPopIterator::new</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">migration_buffers</span>[<span class="self">self</span>.<span class="ident">get_partition</span>().<span class="ident">rank</span>() <span class="kw">as</span> <span class="ident">usize</span>])
     }
 
     <span class="kw">fn</span> <span class="ident">reduce_vote_continue</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">local_continue</span>: <span class="ident">bool</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
@@ -737,7 +731,7 @@
     }
 
     <span class="kw">fn</span> <span class="ident">reduce_vote_min_time</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">local_time</span>: <span class="ident">PositiveF64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">PositiveF64</span>, <span class="ident">PositiveF64</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">local_partition_rank</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">get_partition_rank</span>();
+        <span class="kw">let</span> <span class="ident">local_partition_rank</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">get_partition</span>().<span class="ident">rank</span>();
 
         <span class="kw">let</span> (<span class="ident">global_min_time</span>, <span class="ident">global_min_rank</span>) <span class="op">=</span>
             <span class="ident">reduce_lexicographic_min_time_rank</span>(<span class="self">self</span>.<span class="ident">world</span>, <span class="ident">local_time</span>, <span class="ident">local_partition_rank</span>);
@@ -789,7 +783,7 @@
                 <span class="kw">let</span> <span class="ident">global_continue</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="kw-2">mut</span> <span class="ident">bool</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">MPI_GLOBAL_CONTINUE</span> };
 
                 <span class="kw">if</span> <span class="op">!</span><span class="kw-2">*</span><span class="ident">global_continue</span> {
-                    <span class="kw">let</span> <span class="ident">remaining</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">all_remaining</span>[<span class="self">self</span>.<span class="ident">get_partition_rank</span>() <span class="kw">as</span> <span class="ident">usize</span>];
+                    <span class="kw">let</span> <span class="ident">remaining</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">all_remaining</span>[<span class="self">self</span>.<span class="ident">get_partition</span>().<span class="ident">rank</span>() <span class="kw">as</span> <span class="ident">usize</span>];
 
                     <span class="self">self</span>.<span class="ident">report_progress</span>(<span class="kw-2">&amp;</span><span class="ident">remaining</span>.<span class="ident">into</span>());
                 }

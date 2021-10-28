@@ -134,11 +134,7 @@
 <span id="134">134</span>
 <span id="135">135</span>
 <span id="136">136</span>
-<span id="137">137</span>
-<span id="138">138</span>
-<span id="139">139</span>
-<span id="140">140</span>
-</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">fmt</span>, <span class="ident">num::NonZeroU32</span>};
+</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">std::fmt</span>;
 
 <span class="kw">use</span> <span class="ident">anyhow::Result</span>;
 
@@ -150,7 +146,7 @@
         <span class="ident">FilteredReporter</span>, <span class="ident">Reporter</span>,
     },
 };
-<span class="kw">use</span> <span class="ident">necsim_core_bond</span>::{<span class="ident">NonNegativeF64</span>, <span class="ident">PositiveF64</span>};
+<span class="kw">use</span> <span class="ident">necsim_core_bond</span>::{<span class="ident">NonNegativeF64</span>, <span class="ident">Partition</span>, <span class="ident">PositiveF64</span>};
 
 <span class="kw">use</span> <span class="ident">necsim_impls_std::event_log::recorder::EventLogRecorder</span>;
 
@@ -197,12 +193,8 @@
         <span class="bool-val">true</span>
     }
 
-    <span class="kw">fn</span> <span class="ident">get_partition_rank</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u32</span> {
-        <span class="number">0</span>
-    }
-
-    <span class="kw">fn</span> <span class="ident">get_number_of_partitions</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">NonZeroU32</span> {
-        <span class="kw">unsafe</span> { <span class="ident">NonZeroU32::new_unchecked</span>(<span class="number">1</span>) }
+    <span class="kw">fn</span> <span class="ident">get_partition</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Partition</span> {
+        <span class="ident">Partition::monolithic</span>()
     }
 
     <span class="kw">fn</span> <span class="ident">migrate_individuals</span><span class="op">&lt;</span><span class="ident">E</span>: <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> (<span class="ident">u32</span>, <span class="ident">MigratingLineage</span>)<span class="op">&gt;</span><span class="op">&gt;</span>(

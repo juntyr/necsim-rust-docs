@@ -497,7 +497,7 @@
                 <span class="ident">post_validation</span>: <span class="ident">V</span>,
                 <span class="ident">pre_launch_orig</span>: <span class="ident">L</span>,
             ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
-                <span class="kw">let</span> <span class="ident">number_of_partitions</span> <span class="op">=</span> <span class="ident">local_partition</span>.<span class="ident">get_number_of_partitions</span>().<span class="ident">get</span>();
+                <span class="kw">let</span> <span class="ident">number_of_partitions</span> <span class="op">=</span> <span class="ident">local_partition</span>.<span class="ident">get_partition</span>().<span class="ident">size</span>().<span class="ident">get</span>();
 
                 <span class="kw">let</span> <span class="ident">pre_launch</span> <span class="op">=</span> <span class="op">|</span><span class="op">|</span> {
                     (<span class="ident">pre_launch_orig</span>)();

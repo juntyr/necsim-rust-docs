@@ -54,28 +54,20 @@
 <span id="54">54</span>
 <span id="55">55</span>
 <span id="56">56</span>
-<span id="57">57</span>
-<span id="58">58</span>
-<span id="59">59</span>
-<span id="60">60</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">anyhow::Result</span>;
 <span class="kw">use</span> <span class="ident">log::LevelFilter</span>;
 
 <span class="kw">use</span> <span class="ident">necsim_core</span>::{<span class="ident">event::TypedEvent</span>, <span class="ident">reporter::Reporter</span>};
 
-<span class="kw">use</span> <span class="ident">necsim_partitioning_core::Partitioning</span>;
 <span class="kw">use</span> <span class="ident">necsim_plugins_core::match_any_reporter_plugin_vec</span>;
 
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::args</span>::{<span class="ident">CommandArgs</span>, <span class="ident">ReplayArgs</span>};
 
-<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::module_name_repetitions</span>, <span class="ident">clippy::needless_pass_by_value</span>)]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">replay_with_logger</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">Partitioning</span><span class="op">&gt;</span>(
-    <span class="ident">replay_args</span>: <span class="ident">CommandArgs</span>,
-    <span class="ident">partitioning</span>: <span class="ident">P</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::module_name_repetitions</span>)]</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">replay_with_logger</span>(<span class="ident">replay_args</span>: <span class="ident">CommandArgs</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
     <span class="ident">log::set_max_level</span>(<span class="ident">LevelFilter::Info</span>);
 
-    <span class="kw">let</span> <span class="ident">replay_args</span> <span class="op">=</span> <span class="ident">ReplayArgs::try_parse</span>(<span class="ident">replay_args</span>, <span class="kw-2">&amp;</span><span class="ident">partitioning</span>)<span class="question-mark">?</span>;
+    <span class="kw">let</span> <span class="ident">replay_args</span> <span class="op">=</span> <span class="ident">ReplayArgs::try_parse</span>(<span class="ident">replay_args</span>)<span class="question-mark">?</span>;
     <span class="macro">info!</span>(<span class="string">&quot;Parsed replay arguments:\n{:#?}&quot;</span>, <span class="ident">replay_args</span>);
 
     <span class="macro">info!</span>(<span class="string">&quot;Starting event replay ...&quot;</span>);

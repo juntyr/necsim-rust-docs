@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["live",""],["recorded",""]]});
+initSidebarItems({"enum":[["MonolithicLocalPartition",""]],"mod":[["live",""],["recorded",""]],"struct":[["MonolithicPartitioning",""]]});

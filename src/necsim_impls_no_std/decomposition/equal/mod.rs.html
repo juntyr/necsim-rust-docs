@@ -102,13 +102,9 @@
 <span id="102">102</span>
 <span id="103">103</span>
 <span id="104">104</span>
-<span id="105">105</span>
-<span id="106">106</span>
-<span id="107">107</span>
-<span id="108">108</span>
-<span id="109">109</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">alloc::boxed::Box</span>;
-<span class="kw">use</span> <span class="ident">core</span>::{<span class="ident">marker::PhantomData</span>, <span class="ident">num::NonZeroU32</span>};
+<span class="kw">use</span> <span class="ident">core::marker::PhantomData</span>;
+<span class="kw">use</span> <span class="ident">necsim_core_bond::Partition</span>;
 
 <span class="kw">use</span> <span class="ident">necsim_core</span>::{
     <span class="ident">cogs</span>::{<span class="ident">Backup</span>, <span class="ident">Habitat</span>, <span class="ident">MathsCore</span>},
@@ -126,8 +122,7 @@
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::module_name_repetitions</span>)]</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">EqualDecomposition</span><span class="op">&lt;</span><span class="ident">M</span>: <span class="ident">MathsCore</span>, <span class="ident">H</span>: <span class="ident">Habitat</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-    <span class="ident">rank</span>: <span class="ident">u32</span>,
-    <span class="ident">partitions</span>: <span class="ident">NonZeroU32</span>,
+    <span class="ident">subdomain</span>: <span class="ident">Partition</span>,
 
     <span class="ident">extent</span>: <span class="ident">LandscapeExtent</span>,
     <span class="ident">morton</span>: (<span class="ident">u8</span>, <span class="ident">u8</span>),
@@ -141,8 +136,7 @@
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">M</span>: <span class="ident">MathsCore</span>, <span class="ident">H</span>: <span class="ident">Habitat</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="ident">Backup</span> <span class="kw">for</span> <span class="ident">EqualDecomposition</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span><span class="op">&gt;</span> {
     <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">backup_unchecked</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="self">Self</span> {
-            <span class="ident">rank</span>: <span class="self">self</span>.<span class="ident">rank</span>,
-            <span class="ident">partitions</span>: <span class="self">self</span>.<span class="ident">partitions</span>,
+            <span class="ident">subdomain</span>: <span class="self">self</span>.<span class="ident">subdomain</span>,
             <span class="ident">extent</span>: <span class="self">self</span>.<span class="ident">extent</span>.<span class="ident">clone</span>(),
             <span class="ident">morton</span>: <span class="self">self</span>.<span class="ident">morton</span>,
             <span class="ident">indices</span>: <span class="self">self</span>.<span class="ident">indices</span>.<span class="ident">clone</span>(),
@@ -153,12 +147,8 @@
 
 <span class="attribute">#[<span class="ident">contract_trait</span>]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">M</span>: <span class="ident">MathsCore</span>, <span class="ident">H</span>: <span class="ident">Habitat</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="ident">Decomposition</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">EqualDecomposition</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">get_subdomain_rank</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u32</span> {
-        <span class="self">self</span>.<span class="ident">rank</span>
-    }
-
-    <span class="kw">fn</span> <span class="ident">get_number_of_subdomains</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">NonZeroU32</span> {
-        <span class="self">self</span>.<span class="ident">partitions</span>
+    <span class="kw">fn</span> <span class="ident">get_subdomain</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Partition</span> {
+        <span class="self">self</span>.<span class="ident">subdomain</span>
     }
 
     <span class="attribute">#[<span class="ident">debug_requires</span>(
