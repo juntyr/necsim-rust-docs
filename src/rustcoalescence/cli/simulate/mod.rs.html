@@ -50,12 +50,22 @@
 <span id="50">50</span>
 <span id="51">51</span>
 <span id="52">52</span>
+<span id="53">53</span>
+<span id="54">54</span>
+<span id="55">55</span>
+<span id="56">56</span>
+<span id="57">57</span>
+<span id="58">58</span>
+<span id="59">59</span>
+<span id="60">60</span>
+<span id="61">61</span>
+<span id="62">62</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">anyhow::Result</span>;
 
 <span class="kw">use</span> <span class="ident">necsim_core::reporter::Reporter</span>;
 <span class="kw">use</span> <span class="ident">necsim_partitioning_core::LocalPartition</span>;
 
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::args</span>::{<span class="ident">CommonArgs</span>, <span class="ident">Scenario</span> <span class="kw">as</span> <span class="ident">ScenarioArgs</span>};
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::args</span>::{<span class="ident">Algorithm</span> <span class="kw">as</span> <span class="ident">AlgorithmArgs</span>, <span class="ident">CommonArgs</span>, <span class="ident">Scenario</span> <span class="kw">as</span> <span class="ident">ScenarioArgs</span>};
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;necsim-partitioning-mpi&quot;</span>))]</span>
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">monolithic</span>;
@@ -73,10 +83,13 @@
 <span class="kw">mod</span> <span class="ident">dispatch</span>;
 
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::module_name_repetitions</span>)]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">simulate_with_logger</span><span class="op">&lt;</span><span class="ident">R</span>: <span class="ident">Reporter</span>, <span class="ident">P</span>: <span class="ident">LocalPartition</span><span class="op">&lt;</span><span class="ident">R</span><span class="op">&gt;</span><span class="op">&gt;</span>(
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">simulate_with_logger</span><span class="op">&lt;</span><span class="ident">R</span>: <span class="ident">Reporter</span>, <span class="ident">P</span>: <span class="ident">LocalPartition</span><span class="op">&lt;</span><span class="ident">R</span><span class="op">&gt;</span>, <span class="ident">V</span>: <span class="ident">FnOnce</span>(), <span class="ident">L</span>: <span class="ident">FnOnce</span>()<span class="op">&gt;</span>(
     <span class="ident">local_partition</span>: <span class="ident">Box</span><span class="op">&lt;</span><span class="ident">P</span><span class="op">&gt;</span>,
     <span class="ident">common_args</span>: <span class="ident">CommonArgs</span>,
     <span class="ident">scenario</span>: <span class="ident">ScenarioArgs</span>,
+    <span class="ident">algorithm</span>: <span class="ident">AlgorithmArgs</span>,
+    <span class="ident">post_validation</span>: <span class="ident">V</span>,
+    <span class="ident">pre_launch</span>: <span class="ident">L</span>,
 ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(
         <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rustcoalescence-algorithms-monolithic&quot;</span>,
@@ -84,7 +97,14 @@
         <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rustcoalescence-algorithms-cuda&quot;</span>
     ))]</span>
     {
-        <span class="ident">dispatch::simulate_with_logger</span>(<span class="ident">local_partition</span>, <span class="ident">common_args</span>, <span class="ident">scenario</span>)
+        <span class="ident">dispatch::simulate_with_logger</span>(
+            <span class="ident">local_partition</span>,
+            <span class="ident">common_args</span>,
+            <span class="ident">scenario</span>,
+            <span class="ident">algorithm</span>,
+            <span class="ident">post_validation</span>,
+            <span class="ident">pre_launch</span>,
+        )
     }
 
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">any</span>(
