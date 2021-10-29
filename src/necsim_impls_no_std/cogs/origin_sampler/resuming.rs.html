@@ -141,6 +141,8 @@
 <span id="141">141</span>
 <span id="142">142</span>
 <span id="143">143</span>
+<span id="144">144</span>
+<span id="145">145</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">core</span>::{<span class="ident">fmt</span>, <span class="ident">iter::ExactSizeIterator</span>};
 
 <span class="kw">use</span> <span class="ident">necsim_core</span>::{
@@ -203,6 +205,8 @@
         <span class="ident">habitat</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;h</span> <span class="ident">H</span>,
         <span class="ident">oob_lineage_generator</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;o</span> <span class="kw-2">mut</span> <span class="ident">O</span>,
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+        <span class="comment">// TODO: the output of this sampler could be further sampled, so the</span>
+        <span class="comment">//       oob generator might contain out-of-partition items</span>
         <span class="self">Self</span> {
             <span class="ident">lineage_iterator</span>,
             <span class="ident">oob_lineage_generator</span>,
