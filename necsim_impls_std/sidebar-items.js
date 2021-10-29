@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["cogs",""],["event_log",""]]});
+initSidebarItems({"mod":[["cogs",""],["event_log",""],["lineage_file",""]]});
