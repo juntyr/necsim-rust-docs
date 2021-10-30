@@ -118,7 +118,12 @@
 <span id="118">118</span>
 <span id="119">119</span>
 <span id="120">120</span>
-</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">core::marker::PhantomData</span>;
+<span id="121">121</span>
+<span id="122">122</span>
+<span id="123">123</span>
+<span id="124">124</span>
+<span id="125">125</span>
+</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">core</span>::{<span class="ident">marker::PhantomData</span>, <span class="ident">num::NonZeroUsize</span>};
 
 <span class="kw">use</span> <span class="ident">necsim_core</span>::{
     <span class="ident">cogs</span>::{<span class="ident">Backup</span>, <span class="ident">DispersalSampler</span>, <span class="ident">Habitat</span>, <span class="ident">MathsCore</span>, <span class="ident">RngCore</span>, <span class="ident">SeparableDispersalSampler</span>},
@@ -170,7 +175,10 @@
         <span class="kw">let</span> <span class="ident">habitat_index_max</span> <span class="op">=</span>
             (<span class="ident">habitat</span>.<span class="ident">get_extent</span>().<span class="ident">width</span>() <span class="kw">as</span> <span class="ident">usize</span>) <span class="op">*</span> (<span class="ident">habitat</span>.<span class="ident">get_extent</span>().<span class="ident">height</span>() <span class="kw">as</span> <span class="ident">usize</span>);
 
-        <span class="kw">let</span> <span class="ident">dispersal_target_index</span> <span class="op">=</span> <span class="ident">rng</span>.<span class="ident">sample_index</span>(<span class="ident">habitat_index_max</span>);
+        <span class="comment">// Safety: `habitat_index_max` is zero iff the habitat is 0x0, in which</span>
+        <span class="comment">//         case the location cannot be in the landscape</span>
+        <span class="kw">let</span> <span class="ident">dispersal_target_index</span> <span class="op">=</span>
+            <span class="ident">rng</span>.<span class="ident">sample_index</span>(<span class="kw">unsafe</span> { <span class="ident">NonZeroUsize::new_unchecked</span>(<span class="ident">habitat_index_max</span>) });
 
         <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::cast_possible_truncation</span>)]</span>
         <span class="ident">Location::new</span>(
@@ -204,8 +212,10 @@
             <span class="op">*</span> (<span class="ident">habitat</span>.<span class="ident">get_extent</span>().<span class="ident">width</span>() <span class="kw">as</span> <span class="ident">usize</span>)
             <span class="op">+</span> (<span class="ident">location</span>.<span class="ident">x</span>() <span class="kw">as</span> <span class="ident">usize</span>);
 
+        <span class="comment">// Safety: by PRE, `habitat_index_max` &gt; 1</span>
         <span class="kw">let</span> <span class="ident">dispersal_target_index</span> <span class="op">=</span> {
-            <span class="kw">let</span> <span class="ident">dispersal_target_index</span> <span class="op">=</span> <span class="ident">rng</span>.<span class="ident">sample_index</span>(<span class="ident">habitat_index_max</span> <span class="op">-</span> <span class="number">1</span>);
+            <span class="kw">let</span> <span class="ident">dispersal_target_index</span> <span class="op">=</span>
+                <span class="ident">rng</span>.<span class="ident">sample_index</span>(<span class="kw">unsafe</span> { <span class="ident">NonZeroUsize::new_unchecked</span>(<span class="ident">habitat_index_max</span> <span class="op">-</span> <span class="number">1</span>) });
 
             <span class="kw">if</span> <span class="ident">dispersal_target_index</span> <span class="op">&gt;</span><span class="op">=</span> <span class="ident">current_location_index</span> {
                 <span class="ident">dispersal_target_index</span> <span class="op">+</span> <span class="number">1</span>

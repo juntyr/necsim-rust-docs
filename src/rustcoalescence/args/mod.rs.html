@@ -524,28 +524,6 @@
 <span id="524">524</span>
 <span id="525">525</span>
 <span id="526">526</span>
-<span id="527">527</span>
-<span id="528">528</span>
-<span id="529">529</span>
-<span id="530">530</span>
-<span id="531">531</span>
-<span id="532">532</span>
-<span id="533">533</span>
-<span id="534">534</span>
-<span id="535">535</span>
-<span id="536">536</span>
-<span id="537">537</span>
-<span id="538">538</span>
-<span id="539">539</span>
-<span id="540">540</span>
-<span id="541">541</span>
-<span id="542">542</span>
-<span id="543">543</span>
-<span id="544">544</span>
-<span id="545">545</span>
-<span id="546">546</span>
-<span id="547">547</span>
-<span id="548">548</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">convert::TryFrom</span>, <span class="ident">fmt</span>, <span class="ident">ops::Deref</span>, <span class="ident">path::PathBuf</span>};
 
 <span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">de::Deserializer</span>, <span class="ident">Deserialize</span>};
@@ -566,7 +544,7 @@
 };
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(
-    <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rustcoalescence-algorithms-monolithic&quot;</span>,
+    <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rustcoalescence-algorithms-gillespie&quot;</span>,
     <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rustcoalescence-algorithms-independent&quot;</span>,
     <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rustcoalescence-algorithms-cuda&quot;</span>
 ))]</span>
@@ -797,20 +775,17 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">DeserializeState</span>)]</span>
 <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">deserialize_state</span> <span class="op">=</span> <span class="string">&quot;Partition&quot;</span>)]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Algorithm</span> {
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rustcoalescence-algorithms-monolithic&quot;</span>)]</span>
+    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rustcoalescence-algorithms-gillespie&quot;</span>)]</span>
+    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;Gillespie&quot;</span>)]</span>
     <span class="ident">Classical</span>(
         <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">deserialize_state</span>)]</span>
-        <span class="op">&lt;</span><span class="ident">rustcoalescence_algorithms_monolithic::classical::ClassicalAlgorithm</span> <span class="kw">as</span> <span class="ident">rustcoalescence_algorithms::AlgorithmArguments</span><span class="op">&gt;</span><span class="ident">::Arguments</span>,
+        <span class="op">&lt;</span><span class="ident">rustcoalescence_algorithms_gillespie::classical::ClassicalAlgorithm</span> <span class="kw">as</span> <span class="ident">rustcoalescence_algorithms::AlgorithmArguments</span><span class="op">&gt;</span><span class="ident">::Arguments</span>,
     ),
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rustcoalescence-algorithms-monolithic&quot;</span>)]</span>
-    <span class="ident">Gillespie</span>(
+    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rustcoalescence-algorithms-gillespie&quot;</span>)]</span>
+    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;SkippingGillespie&quot;</span>)]</span>
+    <span class="ident">EventSkipping</span>(
         <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">deserialize_state</span>)]</span>
-        <span class="op">&lt;</span><span class="ident">rustcoalescence_algorithms_monolithic::gillespie::GillespieAlgorithm</span> <span class="kw">as</span> <span class="ident">AlgorithmArguments</span><span class="op">&gt;</span><span class="ident">::Arguments</span>,
-    ),
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rustcoalescence-algorithms-monolithic&quot;</span>)]</span>
-    <span class="ident">SkippingGillespie</span>(
-        <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">deserialize_state</span>)]</span>
-        <span class="op">&lt;</span><span class="ident">rustcoalescence_algorithms_monolithic::skipping_gillespie::SkippingGillespieAlgorithm</span> <span class="kw">as</span> <span class="ident">AlgorithmArguments</span><span class="op">&gt;</span><span class="ident">::Arguments</span>,
+        <span class="op">&lt;</span><span class="ident">rustcoalescence_algorithms_gillespie::event_skipping::EventSkippingAlgorithm</span> <span class="kw">as</span> <span class="ident">AlgorithmArguments</span><span class="op">&gt;</span><span class="ident">::Arguments</span>,
     ),
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rustcoalescence-algorithms-cuda&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;CUDA&quot;</span>)]</span>
@@ -819,25 +794,6 @@
     <span class="ident">Independent</span>(
         <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">deserialize_state</span>)]</span> <span class="op">&lt;</span><span class="ident">rustcoalescence_algorithms_independent::IndependentAlgorithm</span> <span class="kw">as</span> <span class="ident">AlgorithmArguments</span><span class="op">&gt;</span><span class="ident">::Arguments</span>,
     ),
-}
-
-<span class="kw">impl</span> <span class="ident">fmt::Display</span> <span class="kw">for</span> <span class="ident">Algorithm</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">fmt</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
-        <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">unreachable_patterns</span>)]</span>
-        <span class="kw">match</span> <span class="self">self</span> {
-            <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;necsim-classical&quot;</span>)]</span>
-            <span class="ident"><span class="self">Self</span>::Classical</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">fmt</span>.<span class="ident">write_str</span>(<span class="string">&quot;Classical&quot;</span>),
-            <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;necsim-gillespie&quot;</span>)]</span>
-            <span class="ident"><span class="self">Self</span>::Gillespie</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">fmt</span>.<span class="ident">write_str</span>(<span class="string">&quot;Gillespie&quot;</span>),
-            <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;necsim-skipping-gillespie&quot;</span>)]</span>
-            <span class="ident"><span class="self">Self</span>::SkippingGillespie</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">fmt</span>.<span class="ident">write_str</span>(<span class="string">&quot;Skipping-Gillespie&quot;</span>),
-            <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;necsim-cuda&quot;</span>)]</span>
-            <span class="ident"><span class="self">Self</span>::Cuda</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">fmt</span>.<span class="ident">write_str</span>(<span class="string">&quot;CUDA&quot;</span>),
-            <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;necsim-independent&quot;</span>)]</span>
-            <span class="ident"><span class="self">Self</span>::Independent</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">fmt</span>.<span class="ident">write_str</span>(<span class="string">&quot;Independent&quot;</span>),
-            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">fmt</span>.<span class="ident">write_str</span>(<span class="string">&quot;Unknown&quot;</span>),
-        }
-    }
 }
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Deserialize</span>)]</span>

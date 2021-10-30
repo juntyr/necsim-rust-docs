@@ -169,7 +169,32 @@
 <span id="169">169</span>
 <span id="170">170</span>
 <span id="171">171</span>
-</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">core</span>::{<span class="ident">convert::AsMut</span>, <span class="ident">default::Default</span>, <span class="ident">ptr::copy_nonoverlapping</span>};
+<span id="172">172</span>
+<span id="173">173</span>
+<span id="174">174</span>
+<span id="175">175</span>
+<span id="176">176</span>
+<span id="177">177</span>
+<span id="178">178</span>
+<span id="179">179</span>
+<span id="180">180</span>
+<span id="181">181</span>
+<span id="182">182</span>
+<span id="183">183</span>
+<span id="184">184</span>
+<span id="185">185</span>
+<span id="186">186</span>
+<span id="187">187</span>
+<span id="188">188</span>
+<span id="189">189</span>
+<span id="190">190</span>
+<span id="191">191</span>
+</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">core</span>::{
+    <span class="ident">convert::AsMut</span>,
+    <span class="ident">default::Default</span>,
+    <span class="ident">num</span>::{<span class="ident">NonZeroU128</span>, <span class="ident">NonZeroU32</span>, <span class="ident">NonZeroUsize</span>},
+    <span class="ident">ptr::copy_nonoverlapping</span>,
+};
 
 <span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">de::DeserializeOwned</span>, <span class="ident">Serialize</span>};
 
@@ -245,8 +270,8 @@
 
     <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="attribute">#[<span class="ident">debug_ensures</span>(<span class="ident">ret</span> <span class="op">&lt;</span> <span class="ident">length</span>, <span class="string">&quot;samples U(0, length - 1)&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">sample_index</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">length</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+    <span class="attribute">#[<span class="ident">debug_ensures</span>(<span class="ident">ret</span> <span class="op">&lt;</span> <span class="ident">length</span>.<span class="ident">get</span>(), <span class="string">&quot;samples U(0, length - 1)&quot;</span>)]</span>
+    <span class="kw">fn</span> <span class="ident">sample_index</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">length</span>: <span class="ident">NonZeroUsize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
         <span class="comment">// attributes on expressions are experimental</span>
         <span class="comment">// see https://github.com/rust-lang/rust/issues/15701</span>
         <span class="attribute">#[<span class="ident">allow</span>(
@@ -254,14 +279,14 @@
             <span class="ident">clippy::cast_possible_truncation</span>,
             <span class="ident">clippy::cast_sign_loss</span>
         )]</span>
-        <span class="kw">let</span> <span class="ident">index</span> <span class="op">=</span> <span class="ident">M::floor</span>(<span class="self">self</span>.<span class="ident">sample_uniform</span>().<span class="ident">get</span>() <span class="op">*</span> (<span class="ident">length</span> <span class="kw">as</span> <span class="ident">f64</span>)) <span class="kw">as</span> <span class="ident">usize</span>;
-        <span class="ident">index</span>
+        <span class="kw">let</span> <span class="ident">index</span> <span class="op">=</span> <span class="ident">M::floor</span>(<span class="self">self</span>.<span class="ident">sample_uniform</span>().<span class="ident">get</span>() <span class="op">*</span> (<span class="ident">length</span>.<span class="ident">get</span>() <span class="kw">as</span> <span class="ident">f64</span>)) <span class="kw">as</span> <span class="ident">usize</span>;
+        <span class="ident">index</span>.<span class="ident">min</span>(<span class="ident">length</span>.<span class="ident">get</span>() <span class="op">-</span> <span class="number">1</span>)
     }
 
     <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="attribute">#[<span class="ident">debug_ensures</span>(<span class="ident">ret</span> <span class="op">&lt;</span> <span class="ident">length</span>, <span class="string">&quot;samples U(0, length - 1)&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">sample_index_u32</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">length</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u32</span> {
+    <span class="attribute">#[<span class="ident">debug_ensures</span>(<span class="ident">ret</span> <span class="op">&lt;</span> <span class="ident">length</span>.<span class="ident">get</span>(), <span class="string">&quot;samples U(0, length - 1)&quot;</span>)]</span>
+    <span class="kw">fn</span> <span class="ident">sample_index_u32</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">length</span>: <span class="ident">NonZeroU32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u32</span> {
         <span class="comment">// attributes on expressions are experimental</span>
         <span class="comment">// see https://github.com/rust-lang/rust/issues/15701</span>
         <span class="attribute">#[<span class="ident">allow</span>(
@@ -269,8 +294,23 @@
             <span class="ident">clippy::cast_possible_truncation</span>,
             <span class="ident">clippy::cast_sign_loss</span>
         )]</span>
-        <span class="kw">let</span> <span class="ident">index</span> <span class="op">=</span> <span class="ident">M::floor</span>(<span class="self">self</span>.<span class="ident">sample_uniform</span>().<span class="ident">get</span>() <span class="op">*</span> <span class="ident">f64::from</span>(<span class="ident">length</span>)) <span class="kw">as</span> <span class="ident">u32</span>;
-        <span class="ident">index</span>
+        <span class="kw">let</span> <span class="ident">index</span> <span class="op">=</span> <span class="ident">M::floor</span>(<span class="self">self</span>.<span class="ident">sample_uniform</span>().<span class="ident">get</span>() <span class="op">*</span> <span class="ident">f64::from</span>(<span class="ident">length</span>.<span class="ident">get</span>())) <span class="kw">as</span> <span class="ident">u32</span>;
+        <span class="ident">index</span>.<span class="ident">min</span>(<span class="ident">length</span>.<span class="ident">get</span>() <span class="op">-</span> <span class="number">1</span>)
+    }
+
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
+    <span class="attribute">#[<span class="ident">inline</span>]</span>
+    <span class="attribute">#[<span class="ident">debug_ensures</span>(<span class="ident">ret</span> <span class="op">&lt;</span> <span class="ident">length</span>.<span class="ident">get</span>(), <span class="string">&quot;samples U(0, length - 1)&quot;</span>)]</span>
+    <span class="kw">fn</span> <span class="ident">sample_index_u128</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">length</span>: <span class="ident">NonZeroU128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u128</span> {
+        <span class="comment">// attributes on expressions are experimental</span>
+        <span class="comment">// see https://github.com/rust-lang/rust/issues/15701</span>
+        <span class="attribute">#[<span class="ident">allow</span>(
+            <span class="ident">clippy::cast_precision_loss</span>,
+            <span class="ident">clippy::cast_possible_truncation</span>,
+            <span class="ident">clippy::cast_sign_loss</span>
+        )]</span>
+        <span class="kw">let</span> <span class="ident">index</span> <span class="op">=</span> <span class="ident">M::floor</span>(<span class="self">self</span>.<span class="ident">sample_uniform</span>().<span class="ident">get</span>() <span class="op">*</span> (<span class="ident">length</span>.<span class="ident">get</span>() <span class="kw">as</span> <span class="ident">f64</span>)) <span class="kw">as</span> <span class="ident">u128</span>;
+        <span class="ident">index</span>.<span class="ident">min</span>(<span class="ident">length</span>.<span class="ident">get</span>() <span class="op">-</span> <span class="number">1</span>)
     }
 
     <span class="attribute">#[<span class="ident">must_use</span>]</span>

@@ -311,14 +311,6 @@
 <span id="311">311</span>
 <span id="312">312</span>
 <span id="313">313</span>
-<span id="314">314</span>
-<span id="315">315</span>
-<span id="316">316</span>
-<span id="317">317</span>
-<span id="318">318</span>
-<span id="319">319</span>
-<span id="320">320</span>
-<span id="321">321</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">anyhow</span>::{<span class="ident">Context</span>, <span class="prelude-ty">Result</span>};
 <span class="kw">use</span> <span class="ident">bincode::Options</span>;
 <span class="kw">use</span> <span class="ident">tiny_keccak</span>::{<span class="ident">Hasher</span>, <span class="ident">Keccak</span>};
@@ -327,13 +319,12 @@
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rustcoalescence-algorithms-cuda&quot;</span>)]</span>
 <span class="kw">use</span> <span class="ident">rustcoalescence_algorithms_cuda::CudaAlgorithm</span>;
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rustcoalescence-algorithms-gillespie&quot;</span>)]</span>
+<span class="kw">use</span> <span class="ident">rustcoalescence_algorithms_gillespie</span>::{
+    <span class="ident">classical::ClassicalAlgorithm</span>, <span class="ident">event_skipping::EventSkippingAlgorithm</span>,
+};
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rustcoalescence-algorithms-independent&quot;</span>)]</span>
 <span class="kw">use</span> <span class="ident">rustcoalescence_algorithms_independent::IndependentAlgorithm</span>;
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rustcoalescence-algorithms-monolithic&quot;</span>)]</span>
-<span class="kw">use</span> <span class="ident">rustcoalescence_algorithms_monolithic</span>::{
-    <span class="ident">classical::ClassicalAlgorithm</span>, <span class="ident">gillespie::GillespieAlgorithm</span>,
-    <span class="ident">skipping_gillespie::SkippingGillespieAlgorithm</span>,
-};
 
 <span class="kw">use</span> <span class="ident">necsim_core</span>::{
     <span class="ident">cogs</span>::{<span class="ident">MathsCore</span>, <span class="ident">SeedableRng</span>},
@@ -515,23 +506,16 @@
                 <span class="kw">let</span> (<span class="ident">time</span>, <span class="ident">steps</span>): (<span class="ident">NonNegativeF64</span>, <span class="ident">u64</span>) <span class="op">=</span> <span class="macro">crate::match_scenario_algorithm!</span>(
                     (<span class="ident">algorithm</span>, <span class="ident">scenario</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">scenario</span>)
                 {
-                    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rustcoalescence-algorithms-monolithic&quot;</span>)]</span>
+                    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rustcoalescence-algorithms-gillespie&quot;</span>)]</span>
                     <span class="ident">AlgorithmArgs::Classical</span>(<span class="ident">algorithm_args</span>) <span class="op">=</span><span class="op">&gt;</span> { <span class="macro">initialise_and_simulate!</span>(
                         <span class="ident">ClassicalAlgorithm</span>(
                             <span class="ident">common_args</span>, <span class="ident">algorithm_args</span>, <span class="ident">scenario</span>, <span class="ident">local_partition</span>,
                             <span class="ident">post_validation</span>, <span class="ident">pre_launch</span>
                         )
                     ).<span class="ident">into_ok</span>() },
-                    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rustcoalescence-algorithms-monolithic&quot;</span>)]</span>
-                    <span class="ident">AlgorithmArgs::Gillespie</span>(<span class="ident">algorithm_args</span>) <span class="op">=</span><span class="op">&gt;</span> { <span class="macro">initialise_and_simulate!</span>(
-                        <span class="ident">GillespieAlgorithm</span>(
-                            <span class="ident">common_args</span>, <span class="ident">algorithm_args</span>, <span class="ident">scenario</span>, <span class="ident">local_partition</span>,
-                            <span class="ident">post_validation</span>, <span class="ident">pre_launch</span>
-                        )
-                    ).<span class="ident">into_ok</span>() },
-                    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rustcoalescence-algorithms-monolithic&quot;</span>)]</span>
-                    <span class="ident">AlgorithmArgs::SkippingGillespie</span>(<span class="ident">algorithm_args</span>) <span class="op">=</span><span class="op">&gt;</span> { <span class="macro">initialise_and_simulate!</span>(
-                        <span class="ident">SkippingGillespieAlgorithm</span>(
+                    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rustcoalescence-algorithms-gillespie&quot;</span>)]</span>
+                    <span class="ident">AlgorithmArgs::EventSkipping</span>(<span class="ident">algorithm_args</span>) <span class="op">=</span><span class="op">&gt;</span> { <span class="macro">initialise_and_simulate!</span>(
+                        <span class="ident">EventSkippingAlgorithm</span>(
                             <span class="ident">common_args</span>, <span class="ident">algorithm_args</span>, <span class="ident">scenario</span>, <span class="ident">local_partition</span>,
                             <span class="ident">post_validation</span>, <span class="ident">pre_launch</span>
                         )

@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["active_lineage_sampler",""],["dispersal_sampler",""],["rng",""]]});
+initSidebarItems({"mod":[["dispersal_sampler",""],["rng",""]]});
