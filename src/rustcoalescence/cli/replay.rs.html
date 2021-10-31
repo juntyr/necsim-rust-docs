@@ -75,11 +75,11 @@
     <span class="macro">match_any_reporter_plugin_vec!</span>(<span class="ident">replay_args</span>.<span class="ident">reporters</span> <span class="op">=</span><span class="op">&gt;</span> <span class="op">|</span><span class="kw-2">mut</span> <span class="ident">reporter</span><span class="op">|</span> {
         <span class="ident">reporter</span>.<span class="ident">initialise</span>().<span class="ident">map_err</span>(<span class="ident">anyhow::Error::msg</span>)<span class="question-mark">?</span>;
 
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">remaining</span> <span class="op">=</span> <span class="ident">replay_args</span>.<span class="ident">log</span>.<span class="ident">length</span>() <span class="kw">as</span> <span class="ident">u64</span>;
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">remaining</span> <span class="op">=</span> <span class="ident">replay_args</span>.<span class="ident">event_log</span>.<span class="ident">length</span>() <span class="kw">as</span> <span class="ident">u64</span>;
 
         <span class="ident">reporter</span>.<span class="ident">report_progress</span>(<span class="kw-2">&amp;</span><span class="ident">remaining</span>.<span class="ident">into</span>());
 
-        <span class="kw">for</span> <span class="ident">event</span> <span class="kw">in</span> <span class="ident">replay_args</span>.<span class="ident">log</span> {
+        <span class="kw">for</span> <span class="ident">event</span> <span class="kw">in</span> <span class="ident">replay_args</span>.<span class="ident">event_log</span> {
             <span class="ident">remaining</span> <span class="op">-</span><span class="op">=</span> <span class="number">1</span>;
             <span class="ident">reporter</span>.<span class="ident">report_progress</span>(<span class="kw-2">&amp;</span><span class="ident">remaining</span>.<span class="ident">into</span>());
 

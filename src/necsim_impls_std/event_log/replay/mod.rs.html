@@ -144,8 +144,32 @@
 <span id="144">144</span>
 <span id="145">145</span>
 <span id="146">146</span>
-</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">serde::Deserialize</span>;
-<span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">collections::BinaryHeap</span>, <span class="ident">convert::TryFrom</span>, <span class="ident">iter::FromIterator</span>};
+<span id="147">147</span>
+<span id="148">148</span>
+<span id="149">149</span>
+<span id="150">150</span>
+<span id="151">151</span>
+<span id="152">152</span>
+<span id="153">153</span>
+<span id="154">154</span>
+<span id="155">155</span>
+<span id="156">156</span>
+<span id="157">157</span>
+<span id="158">158</span>
+<span id="159">159</span>
+<span id="160">160</span>
+<span id="161">161</span>
+<span id="162">162</span>
+<span id="163">163</span>
+<span id="164">164</span>
+<span id="165">165</span>
+<span id="166">166</span>
+<span id="167">167</span>
+<span id="168">168</span>
+<span id="169">169</span>
+</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">collections::BinaryHeap</span>, <span class="ident">convert::TryFrom</span>, <span class="ident">iter::FromIterator</span>, <span class="ident">num::NonZeroUsize</span>};
+
+<span class="kw">use</span> <span class="ident">serde::Deserialize</span>;
 
 <span class="kw">use</span> <span class="ident">necsim_core::event::PackedEvent</span>;
 
@@ -159,7 +183,7 @@
 
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::module_name_repetitions</span>)]</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Deserialize</span>)]</span>
-<span class="attribute">#[<span class="ident">serde</span>(<span class="ident">try_from</span> <span class="op">=</span> <span class="string">&quot;Vec&lt;GlobbedSortedSegments&gt;&quot;</span>)]</span>
+<span class="attribute">#[<span class="ident">serde</span>(<span class="ident">try_from</span> <span class="op">=</span> <span class="string">&quot;EventLogReplayRaw&quot;</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">EventLogReplay</span> {
     <span class="ident">frontier</span>: <span class="ident">BinaryHeap</span><span class="op">&lt;</span><span class="ident">SortedSortedSegments</span><span class="op">&gt;</span>,
 
@@ -167,11 +191,20 @@
     <span class="ident">with_dispersal</span>: <span class="ident">bool</span>,
 }
 
-<span class="kw">impl</span> <span class="ident">TryFrom</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">GlobbedSortedSegments</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">EventLogReplay</span> {
+<span class="kw">impl</span> <span class="ident">TryFrom</span><span class="op">&lt;</span><span class="ident">EventLogReplayRaw</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">EventLogReplay</span> {
     <span class="kw">type</span> <span class="ident">Error</span> <span class="op">=</span> <span class="ident">anyhow::Error</span>;
 
-    <span class="kw">fn</span> <span class="ident">try_from</span>(<span class="ident">vec</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">GlobbedSortedSegments</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident"><span class="self">Self</span>::Error</span><span class="op">&gt;</span> {
-        <span class="ident">vec</span>.<span class="ident">into_iter</span>().<span class="ident">flatten</span>().<span class="ident">collect</span>()
+    <span class="kw">fn</span> <span class="ident">try_from</span>(<span class="ident">raw</span>: <span class="ident">EventLogReplayRaw</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident"><span class="self">Self</span>::Error</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="ident">capacity</span> <span class="op">=</span> <span class="ident">raw</span>.<span class="ident">capacity</span>;
+
+        <span class="ident">raw</span>.<span class="ident">segments</span>
+            .<span class="ident">into_iter</span>()
+            .<span class="ident">flatten</span>()
+            .<span class="ident">map</span>(<span class="op">|</span><span class="kw-2">mut</span> <span class="ident">segment</span><span class="op">|</span> {
+                <span class="ident">segment</span>.<span class="ident">set_capacity</span>(<span class="ident">capacity</span>);
+                <span class="ident">segment</span>
+            })
+            .<span class="ident">collect</span>()
     }
 }
 
@@ -289,6 +322,19 @@
 
         <span class="ident">next_event</span>
     }
+}
+
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Deserialize</span>)]</span>
+<span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;EventLog&quot;</span>)]</span>
+<span class="attribute">#[<span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>)]</span>
+<span class="kw">struct</span> <span class="ident">EventLogReplayRaw</span> {
+    <span class="ident">segments</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">GlobbedSortedSegments</span><span class="op">&gt;</span>,
+    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">default</span> <span class="op">=</span> <span class="string">&quot;default_event_log_replay_segment_capacity&quot;</span>)]</span>
+    <span class="ident">capacity</span>: <span class="ident">NonZeroUsize</span>,
+}
+
+<span class="kw">fn</span> <span class="ident">default_event_log_replay_segment_capacity</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">NonZeroUsize</span> {
+    <span class="ident">NonZeroUsize::new</span>(<span class="number">100_000_usize</span>).<span class="ident">unwrap</span>()
 }
 </code></pre></div>
 </section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="necsim_impls_std" data-search-index-js="../../../../search-index.js" data-search-js="../../../../search.js"></div>

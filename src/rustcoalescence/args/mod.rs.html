@@ -524,6 +524,15 @@
 <span id="524">524</span>
 <span id="525">525</span>
 <span id="526">526</span>
+<span id="527">527</span>
+<span id="528">528</span>
+<span id="529">529</span>
+<span id="530">530</span>
+<span id="531">531</span>
+<span id="532">532</span>
+<span id="533">533</span>
+<span id="534">534</span>
+<span id="535">535</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">convert::TryFrom</span>, <span class="ident">fmt</span>, <span class="ident">ops::Deref</span>, <span class="ident">path::PathBuf</span>};
 
 <span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">de::Deserializer</span>, <span class="ident">Deserialize</span>};
@@ -641,19 +650,21 @@
 <span class="kw">where</span>
     <span class="ident">D</span>: <span class="ident">Deserializer</span><span class="op">&lt;</span><span class="lifetime">&#39;de</span><span class="op">&gt;</span>,
 {
-    <span class="kw">use</span> <span class="ident">serde::de::Error</span>;
+    <span class="kw">let</span> <span class="ident">event_log</span> <span class="op">=</span> <span class="kw">match</span> <span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">EventLogRecorder</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::deserialize</span>(<span class="ident">deserializer</span>)<span class="question-mark">?</span> {
+        <span class="prelude-val">Some</span>(<span class="ident">event_log</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">event_log</span>,
+        <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>),
+    };
 
-    <span class="kw">let</span> <span class="ident">event_log_path</span> <span class="op">=</span> <span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::deserialize</span>(<span class="ident">deserializer</span>)<span class="question-mark">?</span>;
+    <span class="kw">if</span> <span class="ident">partition</span>.<span class="ident">size</span>().<span class="ident">get</span>() <span class="op">&lt;</span><span class="op">=</span> <span class="number">1</span> {
+        <span class="kw">return</span> <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(<span class="ident">event_log</span>));
+    }
 
-    <span class="kw">match</span> <span class="ident">event_log_path</span> {
-        <span class="prelude-val">Some</span>(<span class="kw-2">mut</span> <span class="ident">event_log_path</span>) <span class="op">=</span><span class="op">&gt;</span> {
-            <span class="ident">event_log_path</span>.<span class="ident">push</span>(<span class="ident">partition</span>.<span class="ident">rank</span>().<span class="ident">to_string</span>());
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">directory</span> <span class="op">=</span> <span class="ident">event_log</span>.<span class="ident">directory</span>().<span class="ident">to_owned</span>();
+    <span class="ident">directory</span>.<span class="ident">push</span>(<span class="ident">partition</span>.<span class="ident">rank</span>().<span class="ident">to_string</span>());
 
-            <span class="kw">let</span> <span class="ident">event_log</span> <span class="op">=</span> <span class="ident">EventLogRecorder::try_new</span>(<span class="kw-2">&amp;</span><span class="ident">event_log_path</span>).<span class="ident">map_err</span>(<span class="ident">D::Error::custom</span>)<span class="question-mark">?</span>;
-
-            <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(<span class="ident">event_log</span>))
-        },
-        <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>),
+    <span class="kw">match</span> <span class="ident">event_log</span>.<span class="ident">r#move</span>(<span class="kw-2">&amp;</span><span class="ident">directory</span>) {
+        <span class="prelude-val">Ok</span>(<span class="ident">event_log</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(<span class="ident">event_log</span>)),
+        <span class="prelude-val">Err</span>(<span class="ident">err</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>(<span class="ident">serde::de::Error::custom</span>(<span class="ident">err</span>)),
     }
 }
 
@@ -942,7 +953,7 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::module_name_repetitions</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ReplayArgs</span> {
-    <span class="kw">pub</span> <span class="ident">log</span>: <span class="ident">EventLogReplay</span>,
+    <span class="kw">pub</span> <span class="ident">event_log</span>: <span class="ident">EventLogReplay</span>,
     <span class="kw">pub</span> <span class="ident">reporters</span>: <span class="ident">AnyReporterPluginVec</span>,
 }
 
@@ -953,7 +964,7 @@
     {
         <span class="kw">let</span> <span class="ident">raw</span> <span class="op">=</span> <span class="ident">ReplayArgsRaw::deserialize</span>(<span class="ident">deserializer</span>)<span class="question-mark">?</span>;
 
-        <span class="kw">let</span> <span class="ident">log</span> <span class="op">=</span> <span class="ident">raw</span>.<span class="ident">logs</span>;
+        <span class="kw">let</span> <span class="ident">event_log</span> <span class="op">=</span> <span class="ident">raw</span>.<span class="ident">event_log</span>;
         <span class="kw">let</span> <span class="ident">reporters</span> <span class="op">=</span> <span class="ident">raw</span>.<span class="ident">reporters</span>.<span class="ident">into_iter</span>().<span class="ident">flatten</span>().<span class="ident">collect</span>();
 
         <span class="kw">let</span> (<span class="ident">report_speciation</span>, <span class="ident">report_dispersal</span>) <span class="op">=</span> <span class="kw">match</span> <span class="kw-2">&amp;</span><span class="ident">reporters</span> {
@@ -976,28 +987,34 @@
         };
 
         <span class="kw">let</span> <span class="ident">valid</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">report_speciation</span>
-            <span class="op">&amp;&amp;</span> <span class="op">!</span><span class="ident">log</span>.<span class="ident">with_speciation</span>()
+            <span class="op">&amp;&amp;</span> <span class="op">!</span><span class="ident">event_log</span>.<span class="ident">with_speciation</span>()
             <span class="op">&amp;&amp;</span> <span class="ident">report_dispersal</span>
-            <span class="op">&amp;&amp;</span> <span class="op">!</span><span class="ident">log</span>.<span class="ident">with_dispersal</span>()
+            <span class="op">&amp;&amp;</span> <span class="op">!</span><span class="ident">event_log</span>.<span class="ident">with_dispersal</span>()
         {
             <span class="prelude-val">Err</span>(
                 <span class="string">&quot;The reporters require speciation and dispersal events, but the event log cannot \
                  provide either.&quot;</span>,
             )
-        } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">report_speciation</span> <span class="op">&amp;&amp;</span> <span class="op">!</span><span class="ident">log</span>.<span class="ident">with_speciation</span>() {
+        } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">report_speciation</span> <span class="op">&amp;&amp;</span> <span class="op">!</span><span class="ident">event_log</span>.<span class="ident">with_speciation</span>() {
             <span class="prelude-val">Err</span>(<span class="string">&quot;The reporters require speciation events, but the event log cannot provide them.&quot;</span>)
-        } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">report_dispersal</span> <span class="op">&amp;&amp;</span> <span class="op">!</span><span class="ident">log</span>.<span class="ident">with_dispersal</span>() {
+        } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">report_dispersal</span> <span class="op">&amp;&amp;</span> <span class="op">!</span><span class="ident">event_log</span>.<span class="ident">with_dispersal</span>() {
             <span class="prelude-val">Err</span>(<span class="string">&quot;The reporters require dispersal events, but the event log cannot provide them.&quot;</span>)
         } <span class="kw">else</span> {
             <span class="prelude-val">Ok</span>(())
         };
 
         <span class="kw">match</span> (<span class="ident">valid</span>, <span class="ident">raw</span>.<span class="ident">mode</span>) {
-            (<span class="prelude-val">Ok</span>(<span class="kw">_</span>), <span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="self">Self</span> { <span class="ident">log</span>, <span class="ident">reporters</span> }),
+            (<span class="prelude-val">Ok</span>(<span class="kw">_</span>), <span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="self">Self</span> {
+                <span class="ident">event_log</span>,
+                <span class="ident">reporters</span>,
+            }),
             (<span class="prelude-val">Err</span>(<span class="ident">error</span>), <span class="ident">ReplayMode::WarnOnly</span>) <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="macro">warn!</span>(<span class="string">&quot;{}&quot;</span>, <span class="ident">error</span>);
 
-                <span class="prelude-val">Ok</span>(<span class="self">Self</span> { <span class="ident">log</span>, <span class="ident">reporters</span> })
+                <span class="prelude-val">Ok</span>(<span class="self">Self</span> {
+                    <span class="ident">event_log</span>,
+                    <span class="ident">reporters</span>,
+                })
             },
             (<span class="prelude-val">Err</span>(<span class="ident">error</span>), <span class="ident">ReplayMode::Strict</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>(<span class="ident">serde::de::Error::custom</span>(<span class="ident">error</span>)),
         }
@@ -1022,7 +1039,8 @@
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::module_name_repetitions</span>)]</span>
 <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>)]</span>
 <span class="kw">struct</span> <span class="ident">ReplayArgsRaw</span> {
-    <span class="ident">logs</span>: <span class="ident">EventLogReplay</span>,
+    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;log&quot;</span>)]</span>
+    <span class="ident">event_log</span>: <span class="ident">EventLogReplay</span>,
     <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">default</span>)]</span>
     <span class="ident">mode</span>: <span class="ident">ReplayMode</span>,
     <span class="ident">reporters</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">ReporterPluginLibrary</span><span class="op">&gt;</span>,
