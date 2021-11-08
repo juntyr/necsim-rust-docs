@@ -45,16 +45,10 @@
 <span id="45">45</span>
 <span id="46">46</span>
 <span id="47">47</span>
-<span id="48">48</span>
-<span id="49">49</span>
-<span id="50">50</span>
-<span id="51">51</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">fmt</span>, <span class="ident">mem::ManuallyDrop</span>, <span class="ident">rc::Rc</span>};
 
-<span class="kw">use</span> <span class="ident">necsim_core::reporter</span>::{<span class="ident">boolean::True</span>, <span class="ident">Reporter</span>};
-
 <span class="kw">use</span> <span class="kw">crate</span>::{
-    <span class="ident">export</span>::{<span class="ident">ReporterPluginFilter</span>, <span class="ident">UnsafeReporterPlugin</span>},
+    <span class="ident">export</span>::{<span class="ident">DynReporterPlugin</span>, <span class="ident">ReporterPluginFilter</span>, <span class="ident">UnsafeReporterPlugin</span>},
     <span class="ident">import::serde::PluginLibrary</span>,
 };
 
@@ -62,9 +56,7 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ReporterPlugin</span> {
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">library</span>: <span class="ident">Rc</span><span class="op">&lt;</span><span class="ident">PluginLibrary</span><span class="op">&gt;</span>,
 
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">reporter</span>: <span class="ident">ManuallyDrop</span><span class="op">&lt;</span>
-        <span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">Reporter</span><span class="op">&lt;</span><span class="ident">ReportSpeciation</span> <span class="op">=</span> <span class="ident">True</span>, <span class="ident">ReportDispersal</span> <span class="op">=</span> <span class="ident">True</span>, <span class="ident">ReportProgress</span> <span class="op">=</span> <span class="ident">True</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    <span class="op">&gt;</span>,
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">reporter</span>: <span class="ident">ManuallyDrop</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="ident">DynReporterPlugin</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">filter</span>: <span class="ident">ReporterPluginFilter</span>,
 
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">finalised</span>: <span class="ident">bool</span>,

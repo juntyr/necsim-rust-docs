@@ -216,6 +216,38 @@
 <span id="216">216</span>
 <span id="217">217</span>
 <span id="218">218</span>
+<span id="219">219</span>
+<span id="220">220</span>
+<span id="221">221</span>
+<span id="222">222</span>
+<span id="223">223</span>
+<span id="224">224</span>
+<span id="225">225</span>
+<span id="226">226</span>
+<span id="227">227</span>
+<span id="228">228</span>
+<span id="229">229</span>
+<span id="230">230</span>
+<span id="231">231</span>
+<span id="232">232</span>
+<span id="233">233</span>
+<span id="234">234</span>
+<span id="235">235</span>
+<span id="236">236</span>
+<span id="237">237</span>
+<span id="238">238</span>
+<span id="239">239</span>
+<span id="240">240</span>
+<span id="241">241</span>
+<span id="242">242</span>
+<span id="243">243</span>
+<span id="244">244</span>
+<span id="245">245</span>
+<span id="246">246</span>
+<span id="247">247</span>
+<span id="248">248</span>
+<span id="249">249</span>
+<span id="250">250</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">alloc::collections::VecDeque</span>;
 <span class="kw">use</span> <span class="ident">core::num</span>::{<span class="ident">NonZeroU64</span>, <span class="ident">Wrapping</span>};
 
@@ -233,18 +265,21 @@
 
 <span class="kw">use</span> <span class="ident">necsim_partitioning_core::LocalPartition</span>;
 
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::cogs</span>::{
-    <span class="ident">active_lineage_sampler</span>::{
-        <span class="ident">independent</span>::{<span class="ident">event_time_sampler::EventTimeSampler</span>, <span class="ident">IndependentActiveLineageSampler</span>},
-        <span class="ident">singular::SingularActiveLineageSampler</span>,
+<span class="kw">use</span> <span class="kw">crate</span>::{
+    <span class="ident">cogs</span>::{
+        <span class="ident">active_lineage_sampler</span>::{
+            <span class="ident">independent</span>::{<span class="ident">event_time_sampler::EventTimeSampler</span>, <span class="ident">IndependentActiveLineageSampler</span>},
+            <span class="ident">singular::SingularActiveLineageSampler</span>,
+        },
+        <span class="ident">coalescence_sampler::independent::IndependentCoalescenceSampler</span>,
+        <span class="ident">emigration_exit::never::NeverEmigrationExit</span>,
+        <span class="ident">event_sampler</span>::{
+            <span class="ident">independent::IndependentEventSampler</span>, <span class="ident">tracking::MinSpeciationTrackingEventSampler</span>,
+        },
+        <span class="ident">immigration_entry::never::NeverImmigrationEntry</span>,
+        <span class="ident">lineage_store::independent::IndependentLineageStore</span>,
     },
-    <span class="ident">coalescence_sampler::independent::IndependentCoalescenceSampler</span>,
-    <span class="ident">emigration_exit::never::NeverEmigrationExit</span>,
-    <span class="ident">event_sampler</span>::{
-        <span class="ident">independent::IndependentEventSampler</span>, <span class="ident">tracking::MinSpeciationTrackingEventSampler</span>,
-    },
-    <span class="ident">immigration_entry::never::NeverImmigrationEntry</span>,
-    <span class="ident">lineage_store::independent::IndependentLineageStore</span>,
+    <span class="ident">parallelisation::Status</span>,
 };
 
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::parallelisation::independent</span>::{<span class="ident">DedupCache</span>, <span class="ident">EventSlice</span>};
@@ -268,7 +303,7 @@
     <span class="ident">P</span>: <span class="ident">LocalPartition</span><span class="op">&lt;</span><span class="ident">R</span><span class="op">&gt;</span>,
     <span class="ident">L</span>: <span class="ident">IntoIterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">Lineage</span><span class="op">&gt;</span>,
 <span class="op">&gt;</span>(
-    <span class="kw-2">mut</span> <span class="ident">simulation</span>: <span class="ident">Simulation</span><span class="op">&lt;</span>
+    <span class="ident">simulation</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Simulation</span><span class="op">&lt;</span>
         <span class="ident">M</span>,
         <span class="ident">H</span>,
         <span class="ident">G</span>,
@@ -287,8 +322,14 @@
     <span class="ident">dedup_cache</span>: <span class="ident">DedupCache</span>,
     <span class="ident">step_slice</span>: <span class="ident">NonZeroU64</span>,
     <span class="ident">event_slice</span>: <span class="ident">EventSlice</span>,
+    <span class="ident">pause_before</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">NonNegativeF64</span><span class="op">&gt;</span>,
     <span class="ident">local_partition</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">P</span>,
-) <span class="op">-</span><span class="op">&gt;</span> (<span class="ident">NonNegativeF64</span>, <span class="ident">u64</span>) {
+) <span class="op">-</span><span class="op">&gt;</span> (
+    <span class="ident">Status</span>,
+    <span class="ident">NonNegativeF64</span>,
+    <span class="ident">u64</span>,
+    <span class="kw">impl</span> <span class="ident">IntoIterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">Lineage</span><span class="op">&gt;</span>,
+) {
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">slow_lineages</span> <span class="op">=</span> <span class="ident">lineages</span>
         .<span class="ident">into_iter</span>()
         .<span class="ident">map</span>(<span class="op">|</span><span class="ident">lineage</span><span class="op">|</span> {
@@ -316,11 +357,23 @@
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">min_spec_samples</span> <span class="op">=</span> <span class="ident">dedup_cache</span>.<span class="ident">construct</span>(<span class="ident">slow_lineages</span>.<span class="ident">len</span>());
 
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">total_steps</span> <span class="op">=</span> <span class="number">0_u64</span>;
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">max_time</span> <span class="op">=</span> <span class="ident">NonNegativeF64::zero</span>();
+    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::or_fun_call</span>)]</span>
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">max_time</span> <span class="op">=</span> <span class="ident">slow_lineages</span>
+        .<span class="ident">iter</span>()
+        .<span class="ident">map</span>(<span class="op">|</span>(<span class="ident">lineage</span>, <span class="kw">_</span>)<span class="op">|</span> <span class="ident">lineage</span>.<span class="ident">last_event_time</span>)
+        .<span class="ident">max</span>()
+        .<span class="ident">unwrap_or</span>(<span class="ident">NonNegativeF64::zero</span>());
 
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">level_time</span> <span class="op">=</span> <span class="ident">NonNegativeF64::zero</span>();
+    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::or_fun_call</span>)]</span>
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">level_time</span> <span class="op">=</span> <span class="ident">slow_lineages</span>
+        .<span class="ident">iter</span>()
+        .<span class="ident">map</span>(<span class="op">|</span>(<span class="ident">lineage</span>, <span class="kw">_</span>)<span class="op">|</span> <span class="ident">lineage</span>.<span class="ident">last_event_time</span>)
+        .<span class="ident">min</span>()
+        .<span class="ident">unwrap_or</span>(<span class="ident">NonNegativeF64::zero</span>());
 
-    <span class="kw">while</span> <span class="op">!</span><span class="ident">slow_lineages</span>.<span class="ident">is_empty</span>() {
+    <span class="kw">while</span> <span class="op">!</span><span class="ident">slow_lineages</span>.<span class="ident">is_empty</span>()
+        <span class="op">&amp;&amp;</span> <span class="ident">pause_before</span>.<span class="ident">map_or</span>(<span class="bool-val">true</span>, <span class="op">|</span><span class="ident">pause_before</span><span class="op">|</span> <span class="ident">level_time</span> <span class="op">&lt;</span> <span class="ident">pause_before</span>)
+    {
         <span class="comment">// Calculate a new water-level time which all individuals should reach</span>
         <span class="kw">let</span> <span class="ident">total_event_rate</span>: <span class="ident">NonNegativeF64</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">R::ReportDispersal::VALUE</span> {
             <span class="comment">// Full event rate lambda with speciation</span>
@@ -354,6 +407,10 @@
         };
 
         <span class="ident">level_time</span> <span class="op">+</span><span class="op">=</span> <span class="ident">NonNegativeF64::from</span>(<span class="ident">event_slice</span>.<span class="ident">get</span>()) <span class="op">/</span> <span class="ident">total_event_rate</span>;
+
+        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">pause_before</span>) <span class="op">=</span> <span class="ident">pause_before</span> {
+            <span class="ident">level_time</span> <span class="op">=</span> <span class="ident">level_time</span>.<span class="ident">min</span>(<span class="ident">pause_before</span>);
+        }
 
         <span class="comment">// [Report all events below the water level] + Advance the water level</span>
         <span class="ident">proxy</span>.<span class="ident">advance_water_level</span>(<span class="ident">level_time</span>);
@@ -430,9 +487,16 @@
     <span class="comment">// [Report all remaining events]</span>
     <span class="ident">proxy</span>.<span class="ident">finalise</span>();
 
-    <span class="ident">local_partition</span>.<span class="ident">report_progress_sync</span>(<span class="number">0_u64</span>);
+    <span class="ident">local_partition</span>.<span class="ident">report_progress_sync</span>(
+        (<span class="ident">Wrapping</span>(<span class="ident">slow_lineages</span>.<span class="ident">len</span>() <span class="kw">as</span> <span class="ident">u64</span>) <span class="op">+</span> <span class="ident">simulation</span>.<span class="ident">get_balanced_remaining_work</span>()).<span class="number">0</span>,
+    );
 
-    <span class="ident">local_partition</span>.<span class="ident">reduce_global_time_steps</span>(<span class="ident">max_time</span>, <span class="ident">total_steps</span>)
+    <span class="kw">let</span> <span class="ident">status</span> <span class="op">=</span> <span class="ident">Status::paused</span>(<span class="ident">local_partition</span>.<span class="ident">reduce_vote_continue</span>(<span class="op">!</span><span class="ident">slow_lineages</span>.<span class="ident">is_empty</span>()));
+    <span class="kw">let</span> (<span class="ident">global_time</span>, <span class="ident">global_steps</span>) <span class="op">=</span>
+        <span class="ident">local_partition</span>.<span class="ident">reduce_global_time_steps</span>(<span class="ident">max_time</span>, <span class="ident">total_steps</span>);
+    <span class="kw">let</span> <span class="ident">lineages</span> <span class="op">=</span> <span class="ident">slow_lineages</span>.<span class="ident">into_iter</span>().<span class="ident">map</span>(<span class="op">|</span>(<span class="ident">lineage</span>, <span class="kw">_</span>)<span class="op">|</span> <span class="ident">lineage</span>);
+
+    (<span class="ident">status</span>, <span class="ident">global_time</span>, <span class="ident">global_steps</span>, <span class="ident">lineages</span>)
 }
 </code></pre></div>
 </section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../../" data-current-crate="necsim_impls_no_std" data-search-index-js="../../../../../search-index.js" data-search-js="../../../../../search.js"></div>

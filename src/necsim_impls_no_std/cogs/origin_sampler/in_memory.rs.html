@@ -173,8 +173,8 @@
             <span class="ident">clippy::cast_precision_loss</span>
         )]</span>
         {
-            ((<span class="self">self</span>.<span class="ident">habitat</span>.<span class="ident">get_total_habitat</span>() <span class="kw">as</span> <span class="ident">f64</span>) <span class="op">*</span> <span class="self">self</span>.<span class="ident">pre_sampler</span>.<span class="ident">get_sample_proportion</span>())
-                <span class="kw">as</span> <span class="ident">u64</span>
+            ((<span class="self">self</span>.<span class="ident">habitat</span>.<span class="ident">get_total_habitat</span>() <span class="kw">as</span> <span class="ident">f64</span>)
+                <span class="op">*</span> <span class="self">self</span>.<span class="ident">pre_sampler</span>.<span class="ident">get_sample_proportion</span>().<span class="ident">get</span>()) <span class="kw">as</span> <span class="ident">u64</span>
         }
     }
 }

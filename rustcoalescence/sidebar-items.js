@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["main",""]],"macro":[["match_scenario_algorithm",""]],"mod":[["args",""],["cli",""],["maps",""],["minimal_logger",""],["reporter",""],["tiff",""]],"static":[["MINIMAL_LOGGER",""]]});
+initSidebarItems({"fn":[["main",""]],"mod":[["args",""],["cli",""],["minimal_logger",""],["reporter",""]],"static":[["MINIMAL_LOGGER",""]]});

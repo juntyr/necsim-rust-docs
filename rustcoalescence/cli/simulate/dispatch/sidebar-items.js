@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["initialise_rng",""],["seed_with_sponge",""],["simulate_with_logger",""]],"macro":[["impl_sealed_dispatch",""],["initialise_and_simulate",""]],"struct":[["Dispatcher",""]],"trait":[["SimulateSealedBooleanDispatch",""]]});
+initSidebarItems({"mod":[["algorithm_scenario",""],["partitioning",""],["rng",""]]});

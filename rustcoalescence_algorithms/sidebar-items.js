@@ -1,1 +1,1 @@
-initSidebarItems({"trait":[["Algorithm",""],["AlgorithmArguments",""]]});
+initSidebarItems({"enum":[["AlgorithmResult",""]],"trait":[["Algorithm",""],["AlgorithmArguments",""]]});

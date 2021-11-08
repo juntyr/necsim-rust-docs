@@ -132,6 +132,7 @@
 <span id="132">132</span>
 <span id="133">133</span>
 <span id="134">134</span>
+<span id="135">135</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">necsim_core</span>::{
     <span class="ident">cogs</span>::{
         <span class="ident">CoalescenceSampler</span>, <span class="ident">DispersalSampler</span>, <span class="ident">EmigrationExit</span>, <span class="ident">Habitat</span>, <span class="ident">ImmigrationEntry</span>,
@@ -159,6 +160,7 @@
 <span class="kw">use</span> <span class="ident">rustcoalescence_algorithms_cuda_kernel::Kernel</span>;
 
 <span class="kw">mod</span> <span class="ident">link</span>;
+<span class="kw">mod</span> <span class="ident">patch</span>;
 
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::type_complexity</span>, <span class="ident">clippy::module_name_repetitions</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">SimulationKernel</span><span class="op">&lt;</span>

@@ -98,7 +98,10 @@
 <span id="98"> 98</span>
 <span id="99"> 99</span>
 <span id="100">100</span>
-</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">serde::Deserialize</span>;
+<span id="101">101</span>
+</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">std::num::NonZeroU32</span>;
+
+<span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>};
 
 <span class="kw">use</span> <span class="ident">necsim_core::cogs</span>::{<span class="ident">DispersalSampler</span>, <span class="ident">LineageStore</span>, <span class="ident">MathsCore</span>, <span class="ident">RngCore</span>};
 <span class="kw">use</span> <span class="ident">necsim_core_bond</span>::{<span class="ident">Partition</span>, <span class="ident">PositiveUnitF64</span>};
@@ -125,12 +128,11 @@
     <span class="ident">speciation_probability</span>: <span class="ident">UniformSpeciationProbability</span>,
 }
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Deserialize</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::module_name_repetitions</span>)]</span>
-<span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;NonSpatial&quot;</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">NonSpatialArguments</span> {
     <span class="kw">pub</span> <span class="ident">area</span>: (<span class="ident">u32</span>, <span class="ident">u32</span>),
-    <span class="kw">pub</span> <span class="ident">deme</span>: <span class="ident">u32</span>,
+    <span class="kw">pub</span> <span class="ident">deme</span>: <span class="ident">NonZeroU32</span>,
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">M</span>: <span class="ident">MathsCore</span>, <span class="ident">G</span>: <span class="ident">RngCore</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="ident">ScenarioArguments</span> <span class="kw">for</span> <span class="ident">NonSpatialScenario</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">G</span><span class="op">&gt;</span> {

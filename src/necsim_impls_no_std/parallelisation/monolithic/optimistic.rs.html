@@ -156,6 +156,9 @@
 <span id="156">156</span>
 <span id="157">157</span>
 <span id="158">158</span>
+<span id="159">159</span>
+<span id="160">160</span>
+<span id="161">161</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">alloc::vec::Vec</span>;
 
 <span class="kw">use</span> <span class="ident">necsim_core</span>::{
@@ -178,6 +181,7 @@
         <span class="ident">immigration_entry::buffered::BufferedImmigrationEntry</span>,
     },
     <span class="ident">decomposition::Decomposition</span>,
+    <span class="ident">parallelisation::Status</span>,
 };
 
 <span class="kw">use</span> <span class="ident"><span class="kw">super</span>::reporter::BufferingReporterProxy</span>;
@@ -212,7 +216,7 @@
     <span class="ident">P</span>: <span class="ident">Reporter</span>,
     <span class="ident">L</span>: <span class="ident">LocalPartition</span><span class="op">&lt;</span><span class="ident">P</span><span class="op">&gt;</span>,
 <span class="op">&gt;</span>(
-    <span class="kw-2">mut</span> <span class="ident">simulation</span>: <span class="ident">Simulation</span><span class="op">&lt;</span>
+    <span class="ident">simulation</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Simulation</span><span class="op">&lt;</span>
         <span class="ident">M</span>,
         <span class="ident">H</span>,
         <span class="ident">G</span>,
@@ -229,7 +233,7 @@
     <span class="op">&gt;</span>,
     <span class="ident">independent_time_slice</span>: <span class="ident">PositiveF64</span>,
     <span class="ident">local_partition</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">L</span>,
-) <span class="op">-</span><span class="op">&gt;</span> (<span class="ident">NonNegativeF64</span>, <span class="ident">u64</span>) {
+) <span class="op">-</span><span class="op">&gt;</span> (<span class="ident">Status</span>, <span class="ident">NonNegativeF64</span>, <span class="ident">u64</span>) {
     <span class="comment">// Ensure that the progress bar starts with the expected target</span>
     <span class="ident">local_partition</span>.<span class="ident">report_progress_sync</span>(<span class="ident">simulation</span>.<span class="ident">get_balanced_remaining_work</span>().<span class="number">0</span>);
 
@@ -280,7 +284,7 @@
                 .<span class="ident">reduce_vote_continue</span>(<span class="ident">immigrants</span> <span class="op">!</span><span class="op">=</span> <span class="ident">last_immigrants</span>)
             {
                 <span class="comment">// Roll back the simulation to the last backup, clear out all generated events</span>
-                <span class="ident">simulation</span> <span class="op">=</span> <span class="ident">simulation_backup</span>.<span class="ident">resume</span>();
+                <span class="kw-2">*</span><span class="ident">simulation</span> <span class="op">=</span> <span class="ident">simulation_backup</span>.<span class="ident">resume</span>();
                 <span class="ident">proxy</span>.<span class="ident">clear_events</span>();
 
                 <span class="comment">// Back up the previous immigrating lineages in last_immigrants</span>
@@ -309,10 +313,12 @@
 
     <span class="ident">proxy</span>.<span class="ident">local_partition</span>().<span class="ident">report_progress_sync</span>(<span class="number">0_u64</span>);
 
-    <span class="ident">proxy</span>.<span class="ident">local_partition</span>().<span class="ident">reduce_global_time_steps</span>(
+    <span class="kw">let</span> (<span class="ident">global_time</span>, <span class="ident">global_steps</span>) <span class="op">=</span> <span class="ident">proxy</span>.<span class="ident">local_partition</span>().<span class="ident">reduce_global_time_steps</span>(
         <span class="ident">simulation</span>.<span class="ident">active_lineage_sampler</span>().<span class="ident">get_last_event_time</span>(),
         <span class="ident">total_steps</span>,
-    )
+    );
+
+    (<span class="ident">Status::Done</span>, <span class="ident">global_time</span>, <span class="ident">global_steps</span>)
 }
 </code></pre></div>
 </section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="necsim_impls_no_std" data-search-index-js="../../../../search-index.js" data-search-js="../../../../search.js"></div>

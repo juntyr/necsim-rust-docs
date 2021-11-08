@@ -226,6 +226,10 @@
 <span id="226">226</span>
 <span id="227">227</span>
 <span id="228">228</span>
+<span id="229">229</span>
+<span id="230">230</span>
+<span id="231">231</span>
+<span id="232">232</span>
 </pre><pre class="rust"><code><span class="doccomment">/// Inspired by the &lt;https://adventures.michaelfbryan.com/posts/plugins-in-rust/&gt; blog post</span>
 <span class="kw">use</span> <span class="ident">std</span>::{
     <span class="ident">convert::TryFrom</span>, <span class="ident">fmt</span>, <span class="ident">io</span>, <span class="ident">iter::IntoIterator</span>, <span class="ident">mem::ManuallyDrop</span>, <span class="ident">path::PathBuf</span>, <span class="ident">rc::Rc</span>,
@@ -271,6 +275,7 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">serde::Deserialize</span>)]</span>
 <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">try_from</span> <span class="op">=</span> <span class="string">&quot;PathBuf&quot;</span>)]</span>
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">struct</span> <span class="ident">PluginLibrary</span> {
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">path</span>: <span class="ident">PathBuf</span>,
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">library</span>: <span class="ident">Library</span>,
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">declaration</span>: <span class="ident">ReporterPluginDeclaration</span>,
 }
@@ -280,7 +285,7 @@
 
     <span class="kw">fn</span> <span class="ident">try_from</span>(<span class="ident">library_path</span>: <span class="ident">PathBuf</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident"><span class="self">Self</span>::Error</span><span class="op">&gt;</span> {
         <span class="comment">// Load the plugin library into memory</span>
-        <span class="kw">let</span> <span class="ident">library</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">Library::new</span>(<span class="ident">library_path</span>) }
+        <span class="kw">let</span> <span class="ident">library</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">Library::new</span>(<span class="ident">library_path</span>.<span class="ident">clone</span>()) }
             .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">err</span><span class="op">|</span> <span class="ident">io::Error::new</span>(<span class="ident">io::ErrorKind::Other</span>, <span class="ident">err</span>))<span class="question-mark">?</span>;
 
         <span class="comment">// Load the plugin declaration symbol</span>
@@ -319,7 +324,10 @@
             (<span class="ident">declaration</span>.<span class="ident">init</span>)(<span class="ident">log::logger</span>(), <span class="ident">log::max_level</span>());
         }
 
+        <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="kw">unsafe</span> { (<span class="ident">declaration</span>.<span class="ident">library_path</span>)() }.<span class="ident">unwrap_or</span>(<span class="ident">library_path</span>);
+
         <span class="prelude-val">Ok</span>(<span class="self">Self</span> {
+            <span class="ident">path</span>,
             <span class="ident">library</span>,
             <span class="ident">declaration</span>,
         })

@@ -195,10 +195,6 @@
 <span id="195">195</span>
 <span id="196">196</span>
 <span id="197">197</span>
-<span id="198">198</span>
-<span id="199">199</span>
-<span id="200">200</span>
-<span id="201">201</span>
 </pre><pre class="rust"><code><span class="attribute">#![<span class="ident">deny</span>(<span class="ident">clippy::pedantic</span>)]</span>
 <span class="attribute">#![<span class="ident">allow</span>(<span class="ident">incomplete_features</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">generic_associated_types</span>)]</span>
@@ -207,14 +203,15 @@
 <span class="attribute">#[<span class="ident">macro_use</span>]</span>
 <span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">contracts</span>;
 
-<span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">fmt</span>, <span class="ident">num::NonZeroU32</span>};
+<span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">fmt</span>, <span class="ident">mem::ManuallyDrop</span>, <span class="ident">num::NonZeroU32</span>};
 
+<span class="kw">use</span> <span class="ident">anyhow::Context</span>;
 <span class="kw">use</span> <span class="ident">mpi</span>::{
     <span class="ident">environment::Universe</span>,
     <span class="ident">topology</span>::{<span class="ident">Communicator</span>, <span class="ident">Rank</span>, <span class="ident">SystemCommunicator</span>},
     <span class="ident">Tag</span>,
 };
-<span class="kw">use</span> <span class="ident">serde::Deserialize</span>;
+<span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">ser::SerializeStruct</span>, <span class="ident">Deserialize</span>, <span class="ident">Serialize</span>, <span class="ident">Serializer</span>};
 <span class="kw">use</span> <span class="ident">serde_derive_state::DeserializeState</span>;
 <span class="kw">use</span> <span class="ident">serde_state</span>::{<span class="ident">DeserializeState</span>, <span class="ident">Deserializer</span>};
 <span class="kw">use</span> <span class="ident">thiserror::Error</span>;
@@ -239,13 +236,14 @@
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Error</span>, <span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">MpiLocalPartitionError</span> {
-    <span class="attribute">#[<span class="ident">error</span>(<span class="string">&quot;MPI partitioning must be used with an event log.&quot;</span>)]</span>
+    <span class="attribute">#[<span class="ident">error</span>(<span class="string">&quot;MPI partitioning requires an event log.&quot;</span>)]</span>
     <span class="ident">MissingEventLog</span>,
+    <span class="attribute">#[<span class="ident">error</span>(<span class="string">&quot;Failed to create the event sub-log.&quot;</span>)]</span>
+    <span class="ident">InvalidEventSubLog</span>,
 }
 
-<span class="kw">static</span> <span class="kw-2">mut</span> <span class="ident">MPI_UNIVERSE</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Universe</span><span class="op">&gt;</span> <span class="op">=</span> <span class="prelude-val">None</span>;
-
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">MpiPartitioning</span> {
+    <span class="ident">universe</span>: <span class="ident">ManuallyDrop</span><span class="op">&lt;</span><span class="ident">Universe</span><span class="op">&gt;</span>,
     <span class="ident">world</span>: <span class="ident">SystemCommunicator</span>,
 }
 
@@ -254,6 +252,14 @@
         <span class="ident">fmt</span>.<span class="ident">debug_struct</span>(<span class="macro">stringify!</span>(<span class="ident">MpiPartitioning</span>))
             .<span class="ident">field</span>(<span class="string">&quot;world&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">get_partition</span>().<span class="ident">size</span>().<span class="ident">get</span>())
             .<span class="ident">finish</span>()
+    }
+}
+
+<span class="kw">impl</span> <span class="ident">Serialize</span> <span class="kw">for</span> <span class="ident">MpiPartitioning</span> {
+    <span class="kw">fn</span> <span class="ident">serialize</span><span class="op">&lt;</span><span class="ident">S</span>: <span class="ident">Serializer</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">serializer</span>: <span class="ident">S</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">S::Ok</span>, <span class="ident">S::Error</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">args</span> <span class="op">=</span> <span class="ident">serializer</span>.<span class="ident">serialize_struct</span>(<span class="macro">stringify!</span>(<span class="ident">MpiPartitioning</span>), <span class="number">1</span>)<span class="question-mark">?</span>;
+        <span class="ident">args</span>.<span class="ident">serialize_field</span>(<span class="string">&quot;world&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">get_partition</span>().<span class="ident">size</span>())<span class="question-mark">?</span>;
+        <span class="ident">args</span>.<span class="ident">end</span>()
     }
 }
 
@@ -281,27 +287,14 @@
     <span class="doccomment">/// Returns `NoParallelism` if the MPI world only consists of one or less</span>
     <span class="doccomment">///  partitions.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">initialise</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">MpiPartitioningError</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">world</span> <span class="op">=</span> <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">universe</span>) <span class="op">=</span> <span class="kw">unsafe</span> { <span class="kw-2">&amp;</span><span class="ident">MPI_UNIVERSE</span> } {
-            <span class="ident">universe</span>.<span class="ident">world</span>()
-        } <span class="kw">else</span> <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">universe</span>) <span class="op">=</span> <span class="ident">mpi::initialize</span>() {
-            <span class="kw">let</span> <span class="ident">universe</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">MPI_UNIVERSE</span>.<span class="ident">insert</span>(<span class="ident">universe</span>) };
-
-            <span class="ident">universe</span>.<span class="ident">world</span>()
-        } <span class="kw">else</span> {
-            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">MpiPartitioningError::AlreadyInitialised</span>);
-        };
+        <span class="kw">let</span> <span class="ident">universe</span> <span class="op">=</span>
+            <span class="ident">ManuallyDrop::new</span>(<span class="ident">mpi::initialize</span>().<span class="ident">ok_or</span>(<span class="ident">MpiPartitioningError::AlreadyInitialised</span>)<span class="question-mark">?</span>);
+        <span class="kw">let</span> <span class="ident">world</span> <span class="op">=</span> <span class="ident">universe</span>.<span class="ident">world</span>();
 
         <span class="kw">if</span> <span class="ident">world</span>.<span class="ident">size</span>() <span class="op">&gt;</span> <span class="number">1</span> {
-            <span class="prelude-val">Ok</span>(<span class="self">Self</span> { <span class="ident">world</span> })
+            <span class="prelude-val">Ok</span>(<span class="self">Self</span> { <span class="ident">universe</span>, <span class="ident">world</span> })
         } <span class="kw">else</span> {
             <span class="prelude-val">Err</span>(<span class="ident">MpiPartitioningError::NoParallelism</span>)
-        }
-    }
-
-    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::unused_self</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">update_message_buffer_size</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">size</span>: <span class="ident">usize</span>) {
-        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">universe</span>) <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">MPI_UNIVERSE</span>.<span class="ident">as_mut</span>() } {
-            <span class="ident">universe</span>.<span class="ident">set_buffer_size</span>(<span class="ident">size</span>);
         }
     }
 }
@@ -330,42 +323,41 @@
 
     <span class="doccomment">/// # Errors</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// Returns `AlreadyInitialised` if MPI was already initialised.</span>
-    <span class="doccomment">/// Returns `NoParallelism` if the MPI world only consists of one or less</span>
-    <span class="doccomment">///  partitions.</span>
     <span class="doccomment">/// Returns `MissingEventLog` if the local partition is non-monolithic and</span>
     <span class="doccomment">///  the `event_log` is `None`.</span>
+    <span class="doccomment">/// Returns `InvalidEventSubLog` if creating a sub-`event_log` failed.</span>
     <span class="kw">fn</span> <span class="ident">into_local_partition</span><span class="op">&lt;</span><span class="ident">R</span>: <span class="ident">Reporter</span>, <span class="ident">P</span>: <span class="ident">ReporterContext</span><span class="op">&lt;</span><span class="ident">Reporter</span> <span class="op">=</span> <span class="ident">R</span><span class="op">&gt;</span><span class="op">&gt;</span>(
         <span class="self">self</span>,
         <span class="ident">reporter_context</span>: <span class="ident">P</span>,
         <span class="ident">event_log</span>: <span class="ident"><span class="self">Self</span>::Auxiliary</span>,
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">anyhow::Result</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::LocalPartition</span><span class="op">&lt;</span><span class="ident">R</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-        <span class="comment">// Only one MPI universe can exist, and only one can be used to</span>
-        <span class="comment">//  construct the local MPI partition</span>
-        <span class="kw">let</span> <span class="ident">universe</span> <span class="op">=</span> <span class="kw">match</span> <span class="kw">unsafe</span> { <span class="ident">MPI_UNIVERSE</span>.<span class="ident">take</span>() } {
-            <span class="prelude-val">Some</span>(<span class="ident">universe</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">universe</span>,
-            <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">anyhow::bail!</span>(<span class="ident">MpiPartitioningError::AlreadyInitialised</span>),
-        };
-
-        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">world</span>.<span class="ident">size</span>() <span class="op">&lt;</span><span class="op">=</span> <span class="number">1</span> {
-            <span class="macro">anyhow::bail!</span>(<span class="ident">MpiPartitioningError::NoParallelism</span>);
-        }
-
         <span class="kw">let</span> <span class="ident">event_log</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">event_log</span> {
             <span class="prelude-val">Some</span>(<span class="ident">event_log</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">event_log</span>,
             <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">anyhow::bail!</span>(<span class="ident">MpiLocalPartitionError::MissingEventLog</span>),
         };
 
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">directory</span> <span class="op">=</span> <span class="ident">event_log</span>.<span class="ident">directory</span>().<span class="ident">to_owned</span>();
+        <span class="ident">directory</span>.<span class="ident">push</span>(<span class="self">self</span>.<span class="ident">world</span>.<span class="ident">rank</span>().<span class="ident">to_string</span>());
+
+        <span class="kw">let</span> <span class="ident">event_log</span> <span class="op">=</span> <span class="ident">event_log</span>
+            .<span class="ident">r#move</span>(<span class="kw-2">&amp;</span><span class="ident">directory</span>)
+            .<span class="ident">and_then</span>(<span class="ident">EventLogRecorder::assert_empty</span>)
+            .<span class="ident">context</span>(<span class="ident">MpiLocalPartitionError::InvalidEventSubLog</span>)<span class="question-mark">?</span>;
+
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">world</span>.<span class="ident">rank</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">MpiPartitioning::ROOT_RANK</span> {
             <span class="prelude-val">Ok</span>(<span class="ident">MpiLocalPartition::Root</span>(<span class="ident">Box::new</span>(<span class="ident">MpiRootPartition::new</span>(
-                <span class="ident">universe</span>,
+                <span class="ident">ManuallyDrop::into_inner</span>(<span class="self">self</span>.<span class="ident">universe</span>),
                 <span class="self">self</span>.<span class="ident">world</span>,
                 <span class="ident">reporter_context</span>.<span class="ident">try_build</span>()<span class="question-mark">?</span>,
                 <span class="ident">event_log</span>,
             ))))
         } <span class="kw">else</span> {
             <span class="prelude-val">Ok</span>(<span class="ident">MpiLocalPartition::Parallel</span>(<span class="ident">Box::new</span>(
-                <span class="ident">MpiParallelPartition::new</span>(<span class="ident">universe</span>, <span class="self">self</span>.<span class="ident">world</span>, <span class="ident">event_log</span>),
+                <span class="ident">MpiParallelPartition::new</span>(
+                    <span class="ident">ManuallyDrop::into_inner</span>(<span class="self">self</span>.<span class="ident">universe</span>),
+                    <span class="self">self</span>.<span class="ident">world</span>,
+                    <span class="ident">event_log</span>,
+                ),
             )))
         }
     }

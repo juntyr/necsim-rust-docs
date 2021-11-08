@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["simulate_with_logger",""]],"mod":[["dispatch",""],["impl",""]]});
+initSidebarItems({"enum":[["BufferingSimulateArgsBuilderError","Error type for BufferingSimulateArgsBuilder"],["SimulationResult",""]],"fn":[["simulate_with_logger",""]],"mod":[["dispatch",""],["launch",""],["parse",""]],"struct":[["BufferingSimulateArgs",""],["BufferingSimulateArgsBuilder","Builder for `BufferingSimulateArgs`."]]});

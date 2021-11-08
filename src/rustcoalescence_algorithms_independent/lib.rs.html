@@ -305,6 +305,32 @@
 <span id="305">305</span>
 <span id="306">306</span>
 <span id="307">307</span>
+<span id="308">308</span>
+<span id="309">309</span>
+<span id="310">310</span>
+<span id="311">311</span>
+<span id="312">312</span>
+<span id="313">313</span>
+<span id="314">314</span>
+<span id="315">315</span>
+<span id="316">316</span>
+<span id="317">317</span>
+<span id="318">318</span>
+<span id="319">319</span>
+<span id="320">320</span>
+<span id="321">321</span>
+<span id="322">322</span>
+<span id="323">323</span>
+<span id="324">324</span>
+<span id="325">325</span>
+<span id="326">326</span>
+<span id="327">327</span>
+<span id="328">328</span>
+<span id="329">329</span>
+<span id="330">330</span>
+<span id="331">331</span>
+<span id="332">332</span>
+<span id="333">333</span>
 </pre><pre class="rust"><code><span class="attribute">#![<span class="ident">deny</span>(<span class="ident">clippy::pedantic</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">never_type</span>)]</span>
 
@@ -349,13 +375,13 @@
         },
         <span class="ident">rng::wyhash::WyHash</span>,
     },
-    <span class="ident">parallelisation</span>,
+    <span class="ident">parallelisation</span>::{<span class="self">self</span>, <span class="ident">Status</span>},
 };
 <span class="kw">use</span> <span class="ident">necsim_partitioning_core::LocalPartition</span>;
 
 <span class="kw">mod</span> <span class="ident">arguments</span>;
 
-<span class="kw">use</span> <span class="ident">rustcoalescence_algorithms</span>::{<span class="ident">Algorithm</span>, <span class="ident">AlgorithmArguments</span>};
+<span class="kw">use</span> <span class="ident">rustcoalescence_algorithms</span>::{<span class="ident">Algorithm</span>, <span class="ident">AlgorithmArguments</span>, <span class="ident">AlgorithmResult</span>};
 <span class="kw">use</span> <span class="ident">rustcoalescence_scenarios::Scenario</span>;
 
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::module_name_repetitions</span>, <span class="ident">clippy::empty_enum</span>)]</span>
@@ -384,8 +410,9 @@
         <span class="ident">rng</span>: <span class="ident"><span class="self">Self</span>::Rng</span>,
         <span class="ident">scenario</span>: <span class="ident">O</span>,
         <span class="ident">pre_sampler</span>: <span class="ident">OriginPreSampler</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::MathsCore</span>, <span class="ident">I</span><span class="op">&gt;</span>,
+        <span class="ident">pause_before</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">NonNegativeF64</span><span class="op">&gt;</span>,
         <span class="ident">local_partition</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">P</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(<span class="ident">NonNegativeF64</span>, <span class="ident">u64</span>), <span class="ident"><span class="self">Self</span>::Error</span><span class="op">&gt;</span> {
+    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">AlgorithmResult</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::MathsCore</span>, <span class="ident"><span class="self">Self</span>::Rng</span><span class="op">&gt;</span>, <span class="ident"><span class="self">Self</span>::Error</span><span class="op">&gt;</span> {
         <span class="kw">match</span> <span class="ident">args</span>.<span class="ident">parallelism_mode</span> {
             <span class="ident">ParallelismMode::Monolithic</span>(<span class="ident">MonolithicParallelismMode</span> { <span class="ident">event_slice</span> })
             <span class="op">|</span> <span class="ident">ParallelismMode::IsolatedIndividuals</span>(<span class="ident">IsolatedParallelismMode</span> {
@@ -432,7 +459,7 @@
                     <span class="ident">PoissonEventTimeSampler::new</span>(<span class="ident">args</span>.<span class="ident">delta_t</span>),
                 );
 
-                <span class="kw">let</span> <span class="ident">simulation</span> <span class="op">=</span> <span class="ident">SimulationBuilder</span> {
+                <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">simulation</span> <span class="op">=</span> <span class="ident">SimulationBuilder</span> {
                     <span class="ident">maths</span>: <span class="ident">PhantomData</span>::<span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::MathsCore</span><span class="op">&gt;</span>,
                     <span class="ident">habitat</span>,
                     <span class="ident">lineage_reference</span>: <span class="ident">PhantomData</span>::<span class="op">&lt;</span><span class="ident">GlobalLineageReference</span><span class="op">&gt;</span>,
@@ -449,14 +476,27 @@
                 }
                 .<span class="ident">build</span>();
 
-                <span class="prelude-val">Ok</span>(<span class="ident">parallelisation::independent::monolithic::simulate</span>(
-                    <span class="ident">simulation</span>,
-                    <span class="ident">lineages</span>,
-                    <span class="ident">args</span>.<span class="ident">dedup_cache</span>,
-                    <span class="ident">args</span>.<span class="ident">step_slice</span>,
-                    <span class="ident">event_slice</span>,
-                    <span class="ident">local_partition</span>,
-                ))
+                <span class="kw">let</span> (<span class="ident">status</span>, <span class="ident">time</span>, <span class="ident">steps</span>, <span class="ident">lineages</span>) <span class="op">=</span>
+                    <span class="ident">parallelisation::independent::monolithic::simulate</span>(
+                        <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">simulation</span>,
+                        <span class="ident">lineages</span>,
+                        <span class="ident">args</span>.<span class="ident">dedup_cache</span>,
+                        <span class="ident">args</span>.<span class="ident">step_slice</span>,
+                        <span class="ident">event_slice</span>,
+                        <span class="ident">pause_before</span>,
+                        <span class="ident">local_partition</span>,
+                    );
+
+                <span class="kw">match</span> <span class="ident">status</span> {
+                    <span class="ident">Status::Done</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">AlgorithmResult::Done</span> { <span class="ident">time</span>, <span class="ident">steps</span> }),
+                    <span class="ident">Status::Paused</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">AlgorithmResult::Paused</span> {
+                        <span class="ident">time</span>,
+                        <span class="ident">steps</span>,
+                        <span class="ident">lineages</span>: <span class="ident">lineages</span>.<span class="ident">into_iter</span>().<span class="ident">collect</span>(),
+                        <span class="ident">rng</span>: <span class="ident">simulation</span>.<span class="ident">rng_mut</span>().<span class="ident">clone</span>(),
+                        <span class="ident">marker</span>: <span class="ident">PhantomData</span>,
+                    }),
+                }
             },
             <span class="ident">ParallelismMode::Individuals</span> <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="kw">let</span> <span class="ident">lineages</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Lineage</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">scenario</span>
@@ -478,7 +518,7 @@
                     <span class="ident">PoissonEventTimeSampler::new</span>(<span class="ident">args</span>.<span class="ident">delta_t</span>),
                 );
 
-                <span class="kw">let</span> <span class="ident">simulation</span> <span class="op">=</span> <span class="ident">SimulationBuilder</span> {
+                <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">simulation</span> <span class="op">=</span> <span class="ident">SimulationBuilder</span> {
                     <span class="ident">maths</span>: <span class="ident">PhantomData</span>::<span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::MathsCore</span><span class="op">&gt;</span>,
                     <span class="ident">habitat</span>,
                     <span class="ident">lineage_reference</span>: <span class="ident">PhantomData</span>::<span class="op">&lt;</span><span class="ident">GlobalLineageReference</span><span class="op">&gt;</span>,
@@ -495,13 +535,17 @@
                 }
                 .<span class="ident">build</span>();
 
-                <span class="prelude-val">Ok</span>(<span class="ident">parallelisation::independent::individuals::simulate</span>(
-                    <span class="ident">simulation</span>,
-                    <span class="ident">lineages</span>,
-                    <span class="ident">args</span>.<span class="ident">dedup_cache</span>,
-                    <span class="ident">args</span>.<span class="ident">step_slice</span>,
-                    <span class="ident">local_partition</span>,
-                ))
+                <span class="kw">let</span> (<span class="ident">_status</span>, <span class="ident">time</span>, <span class="ident">steps</span>, <span class="ident">_lineages</span>) <span class="op">=</span>
+                    <span class="ident">parallelisation::independent::individuals::simulate</span>(
+                        <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">simulation</span>,
+                        <span class="ident">lineages</span>,
+                        <span class="ident">args</span>.<span class="ident">dedup_cache</span>,
+                        <span class="ident">args</span>.<span class="ident">step_slice</span>,
+                        <span class="ident">local_partition</span>,
+                    );
+
+                <span class="comment">// TODO: Adapt for parallel pausing</span>
+                <span class="prelude-val">Ok</span>(<span class="ident">AlgorithmResult::Done</span> { <span class="ident">time</span>, <span class="ident">steps</span> })
             },
             <span class="ident">ParallelismMode::Landscape</span> <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="kw">let</span> <span class="ident">decomposition</span> <span class="op">=</span>
@@ -530,7 +574,7 @@
                     <span class="ident">PoissonEventTimeSampler::new</span>(<span class="ident">args</span>.<span class="ident">delta_t</span>),
                 );
 
-                <span class="kw">let</span> <span class="ident">simulation</span> <span class="op">=</span> <span class="ident">SimulationBuilder</span> {
+                <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">simulation</span> <span class="op">=</span> <span class="ident">SimulationBuilder</span> {
                     <span class="ident">maths</span>: <span class="ident">PhantomData</span>::<span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::MathsCore</span><span class="op">&gt;</span>,
                     <span class="ident">habitat</span>,
                     <span class="ident">lineage_reference</span>: <span class="ident">PhantomData</span>::<span class="op">&lt;</span><span class="ident">GlobalLineageReference</span><span class="op">&gt;</span>,
@@ -547,13 +591,17 @@
                 }
                 .<span class="ident">build</span>();
 
-                <span class="prelude-val">Ok</span>(<span class="ident">parallelisation::independent::landscape::simulate</span>(
-                    <span class="ident">simulation</span>,
-                    <span class="ident">lineages</span>,
-                    <span class="ident">args</span>.<span class="ident">dedup_cache</span>,
-                    <span class="ident">args</span>.<span class="ident">step_slice</span>,
-                    <span class="ident">local_partition</span>,
-                ))
+                <span class="kw">let</span> (<span class="ident">_status</span>, <span class="ident">time</span>, <span class="ident">steps</span>, <span class="ident">_lineages</span>) <span class="op">=</span>
+                    <span class="ident">parallelisation::independent::landscape::simulate</span>(
+                        <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">simulation</span>,
+                        <span class="ident">lineages</span>,
+                        <span class="ident">args</span>.<span class="ident">dedup_cache</span>,
+                        <span class="ident">args</span>.<span class="ident">step_slice</span>,
+                        <span class="ident">local_partition</span>,
+                    );
+
+                <span class="comment">// TODO: Adapt for parallel pausing</span>
+                <span class="prelude-val">Ok</span>(<span class="ident">AlgorithmResult::Done</span> { <span class="ident">time</span>, <span class="ident">steps</span> })
             },
             <span class="ident">ParallelismMode::Probabilistic</span>(<span class="ident">ProbabilisticParallelismMode</span> {
                 <span class="ident">communication_probability</span>,
@@ -584,7 +632,7 @@
                     <span class="ident">PoissonEventTimeSampler::new</span>(<span class="ident">args</span>.<span class="ident">delta_t</span>),
                 );
 
-                <span class="kw">let</span> <span class="ident">simulation</span> <span class="op">=</span> <span class="ident">SimulationBuilder</span> {
+                <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">simulation</span> <span class="op">=</span> <span class="ident">SimulationBuilder</span> {
                     <span class="ident">maths</span>: <span class="ident">PhantomData</span>::<span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::MathsCore</span><span class="op">&gt;</span>,
                     <span class="ident">habitat</span>,
                     <span class="ident">lineage_reference</span>: <span class="ident">PhantomData</span>::<span class="op">&lt;</span><span class="ident">GlobalLineageReference</span><span class="op">&gt;</span>,
@@ -601,13 +649,17 @@
                 }
                 .<span class="ident">build</span>();
 
-                <span class="prelude-val">Ok</span>(<span class="ident">parallelisation::independent::landscape::simulate</span>(
-                    <span class="ident">simulation</span>,
-                    <span class="ident">lineages</span>,
-                    <span class="ident">args</span>.<span class="ident">dedup_cache</span>,
-                    <span class="ident">args</span>.<span class="ident">step_slice</span>,
-                    <span class="ident">local_partition</span>,
-                ))
+                <span class="kw">let</span> (<span class="ident">_status</span>, <span class="ident">time</span>, <span class="ident">steps</span>, <span class="ident">_lineages</span>) <span class="op">=</span>
+                    <span class="ident">parallelisation::independent::landscape::simulate</span>(
+                        <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">simulation</span>,
+                        <span class="ident">lineages</span>,
+                        <span class="ident">args</span>.<span class="ident">dedup_cache</span>,
+                        <span class="ident">args</span>.<span class="ident">step_slice</span>,
+                        <span class="ident">local_partition</span>,
+                    );
+
+                <span class="comment">// TODO: Adapt for parallel pausing</span>
+                <span class="prelude-val">Ok</span>(<span class="ident">AlgorithmResult::Done</span> { <span class="ident">time</span>, <span class="ident">steps</span> })
             },
         }
     }

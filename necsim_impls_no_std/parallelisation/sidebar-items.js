@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["independent",""],["monolithic",""]]});
+initSidebarItems({"enum":[["Status",""]],"mod":[["independent",""],["monolithic",""]]});

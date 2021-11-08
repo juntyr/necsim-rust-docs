@@ -105,8 +105,7 @@
 <span id="105">105</span>
 <span id="106">106</span>
 <span id="107">107</span>
-<span id="108">108</span>
-</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">serde::Deserialize</span>;
+</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>};
 
 <span class="kw">use</span> <span class="ident">necsim_core::cogs</span>::{<span class="ident">DispersalSampler</span>, <span class="ident">LineageStore</span>, <span class="ident">MathsCore</span>, <span class="ident">RngCore</span>};
 <span class="kw">use</span> <span class="ident">necsim_core_bond</span>::{<span class="ident">NonNegativeF64</span>, <span class="ident">Partition</span>, <span class="ident">PositiveUnitF64</span>};
@@ -138,9 +137,8 @@
     <span class="ident">speciation_probability</span>: <span class="ident">UniformSpeciationProbability</span>,
 }
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Deserialize</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::module_name_repetitions</span>)]</span>
-<span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;AlmostInfinite&quot;</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">AlmostInfiniteArguments</span> {
     <span class="kw">pub</span> <span class="ident">radius</span>: <span class="ident">u32</span>,
     <span class="kw">pub</span> <span class="ident">sigma</span>: <span class="ident">NonNegativeF64</span>,

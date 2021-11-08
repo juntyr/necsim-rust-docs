@@ -39,24 +39,8 @@
 <span id="39">39</span>
 <span id="40">40</span>
 <span id="41">41</span>
-<span id="42">42</span>
-<span id="43">43</span>
-<span id="44">44</span>
-<span id="45">45</span>
-<span id="46">46</span>
-<span id="47">47</span>
-<span id="48">48</span>
-<span id="49">49</span>
-<span id="50">50</span>
-<span id="51">51</span>
-<span id="52">52</span>
-<span id="53">53</span>
-<span id="54">54</span>
 </pre><pre class="rust"><code><span class="attribute">#![<span class="ident">deny</span>(<span class="ident">clippy::pedantic</span>)]</span>
-<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">associated_type_bounds</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">unwrap_infallible</span>)]</span>
-<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">box_patterns</span>)]</span>
-<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">cursor_remaining</span>)]</span>
 <span class="attribute">#![<span class="ident">allow</span>(<span class="ident">incomplete_features</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">specialization</span>)]</span>
 
@@ -67,15 +51,12 @@
 <span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">log</span>;
 
 <span class="kw">use</span> <span class="ident">anyhow</span>::{<span class="ident">Context</span>, <span class="prelude-ty">Result</span>};
-<span class="kw">use</span> <span class="ident">log::LevelFilter</span>;
 <span class="kw">use</span> <span class="ident">structopt::StructOpt</span>;
 
 <span class="kw">mod</span> <span class="ident">args</span>;
 <span class="kw">mod</span> <span class="ident">cli</span>;
-<span class="kw">mod</span> <span class="ident">maps</span>;
 <span class="kw">mod</span> <span class="ident">minimal_logger</span>;
 <span class="kw">mod</span> <span class="ident">reporter</span>;
-<span class="kw">mod</span> <span class="ident">tiff</span>;
 
 <span class="kw">use</span> <span class="ident">args::RustcoalescenceArgs</span>;
 <span class="kw">use</span> <span class="ident">minimal_logger::MinimalLogger</span>;
@@ -89,7 +70,7 @@
     <span class="comment">// Parse and validate all command line arguments</span>
     <span class="kw">let</span> <span class="ident">args</span> <span class="op">=</span> <span class="ident">RustcoalescenceArgs::from_args</span>();
 
-    <span class="kw">let</span> <span class="ident">result</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">args</span> {
+    <span class="kw">match</span> <span class="ident">args</span> {
         <span class="ident">RustcoalescenceArgs::Simulate</span>(<span class="ident">simulate_args</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">cli::simulate::simulate_with_logger</span>(<span class="ident">simulate_args</span>)
                 .<span class="ident">context</span>(<span class="string">&quot;Failed to initialise or perform the simulation.&quot;</span>)
@@ -97,13 +78,6 @@
         <span class="ident">RustcoalescenceArgs::Replay</span>(<span class="ident">replay_args</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">cli::replay::replay_with_logger</span>(<span class="ident">replay_args</span>).<span class="ident">context</span>(<span class="string">&quot;Failed to replay the simulation.&quot;</span>)
         },
-    };
-
-    <span class="comment">// Hide non-root error messages</span>
-    <span class="kw">if</span> <span class="ident">log::max_level</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">LevelFilter::Off</span> {
-        <span class="prelude-val">Ok</span>(())
-    } <span class="kw">else</span> {
-        <span class="ident">result</span>
     }
 }
 </code></pre></div>

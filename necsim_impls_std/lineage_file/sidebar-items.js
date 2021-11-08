@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["loader",""]]});
+initSidebarItems({"mod":[["loader",""],["saver",""]]});

@@ -36,10 +36,31 @@
 <span id="36">36</span>
 <span id="37">37</span>
 <span id="38">38</span>
+<span id="39">39</span>
+<span id="40">40</span>
+<span id="41">41</span>
+<span id="42">42</span>
+<span id="43">43</span>
+<span id="44">44</span>
+<span id="45">45</span>
+<span id="46">46</span>
+<span id="47">47</span>
+<span id="48">48</span>
+<span id="49">49</span>
+<span id="50">50</span>
+<span id="51">51</span>
+<span id="52">52</span>
+<span id="53">53</span>
+<span id="54">54</span>
+<span id="55">55</span>
+<span id="56">56</span>
 </pre><pre class="rust"><code><span class="attribute">#![<span class="ident">deny</span>(<span class="ident">clippy::pedantic</span>)]</span>
+
+<span class="kw">use</span> <span class="ident">std::marker::PhantomData</span>;
 
 <span class="kw">use</span> <span class="ident">necsim_core</span>::{
     <span class="ident">cogs</span>::{<span class="ident">LineageReference</span>, <span class="ident">LineageStore</span>, <span class="ident">MathsCore</span>, <span class="ident">RngCore</span>},
+    <span class="ident">lineage::Lineage</span>,
     <span class="ident">reporter::Reporter</span>,
 };
 <span class="kw">use</span> <span class="ident">necsim_core_bond::NonNegativeF64</span>;
@@ -71,8 +92,23 @@
         <span class="ident">rng</span>: <span class="ident"><span class="self">Self</span>::Rng</span>,
         <span class="ident">scenario</span>: <span class="ident">O</span>,
         <span class="ident">pre_sampler</span>: <span class="ident">OriginPreSampler</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::MathsCore</span>, <span class="ident">I</span><span class="op">&gt;</span>,
+        <span class="ident">pause_before</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">NonNegativeF64</span><span class="op">&gt;</span>,
         <span class="ident">local_partition</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">P</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(<span class="ident">NonNegativeF64</span>, <span class="ident">u64</span>), <span class="ident"><span class="self">Self</span>::Error</span><span class="op">&gt;</span>;
+    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">AlgorithmResult</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::MathsCore</span>, <span class="ident"><span class="self">Self</span>::Rng</span><span class="op">&gt;</span>, <span class="ident"><span class="self">Self</span>::Error</span><span class="op">&gt;</span>;
+}
+
+<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">AlgorithmResult</span><span class="op">&lt;</span><span class="ident">M</span>: <span class="ident">MathsCore</span>, <span class="ident">G</span>: <span class="ident">RngCore</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+    <span class="ident">Done</span> {
+        <span class="ident">time</span>: <span class="ident">NonNegativeF64</span>,
+        <span class="ident">steps</span>: <span class="ident">u64</span>,
+    },
+    <span class="ident">Paused</span> {
+        <span class="ident">time</span>: <span class="ident">NonNegativeF64</span>,
+        <span class="ident">steps</span>: <span class="ident">u64</span>,
+        <span class="ident">lineages</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Lineage</span><span class="op">&gt;</span>,
+        <span class="ident">rng</span>: <span class="ident">G</span>,
+        <span class="ident">marker</span>: <span class="ident">PhantomData</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span>,
+    },
 }
 </code></pre></div>
 </section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../" data-current-crate="rustcoalescence_algorithms" data-search-index-js="../../search-index.js" data-search-js="../../search.js"></div>

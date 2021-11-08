@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["ReporterPluginDeclaration",""],["ReporterPluginFilter",""],["UnsafeReporterPlugin",""]]});
+initSidebarItems({"enum":[["Reporters",""]],"struct":[["ReporterPluginDeclaration",""],["ReporterPluginFilter",""],["UnsafeReporterPlugin",""]],"trait":[["SerializeableReporter",""]],"type":[["DynReporterPlugin",""]]});

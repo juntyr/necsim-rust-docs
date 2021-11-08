@@ -53,6 +53,7 @@
 <span id="53">53</span>
 <span id="54">54</span>
 <span id="55">55</span>
+<span id="56">56</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">std::fmt</span>;
 
 <span class="kw">use</span> <span class="ident">necsim_core::reporter</span>::{<span class="ident">boolean::Boolean</span>, <span class="ident">FilteredReporter</span>, <span class="ident">Reporter</span>};
@@ -82,6 +83,7 @@
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">ReportSpeciation</span>: <span class="ident">Boolean</span>, <span class="ident">ReportDispersal</span>: <span class="ident">Boolean</span>, <span class="ident">ReportProgress</span>: <span class="ident">Boolean</span><span class="op">&gt;</span>
     <span class="ident">DynamicReporterContext</span><span class="op">&lt;</span><span class="ident">ReportSpeciation</span>, <span class="ident">ReportDispersal</span>, <span class="ident">ReportProgress</span><span class="op">&gt;</span>
 {
+    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">dead_code</span>)]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(
         <span class="ident">reporter</span>: <span class="ident">ReporterPluginVec</span><span class="op">&lt;</span><span class="ident">ReportSpeciation</span>, <span class="ident">ReportDispersal</span>, <span class="ident">ReportProgress</span><span class="op">&gt;</span>,
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {

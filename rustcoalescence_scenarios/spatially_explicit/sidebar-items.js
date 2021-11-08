@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["InMemoryArguments",""],["NonNegativeF64Error",""],["SpatiallyExplicitScenario",""]]});
+initSidebarItems({"struct":[["SpatiallyExplicitArguments",""],["SpatiallyExplicitScenario",""]]});

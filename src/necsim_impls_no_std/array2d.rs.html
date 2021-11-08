@@ -494,14 +494,14 @@
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">core::fmt::Debug</span> <span class="kw">for</span> <span class="ident">Array2D</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">core::fmt::Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">core::fmt::Result</span> {
-        <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;Array2D&quot;</span>)
-            .<span class="ident">field</span>(
-                <span class="string">&quot;array&quot;</span>,
-                <span class="kw-2">&amp;</span><span class="macro">format_args!</span>(<span class="string">&quot;Box [ {:p}; {} ]&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">array</span>, <span class="self">self</span>.<span class="ident">array</span>.<span class="ident">len</span>()),
-            )
-            .<span class="ident">field</span>(<span class="string">&quot;num_rows&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">num_rows</span>)
-            .<span class="ident">finish</span>()
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">fmt</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">core::fmt::Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">core::fmt::Result</span> {
+        <span class="macro">write!</span>(
+            <span class="ident">fmt</span>,
+            <span class="string">&quot;Array2D&lt;{}; WxH = {}x{}&gt;&quot;</span>,
+            <span class="ident">core::any::type_name</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(),
+            <span class="self">self</span>.<span class="ident">num_columns</span>(),
+            <span class="self">self</span>.<span class="ident">num_rows</span>()
+        )
     }
 }
 

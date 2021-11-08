@@ -284,6 +284,24 @@
 <span id="284">284</span>
 <span id="285">285</span>
 <span id="286">286</span>
+<span id="287">287</span>
+<span id="288">288</span>
+<span id="289">289</span>
+<span id="290">290</span>
+<span id="291">291</span>
+<span id="292">292</span>
+<span id="293">293</span>
+<span id="294">294</span>
+<span id="295">295</span>
+<span id="296">296</span>
+<span id="297">297</span>
+<span id="298">298</span>
+<span id="299">299</span>
+<span id="300">300</span>
+<span id="301">301</span>
+<span id="302">302</span>
+<span id="303">303</span>
+<span id="304">304</span>
 </pre><pre class="rust"><code><span class="attribute">#![<span class="ident">deny</span>(<span class="ident">clippy::pedantic</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">option_result_unwrap_unchecked</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">drain_filter</span>)]</span>
@@ -306,22 +324,27 @@
 <span class="kw">use</span> <span class="ident">necsim_core_bond::NonNegativeF64</span>;
 
 <span class="kw">use</span> <span class="ident">necsim_impls_cuda::cogs</span>::{<span class="ident">maths::NvptxMathsCore</span>, <span class="ident">rng::CudaRng</span>};
-<span class="kw">use</span> <span class="ident">necsim_impls_no_std::cogs</span>::{
-    <span class="ident">active_lineage_sampler::independent</span>::{
-        <span class="ident">event_time_sampler::exp::ExpEventTimeSampler</span>, <span class="ident">IndependentActiveLineageSampler</span>,
+<span class="kw">use</span> <span class="ident">necsim_impls_no_std</span>::{
+    <span class="ident">cogs</span>::{
+        <span class="ident">active_lineage_sampler::independent</span>::{
+            <span class="ident">event_time_sampler::exp::ExpEventTimeSampler</span>, <span class="ident">IndependentActiveLineageSampler</span>,
+        },
+        <span class="ident">coalescence_sampler::independent::IndependentCoalescenceSampler</span>,
+        <span class="ident">dispersal_sampler::in_memory::packed_alias::InMemoryPackedAliasDispersalSampler</span>,
+        <span class="ident">emigration_exit::never::NeverEmigrationExit</span>,
+        <span class="ident">event_sampler::independent::IndependentEventSampler</span>,
+        <span class="ident">immigration_entry::never::NeverImmigrationEntry</span>,
+        <span class="ident">lineage_store::independent::IndependentLineageStore</span>,
+        <span class="ident">origin_sampler</span>::{
+            <span class="ident">decomposition::DecompositionOriginSampler</span>, <span class="ident">pre_sampler::OriginPreSampler</span>,
+        },
+        <span class="ident">rng::wyhash::WyHash</span>,
     },
-    <span class="ident">coalescence_sampler::independent::IndependentCoalescenceSampler</span>,
-    <span class="ident">dispersal_sampler::in_memory::packed_alias::InMemoryPackedAliasDispersalSampler</span>,
-    <span class="ident">emigration_exit::never::NeverEmigrationExit</span>,
-    <span class="ident">event_sampler::independent::IndependentEventSampler</span>,
-    <span class="ident">immigration_entry::never::NeverImmigrationEntry</span>,
-    <span class="ident">lineage_store::independent::IndependentLineageStore</span>,
-    <span class="ident">origin_sampler</span>::{<span class="ident">decomposition::DecompositionOriginSampler</span>, <span class="ident">pre_sampler::OriginPreSampler</span>},
-    <span class="ident">rng::wyhash::WyHash</span>,
+    <span class="ident">parallelisation::Status</span>,
 };
 <span class="kw">use</span> <span class="ident">necsim_partitioning_core::LocalPartition</span>;
 
-<span class="kw">use</span> <span class="ident">rustcoalescence_algorithms</span>::{<span class="ident">Algorithm</span>, <span class="ident">AlgorithmArguments</span>};
+<span class="kw">use</span> <span class="ident">rustcoalescence_algorithms</span>::{<span class="ident">Algorithm</span>, <span class="ident">AlgorithmArguments</span>, <span class="ident">AlgorithmResult</span>};
 <span class="kw">use</span> <span class="ident">rustcoalescence_scenarios::Scenario</span>;
 
 <span class="kw">use</span> <span class="ident">rust_cuda</span>::{
@@ -485,8 +508,9 @@
         <span class="ident">rng</span>: <span class="ident"><span class="self">Self</span>::Rng</span>,
         <span class="ident">scenario</span>: <span class="ident">O</span>,
         <span class="ident">pre_sampler</span>: <span class="ident">OriginPreSampler</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::MathsCore</span>, <span class="ident">I</span><span class="op">&gt;</span>,
+        <span class="ident">pause_before</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">NonNegativeF64</span><span class="op">&gt;</span>,
         <span class="ident">local_partition</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">P</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(<span class="ident">NonNegativeF64</span>, <span class="ident">u64</span>), <span class="ident"><span class="self">Self</span>::Error</span><span class="op">&gt;</span> {
+    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">AlgorithmResult</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::MathsCore</span>, <span class="ident"><span class="self">Self</span>::Rng</span><span class="op">&gt;</span>, <span class="ident"><span class="self">Self</span>::Error</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">lineages</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Lineage</span><span class="op">&gt;</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">args</span>.<span class="ident">parallelism_mode</span> {
             <span class="comment">// Apply no lineage origin partitioning in the `Monolithic` mode</span>
             <span class="ident">ParallelismMode::Monolithic</span>(..) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">scenario</span>.<span class="ident">sample_habitat</span>(<span class="ident">pre_sampler</span>).<span class="ident">collect</span>(),
@@ -521,7 +545,7 @@
         <span class="kw">let</span> <span class="ident">active_lineage_sampler</span> <span class="op">=</span>
             <span class="ident">IndependentActiveLineageSampler::empty</span>(<span class="ident">ExpEventTimeSampler::new</span>(<span class="ident">args</span>.<span class="ident">delta_t</span>));
 
-        <span class="kw">let</span> <span class="ident">simulation</span> <span class="op">=</span> <span class="ident">SimulationBuilder</span> {
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">simulation</span> <span class="op">=</span> <span class="ident">SimulationBuilder</span> {
             <span class="ident">maths</span>: <span class="ident">PhantomData</span>::<span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::MathsCore</span><span class="op">&gt;</span>,
             <span class="ident">habitat</span>,
             <span class="ident">lineage_reference</span>: <span class="ident">PhantomData</span>::<span class="op">&lt;</span><span class="ident">GlobalLineageReference</span><span class="op">&gt;</span>,
@@ -552,7 +576,7 @@
             },
         };
 
-        <span class="ident">with_initialised_cuda</span>(<span class="ident">args</span>.<span class="ident">device</span>, <span class="op">|</span><span class="op">|</span> {
+        <span class="kw">let</span> (<span class="ident">status</span>, <span class="ident">time</span>, <span class="ident">steps</span>, <span class="ident">lineages</span>) <span class="op">=</span> <span class="ident">with_initialised_cuda</span>(<span class="ident">args</span>.<span class="ident">device</span>, <span class="op">|</span><span class="op">|</span> {
             <span class="kw">let</span> <span class="ident">kernel</span> <span class="op">=</span> <span class="ident">SimulationKernel::try_new</span>(
                 <span class="ident">Stream::new</span>(<span class="ident">StreamFlags::NON_BLOCKING</span>, <span class="prelude-val">None</span>)<span class="question-mark">?</span>,
                 <span class="ident">grid_size</span>.<span class="ident">clone</span>(),
@@ -560,14 +584,26 @@
             )<span class="question-mark">?</span>;
 
             <span class="ident">parallelisation::monolithic::simulate</span>(
-                <span class="ident">simulation</span>,
+                <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">simulation</span>,
                 <span class="ident">kernel</span>,
                 (<span class="ident">grid_size</span>, <span class="ident">block_size</span>, <span class="ident">args</span>.<span class="ident">dedup_cache</span>, <span class="ident">args</span>.<span class="ident">step_slice</span>),
                 <span class="ident">lineages</span>,
                 <span class="ident">event_slice</span>,
+                <span class="ident">pause_before</span>,
                 <span class="ident">local_partition</span>,
             )
-        })
+        })<span class="question-mark">?</span>;
+
+        <span class="kw">match</span> <span class="ident">status</span> {
+            <span class="ident">Status::Done</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">AlgorithmResult::Done</span> { <span class="ident">time</span>, <span class="ident">steps</span> }),
+            <span class="ident">Status::Paused</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">AlgorithmResult::Paused</span> {
+                <span class="ident">time</span>,
+                <span class="ident">steps</span>,
+                <span class="ident">lineages</span>: <span class="ident">lineages</span>.<span class="ident">into_iter</span>().<span class="ident">collect</span>(),
+                <span class="ident">rng</span>: <span class="ident">simulation</span>.<span class="ident">rng_mut</span>().<span class="ident">clone</span>(),
+                <span class="ident">marker</span>: <span class="ident">PhantomData</span>,
+            }),
+        }
     }
 }
 </code></pre></div>

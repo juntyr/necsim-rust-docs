@@ -112,7 +112,11 @@
 <span id="112">112</span>
 <span id="113">113</span>
 <span id="114">114</span>
-</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">necsim_core</span>::{
+<span id="115">115</span>
+<span id="116">116</span>
+</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">core::num::NonZeroU32</span>;
+
+<span class="kw">use</span> <span class="ident">necsim_core</span>::{
     <span class="ident">cogs</span>::{<span class="ident">Backup</span>, <span class="ident">Habitat</span>, <span class="ident">MathsCore</span>},
     <span class="ident">landscape</span>::{<span class="ident">IndexedLocation</span>, <span class="ident">LandscapeExtent</span>, <span class="ident">Location</span>},
 };
@@ -134,16 +138,16 @@
     <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="attribute">#[<span class="ident">debug_ensures</span>(
         <span class="ident">ret</span>.<span class="ident">get_total_habitat</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">old</span>(
-            <span class="ident">u64::from</span>(<span class="ident">local_area</span>.<span class="number">0</span>) <span class="op">*</span> <span class="ident">u64::from</span>(<span class="ident">local_area</span>.<span class="number">1</span>) <span class="op">*</span> <span class="ident">u64::from</span>(<span class="ident">local_deme</span>)
-            <span class="op">+</span> <span class="ident">u64::from</span>(<span class="ident">meta_area</span>.<span class="number">0</span>) <span class="op">*</span> <span class="ident">u64::from</span>(<span class="ident">meta_area</span>.<span class="number">1</span>) <span class="op">*</span> <span class="ident">u64::from</span>(<span class="ident">meta_deme</span>)
+            <span class="ident">u64::from</span>(<span class="ident">local_area</span>.<span class="number">0</span>) <span class="op">*</span> <span class="ident">u64::from</span>(<span class="ident">local_area</span>.<span class="number">1</span>) <span class="op">*</span> <span class="ident">u64::from</span>(<span class="ident">local_deme</span>.<span class="ident">get</span>())
+            <span class="op">+</span> <span class="ident">u64::from</span>(<span class="ident">meta_area</span>.<span class="number">0</span>) <span class="op">*</span> <span class="ident">u64::from</span>(<span class="ident">meta_area</span>.<span class="number">1</span>) <span class="op">*</span> <span class="ident">u64::from</span>(<span class="ident">meta_deme</span>.<span class="ident">get</span>())
         ),
         <span class="string">&quot;creates a habitat with a combined local and meta community size &quot;</span>
     )]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(
         <span class="ident">local_area</span>: (<span class="ident">u32</span>, <span class="ident">u32</span>),
-        <span class="ident">local_deme</span>: <span class="ident">u32</span>,
+        <span class="ident">local_deme</span>: <span class="ident">NonZeroU32</span>,
         <span class="ident">meta_area</span>: (<span class="ident">u32</span>, <span class="ident">u32</span>),
-        <span class="ident">meta_deme</span>: <span class="ident">u32</span>,
+        <span class="ident">meta_deme</span>: <span class="ident">NonZeroU32</span>,
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="kw">let</span> <span class="ident">local</span> <span class="op">=</span> <span class="ident">NonSpatialHabitat::new</span>(<span class="ident">local_area</span>, <span class="ident">local_deme</span>);
         <span class="kw">let</span> <span class="ident">meta</span> <span class="op">=</span> <span class="ident">NonSpatialHabitat::new_with_offset</span>(
