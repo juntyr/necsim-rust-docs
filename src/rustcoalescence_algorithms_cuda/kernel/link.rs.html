@@ -157,6 +157,26 @@
 <span id="157">157</span>
 <span id="158">158</span>
 <span id="159">159</span>
+<span id="160">160</span>
+<span id="161">161</span>
+<span id="162">162</span>
+<span id="163">163</span>
+<span id="164">164</span>
+<span id="165">165</span>
+<span id="166">166</span>
+<span id="167">167</span>
+<span id="168">168</span>
+<span id="169">169</span>
+<span id="170">170</span>
+<span id="171">171</span>
+<span id="172">172</span>
+<span id="173">173</span>
+<span id="174">174</span>
+<span id="175">175</span>
+<span id="176">176</span>
+<span id="177">177</span>
+<span id="178">178</span>
+<span id="179">179</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">rustcoalescence_algorithms_cuda_kernel</span>::{<span class="ident">Kernel</span>, <span class="ident">KernelArgs</span>};
 
 <span class="kw">use</span> <span class="ident"><span class="kw">super</span>::SimulationKernel</span>;
@@ -314,6 +334,26 @@
         <span class="op">&gt;</span>,
     <span class="op">&gt;</span>,
     <span class="ident">necsim_impls_no_std::cogs::turnover_rate::uniform::UniformTurnoverRate</span>,
+    <span class="ident">necsim_impls_no_std::cogs::speciation_probability::uniform::UniformSpeciationProbability</span>
+);
+
+<span class="macro">link_kernel!</span>(
+    <span class="ident">necsim_impls_no_std::cogs::habitat::in_memory::InMemoryHabitat</span><span class="op">&lt;</span>
+        <span class="ident">necsim_impls_cuda::cogs::maths::NvptxMathsCore</span>
+    <span class="op">&gt;</span>,
+    <span class="ident">necsim_impls_no_std::cogs::dispersal_sampler::in_memory::packed_alias::InMemoryPackedAliasDispersalSampler</span><span class="op">&lt;</span>
+        <span class="ident">necsim_impls_cuda::cogs::maths::NvptxMathsCore</span>,
+        <span class="ident">necsim_impls_no_std::cogs::habitat::in_memory::InMemoryHabitat</span><span class="op">&lt;</span>
+            <span class="ident">necsim_impls_cuda::cogs::maths::NvptxMathsCore</span>
+        <span class="op">&gt;</span>,
+        <span class="ident">necsim_impls_cuda::cogs::rng::CudaRng</span><span class="op">&lt;</span>
+            <span class="ident">necsim_impls_cuda::cogs::maths::NvptxMathsCore</span>,
+            <span class="ident">necsim_impls_no_std::cogs::rng::wyhash::WyHash</span><span class="op">&lt;</span>
+                <span class="ident">necsim_impls_cuda::cogs::maths::NvptxMathsCore</span>
+            <span class="op">&gt;</span>,
+        <span class="op">&gt;</span>,
+    <span class="op">&gt;</span>,
+    <span class="ident">necsim_impls_no_std::cogs::turnover_rate::in_memory::InMemoryTurnoverRate</span>,
     <span class="ident">necsim_impls_no_std::cogs::speciation_probability::uniform::UniformSpeciationProbability</span>
 );
 </code></pre></div>

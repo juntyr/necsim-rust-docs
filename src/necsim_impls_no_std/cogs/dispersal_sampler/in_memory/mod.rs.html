@@ -30,6 +30,7 @@
 <span id="30">30</span>
 <span id="31">31</span>
 <span id="32">32</span>
+<span id="33">33</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">necsim_core::cogs</span>::{<span class="ident">DispersalSampler</span>, <span class="ident">Habitat</span>, <span class="ident">MathsCore</span>, <span class="ident">RngCore</span>};
 
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::array2d::Array2D</span>;
@@ -42,6 +43,7 @@
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">separable_alias</span>;
 
 <span class="kw">use</span> <span class="ident">contract::explicit_in_memory_dispersal_check_contract</span>;
+<span class="kw">use</span> <span class="ident">necsim_core_bond::NonNegativeF64</span>;
 
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::module_name_repetitions</span>)]</span>
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::inline_always</span>, <span class="ident">clippy::inline_fn_without_body</span>)]</span>
@@ -60,7 +62,7 @@
         <span class="ident">explicit_in_memory_dispersal_check_contract</span>(<span class="ident">dispersal</span>, <span class="ident">habitat</span>),
         <span class="string">&quot;dispersal probabilities are consistent&quot;</span>
     )]</span>
-    <span class="kw">fn</span> <span class="ident">unchecked_new</span>(<span class="ident">dispersal</span>: <span class="kw-2">&amp;</span><span class="ident">Array2D</span><span class="op">&lt;</span><span class="ident">f64</span><span class="op">&gt;</span>, <span class="ident">habitat</span>: <span class="kw-2">&amp;</span><span class="ident">H</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>;
+    <span class="kw">fn</span> <span class="ident">unchecked_new</span>(<span class="ident">dispersal</span>: <span class="kw-2">&amp;</span><span class="ident">Array2D</span><span class="op">&lt;</span><span class="ident">NonNegativeF64</span><span class="op">&gt;</span>, <span class="ident">habitat</span>: <span class="kw-2">&amp;</span><span class="ident">H</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>;
 }
 </code></pre></div>
 </section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../../" data-current-crate="necsim_impls_no_std" data-search-index-js="../../../../../search-index.js" data-search-js="../../../../../search.js"></div>

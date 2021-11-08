@@ -57,8 +57,6 @@
 <span id="57">57</span>
 <span id="58">58</span>
 <span id="59">59</span>
-<span id="60">60</span>
-<span id="61">61</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">necsim_core</span>::{
     <span class="ident">cogs</span>::{<span class="ident">DispersalSampler</span>, <span class="ident">Habitat</span>, <span class="ident">MathsCore</span>, <span class="ident">RngCore</span>},
     <span class="ident">landscape::Location</span>,
@@ -89,12 +87,10 @@
         <span class="kw">let</span> <span class="ident">cumulative_dispersals_at_location</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">cumulative_dispersal</span>
             [<span class="ident">location_index</span> <span class="op">*</span> <span class="ident">habitat_area</span>..(<span class="ident">location_index</span> <span class="op">+</span> <span class="number">1</span>) <span class="op">*</span> <span class="ident">habitat_area</span>];
 
-        <span class="kw">let</span> <span class="ident">cumulative_percentage_sample</span> <span class="op">=</span> <span class="ident">rng</span>.<span class="ident">sample_uniform</span>().<span class="ident">get</span>();
+        <span class="kw">let</span> <span class="ident">cumulative_percentage_sample</span> <span class="op">=</span> <span class="ident">rng</span>.<span class="ident">sample_uniform</span>();
 
         <span class="kw">let</span> <span class="ident">dispersal_target_index</span> <span class="op">=</span> <span class="ident">usize::min</span>(
-            <span class="kw">match</span> <span class="ident">cumulative_dispersals_at_location</span>
-                .<span class="ident">binary_search_by</span>(<span class="op">|</span><span class="ident">v</span><span class="op">|</span> <span class="ident">v</span>.<span class="ident">total_cmp</span>(<span class="kw-2">&amp;</span><span class="ident">cumulative_percentage_sample</span>))
-            {
+            <span class="kw">match</span> <span class="ident">cumulative_dispersals_at_location</span>.<span class="ident">binary_search</span>(<span class="kw-2">&amp;</span><span class="ident">cumulative_percentage_sample</span>) {
                 <span class="prelude-val">Ok</span>(<span class="ident">index</span>) <span class="op">|</span> <span class="prelude-val">Err</span>(<span class="ident">index</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">index</span>,
             },
             <span class="ident">habitat_area</span> <span class="op">-</span> <span class="number">1</span>,

@@ -166,6 +166,16 @@
 <span id="166">166</span>
 <span id="167">167</span>
 <span id="168">168</span>
+<span id="169">169</span>
+<span id="170">170</span>
+<span id="171">171</span>
+<span id="172">172</span>
+<span id="173">173</span>
+<span id="174">174</span>
+<span id="175">175</span>
+<span id="176">176</span>
+<span id="177">177</span>
+<span id="178">178</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">necsim_core::reporter::Reporter</span>;
 <span class="kw">use</span> <span class="ident">necsim_core_bond</span>::{<span class="ident">NonNegativeF64</span>, <span class="ident">PositiveUnitF64</span>};
 <span class="kw">use</span> <span class="ident">necsim_partitioning_core::LocalPartition</span>;
@@ -180,8 +190,12 @@
 <span class="kw">use</span> <span class="ident">rustcoalescence_algorithms_independent::IndependentAlgorithm</span>;
 
 <span class="kw">use</span> <span class="ident">rustcoalescence_scenarios</span>::{
-    <span class="ident">almost_infinite::AlmostInfiniteScenario</span>, <span class="ident">non_spatial::NonSpatialScenario</span>,
-    <span class="ident">spatially_explicit::SpatiallyExplicitScenario</span>, <span class="ident">spatially_implicit::SpatiallyImplicitScenario</span>,
+    <span class="ident">almost_infinite::AlmostInfiniteScenario</span>,
+    <span class="ident">non_spatial::NonSpatialScenario</span>,
+    <span class="ident">spatially_explicit</span>::{
+        <span class="ident">SpatiallyExplicitTurnoverMapScenario</span>, <span class="ident">SpatiallyExplicitUniformTurnoverScenario</span>,
+    },
+    <span class="ident">spatially_implicit::SpatiallyImplicitScenario</span>,
     <span class="ident">Scenario</span>,
 };
 
@@ -305,8 +319,14 @@
             )
         }
         <span class="op">&lt;</span><span class="op">=</span><span class="op">&gt;</span>
-        <span class="ident">ScenarioArgs::SpatiallyExplicit</span>(<span class="ident">scenario_args</span>) <span class="op">=</span><span class="op">&gt;</span> {
-            <span class="ident">SpatiallyExplicitScenario::initialise</span>(
+        <span class="ident">ScenarioArgs::SpatiallyExplicitUniformTurnover</span>(<span class="ident">scenario_args</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">SpatiallyExplicitUniformTurnoverScenario::initialise</span>(
+                <span class="ident">scenario_args</span>,
+                <span class="ident">speciation_probability_per_generation</span>,
+            )<span class="question-mark">?</span>
+        },
+        <span class="ident">ScenarioArgs::SpatiallyExplicitTurnoverMap</span>(<span class="ident">scenario_args</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">SpatiallyExplicitTurnoverMapScenario::initialise</span>(
                 <span class="ident">scenario_args</span>,
                 <span class="ident">speciation_probability_per_generation</span>,
             )<span class="question-mark">?</span>

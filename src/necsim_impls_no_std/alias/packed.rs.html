@@ -136,20 +136,44 @@
 <span id="136">136</span>
 <span id="137">137</span>
 <span id="138">138</span>
+<span id="139">139</span>
+<span id="140">140</span>
+<span id="141">141</span>
+<span id="142">142</span>
+<span id="143">143</span>
+<span id="144">144</span>
+<span id="145">145</span>
+<span id="146">146</span>
+<span id="147">147</span>
+<span id="148">148</span>
+<span id="149">149</span>
+<span id="150">150</span>
+<span id="151">151</span>
+<span id="152">152</span>
+<span id="153">153</span>
+<span id="154">154</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">core::cmp::Ordering</span>;
 
 <span class="kw">use</span> <span class="ident">alloc::vec::Vec</span>;
 
 <span class="kw">use</span> <span class="ident">necsim_core::cogs</span>::{<span class="ident">MathsCore</span>, <span class="ident">RngCore</span>};
+<span class="kw">use</span> <span class="ident">necsim_core_bond</span>::{<span class="ident">ClosedUnitF64</span>, <span class="ident">NonNegativeF64</span>};
 
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::module_name_repetitions</span>)]</span>
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">non_snake_case</span>)]</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">TypeLayout</span>)]</span>
 <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">C</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">AliasMethodSamplerAtom</span><span class="op">&lt;</span><span class="ident">E</span>: <span class="ident">Copy</span> <span class="op">+</span> <span class="ident">PartialEq</span><span class="op">&gt;</span> {
+    <span class="ident">U</span>: <span class="ident">ClosedUnitF64</span>,
     <span class="ident">E</span>: <span class="ident">E</span>,
     <span class="ident">K</span>: <span class="ident">E</span>,
-    <span class="ident">U</span>: <span class="ident">f64</span>,
+}
+
+<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">dead_code</span>, <span class="ident">non_snake_case</span>)]</span>
+<span class="kw">struct</span> <span class="ident">AliasMethodSamplerAtomRaw</span><span class="op">&lt;</span><span class="ident">E</span>: <span class="ident">Copy</span> <span class="op">+</span> <span class="ident">PartialEq</span><span class="op">&gt;</span> {
+    <span class="ident">U</span>: <span class="ident">NonNegativeF64</span>,
+    <span class="ident">E</span>: <span class="ident">E</span>,
+    <span class="ident">K</span>: <span class="ident">E</span>,
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">E</span>: <span class="ident">Copy</span> <span class="op">+</span> <span class="ident">PartialEq</span><span class="op">&gt;</span> <span class="ident">AliasMethodSamplerAtom</span><span class="op">&lt;</span><span class="ident">E</span><span class="op">&gt;</span> {
@@ -163,28 +187,23 @@
         <span class="string">&quot;stores exactly the input events&quot;</span>
     )]</span>
     <span class="attribute">#[<span class="ident">debug_ensures</span>(
-        <span class="ident">ret</span>.<span class="ident">iter</span>().<span class="ident">all</span>(<span class="op">|</span><span class="ident">s</span><span class="op">|</span> <span class="ident">s</span>.<span class="ident">U</span> <span class="op">&gt;</span><span class="op">=</span> <span class="number">0.0_f64</span> <span class="op">&amp;&amp;</span> <span class="ident">s</span>.<span class="ident">U</span> <span class="op">&lt;</span><span class="op">=</span> <span class="number">1.0_f64</span>),
-        <span class="string">&quot;all bucket probabilities are in U(0, 1)&quot;</span>
-    )]</span>
-    <span class="attribute">#[<span class="ident">debug_ensures</span>(
         <span class="ident">ret</span>.<span class="ident">iter</span>().<span class="ident">all</span>(<span class="op">|</span><span class="ident">s</span><span class="op">|</span> {
-            <span class="kw">let</span> <span class="ident">full_bucket</span> <span class="op">=</span> <span class="ident">s</span>.<span class="ident">U</span>.<span class="ident">to_bits</span>() <span class="op">=</span><span class="op">=</span> <span class="number">1.0_f64</span>.<span class="ident">to_bits</span>();
+            <span class="kw">let</span> <span class="ident">full_bucket</span> <span class="op">=</span> <span class="ident">s</span>.<span class="ident">U</span> <span class="op">=</span><span class="op">=</span> <span class="ident">ClosedUnitF64::one</span>();
             <span class="op">!</span><span class="ident">full_bucket</span> <span class="op">|</span><span class="op">|</span> (<span class="ident">s</span>.<span class="ident">E</span> <span class="op">=</span><span class="op">=</span> <span class="ident">s</span>.<span class="ident">K</span>)
         }),
         <span class="string">&quot;full buckets sample the same event just in case&quot;</span>
     )]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">create</span>(<span class="ident">event_weights</span>: <span class="kw-2">&amp;</span>[(<span class="ident">E</span>, <span class="ident">f64</span>)]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">AliasMethodSamplerAtom</span><span class="op">&lt;</span><span class="ident">E</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">create</span>(<span class="ident">event_weights</span>: <span class="kw-2">&amp;</span>[(<span class="ident">E</span>, <span class="ident">NonNegativeF64</span>)]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">AliasMethodSamplerAtom</span><span class="op">&lt;</span><span class="ident">E</span><span class="op">&gt;</span><span class="op">&gt;</span> {
         <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">non_snake_case</span>)]</span>
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">alias_samplers</span> <span class="op">=</span> <span class="ident">Vec::with_capacity</span>(<span class="ident">event_weights</span>.<span class="ident">len</span>());
 
-        <span class="kw">let</span> <span class="ident">total_weight</span>: <span class="ident">f64</span> <span class="op">=</span> <span class="ident">event_weights</span>.<span class="ident">iter</span>().<span class="ident">map</span>(<span class="op">|</span>(<span class="ident">_e</span>, <span class="ident">p</span>)<span class="op">|</span> <span class="kw-2">*</span><span class="ident">p</span>).<span class="ident">sum</span>();
+        <span class="kw">let</span> <span class="ident">total_weight</span>: <span class="ident">NonNegativeF64</span> <span class="op">=</span> <span class="ident">event_weights</span>.<span class="ident">iter</span>().<span class="ident">map</span>(<span class="op">|</span>(<span class="ident">_e</span>, <span class="ident">p</span>)<span class="op">|</span> <span class="kw-2">*</span><span class="ident">p</span>).<span class="ident">sum</span>();
 
-        <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::cast_precision_loss</span>)]</span>
-        <span class="kw">let</span> <span class="ident">n</span>: <span class="ident">f64</span> <span class="op">=</span> <span class="ident">event_weights</span>.<span class="ident">len</span>() <span class="kw">as</span> <span class="ident">f64</span>;
+        <span class="kw">let</span> <span class="ident">n</span> <span class="op">=</span> <span class="ident">NonNegativeF64::from</span>(<span class="ident">event_weights</span>.<span class="ident">len</span>());
 
         <span class="kw">for</span> (<span class="ident">event</span>, <span class="ident">weight</span>) <span class="kw">in</span> <span class="ident">event_weights</span> {
-            <span class="ident">alias_samplers</span>.<span class="ident">push</span>(<span class="ident">AliasMethodSamplerAtom</span> {
-                <span class="ident">U</span>: <span class="ident">weight</span> <span class="op">*</span> <span class="ident">n</span> <span class="op">/</span> <span class="ident">total_weight</span>,
+            <span class="ident">alias_samplers</span>.<span class="ident">push</span>(<span class="ident">AliasMethodSamplerAtomRaw</span> {
+                <span class="ident">U</span>: <span class="kw-2">*</span><span class="ident">weight</span> <span class="op">*</span> <span class="ident">n</span> <span class="op">/</span> <span class="ident">total_weight</span>,
                 <span class="ident">E</span>: <span class="kw-2">*</span><span class="ident">event</span>,
                 <span class="ident">K</span>: <span class="kw-2">*</span><span class="ident">event</span>,
             });
@@ -200,7 +219,15 @@
         <span class="kw">while</span> <span class="kw">let</span> <span class="prelude-val">Some</span>((<span class="ident">overfull_index</span>, <span class="ident">underfull_index</span>)) <span class="op">=</span>
             <span class="ident">pop_overfull_underfull_pair_atomic</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">overfull_indices</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">underfull_indices</span>)
         {
-            <span class="ident">alias_samplers</span>[<span class="ident">overfull_index</span>].<span class="ident">U</span> <span class="op">-</span><span class="op">=</span> <span class="number">1.0_f64</span> <span class="op">-</span> <span class="ident">alias_samplers</span>[<span class="ident">underfull_index</span>].<span class="ident">U</span>;
+            <span class="comment">// Safety: alias_samplers[overfull_index].U &gt; 1.0,</span>
+            <span class="comment">//         so (alias_samplers[overfull_index].U - 1.0) &gt; 0.0</span>
+            <span class="ident">alias_samplers</span>[<span class="ident">overfull_index</span>].<span class="ident">U</span> <span class="op">=</span> <span class="kw">unsafe</span> {
+                <span class="ident">NonNegativeF64::new_unchecked</span>(
+                    <span class="ident">alias_samplers</span>[<span class="ident">overfull_index</span>].<span class="ident">U</span>.<span class="ident">get</span>()
+                        <span class="op">+</span> <span class="ident">alias_samplers</span>[<span class="ident">underfull_index</span>].<span class="ident">U</span>.<span class="ident">get</span>()
+                        <span class="op">-</span> <span class="number">1.0_f64</span>,
+                )
+            };
             <span class="ident">alias_samplers</span>[<span class="ident">underfull_index</span>].<span class="ident">K</span> <span class="op">=</span> <span class="ident">alias_samplers</span>[<span class="ident">overfull_index</span>].<span class="ident">E</span>;
 
             <span class="kw">match</span> <span class="ident">alias_samplers</span>[<span class="ident">overfull_index</span>].<span class="ident">U</span>.<span class="ident">partial_cmp</span>(<span class="kw-2">&amp;</span><span class="number">1.0_f64</span>) {
@@ -216,12 +243,17 @@
         <span class="comment">// 9,   pp. 972-975, Sept. 1991, doi: 10.1109/32.92917.</span>
         <span class="ident">overfull_indices</span>
             .<span class="ident">into_iter</span>()
-            .<span class="ident">for_each</span>(<span class="op">|</span><span class="ident">i</span><span class="op">|</span> <span class="ident">alias_samplers</span>[<span class="ident">i</span>].<span class="ident">U</span> <span class="op">=</span> <span class="number">1.0_f64</span>);
+            .<span class="ident">for_each</span>(<span class="op">|</span><span class="ident">i</span><span class="op">|</span> <span class="ident">alias_samplers</span>[<span class="ident">i</span>].<span class="ident">U</span> <span class="op">=</span> <span class="ident">NonNegativeF64::one</span>());
         <span class="ident">underfull_indices</span>
             .<span class="ident">into_iter</span>()
-            .<span class="ident">for_each</span>(<span class="op">|</span><span class="ident">i</span><span class="op">|</span> <span class="ident">alias_samplers</span>[<span class="ident">i</span>].<span class="ident">U</span> <span class="op">=</span> <span class="number">1.0_f64</span>);
+            .<span class="ident">for_each</span>(<span class="op">|</span><span class="ident">i</span><span class="op">|</span> <span class="ident">alias_samplers</span>[<span class="ident">i</span>].<span class="ident">U</span> <span class="op">=</span> <span class="ident">NonNegativeF64::one</span>());
 
-        <span class="ident">alias_samplers</span>
+        <span class="comment">// Safety: The bucket weights are now probabilities in [0.0; 1.0]</span>
+        <span class="kw">unsafe</span> {
+            <span class="ident">core::mem::transmute</span>::<span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">AliasMethodSamplerAtomRaw</span><span class="op">&lt;</span><span class="ident">E</span><span class="op">&gt;</span><span class="op">&gt;</span>, <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">AliasMethodSamplerAtom</span><span class="op">&lt;</span><span class="ident">E</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>(
+                <span class="ident">alias_samplers</span>,
+            )
+        }
     }
 
     <span class="attribute">#[<span class="ident">debug_requires</span>(<span class="op">!</span><span class="ident">alias_samplers</span>.<span class="ident">is_empty</span>(), <span class="string">&quot;alias_samplers is non-empty&quot;</span>)]</span>
@@ -249,7 +281,7 @@
 
         <span class="kw">let</span> <span class="ident">sample</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">alias_samplers</span>[<span class="ident">i</span>];
 
-        <span class="kw">if</span> <span class="ident">y</span> <span class="op">&lt;</span> <span class="ident">sample</span>.<span class="ident">U</span> {
+        <span class="kw">if</span> <span class="ident">y</span> <span class="op">&lt;</span> <span class="ident">sample</span>.<span class="ident">U</span>.<span class="ident">get</span>() {
             <span class="ident">sample</span>.<span class="ident">E</span>
         } <span class="kw">else</span> {
             <span class="ident">sample</span>.<span class="ident">K</span>

@@ -118,7 +118,7 @@
     <span class="ident">decomposition::modulo::ModuloDecomposition</span>,
 };
 
-<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">Scenario</span>, <span class="ident">ScenarioArguments</span>};
+<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">Scenario</span>, <span class="ident">ScenarioParameters</span>};
 
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::module_name_repetitions</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">NonSpatialScenario</span><span class="op">&lt;</span><span class="ident">M</span>: <span class="ident">MathsCore</span>, <span class="ident">G</span>: <span class="ident">RngCore</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span><span class="op">&gt;</span> {
@@ -135,15 +135,15 @@
     <span class="kw">pub</span> <span class="ident">deme</span>: <span class="ident">NonZeroU32</span>,
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">M</span>: <span class="ident">MathsCore</span>, <span class="ident">G</span>: <span class="ident">RngCore</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="ident">ScenarioArguments</span> <span class="kw">for</span> <span class="ident">NonSpatialScenario</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">G</span><span class="op">&gt;</span> {
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">M</span>: <span class="ident">MathsCore</span>, <span class="ident">G</span>: <span class="ident">RngCore</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="ident">ScenarioParameters</span> <span class="kw">for</span> <span class="ident">NonSpatialScenario</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">G</span><span class="op">&gt;</span> {
     <span class="kw">type</span> <span class="ident">Arguments</span> <span class="op">=</span> <span class="ident">NonSpatialArguments</span>;
+    <span class="kw">type</span> <span class="ident">Error</span> <span class="op">=</span> <span class="op">!</span>;
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">M</span>: <span class="ident">MathsCore</span>, <span class="ident">G</span>: <span class="ident">RngCore</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="ident">Scenario</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">G</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">NonSpatialScenario</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">G</span><span class="op">&gt;</span> {
     <span class="kw">type</span> <span class="ident">Decomposition</span> <span class="op">=</span> <span class="ident">ModuloDecomposition</span>;
     <span class="kw">type</span> <span class="ident">DispersalSampler</span><span class="op">&lt;</span><span class="ident">D</span>: <span class="ident">DispersalSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident"><span class="self">Self</span>::Habitat</span>, <span class="ident">G</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">=</span>
         <span class="ident">NonSpatialDispersalSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">G</span><span class="op">&gt;</span>;
-    <span class="kw">type</span> <span class="ident">Error</span> <span class="op">=</span> <span class="op">!</span>;
     <span class="kw">type</span> <span class="ident">Habitat</span> <span class="op">=</span> <span class="ident">NonSpatialHabitat</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span>;
     <span class="kw">type</span> <span class="ident">LineageReference</span> <span class="op">=</span> <span class="ident">InMemoryLineageReference</span>;
     <span class="kw">type</span> <span class="ident">LineageStore</span><span class="op">&lt;</span><span class="ident">L</span>: <span class="ident">LineageStore</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident"><span class="self">Self</span>::Habitat</span>, <span class="ident"><span class="self">Self</span>::LineageReference</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">L</span>;

@@ -300,7 +300,7 @@
 
         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">number_active_lineages</span>) <span class="op">=</span> <span class="ident">NonZeroU64::new</span>(<span class="self">self</span>.<span class="ident">number_active_lineages</span>() <span class="kw">as</span> <span class="ident">u64</span>)
         {
-            <span class="kw">let</span> <span class="ident">lambda</span> <span class="op">=</span> <span class="ident">UniformTurnoverRate::get_uniform_turnover_rate</span>()
+            <span class="kw">let</span> <span class="ident">lambda</span> <span class="op">=</span> <span class="ident">simulation</span>.<span class="ident">turnover_rate</span>.<span class="ident">get_uniform_turnover_rate</span>()
                 <span class="op">*</span> <span class="ident">PositiveF64::from</span>(<span class="ident">number_active_lineages</span>);
 
             <span class="kw">let</span> <span class="ident">event_time</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">last_event_time</span> <span class="op">+</span> <span class="ident">rng</span>.<span class="ident">sample_exponential</span>(<span class="ident">lambda</span>);

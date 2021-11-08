@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["uniform",""]]});
+initSidebarItems({"mod":[["in_memory",""],["uniform",""]]});

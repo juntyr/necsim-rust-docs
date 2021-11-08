@@ -554,6 +554,11 @@
 <span id="554">554</span>
 <span id="555">555</span>
 <span id="556">556</span>
+<span id="557">557</span>
+<span id="558">558</span>
+<span id="559">559</span>
+<span id="560">560</span>
+<span id="561">561</span>
 </pre><pre class="rust"><code><span class="attribute">#![<span class="ident">allow</span>(<span class="ident">clippy::empty_enum</span>)]</span>
 
 <span class="kw">use</span> <span class="ident">std</span>::{
@@ -565,18 +570,21 @@
     <span class="ident">path::PathBuf</span>,
 };
 
-<span class="kw">use</span> <span class="ident">necsim_core::cogs</span>::{<span class="ident">MathsCore</span>, <span class="ident">RngCore</span>};
 <span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Deserializer</span>, <span class="ident">Serialize</span>, <span class="ident">Serializer</span>};
 <span class="kw">use</span> <span class="ident">serde_state::DeserializeState</span>;
 <span class="kw">use</span> <span class="ident">structopt::StructOpt</span>;
 
+<span class="kw">use</span> <span class="ident">necsim_core::cogs</span>::{<span class="ident">MathsCore</span>, <span class="ident">RngCore</span>};
 <span class="kw">use</span> <span class="ident">necsim_core_bond</span>::{<span class="ident">ClosedUnitF64</span>, <span class="ident">NonNegativeF64</span>, <span class="ident">Partition</span>};
-
 <span class="kw">use</span> <span class="ident">necsim_impls_std</span>::{<span class="ident">event_log::replay::EventLogReplay</span>, <span class="ident">lineage_file::saver::LineageFileSaver</span>};
 
 <span class="kw">use</span> <span class="ident">rustcoalescence_scenarios</span>::{
-    <span class="ident">almost_infinite::AlmostInfiniteArguments</span>, <span class="ident">non_spatial::NonSpatialArguments</span>,
-    <span class="ident">spatially_explicit::SpatiallyExplicitArguments</span>, <span class="ident">spatially_implicit::SpatiallyImplicitArguments</span>,
+    <span class="ident">almost_infinite::AlmostInfiniteArguments</span>,
+    <span class="ident">non_spatial::NonSpatialArguments</span>,
+    <span class="ident">spatially_explicit</span>::{
+        <span class="ident">SpatiallyExplicitTurnoverMapArguments</span>, <span class="ident">SpatiallyExplicitUniformTurnoverArguments</span>,
+    },
+    <span class="ident">spatially_implicit::SpatiallyImplicitArguments</span>,
 };
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(
@@ -584,7 +592,7 @@
     <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rustcoalescence-algorithms-independent&quot;</span>,
     <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rustcoalescence-algorithms-cuda&quot;</span>
 ))]</span>
-<span class="kw">use</span> <span class="ident">rustcoalescence_algorithms::AlgorithmArguments</span>;
+<span class="kw">use</span> <span class="ident">rustcoalescence_algorithms::AlgorithmParamters</span>;
 
 <span class="kw">use</span> <span class="ident">necsim_plugins_core::import</span>::{<span class="ident">AnyReporterPluginVec</span>, <span class="ident">ReporterPluginLibrary</span>};
 
@@ -830,20 +838,20 @@
     <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;Gillespie&quot;</span>)]</span>
     <span class="ident">Classical</span>(
         <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">deserialize_state</span>)]</span>
-        <span class="op">&lt;</span><span class="ident">rustcoalescence_algorithms_gillespie::classical::ClassicalAlgorithm</span> <span class="kw">as</span> <span class="ident">rustcoalescence_algorithms::AlgorithmArguments</span><span class="op">&gt;</span><span class="ident">::Arguments</span>,
+        <span class="op">&lt;</span><span class="ident">rustcoalescence_algorithms_gillespie::classical::ClassicalAlgorithm</span> <span class="kw">as</span> <span class="ident">rustcoalescence_algorithms::AlgorithmParamters</span><span class="op">&gt;</span><span class="ident">::Arguments</span>,
     ),
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rustcoalescence-algorithms-gillespie&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;SkippingGillespie&quot;</span>)]</span>
     <span class="ident">EventSkipping</span>(
         <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">deserialize_state</span>)]</span>
-        <span class="op">&lt;</span><span class="ident">rustcoalescence_algorithms_gillespie::event_skipping::EventSkippingAlgorithm</span> <span class="kw">as</span> <span class="ident">AlgorithmArguments</span><span class="op">&gt;</span><span class="ident">::Arguments</span>,
+        <span class="op">&lt;</span><span class="ident">rustcoalescence_algorithms_gillespie::event_skipping::EventSkippingAlgorithm</span> <span class="kw">as</span> <span class="ident">AlgorithmParamters</span><span class="op">&gt;</span><span class="ident">::Arguments</span>,
     ),
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rustcoalescence-algorithms-cuda&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;CUDA&quot;</span>)]</span>
-    <span class="ident">Cuda</span>(<span class="attribute">#[<span class="ident">serde</span>(<span class="ident">deserialize_state</span>)]</span> <span class="op">&lt;</span><span class="ident">rustcoalescence_algorithms_cuda::CudaAlgorithm</span> <span class="kw">as</span> <span class="ident">AlgorithmArguments</span><span class="op">&gt;</span><span class="ident">::Arguments</span>),
+    <span class="ident">Cuda</span>(<span class="attribute">#[<span class="ident">serde</span>(<span class="ident">deserialize_state</span>)]</span> <span class="op">&lt;</span><span class="ident">rustcoalescence_algorithms_cuda::CudaAlgorithm</span> <span class="kw">as</span> <span class="ident">AlgorithmParamters</span><span class="op">&gt;</span><span class="ident">::Arguments</span>),
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rustcoalescence-algorithms-independent&quot;</span>)]</span>
     <span class="ident">Independent</span>(
-        <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">deserialize_state</span>)]</span> <span class="op">&lt;</span><span class="ident">rustcoalescence_algorithms_independent::IndependentAlgorithm</span> <span class="kw">as</span> <span class="ident">AlgorithmArguments</span><span class="op">&gt;</span><span class="ident">::Arguments</span>,
+        <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">deserialize_state</span>)]</span> <span class="op">&lt;</span><span class="ident">rustcoalescence_algorithms_independent::IndependentAlgorithm</span> <span class="kw">as</span> <span class="ident">AlgorithmParamters</span><span class="op">&gt;</span><span class="ident">::Arguments</span>,
     ),
 }
 
@@ -883,7 +891,9 @@
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Scenario</span> {
-    <span class="ident">SpatiallyExplicit</span>(<span class="ident">SpatiallyExplicitArguments</span>),
+    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;SpatiallyExplicit&quot;</span>)]</span>
+    <span class="ident">SpatiallyExplicitUniformTurnover</span>(<span class="ident">SpatiallyExplicitUniformTurnoverArguments</span>),
+    <span class="ident">SpatiallyExplicitTurnoverMap</span>(<span class="ident">SpatiallyExplicitTurnoverMapArguments</span>),
     <span class="ident">NonSpatial</span>(<span class="ident">NonSpatialArguments</span>),
     <span class="ident">SpatiallyImplicit</span>(<span class="ident">SpatiallyImplicitArguments</span>),
     <span class="ident">AlmostInfinite</span>(<span class="ident">AlmostInfiniteArguments</span>),
