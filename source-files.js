@@ -14,6 +14,7 @@ sourcesIndex["necsim_plugins_csv"] = {"name":"","files":["lib.rs"]};
 sourcesIndex["necsim_plugins_metacommunity"] = {"name":"","files":["lib.rs"]};
 sourcesIndex["necsim_plugins_species"] = {"name":"","dirs":[{"name":"species","files":["database.rs","mod.rs","reporter.rs"]}],"files":["lib.rs"]};
 sourcesIndex["necsim_plugins_statistics"] = {"name":"","files":["coverage.rs","lib.rs","speciation.rs","turnover.rs"]};
+sourcesIndex["necsim_plugins_tskit"] = {"name":"","dirs":[{"name":"tree","files":["metadata.rs","mod.rs","reporter.rs","table.rs"]}],"files":["lib.rs","provenance.rs"]};
 sourcesIndex["rustcoalescence"] = {"name":"","dirs":[{"name":"args","dirs":[{"name":"ser","files":["impl.rs","mod.rs"]}],"files":["mod.rs","parse.rs"]},{"name":"cli","dirs":[{"name":"simulate","dirs":[{"name":"dispatch","files":["algorithm_scenario.rs","mod.rs","partitioning.rs","rng.rs"]},{"name":"parse","files":["algorithm.rs","event_log.rs","fields.rs","mod.rs","partitioning.rs","pause.rs","reporters.rs","rng.rs","sample.rs","scenario.rs","speciation.rs"]}],"files":["launch.rs","mod.rs"]}],"files":["mod.rs","replay.rs"]}],"files":["main.rs","minimal_logger.rs","reporter.rs"]};
 sourcesIndex["rustcoalescence_algorithms"] = {"name":"","files":["lib.rs"]};
 sourcesIndex["rustcoalescence_algorithms_cuda"] = {"name":"","dirs":[{"name":"kernel","files":["link.rs","mod.rs","patch.rs"]},{"name":"parallelisation","files":["mod.rs","monolithic.rs"]}],"files":["arguments.rs","cuda.rs","info.rs","lib.rs"]};

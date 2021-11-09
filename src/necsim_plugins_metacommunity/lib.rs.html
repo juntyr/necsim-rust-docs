@@ -115,6 +115,8 @@
 <span id="115">115</span>
 <span id="116">116</span>
 <span id="117">117</span>
+<span id="118">118</span>
+<span id="119">119</span>
 </pre><pre class="rust"><code><span class="attribute">#![<span class="ident">deny</span>(<span class="ident">clippy::pedantic</span>)]</span>
 
 <span class="attribute">#[<span class="ident">macro_use</span>]</span>
@@ -122,6 +124,7 @@
 
 <span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">collections::HashSet</span>, <span class="ident">fmt</span>, <span class="ident">num::NonZeroU64</span>};
 
+<span class="kw">use</span> <span class="ident">fnv::FnvBuildHasher</span>;
 <span class="kw">use</span> <span class="ident">rand</span>::{<span class="ident">rngs::StdRng</span>, <span class="ident">Rng</span>, <span class="ident">SeedableRng</span>};
 <span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>};
 
@@ -219,7 +222,8 @@
 
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">rng</span> <span class="op">=</span> <span class="ident">StdRng::seed_from_u64</span>(<span class="self">self</span>.<span class="ident">seed</span>);
 
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">unique_migration_targets</span> <span class="op">=</span> <span class="ident">HashSet::new</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">unique_migration_targets</span> <span class="op">=</span>
+            <span class="ident">HashSet::with_capacity_and_hasher</span>(<span class="self">self</span>.<span class="ident">migrations</span>, <span class="ident">FnvBuildHasher::default</span>());
 
         <span class="kw">for</span> <span class="kw">_</span> <span class="kw">in</span> <span class="number">0</span>..<span class="self">self</span>.<span class="ident">migrations</span> {
             <span class="ident">unique_migration_targets</span>.<span class="ident">insert</span>(<span class="ident">rng</span>.<span class="ident">gen_range</span>(<span class="number">0</span>..<span class="ident">metacommunity_size</span>.<span class="ident">get</span>()));

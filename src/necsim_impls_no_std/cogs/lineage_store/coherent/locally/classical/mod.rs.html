@@ -74,8 +74,11 @@
 <span id="74">74</span>
 <span id="75">75</span>
 <span id="76">76</span>
+<span id="77">77</span>
+<span id="78">78</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">core</span>::{<span class="ident">marker::PhantomData</span>, <span class="ident">ops::Index</span>};
 
+<span class="kw">use</span> <span class="ident">fnv::FnvBuildHasher</span>;
 <span class="kw">use</span> <span class="ident">hashbrown::hash_map::HashMap</span>;
 <span class="kw">use</span> <span class="ident">slab::Slab</span>;
 
@@ -93,7 +96,8 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ClassicalLineageStore</span><span class="op">&lt;</span><span class="ident">M</span>: <span class="ident">MathsCore</span>, <span class="ident">H</span>: <span class="ident">Habitat</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span><span class="op">&gt;</span> {
     <span class="ident">lineages_store</span>: <span class="ident">Slab</span><span class="op">&lt;</span><span class="ident">Lineage</span><span class="op">&gt;</span>,
-    <span class="ident">indexed_location_to_lineage_reference</span>: <span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">IndexedLocation</span>, <span class="ident">InMemoryLineageReference</span><span class="op">&gt;</span>,
+    <span class="ident">indexed_location_to_lineage_reference</span>:
+        <span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">IndexedLocation</span>, <span class="ident">InMemoryLineageReference</span>, <span class="ident">FnvBuildHasher</span><span class="op">&gt;</span>,
     <span class="ident">_marker</span>: <span class="ident">PhantomData</span><span class="op">&lt;</span>(<span class="ident">M</span>, <span class="ident">H</span>)<span class="op">&gt;</span>,
 }
 
@@ -119,7 +123,7 @@
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">lineages_store</span> <span class="op">=</span> <span class="ident">Slab::with_capacity</span>(<span class="ident">lineages_amount_hint</span>);
 
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">indexed_location_to_lineage_reference</span> <span class="op">=</span>
-            <span class="ident">HashMap::with_capacity</span>(<span class="ident">lineages_amount_hint</span>);
+            <span class="ident">HashMap::with_capacity_and_hasher</span>(<span class="ident">lineages_amount_hint</span>, <span class="ident">FnvBuildHasher::default</span>());
 
         <span class="kw">for</span> <span class="ident">lineage</span> <span class="kw">in</span> <span class="ident">origin_sampler</span> {
             <span class="kw">let</span> <span class="ident">indexed_location</span> <span class="op">=</span> <span class="ident">lineage</span>.<span class="ident">indexed_location</span>.<span class="ident">clone</span>();

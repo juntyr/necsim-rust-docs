@@ -103,10 +103,12 @@
 <span id="103">103</span>
 <span id="104">104</span>
 <span id="105">105</span>
+<span id="106">106</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">core</span>::{<span class="ident">marker::PhantomData</span>, <span class="ident">ops::Index</span>};
 
 <span class="kw">use</span> <span class="ident">alloc::vec::Vec</span>;
 
+<span class="kw">use</span> <span class="ident">fnv::FnvBuildHasher</span>;
 <span class="kw">use</span> <span class="ident">hashbrown::hash_map::HashMap</span>;
 <span class="kw">use</span> <span class="ident">slab::Slab</span>;
 
@@ -126,7 +128,7 @@
     <span class="ident">lineages_store</span>: <span class="ident">Slab</span><span class="op">&lt;</span><span class="ident">Lineage</span><span class="op">&gt;</span>,
     <span class="ident">location_to_lineage_references</span>: <span class="ident">Array2D</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">InMemoryLineageReference</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     <span class="ident">indexed_location_to_lineage_reference</span>:
-        <span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">IndexedLocation</span>, (<span class="ident">GlobalLineageReference</span>, <span class="ident">usize</span>)<span class="op">&gt;</span>,
+        <span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">IndexedLocation</span>, (<span class="ident">GlobalLineageReference</span>, <span class="ident">usize</span>), <span class="ident">FnvBuildHasher</span><span class="op">&gt;</span>,
     <span class="ident">_marker</span>: <span class="ident">PhantomData</span><span class="op">&lt;</span>(<span class="ident">M</span>, <span class="ident">H</span>)<span class="op">&gt;</span>,
 }
 
@@ -160,7 +162,7 @@
         );
 
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">indexed_location_to_lineage_reference</span> <span class="op">=</span>
-            <span class="ident">HashMap::with_capacity</span>(<span class="ident">lineages_amount_hint</span>);
+            <span class="ident">HashMap::with_capacity_and_hasher</span>(<span class="ident">lineages_amount_hint</span>, <span class="ident">FnvBuildHasher::default</span>());
 
         <span class="kw">let</span> <span class="ident">x_from</span> <span class="op">=</span> <span class="ident">landscape_extent</span>.<span class="ident">x</span>();
         <span class="kw">let</span> <span class="ident">y_from</span> <span class="op">=</span> <span class="ident">landscape_extent</span>.<span class="ident">y</span>();
