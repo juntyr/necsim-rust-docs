@@ -77,6 +77,7 @@
 <span id="77">77</span>
 <span id="78">78</span>
 <span id="79">79</span>
+<span id="80">80</span>
 </pre><pre class="rust"><code><span class="attribute">#![<span class="ident">deny</span>(<span class="ident">clippy::pedantic</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">associated_type_bounds</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">never_type</span>)]</span>
@@ -90,7 +91,8 @@
     <span class="ident">DispersalSampler</span>, <span class="ident">Habitat</span>, <span class="ident">LineageReference</span>, <span class="ident">LineageStore</span>, <span class="ident">MathsCore</span>, <span class="ident">OriginSampler</span>, <span class="ident">RngCore</span>,
     <span class="ident">SpeciationProbability</span>, <span class="ident">TurnoverRate</span>,
 };
-<span class="kw">use</span> <span class="ident">necsim_core_bond</span>::{<span class="ident">Partition</span>, <span class="ident">PositiveUnitF64</span>};
+<span class="kw">use</span> <span class="ident">necsim_core_bond::OpenClosedUnitF64</span> <span class="kw">as</span> <span class="ident">PositiveUnitF64</span>;
+<span class="kw">use</span> <span class="ident">necsim_partitioning_core::partition::Partition</span>;
 
 <span class="kw">use</span> <span class="ident">necsim_impls_no_std</span>::{
     <span class="ident">cogs</span>::{

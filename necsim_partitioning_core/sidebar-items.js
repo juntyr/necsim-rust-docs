@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["MigrationMode",""]],"mod":[["context",""],["iterator",""]],"trait":[["LocalPartition",""],["Partitioning",""]]});
+initSidebarItems({"enum":[["MigrationMode",""]],"mod":[["context",""],["iterator",""],["partition",""]],"trait":[["LocalPartition",""],["Partitioning",""]]});

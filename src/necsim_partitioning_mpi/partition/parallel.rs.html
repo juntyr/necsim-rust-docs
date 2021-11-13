@@ -419,6 +419,8 @@
 <span id="419">419</span>
 <span id="420">420</span>
 <span id="421">421</span>
+<span id="422">422</span>
+<span id="423">423</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">std</span>::{
     <span class="ident">fmt</span>,
     <span class="ident">marker::PhantomData</span>,
@@ -443,10 +445,12 @@
         <span class="ident">Reporter</span>,
     },
 };
-<span class="kw">use</span> <span class="ident">necsim_core_bond</span>::{<span class="ident">NonNegativeF64</span>, <span class="ident">Partition</span>, <span class="ident">PositiveF64</span>};
+<span class="kw">use</span> <span class="ident">necsim_core_bond</span>::{<span class="ident">NonNegativeF64</span>, <span class="ident">PositiveF64</span>};
 
 <span class="kw">use</span> <span class="ident">necsim_impls_std::event_log::recorder::EventLogRecorder</span>;
-<span class="kw">use</span> <span class="ident">necsim_partitioning_core</span>::{<span class="ident">iterator::ImmigrantPopIterator</span>, <span class="ident">LocalPartition</span>, <span class="ident">MigrationMode</span>};
+<span class="kw">use</span> <span class="ident">necsim_partitioning_core</span>::{
+    <span class="ident">iterator::ImmigrantPopIterator</span>, <span class="ident">partition::Partition</span>, <span class="ident">LocalPartition</span>, <span class="ident">MigrationMode</span>,
+};
 
 <span class="kw">use</span> <span class="kw">crate</span>::{
     <span class="ident">partition::utils</span>::{<span class="ident">reduce_lexicographic_min_time_rank</span>, <span class="ident">MpiMigratingLineage</span>},

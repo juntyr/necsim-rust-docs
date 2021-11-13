@@ -100,6 +100,7 @@
 <span id="100">100</span>
 <span id="101">101</span>
 <span id="102">102</span>
+<span id="103">103</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">core</span>::{
     <span class="ident">fmt</span>,
     <span class="ident">marker::PhantomData</span>,
@@ -107,7 +108,8 @@
 };
 
 <span class="kw">use</span> <span class="ident">necsim_core::cogs::MathsCore</span>;
-<span class="kw">use</span> <span class="ident">necsim_core_bond</span>::{<span class="ident">ClosedUnitF64</span>, <span class="ident">Partition</span>};
+<span class="kw">use</span> <span class="ident">necsim_core_bond::ClosedUnitF64</span>;
+<span class="kw">use</span> <span class="ident">necsim_partitioning_core::partition::Partition</span>;
 
 <span class="kw">const</span> <span class="ident">INV_PHI</span>: <span class="ident">f64</span> <span class="op">=</span> <span class="number">6.180_339_887_498_949e-1_f64</span>;
 

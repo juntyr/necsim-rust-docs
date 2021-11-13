@@ -137,12 +137,14 @@
 <span id="137">137</span>
 <span id="138">138</span>
 <span id="139">139</span>
+<span id="140">140</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">std::num::NonZeroU64</span>;
 
 <span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>};
 <span class="kw">use</span> <span class="ident">serde_state::DeserializeState</span>;
 
-<span class="kw">use</span> <span class="ident">necsim_core_bond</span>::{<span class="ident">ClosedUnitF64</span>, <span class="ident">Partition</span>, <span class="ident">PositiveF64</span>};
+<span class="kw">use</span> <span class="ident">necsim_core_bond</span>::{<span class="ident">ClosedUnitF64</span>, <span class="ident">PositiveF64</span>};
+<span class="kw">use</span> <span class="ident">necsim_partitioning_core::partition::Partition</span>;
 
 <span class="kw">use</span> <span class="ident">necsim_impls_no_std::parallelisation::independent</span>::{<span class="ident">DedupCache</span>, <span class="ident">EventSlice</span>, <span class="ident">RelativeCapacity</span>};
 

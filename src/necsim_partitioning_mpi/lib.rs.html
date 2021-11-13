@@ -194,7 +194,6 @@
 <span id="194">194</span>
 <span id="195">195</span>
 <span id="196">196</span>
-<span id="197">197</span>
 </pre><pre class="rust"><code><span class="attribute">#![<span class="ident">deny</span>(<span class="ident">clippy::pedantic</span>)]</span>
 <span class="attribute">#![<span class="ident">allow</span>(<span class="ident">incomplete_features</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">generic_associated_types</span>)]</span>
@@ -217,10 +216,9 @@
 <span class="kw">use</span> <span class="ident">thiserror::Error</span>;
 
 <span class="kw">use</span> <span class="ident">necsim_core::reporter::Reporter</span>;
-<span class="kw">use</span> <span class="ident">necsim_core_bond::Partition</span>;
 
 <span class="kw">use</span> <span class="ident">necsim_impls_std::event_log::recorder::EventLogRecorder</span>;
-<span class="kw">use</span> <span class="ident">necsim_partitioning_core</span>::{<span class="ident">context::ReporterContext</span>, <span class="ident">Partitioning</span>};
+<span class="kw">use</span> <span class="ident">necsim_partitioning_core</span>::{<span class="ident">context::ReporterContext</span>, <span class="ident">partition::Partition</span>, <span class="ident">Partitioning</span>};
 
 <span class="kw">mod</span> <span class="ident">partition</span>;
 

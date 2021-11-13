@@ -112,12 +112,14 @@
 <span id="112">112</span>
 <span id="113">113</span>
 <span id="114">114</span>
+<span id="115">115</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">std::num::NonZeroU32</span>;
 
 <span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>};
 
 <span class="kw">use</span> <span class="ident">necsim_core::cogs</span>::{<span class="ident">DispersalSampler</span>, <span class="ident">LineageStore</span>, <span class="ident">MathsCore</span>, <span class="ident">RngCore</span>};
-<span class="kw">use</span> <span class="ident">necsim_core_bond</span>::{<span class="ident">Partition</span>, <span class="ident">PositiveUnitF64</span>};
+<span class="kw">use</span> <span class="ident">necsim_core_bond::OpenClosedUnitF64</span> <span class="kw">as</span> <span class="ident">PositiveUnitF64</span>;
+<span class="kw">use</span> <span class="ident">necsim_partitioning_core::partition::Partition</span>;
 
 <span class="kw">use</span> <span class="ident">necsim_impls_no_std</span>::{
     <span class="ident">cogs</span>::{

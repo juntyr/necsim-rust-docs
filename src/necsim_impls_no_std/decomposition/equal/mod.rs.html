@@ -104,12 +104,12 @@
 <span id="104">104</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">alloc::boxed::Box</span>;
 <span class="kw">use</span> <span class="ident">core::marker::PhantomData</span>;
-<span class="kw">use</span> <span class="ident">necsim_core_bond::Partition</span>;
 
 <span class="kw">use</span> <span class="ident">necsim_core</span>::{
     <span class="ident">cogs</span>::{<span class="ident">Backup</span>, <span class="ident">Habitat</span>, <span class="ident">MathsCore</span>},
     <span class="ident">landscape</span>::{<span class="ident">LandscapeExtent</span>, <span class="ident">Location</span>},
 };
+<span class="kw">use</span> <span class="ident">necsim_partitioning_core::partition::Partition</span>;
 
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::decomposition::Decomposition</span>;
 

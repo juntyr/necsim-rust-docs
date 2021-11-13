@@ -400,7 +400,7 @@
                 <span class="ident">ProbabilityAtLocation::new</span>(<span class="ident">dispersal_origin</span>.<span class="ident">location</span>(), <span class="ident">simulation</span>, <span class="bool-val">false</span>)
             });
 
-        <span class="kw">let</span> <span class="ident">event_sample</span> <span class="op">=</span> <span class="ident">probability_at_location</span>.<span class="ident">total</span>() <span class="op">*</span> <span class="ident">rng</span>.<span class="ident">sample_uniform</span>();
+        <span class="kw">let</span> <span class="ident">event_sample</span> <span class="op">=</span> <span class="ident">probability_at_location</span>.<span class="ident">total</span>() <span class="op">*</span> <span class="ident">rng</span>.<span class="ident">sample_uniform_closed_open</span>();
 
         <span class="kw">if</span> <span class="ident">event_sample</span> <span class="op">&lt;</span> <span class="ident">probability_at_location</span>.<span class="ident">speciation</span>() {
             <span class="comment">// Speciation Event</span>

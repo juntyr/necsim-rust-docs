@@ -227,12 +227,14 @@
 <span id="227">227</span>
 <span id="228">228</span>
 <span id="229">229</span>
+<span id="230">230</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">convert::TryFrom</span>, <span class="ident">marker::PhantomData</span>, <span class="ident">path::PathBuf</span>};
 
 <span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>, <span class="ident">Serializer</span>};
 
 <span class="kw">use</span> <span class="ident">necsim_core::cogs</span>::{<span class="ident">DispersalSampler</span>, <span class="ident">Habitat</span>, <span class="ident">LineageStore</span>, <span class="ident">MathsCore</span>, <span class="ident">RngCore</span>};
-<span class="kw">use</span> <span class="ident">necsim_core_bond</span>::{<span class="ident">NonNegativeF64</span>, <span class="ident">Partition</span>, <span class="ident">PositiveF64</span>, <span class="ident">PositiveUnitF64</span>};
+<span class="kw">use</span> <span class="ident">necsim_core_bond</span>::{<span class="ident">NonNegativeF64</span>, <span class="ident">OpenClosedUnitF64</span> <span class="kw">as</span> <span class="ident">PositiveUnitF64</span>, <span class="ident">PositiveF64</span>};
+<span class="kw">use</span> <span class="ident">necsim_partitioning_core::partition::Partition</span>;
 
 <span class="kw">use</span> <span class="ident">necsim_impls_no_std</span>::{
     <span class="ident">array2d::Array2D</span>,

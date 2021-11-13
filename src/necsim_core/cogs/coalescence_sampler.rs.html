@@ -84,7 +84,7 @@
 <span id="84">84</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">core::cmp</span>::{<span class="ident">Ord</span>, <span class="ident">Ordering</span>};
 
-<span class="kw">use</span> <span class="ident">necsim_core_bond::ClosedUnitF64</span>;
+<span class="kw">use</span> <span class="ident">necsim_core_bond::ClosedOpenUnitF64</span>;
 
 <span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>};
 
@@ -119,7 +119,7 @@
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::unsafe_derive_deserialize</span>)]</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">TypeLayout</span>)]</span>
 <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">transparent</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">CoalescenceRngSample</span>(<span class="ident">ClosedUnitF64</span>);
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">CoalescenceRngSample</span>(<span class="ident">ClosedOpenUnitF64</span>);
 
 <span class="attribute">#[<span class="ident">contract_trait</span>]</span>
 <span class="kw">impl</span> <span class="ident">Backup</span> <span class="kw">for</span> <span class="ident">CoalescenceRngSample</span> {
@@ -148,7 +148,7 @@
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span><span class="op">&lt;</span><span class="ident">M</span>: <span class="ident">MathsCore</span>, <span class="ident">G</span>: <span class="ident">RngCore</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="ident">rng</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">G</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::cogs::RngSampler</span>;
 
-        <span class="self">Self</span>(<span class="ident">rng</span>.<span class="ident">sample_uniform</span>())
+        <span class="self">Self</span>(<span class="ident">rng</span>.<span class="ident">sample_uniform_closed_open</span>())
     }
 
     <span class="attribute">#[<span class="ident">must_use</span>]</span>

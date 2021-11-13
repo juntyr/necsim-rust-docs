@@ -157,6 +157,28 @@
 <span id="157">157</span>
 <span id="158">158</span>
 <span id="159">159</span>
+<span id="160">160</span>
+<span id="161">161</span>
+<span id="162">162</span>
+<span id="163">163</span>
+<span id="164">164</span>
+<span id="165">165</span>
+<span id="166">166</span>
+<span id="167">167</span>
+<span id="168">168</span>
+<span id="169">169</span>
+<span id="170">170</span>
+<span id="171">171</span>
+<span id="172">172</span>
+<span id="173">173</span>
+<span id="174">174</span>
+<span id="175">175</span>
+<span id="176">176</span>
+<span id="177">177</span>
+<span id="178">178</span>
+<span id="179">179</span>
+<span id="180">180</span>
+<span id="181">181</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">core</span>::{
     <span class="ident">cmp::Ordering</span>,
     <span class="ident">convert::TryFrom</span>,
@@ -168,7 +190,7 @@
 
 <span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>};
 
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::PositiveUnitF64</span>;
+<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">ClosedOpenUnitF64</span>, <span class="ident">OpenClosedUnitF64</span>};
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::module_name_repetitions</span>)]</span>
@@ -257,8 +279,14 @@
     }
 }
 
-<span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">PositiveUnitF64</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">ClosedUnitF64</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">value</span>: <span class="ident">PositiveUnitF64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+<span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">OpenClosedUnitF64</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">ClosedUnitF64</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">value</span>: <span class="ident">OpenClosedUnitF64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+        <span class="self">Self</span>(<span class="ident">value</span>.<span class="ident">get</span>())
+    }
+}
+
+<span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">ClosedOpenUnitF64</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">ClosedUnitF64</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">value</span>: <span class="ident">ClosedOpenUnitF64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="self">Self</span>(<span class="ident">value</span>.<span class="ident">get</span>())
     }
 }
@@ -314,6 +342,22 @@
 
     <span class="kw">fn</span> <span class="ident">div</span>(<span class="self">self</span>, <span class="ident">rhs</span>: <span class="ident">NonZeroU32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Output</span> {
         <span class="self">Self</span>(<span class="self">self</span>.<span class="number">0</span> <span class="op">/</span> <span class="ident">f64::from</span>(<span class="ident">rhs</span>.<span class="ident">get</span>()))
+    }
+}
+
+<span class="kw">impl</span> <span class="ident">Mul</span><span class="op">&lt;</span><span class="ident">ClosedOpenUnitF64</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">ClosedUnitF64</span> {
+    <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="ident">ClosedOpenUnitF64</span>;
+
+    <span class="kw">fn</span> <span class="ident">mul</span>(<span class="self">self</span>, <span class="ident">other</span>: <span class="ident">ClosedOpenUnitF64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ClosedOpenUnitF64</span> {
+        <span class="kw">unsafe</span> { <span class="ident">ClosedOpenUnitF64::new_unchecked</span>(<span class="self">self</span>.<span class="number">0</span> <span class="op">*</span> <span class="ident">other</span>.<span class="ident">get</span>()) }
+    }
+}
+
+<span class="kw">impl</span> <span class="ident">Mul</span><span class="op">&lt;</span><span class="ident">OpenClosedUnitF64</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">ClosedUnitF64</span> {
+    <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="ident">OpenClosedUnitF64</span>;
+
+    <span class="kw">fn</span> <span class="ident">mul</span>(<span class="self">self</span>, <span class="ident">other</span>: <span class="ident">OpenClosedUnitF64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">OpenClosedUnitF64</span> {
+        <span class="kw">unsafe</span> { <span class="ident">OpenClosedUnitF64::new_unchecked</span>(<span class="self">self</span>.<span class="number">0</span> <span class="op">*</span> <span class="ident">other</span>.<span class="ident">get</span>()) }
     }
 }
 </code></pre></div>
