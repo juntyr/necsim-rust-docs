@@ -119,6 +119,8 @@
 <span id="118">118</span>
 <span id="119">119</span>
 <span id="120">120</span>
+<span id="121">121</span>
+<span id="122">122</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">anyhow</span>::{<span class="ident">Context</span>, <span class="prelude-ty">Result</span>};
 <span class="kw">use</span> <span class="ident">ron</span>::{<span class="ident">extensions::Extensions</span>, <span class="ident">ser::PrettyConfig</span>, <span class="ident">Options</span>};
 <span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>};
@@ -181,14 +183,16 @@
         <span class="prelude-val">Ok</span>(<span class="ident">args</span>) =&gt; <span class="prelude-val">Ok</span>(<span class="ident">args</span>),
         <span class="prelude-val">Err</span>(<span class="ident">err</span>) =&gt; {
             <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">track</span>.<span class="ident">path</span>();
+            <span class="kw">let</span> <span class="ident">err</span> <span class="op">=</span> <span class="ident">de_ron</span>.<span class="ident">error</span>(<span class="ident">err</span>);
 
             <span class="prelude-val">Err</span>(<span class="macro">anyhow::anyhow!</span>(
-                <span class="string">&quot;{}{}{}{}: {}&quot;</span>,
+                <span class="string">&quot;{}{}{}{} @ ({}):\n{}&quot;</span>,
                 <span class="ident">subcommand</span>,
                 <span class="kw">if</span> <span class="ident">path</span>.<span class="ident">iter</span>().<span class="ident">count</span>() <span class="op">&gt;</span><span class="op">=</span> <span class="number">1</span> { <span class="string">&quot;.&quot;</span> } <span class="kw">else</span> { <span class="string">&quot;&quot;</span> },
                 <span class="ident">path</span>,
                 <span class="kw">if</span> <span class="ident">path</span>.<span class="ident">iter</span>().<span class="ident">count</span>() <span class="op">&gt;</span><span class="op">=</span> <span class="number">1</span> { <span class="string">&quot;&quot;</span> } <span class="kw">else</span> { <span class="string">&quot;*&quot;</span> },
-                <span class="ident">err</span>,
+                <span class="ident">err</span>.<span class="ident">position</span>,
+                <span class="ident">err</span>.<span class="ident">code</span>,
             ))
         },
     }
