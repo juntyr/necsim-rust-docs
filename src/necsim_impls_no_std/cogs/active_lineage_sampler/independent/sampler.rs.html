@@ -271,7 +271,7 @@
             <span class="self">self</span>.<span class="ident">last_event_time</span> <span class="op">=</span> <span class="ident">next_event_time</span>.<span class="ident">into</span>();
 
             <span class="comment">// Note: Option::take would be better but uses local memory</span>
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">chosen_lineage</span> <span class="op">=</span> <span class="ident">active_lineage</span>.<span class="ident">clone</span>();
+            <span class="kw">let</span> <span class="ident">chosen_lineage</span> <span class="op">=</span> <span class="ident">active_lineage</span>.<span class="ident">clone</span>();
             <span class="self">self</span>.<span class="ident">active_lineage</span> <span class="op">=</span> <span class="prelude-val">None</span>;
 
             <span class="prelude-val">Some</span>((<span class="ident">chosen_lineage</span>, <span class="ident">next_event_time</span>))
