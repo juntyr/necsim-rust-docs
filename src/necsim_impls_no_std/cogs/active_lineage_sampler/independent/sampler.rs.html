@@ -154,7 +154,6 @@
 <span id="153">153</span>
 <span id="154">154</span>
 <span id="155">155</span>
-<span id="156">156</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">necsim_core</span>::{
     <span class="ident">cogs</span>::{
         <span class="ident">ActiveLineageSampler</span>, <span class="ident">DispersalSampler</span>, <span class="ident">EmigrationExit</span>, <span class="ident">Habitat</span>, <span class="ident">MathsCore</span>, <span class="ident">PrimeableRng</span>,
@@ -274,7 +273,6 @@
             <span class="comment">// Note: Option::take would be better but uses local memory</span>
             <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">chosen_lineage</span> <span class="op">=</span> <span class="ident">active_lineage</span>.<span class="ident">clone</span>();
             <span class="self">self</span>.<span class="ident">active_lineage</span> <span class="op">=</span> <span class="prelude-val">None</span>;
-            <span class="ident">chosen_lineage</span>.<span class="ident">last_event_time</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">last_event_time</span>;
 
             <span class="prelude-val">Some</span>((<span class="ident">chosen_lineage</span>, <span class="ident">next_event_time</span>))
         } <span class="kw">else</span> {
