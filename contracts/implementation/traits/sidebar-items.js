@@ -1,1 +1,0 @@
-initSidebarItems({"fn":[["contract_method_impl_name","Name used for the “re-routed” method."],["contract_trait_item_impl","Rename all methods inside an `impl` to use the “internal implementation” name."],["contract_trait_item_trait","Modifies a trait item in a way that it includes contracts."]]});

@@ -1,3 +1,0 @@
-(function() {var implementors = {};
-implementors["ron"] = [{"text":"impl&lt;'de, 'a&gt; <a class=\"trait\" href=\"https://docs.rs/serde/1.0.125/serde/de/trait.EnumAccess.html\" title=\"trait serde::de::EnumAccess\">EnumAccess</a>&lt;'de&gt; for <a class=\"struct\" href=\"ron/de/struct.Enum.html\" title=\"struct ron::de::Enum\">Enum</a>&lt;'a, 'de&gt;","synthetic":false,"types":["ron::de::Enum"]}];
-if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

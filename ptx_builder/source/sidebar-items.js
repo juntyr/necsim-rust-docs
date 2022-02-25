@@ -1,1 +1,0 @@
-initSidebarItems({"enum":[["FilePrefix",""]],"struct":[["Crate","Information about CUDA crate."]]});

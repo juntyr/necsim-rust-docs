@@ -1,1 +1,0 @@
-initSidebarItems({"enum":[["ContractMode","Checking-mode of a contract."],["ContractType","The different contract types."]],"mod":[["codegen",""],["doc",""],["ensures",""],["invariant",""],["parse",""],["requires",""],["traits",""]],"struct":[["Contract","Representation of a contract"],["FuncWithContracts","A function that is annotated with contracts"]]});

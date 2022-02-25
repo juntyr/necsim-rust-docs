@@ -1,1 +1,0 @@
-initSidebarItems({"fn":[["sample_interaction_at_location",""]]});

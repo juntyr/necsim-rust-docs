@@ -1,1 +1,0 @@
-initSidebarItems({"struct":[["LockedBuffer","Fixed-size host-side buffer in page-locked memory."]]});

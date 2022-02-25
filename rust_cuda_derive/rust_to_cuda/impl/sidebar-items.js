@@ -1,1 +1,0 @@
-initSidebarItems({"fn":[["cuda_as_rust_trait",""],["cuda_struct_declaration",""],["rust_to_cuda_trait",""]]});

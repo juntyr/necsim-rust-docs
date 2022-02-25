@@ -1,3 +1,0 @@
-(function() {var implementors = {};
-implementors["rustcoalescence"] = [{"text":"impl StructOptInternal for <a class=\"enum\" href=\"rustcoalescence/args/enum.RustcoalescenceArgs.html\" title=\"enum rustcoalescence::args::RustcoalescenceArgs\">RustcoalescenceArgs</a>","synthetic":false,"types":["rustcoalescence::args::RustcoalescenceArgs"]},{"text":"impl StructOptInternal for <a class=\"struct\" href=\"rustcoalescence/args/struct.CommandArgs.html\" title=\"struct rustcoalescence::args::CommandArgs\">CommandArgs</a>","synthetic":false,"types":["rustcoalescence::args::CommandArgs"]}];
-if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

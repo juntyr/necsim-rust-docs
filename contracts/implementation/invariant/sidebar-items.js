@@ -1,1 +1,0 @@
-initSidebarItems({"fn":[["invariant",""],["invariant_fn",""],["invariant_impl","Generate the token-stream for an `impl` block with a “global” invariant."]]});

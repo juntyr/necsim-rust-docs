@@ -1,1 +1,0 @@
-initSidebarItems({"struct":[["DeviceChunks","An iterator over a `DeviceSlice` in (non-overlapping) chunks (`chunk_size` elements at a time)."],["DeviceChunksMut","An iterator over a `DeviceSlice` in (non-overlapping) mutable chunks (`chunk_size` elements at a time)."],["DeviceSlice","Fixed-size device-side slice."]]});

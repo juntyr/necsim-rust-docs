@@ -1,1 +1,0 @@
-initSidebarItems({"mod":[["pointer",""]],"trait":[["DeviceCopy","Marker trait for types which can safely be copied to or from a CUDA device."]]});

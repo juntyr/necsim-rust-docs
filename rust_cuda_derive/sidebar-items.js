@@ -1,1 +1,0 @@
-initSidebarItems({"derive":[["LendToCuda",""],["RustToCuda",""]],"mod":[["generics",""],["lend_to_cuda",""],["rust_to_cuda",""]]});

@@ -1,1 +1,0 @@
-initSidebarItems({"derive":[["DeviceCopy",""]],"fn":[["add_bound_to_generics",""],["check_fields",""],["impl_device_copy",""],["type_check_enum",""],["type_check_struct",""],["type_check_union",""]]});

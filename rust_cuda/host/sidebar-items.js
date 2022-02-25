@@ -1,1 +1,0 @@
-initSidebarItems({"derive":[["LendToCuda",""]],"struct":[["CombinedCudaAlloc",""],["CudaDropWrapper",""],["HostDeviceBoxConst",""],["HostDeviceBoxMut",""],["NullCudaAlloc",""]],"trait":[["CudaAlloc",""],["EmptyCudaAlloc",""],["LendToCuda","Safety"]]});

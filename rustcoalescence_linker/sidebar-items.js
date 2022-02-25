@@ -1,1 +1,0 @@
-initSidebarItems({"constant":[["SIMULATION_SPECIALISATION_ENV",""],["SIMULATION_SPECIALISATION_HINT",""]],"fn":[["build_kernel_with_specialisation",""],["extract_specialisation",""],["main",""]]});

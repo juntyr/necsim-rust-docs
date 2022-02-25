@@ -1,3 +1,0 @@
-(function() {var implementors = {};
-implementors["rustcoalescence"] = [{"text":"impl <a class=\"trait\" href=\"https://doc.rust-lang.org/nightly/std/io/trait.Read.html\" title=\"trait std::io::Read\">Read</a> for <a class=\"struct\" href=\"rustcoalescence/cli/simulate/dispatch/struct.Sponge.html\" title=\"struct rustcoalescence::cli::simulate::dispatch::Sponge\">Sponge</a>","synthetic":false,"types":["rustcoalescence::cli::simulate::dispatch::Sponge"]}];
-if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()
