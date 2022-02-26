@@ -102,8 +102,21 @@
 <span id="101">101</span>
 <span id="102">102</span>
 <span id="103">103</span>
+<span id="104">104</span>
+<span id="105">105</span>
+<span id="106">106</span>
+<span id="107">107</span>
+<span id="108">108</span>
+<span id="109">109</span>
+<span id="110">110</span>
+<span id="111">111</span>
+<span id="112">112</span>
+<span id="113">113</span>
+<span id="114">114</span>
+<span id="115">115</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">core</span>::{
     <span class="ident">fmt</span>,
+    <span class="ident">iter::Empty</span>,
     <span class="ident">marker::PhantomData</span>,
     <span class="ident">ops</span>::{<span class="ident">Deref</span>, <span class="ident">DerefMut</span>, <span class="ident">RangeFrom</span>},
 };
@@ -155,6 +168,17 @@
         <span class="self">Self</span> {
             <span class="ident">inner</span>: <span class="number">0</span>..,
             <span class="ident">proportion</span>: <span class="ident">ClosedUnitF64::one</span>(),
+            <span class="ident">_marker</span>: <span class="ident">PhantomData</span>::<span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span>,
+        }
+    }
+}
+
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">M</span>: <span class="ident">MathsCore</span><span class="op">&gt;</span> <span class="ident">OriginPreSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">Empty</span><span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">none</span>() -&gt; <span class="self">Self</span> {
+        <span class="self">Self</span> {
+            <span class="ident">inner</span>: <span class="ident">Empty::default</span>(),
+            <span class="ident">proportion</span>: <span class="ident">ClosedUnitF64::zero</span>(),
             <span class="ident">_marker</span>: <span class="ident">PhantomData</span>::<span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span>,
         }
     }
