@@ -230,7 +230,6 @@
 <span id="229">229</span>
 <span id="230">230</span>
 <span id="231">231</span>
-<span id="232">232</span>
 </pre><pre class="rust"><code><span class="doccomment">/// Inspired by the &lt;https://adventures.michaelfbryan.com/posts/plugins-in-rust/&gt; blog post</span>
 <span class="kw">use</span> <span class="ident">std</span>::{
     <span class="ident">convert::TryFrom</span>, <span class="ident">fmt</span>, <span class="ident">io</span>, <span class="ident">iter::IntoIterator</span>, <span class="ident">mem::ManuallyDrop</span>, <span class="ident">path::PathBuf</span>, <span class="ident">rc::Rc</span>,
@@ -242,15 +241,8 @@
 <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">export::ReporterPluginDeclaration</span>, <span class="ident">import::ReporterPlugin</span>};
 
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ReporterPluginLibrary</span> {
-    <span class="ident">library</span>: <span class="ident">Rc</span><span class="op">&lt;</span><span class="ident">PluginLibrary</span><span class="op">&gt;</span>,
+    <span class="ident">_library</span>: <span class="ident">Rc</span><span class="op">&lt;</span><span class="ident">PluginLibrary</span><span class="op">&gt;</span>,
     <span class="ident">reporters</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">ReporterPlugin</span><span class="op">&gt;</span>,
-}
-
-<span class="kw">impl</span> <span class="ident">ReporterPluginLibrary</span> {
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">library</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">Library</span> {
-        <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">library</span>.<span class="ident">library</span>
-    }
 }
 
 <span class="kw">impl</span> <span class="ident">IntoIterator</span> <span class="kw">for</span> <span class="ident">ReporterPluginLibrary</span> {
@@ -277,7 +269,7 @@
 <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">try_from</span> <span class="op">=</span> <span class="string">&quot;PathBuf&quot;</span>)]</span>
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">struct</span> <span class="ident">PluginLibrary</span> {
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">path</span>: <span class="ident">PathBuf</span>,
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">library</span>: <span class="ident">Library</span>,
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">_library</span>: <span class="ident">Library</span>,
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">declaration</span>: <span class="ident">ReporterPluginDeclaration</span>,
 }
 
@@ -329,7 +321,7 @@
 
         <span class="prelude-val">Ok</span>(<span class="self">Self</span> {
             <span class="ident">path</span>,
-            <span class="ident">library</span>,
+            <span class="ident">_library</span>: <span class="ident">library</span>,
             <span class="ident">declaration</span>,
         })
     }
@@ -439,7 +431,10 @@
             .<span class="ident">next_element_seed</span>(<span class="ident">RcPluginLibrary</span>(<span class="ident">library</span>.<span class="ident">clone</span>()))<span class="question-mark">?</span>
             .<span class="ident">ok_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">de::Error::invalid_length</span>(<span class="number">1</span>, <span class="kw-2">&amp;</span><span class="self">self</span>))<span class="question-mark">?</span>;
 
-        <span class="prelude-val">Ok</span>(<span class="ident">ReporterPluginLibrary</span> { <span class="ident">library</span>, <span class="ident">reporters</span> })
+        <span class="prelude-val">Ok</span>(<span class="ident">ReporterPluginLibrary</span> {
+            <span class="ident">_library</span>: <span class="ident">library</span>,
+            <span class="ident">reporters</span>,
+        })
     }
 
     <span class="kw">fn</span> <span class="ident">visit_map</span><span class="op">&lt;</span><span class="ident">V</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="kw-2">mut</span> <span class="ident">map</span>: <span class="ident">V</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">ReporterPluginLibrary</span>, <span class="ident">V::Error</span><span class="op">&gt;</span>
@@ -460,7 +455,10 @@
                 <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">de::Error::missing_field</span>(<span class="string">&quot;reporters&quot;</span>));
             };
 
-        <span class="prelude-val">Ok</span>(<span class="ident">ReporterPluginLibrary</span> { <span class="ident">library</span>, <span class="ident">reporters</span> })
+        <span class="prelude-val">Ok</span>(<span class="ident">ReporterPluginLibrary</span> {
+            <span class="ident">_library</span>: <span class="ident">library</span>,
+            <span class="ident">reporters</span>,
+        })
     }
 }
 </code></pre></div>
