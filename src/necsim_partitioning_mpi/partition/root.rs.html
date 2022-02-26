@@ -536,7 +536,7 @@
     <span class="kw">const</span> <span class="ident">MPI_PROGRESS_WAIT_TIME</span>: <span class="ident">Duration</span> <span class="op">=</span> <span class="ident">Duration::from_millis</span>(<span class="number">100_u64</span>);
 
     <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">new</span>(
         <span class="ident">universe</span>: <span class="ident">Universe</span>,
         <span class="ident">world</span>: <span class="ident">SystemCommunicator</span>,
         <span class="ident">reporter</span>: <span class="ident">FilteredReporter</span><span class="op">&lt;</span><span class="ident">R</span>, <span class="ident">False</span>, <span class="ident">False</span>, <span class="ident">True</span><span class="op">&gt;</span>,

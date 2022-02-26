@@ -252,7 +252,7 @@
     <span class="doccomment">/// # Errors</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Returns any error which occured while building the context&#39;s reporter</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">try_from_context_and_recorder</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">ReporterContext</span><span class="op">&lt;</span><span class="ident">Reporter</span> <span class="op">=</span> <span class="ident">R</span><span class="op">&gt;</span><span class="op">&gt;</span>(
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">try_from_context_and_recorder</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">ReporterContext</span><span class="op">&lt;</span><span class="ident">Reporter</span> <span class="op">=</span> <span class="ident">R</span><span class="op">&gt;</span><span class="op">&gt;</span>(
         <span class="ident">context</span>: <span class="ident">P</span>,
         <span class="kw-2">mut</span> <span class="ident">recorder</span>: <span class="ident">EventLogRecorder</span>,
     ) -&gt; <span class="ident">anyhow::Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {

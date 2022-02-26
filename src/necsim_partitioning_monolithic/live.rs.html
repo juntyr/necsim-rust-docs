@@ -113,6 +113,8 @@
 <span id="112">112</span>
 <span id="113">113</span>
 <span id="114">114</span>
+<span id="115">115</span>
+<span id="116">116</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">std::fmt</span>;
 
 <span class="kw">use</span> <span class="ident">necsim_core</span>::{
@@ -213,7 +215,7 @@
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">R</span>: <span class="ident">Reporter</span><span class="op">&gt;</span> <span class="ident">LiveMonolithicLocalPartition</span><span class="op">&lt;</span><span class="ident">R</span><span class="op">&gt;</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_reporter</span>(<span class="ident">reporter</span>: <span class="ident">FilteredReporter</span><span class="op">&lt;</span><span class="ident">R</span>, <span class="ident">True</span>, <span class="ident">True</span>, <span class="ident">True</span><span class="op">&gt;</span>) -&gt; <span class="self">Self</span> {
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">from_reporter</span>(<span class="ident">reporter</span>: <span class="ident">FilteredReporter</span><span class="op">&lt;</span><span class="ident">R</span>, <span class="ident">True</span>, <span class="ident">True</span>, <span class="ident">True</span><span class="op">&gt;</span>) -&gt; <span class="self">Self</span> {
         <span class="self">Self</span> {
             <span class="ident">reporter</span>,
             <span class="ident">loopback</span>: <span class="ident">Vec::new</span>(),
@@ -223,7 +225,9 @@
     <span class="doccomment">/// # Errors</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Returns any error which occured while building the context&#39;s reporter</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">try_from_context</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">ReporterContext</span><span class="op">&lt;</span><span class="ident">Reporter</span> <span class="op">=</span> <span class="ident">R</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="ident">context</span>: <span class="ident">P</span>) -&gt; <span class="ident">anyhow::Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">try_from_context</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">ReporterContext</span><span class="op">&lt;</span><span class="ident">Reporter</span> <span class="op">=</span> <span class="ident">R</span><span class="op">&gt;</span><span class="op">&gt;</span>(
+        <span class="ident">context</span>: <span class="ident">P</span>,
+    ) -&gt; <span class="ident">anyhow::Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
         <span class="prelude-val">Ok</span>(<span class="ident"><span class="self">Self</span>::from_reporter</span>(<span class="ident">context</span>.<span class="ident">try_build</span>()<span class="question-mark">?</span>))
     }
 }
