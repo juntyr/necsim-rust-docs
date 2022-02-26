@@ -124,14 +124,14 @@
         <span class="kw">let</span> <span class="ident">output</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">output</span>.<span class="ident">clone</span>();
 
         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Err</span>(<span class="ident">err</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">output_to_database</span>() {
-            <span class="macro">error!</span>(<span class="string">&quot;Failed to write the lineage locations to table {:?} at {:?}: {:?}&quot;</span>, <span class="ident">table</span>, <span class="ident">output</span>, <span class="ident">err</span>);
+            <span class="macro">error!</span>(<span class="string">&quot;Failed to write the lineage locations to table {:?} at {:?}:\n{}&quot;</span>, <span class="ident">table</span>, <span class="ident">output</span>, <span class="ident">err</span>);
         }
     });
 
     <span class="kw">fn</span> <span class="ident">initialise</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">String</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">initialise_sqlite_connection</span>().<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">err</span><span class="op">|</span> {
             <span class="macro">format!</span>(
-                <span class="string">&quot;Failed to initialise the SQLite species location list: {:?}&quot;</span>,
+                <span class="string">&quot;Failed to initialise the SQLite species location list:\n{}&quot;</span>,
                 <span class="ident">err</span>
             )
         })

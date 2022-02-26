@@ -195,7 +195,13 @@
 <span id="194">194</span>
 <span id="195">195</span>
 <span id="196">196</span>
-</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">core::num</span>::{<span class="ident">NonZeroU64</span>, <span class="ident">NonZeroUsize</span>};
+<span id="197">197</span>
+<span id="198">198</span>
+<span id="199">199</span>
+</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">core</span>::{
+    <span class="ident">num</span>::{<span class="ident">NonZeroU64</span>, <span class="ident">NonZeroUsize</span>},
+    <span class="ident">ops::ControlFlow</span>,
+};
 
 <span class="kw">use</span> <span class="ident">necsim_core</span>::{
     <span class="ident">cogs</span>::{
@@ -203,7 +209,7 @@
         <span class="ident">LineageReference</span>, <span class="ident">LocallyCoherentLineageStore</span>, <span class="ident">MathsCore</span>, <span class="ident">RngCore</span>, <span class="ident">SpeciationProbability</span>,
     },
     <span class="ident">lineage::Lineage</span>,
-    <span class="ident">simulation::partial::active_lineager_sampler::PartialSimulation</span>,
+    <span class="ident">simulation::partial::active_lineage_sampler::PartialSimulation</span>,
 };
 <span class="kw">use</span> <span class="ident">necsim_core_bond</span>::{<span class="ident">NonNegativeF64</span>, <span class="ident">PositiveF64</span>};
 
@@ -287,7 +293,7 @@
 
     <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::type_complexity</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">pop_active_lineage_and_event_time</span><span class="op">&lt;</span><span class="ident">F</span>: <span class="ident">FnOnce</span>(<span class="ident">PositiveF64</span>) -&gt; <span class="ident">bool</span><span class="op">&gt;</span>(
+    <span class="kw">fn</span> <span class="ident">pop_active_lineage_and_event_time</span><span class="op">&lt;</span><span class="ident">F</span>: <span class="ident">FnOnce</span>(<span class="ident">PositiveF64</span>) -&gt; <span class="ident">ControlFlow</span><span class="op">&lt;</span>(), ()<span class="op">&gt;</span><span class="op">&gt;</span>(
         <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
         <span class="ident">simulation</span>: <span class="kw-2">&amp;mut</span> <span class="ident">PartialSimulation</span><span class="op">&lt;</span>
             <span class="ident">M</span>,
@@ -327,7 +333,7 @@
 
             <span class="kw">let</span> <span class="ident">next_event_time</span> <span class="op">=</span> <span class="ident">PositiveF64::max_after</span>(<span class="self">self</span>.<span class="ident">last_event_time</span>, <span class="ident">event_time</span>);
 
-            <span class="kw">if</span> <span class="ident">early_peek_stop</span>(<span class="ident">next_event_time</span>) {
+            <span class="kw">if</span> <span class="ident">early_peek_stop</span>(<span class="ident">next_event_time</span>).<span class="ident">is_break</span>() {
                 <span class="kw">return</span> <span class="prelude-val">None</span>;
             }
 

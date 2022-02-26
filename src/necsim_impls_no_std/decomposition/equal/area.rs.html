@@ -91,7 +91,7 @@
         <span class="kw">let</span> <span class="ident">morton_x</span> <span class="op">=</span> <span class="ident"><span class="self">Self</span>::next_log2</span>(<span class="ident">extent</span>.<span class="ident">width</span>());
         <span class="kw">let</span> <span class="ident">morton_y</span> <span class="op">=</span> <span class="ident"><span class="self">Self</span>::next_log2</span>(<span class="ident">extent</span>.<span class="ident">height</span>());
 
-        <span class="kw">for</span> <span class="ident">location</span> <span class="kw">in</span> <span class="ident">extent</span>.<span class="ident">iter</span>() {
+        <span class="kw">for</span> <span class="ident">location</span> <span class="kw">in</span> <span class="ident">habitat</span>.<span class="ident">iter_habitable_locations</span>() {
             <span class="ident">indices</span>.<span class="ident">push</span>(<span class="ident"><span class="self">Self</span>::map_x_y_to_morton</span>(
                 <span class="ident">morton_x</span>,
                 <span class="ident">morton_y</span>,

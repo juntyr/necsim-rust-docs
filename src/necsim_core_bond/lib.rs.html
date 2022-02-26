@@ -28,6 +28,11 @@
 <span id="27">27</span>
 <span id="28">28</span>
 <span id="29">29</span>
+<span id="30">30</span>
+<span id="31">31</span>
+<span id="32">32</span>
+<span id="33">33</span>
+<span id="34">34</span>
 </pre><pre class="rust"><code><span class="attribute">#![<span class="ident">deny</span>(<span class="ident">clippy::pedantic</span>)]</span>
 <span class="attribute">#![<span class="ident">no_std</span>]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">total_cmp</span>)]</span>
@@ -38,6 +43,7 @@
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_type_name</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_ptr_offset_from</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_mut_refs</span>)]</span>
+<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_num_from_num</span>)]</span>
 
 <span class="attribute">#[<span class="ident">macro_use</span>]</span>
 <span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">const_type_layout</span>;
@@ -47,6 +53,8 @@
 <span class="kw">mod</span> <span class="ident">non_negative_f64</span>;
 <span class="kw">mod</span> <span class="ident">non_positive_f64</span>;
 <span class="kw">mod</span> <span class="ident">non_zero_one_u64</span>;
+<span class="kw">mod</span> <span class="ident">off_by_one_u32</span>;
+<span class="kw">mod</span> <span class="ident">off_by_one_u64</span>;
 <span class="kw">mod</span> <span class="ident">open_closed_unit_f64</span>;
 <span class="kw">mod</span> <span class="ident">positive_f64</span>;
 
@@ -55,6 +63,8 @@
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">non_negative_f64::NonNegativeF64</span>;
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">non_positive_f64::NonPositiveF64</span>;
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">non_zero_one_u64::NonZeroOneU64</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">off_by_one_u32::OffByOneU32</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">off_by_one_u64::OffByOneU64</span>;
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">open_closed_unit_f64::OpenClosedUnitF64</span>;
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">positive_f64::PositiveF64</span>;
 </code></pre></div>

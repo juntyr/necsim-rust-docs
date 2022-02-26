@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["exp",""],["fixed",""],["geometric",""],["poisson",""]],"trait":[["EventTimeSampler",""]]});
+initSidebarItems({"mod":[["const",""],["exp",""],["fixed",""],["geometric",""],["poisson",""]],"trait":[["EventTimeSampler",""]]});

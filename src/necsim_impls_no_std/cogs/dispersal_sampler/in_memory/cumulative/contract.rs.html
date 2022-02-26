@@ -46,8 +46,8 @@
         <span class="kw">for</span> <span class="ident">target_index</span> <span class="kw">in</span> <span class="self">self</span>.<span class="ident">valid_dispersal_targets</span>.<span class="ident">iter</span>().<span class="ident">filter_map</span>(<span class="op">|</span><span class="ident">x</span><span class="op">|</span> <span class="kw-2">*</span><span class="ident">x</span>) {
             <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::cast_possible_truncation</span>)]</span>
             <span class="kw">let</span> <span class="ident">dispersal_target</span> <span class="op">=</span> <span class="ident">Location::new</span>(
-                (<span class="ident">target_index</span> <span class="op">%</span> <span class="ident">habitat_width</span> <span class="kw">as</span> <span class="ident">usize</span>) <span class="kw">as</span> <span class="ident">u32</span>,
-                (<span class="ident">target_index</span> <span class="op">/</span> <span class="ident">habitat_width</span> <span class="kw">as</span> <span class="ident">usize</span>) <span class="kw">as</span> <span class="ident">u32</span>,
+                (<span class="ident">target_index</span> <span class="op">%</span> <span class="ident">usize::from</span>(<span class="ident">habitat_width</span>)) <span class="kw">as</span> <span class="ident">u32</span>,
+                (<span class="ident">target_index</span> <span class="op">/</span> <span class="ident">usize::from</span>(<span class="ident">habitat_width</span>)) <span class="kw">as</span> <span class="ident">u32</span>,
             );
 
             <span class="kw">if</span> <span class="ident">habitat</span>.<span class="ident">get_habitat_at_location</span>(<span class="kw-2">&amp;</span><span class="ident">dispersal_target</span>) <span class="op">==</span> <span class="number">0</span> {

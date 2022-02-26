@@ -100,6 +100,18 @@
 <span id="99"> 99</span>
 <span id="100">100</span>
 <span id="101">101</span>
+<span id="102">102</span>
+<span id="103">103</span>
+<span id="104">104</span>
+<span id="105">105</span>
+<span id="106">106</span>
+<span id="107">107</span>
+<span id="108">108</span>
+<span id="109">109</span>
+<span id="110">110</span>
+<span id="111">111</span>
+<span id="112">112</span>
+<span id="113">113</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">core</span>::{
     <span class="ident">convert::TryFrom</span>,
     <span class="ident">fmt</span>,
@@ -107,7 +119,7 @@
 };
 
 <span class="kw">use</span> <span class="ident">necsim_core</span>::{
-    <span class="ident">cogs</span>::{<span class="ident">Habitat</span>, <span class="ident">MathsCore</span>, <span class="ident">OriginSampler</span>},
+    <span class="ident">cogs</span>::{<span class="ident">Habitat</span>, <span class="ident">MathsCore</span>},
     <span class="ident">landscape</span>::{<span class="ident">IndexedLocation</span>, <span class="ident">LocationIterator</span>},
     <span class="ident">lineage::Lineage</span>,
 };
@@ -115,6 +127,8 @@
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::cogs</span>::{
     <span class="ident">habitat::non_spatial::NonSpatialHabitat</span>, <span class="ident">origin_sampler::pre_sampler::OriginPreSampler</span>,
 };
+
+<span class="kw">use</span> <span class="kw">super</span>::{<span class="ident">TrustedOriginSampler</span>, <span class="ident">UntrustedOriginSampler</span>};
 
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::module_name_repetitions</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">NonSpatialOriginSampler</span><span class="op">&lt;</span><span class="lifetime">&#39;h</span>, <span class="ident">M</span>: <span class="ident">MathsCore</span>, <span class="ident">I</span>: <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">u64</span><span class="op">&gt;</span><span class="op">&gt;</span> {
@@ -151,13 +165,18 @@
 }
 
 <span class="attribute">#[<span class="ident">contract_trait</span>]</span>
-<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;h</span>, <span class="ident">M</span>: <span class="ident">MathsCore</span>, <span class="ident">I</span>: <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">u64</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="ident">OriginSampler</span><span class="op">&lt;</span><span class="lifetime">&#39;h</span>, <span class="ident">M</span><span class="op">&gt;</span>
+<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;h</span>, <span class="ident">M</span>: <span class="ident">MathsCore</span>, <span class="ident">I</span>: <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">u64</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="ident">UntrustedOriginSampler</span><span class="op">&lt;</span><span class="lifetime">&#39;h</span>, <span class="ident">M</span><span class="op">&gt;</span>
     <span class="kw">for</span> <span class="ident">NonSpatialOriginSampler</span><span class="op">&lt;</span><span class="lifetime">&#39;h</span>, <span class="ident">M</span>, <span class="ident">I</span><span class="op">&gt;</span>
 {
     <span class="kw">type</span> <span class="ident">Habitat</span> <span class="op">=</span> <span class="ident">NonSpatialHabitat</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">PreSampler</span> <span class="op">=</span> <span class="ident">I</span>;
 
     <span class="kw">fn</span> <span class="ident">habitat</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;h</span> <span class="ident"><span class="self">Self</span>::Habitat</span> {
         <span class="self">self</span>.<span class="ident">habitat</span>
+    }
+
+    <span class="kw">fn</span> <span class="ident">into_pre_sampler</span>(<span class="self">self</span>) -&gt; <span class="ident">OriginPreSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident"><span class="self">Self</span>::PreSampler</span><span class="op">&gt;</span> {
+        <span class="self">self</span>.<span class="ident">pre_sampler</span>
     }
 
     <span class="kw">fn</span> <span class="ident">full_upper_bound_size_hint</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">u64</span> {
@@ -167,10 +186,15 @@
             <span class="ident">clippy::cast_precision_loss</span>
         )]</span>
         {
-            ((<span class="self">self</span>.<span class="ident">habitat</span>.<span class="ident">get_total_habitat</span>() <span class="kw">as</span> <span class="ident">f64</span>)
+            (<span class="ident">f64::from</span>(<span class="self">self</span>.<span class="ident">habitat</span>.<span class="ident">get_total_habitat</span>())
                 <span class="op">*</span> <span class="self">self</span>.<span class="ident">pre_sampler</span>.<span class="ident">get_sample_proportion</span>().<span class="ident">get</span>()) <span class="kw">as</span> <span class="ident">u64</span>
         }
     }
+}
+
+<span class="kw">unsafe</span> <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;h</span>, <span class="ident">M</span>: <span class="ident">MathsCore</span>, <span class="ident">I</span>: <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">u64</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="ident">TrustedOriginSampler</span><span class="op">&lt;</span><span class="lifetime">&#39;h</span>, <span class="ident">M</span><span class="op">&gt;</span>
+    <span class="kw">for</span> <span class="ident">NonSpatialOriginSampler</span><span class="op">&lt;</span><span class="lifetime">&#39;h</span>, <span class="ident">M</span>, <span class="ident">I</span><span class="op">&gt;</span>
+{
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;h</span>, <span class="ident">M</span>: <span class="ident">MathsCore</span>, <span class="ident">I</span>: <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">u64</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="ident">Iterator</span> <span class="kw">for</span> <span class="ident">NonSpatialOriginSampler</span><span class="op">&lt;</span><span class="lifetime">&#39;h</span>, <span class="ident">M</span>, <span class="ident">I</span><span class="op">&gt;</span> {

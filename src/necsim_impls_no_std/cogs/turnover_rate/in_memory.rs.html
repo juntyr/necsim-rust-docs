@@ -123,8 +123,8 @@
 
         <span class="self">self</span>.<span class="ident">turnover_rate</span>
             .<span class="ident">get</span>(
-                ((<span class="ident">location</span>.<span class="ident">y</span>() <span class="op">-</span> <span class="ident">extent</span>.<span class="ident">y</span>()) <span class="kw">as</span> <span class="ident">usize</span>) <span class="op">*</span> (<span class="ident">extent</span>.<span class="ident">width</span>() <span class="kw">as</span> <span class="ident">usize</span>)
-                    <span class="op">+</span> ((<span class="ident">location</span>.<span class="ident">x</span>() <span class="op">-</span> <span class="ident">extent</span>.<span class="ident">x</span>()) <span class="kw">as</span> <span class="ident">usize</span>),
+                (<span class="ident">location</span>.<span class="ident">y</span>().<span class="ident">wrapping_sub</span>(<span class="ident">extent</span>.<span class="ident">y</span>()) <span class="kw">as</span> <span class="ident">usize</span>) <span class="op">*</span> <span class="ident">usize::from</span>(<span class="ident">extent</span>.<span class="ident">width</span>())
+                    <span class="op">+</span> (<span class="ident">location</span>.<span class="ident">x</span>().<span class="ident">wrapping_sub</span>(<span class="ident">extent</span>.<span class="ident">x</span>()) <span class="kw">as</span> <span class="ident">usize</span>),
             )
             .<span class="ident">copied</span>()
             .<span class="ident">unwrap_or_else</span>(<span class="ident">NonNegativeF64::zero</span>)

@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["conditional",""],["unconditional",""]],"struct":[["GillespiePartialSimulation",""]],"trait":[["GillespieEventSampler",""]]});
+initSidebarItems({"mod":[["conditional",""],["unconditional",""]],"trait":[["GillespieEventSampler",""]]});

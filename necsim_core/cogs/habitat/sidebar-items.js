@@ -1,1 +1,1 @@
-initSidebarItems({"trait":[["Habitat",""]]});
+initSidebarItems({"trait":[["Habitat",""],["UniformlySampleableHabitat",""]]});

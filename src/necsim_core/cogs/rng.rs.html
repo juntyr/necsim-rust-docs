@@ -212,10 +212,27 @@
 <span id="211">211</span>
 <span id="212">212</span>
 <span id="213">213</span>
+<span id="214">214</span>
+<span id="215">215</span>
+<span id="216">216</span>
+<span id="217">217</span>
+<span id="218">218</span>
+<span id="219">219</span>
+<span id="220">220</span>
+<span id="221">221</span>
+<span id="222">222</span>
+<span id="223">223</span>
+<span id="224">224</span>
+<span id="225">225</span>
+<span id="226">226</span>
+<span id="227">227</span>
+<span id="228">228</span>
+<span id="229">229</span>
+<span id="230">230</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">core</span>::{
     <span class="ident">convert::AsMut</span>,
     <span class="ident">default::Default</span>,
-    <span class="ident">num</span>::{<span class="ident">NonZeroU128</span>, <span class="ident">NonZeroU32</span>, <span class="ident">NonZeroUsize</span>},
+    <span class="ident">num</span>::{<span class="ident">NonZeroU128</span>, <span class="ident">NonZeroU32</span>, <span class="ident">NonZeroU64</span>, <span class="ident">NonZeroUsize</span>},
     <span class="ident">ptr::copy_nonoverlapping</span>,
 };
 
@@ -336,6 +353,23 @@
         )]</span>
         <span class="kw">let</span> <span class="ident">index</span> <span class="op">=</span>
             <span class="ident">M::floor</span>(<span class="self">self</span>.<span class="ident">sample_uniform_closed_open</span>().<span class="ident">get</span>() <span class="op">*</span> <span class="ident">f64::from</span>(<span class="ident">length</span>.<span class="ident">get</span>())) <span class="kw">as</span> <span class="ident">u32</span>;
+        <span class="comment">// Safety in case of f64 rounding errors</span>
+        <span class="ident">index</span>.<span class="ident">min</span>(<span class="ident">length</span>.<span class="ident">get</span>() <span class="op">-</span> <span class="number">1</span>)
+    }
+
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
+    <span class="attribute">#[<span class="ident">inline</span>]</span>
+    <span class="attribute">#[<span class="ident">debug_ensures</span>(<span class="ident">ret</span> <span class="op">&lt;</span> <span class="ident">length</span>.<span class="ident">get</span>(), <span class="string">&quot;samples U(0, length - 1)&quot;</span>)]</span>
+    <span class="kw">fn</span> <span class="ident">sample_index_u64</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">length</span>: <span class="ident">NonZeroU64</span>) -&gt; <span class="ident">u64</span> {
+        <span class="comment">// attributes on expressions are experimental</span>
+        <span class="comment">// see https://github.com/rust-lang/rust/issues/15701</span>
+        <span class="attribute">#[<span class="ident">allow</span>(
+            <span class="ident">clippy::cast_precision_loss</span>,
+            <span class="ident">clippy::cast_possible_truncation</span>,
+            <span class="ident">clippy::cast_sign_loss</span>
+        )]</span>
+        <span class="kw">let</span> <span class="ident">index</span> <span class="op">=</span>
+            <span class="ident">M::floor</span>(<span class="self">self</span>.<span class="ident">sample_uniform_closed_open</span>().<span class="ident">get</span>() <span class="op">*</span> (<span class="ident">length</span>.<span class="ident">get</span>() <span class="kw">as</span> <span class="ident">f64</span>)) <span class="kw">as</span> <span class="ident">u64</span>;
         <span class="comment">// Safety in case of f64 rounding errors</span>
         <span class="ident">index</span>.<span class="ident">min</span>(<span class="ident">length</span>.<span class="ident">get</span>() <span class="op">-</span> <span class="number">1</span>)
     }

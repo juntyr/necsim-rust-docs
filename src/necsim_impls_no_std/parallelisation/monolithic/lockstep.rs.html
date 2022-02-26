@@ -131,7 +131,17 @@
 <span id="130">130</span>
 <span id="131">131</span>
 <span id="132">132</span>
-</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">necsim_core</span>::{
+<span id="133">133</span>
+<span id="134">134</span>
+<span id="135">135</span>
+<span id="136">136</span>
+<span id="137">137</span>
+<span id="138">138</span>
+<span id="139">139</span>
+<span id="140">140</span>
+</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">core::ops::ControlFlow</span>;
+
+<span class="kw">use</span> <span class="ident">necsim_core</span>::{
     <span class="ident">cogs</span>::{
         <span class="ident">ActiveLineageSampler</span>, <span class="ident">CoalescenceSampler</span>, <span class="ident">DispersalSampler</span>, <span class="ident">EventSampler</span>, <span class="ident">Habitat</span>,
         <span class="ident">LineageReference</span>, <span class="ident">LocallyCoherentLineageStore</span>, <span class="ident">MathsCore</span>, <span class="ident">RngCore</span>, <span class="ident">SpeciationProbability</span>,
@@ -214,7 +224,7 @@
             <span class="op">|</span><span class="kw">_</span>, <span class="kw">_</span>, <span class="ident">next_event_time</span><span class="op">|</span> {
                 <span class="ident">next_local_time</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">next_event_time</span>);
 
-                <span class="bool-val">true</span>
+                <span class="ident">ControlFlow::BREAK</span>
             },
             <span class="kw-2">&amp;mut</span> <span class="ident">NullReporter</span>,
         );
@@ -226,7 +236,13 @@
         <span class="comment">// The partition with the next event gets to simulate just the next step</span>
         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Ok</span>(<span class="ident">next_global_time</span>) <span class="op">=</span> <span class="ident">local_partition</span>.<span class="ident">reduce_vote_min_time</span>(<span class="ident">next_local_time</span>) {
             <span class="kw">let</span> (<span class="kw">_</span>, <span class="ident">new_steps</span>) <span class="op">=</span> <span class="ident">simulation</span>.<span class="ident">simulate_incremental_early_stop</span>(
-                <span class="op">|</span><span class="kw">_</span>, <span class="kw">_</span>, <span class="ident">next_event_time</span><span class="op">|</span> <span class="ident">next_event_time</span> <span class="op">&gt;</span> <span class="ident">next_global_time</span>,
+                <span class="op">|</span><span class="kw">_</span>, <span class="kw">_</span>, <span class="ident">next_event_time</span><span class="op">|</span> {
+                    <span class="kw">if</span> <span class="ident">next_event_time</span> <span class="op">&gt;</span> <span class="ident">next_global_time</span> {
+                        <span class="ident">ControlFlow::BREAK</span>
+                    } <span class="kw">else</span> {
+                        <span class="ident">ControlFlow::CONTINUE</span>
+                    }
+                },
                 <span class="ident">local_partition</span>.<span class="ident">get_reporter</span>(),
             );
 

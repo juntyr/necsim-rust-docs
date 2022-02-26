@@ -35,6 +35,8 @@
 <span id="34">34</span>
 <span id="35">35</span>
 <span id="36">36</span>
+<span id="37">37</span>
+<span id="38">38</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">necsim_core</span>::{
     <span class="ident">cogs</span>::{<span class="ident">DispersalSampler</span>, <span class="ident">Habitat</span>, <span class="ident">MathsCore</span>, <span class="ident">RngCore</span>},
     <span class="ident">landscape::Location</span>,
@@ -64,10 +66,12 @@
 
         <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::cast_possible_truncation</span>)]</span>
         <span class="ident">Location::new</span>(
-            (<span class="ident">dispersal_target_index</span> <span class="op">%</span> (<span class="ident">habitat</span>.<span class="ident">get_extent</span>().<span class="ident">width</span>() <span class="kw">as</span> <span class="ident">usize</span>)) <span class="kw">as</span> <span class="ident">u32</span>
-                <span class="op">+</span> <span class="ident">habitat</span>.<span class="ident">get_extent</span>().<span class="ident">x</span>(),
-            (<span class="ident">dispersal_target_index</span> <span class="op">/</span> (<span class="ident">habitat</span>.<span class="ident">get_extent</span>().<span class="ident">width</span>() <span class="kw">as</span> <span class="ident">usize</span>)) <span class="kw">as</span> <span class="ident">u32</span>
-                <span class="op">+</span> <span class="ident">habitat</span>.<span class="ident">get_extent</span>().<span class="ident">y</span>(),
+            <span class="ident">habitat</span>.<span class="ident">get_extent</span>().<span class="ident">x</span>().<span class="ident">wrapping_add</span>(
+                (<span class="ident">dispersal_target_index</span> <span class="op">%</span> <span class="ident">usize::from</span>(<span class="ident">habitat</span>.<span class="ident">get_extent</span>().<span class="ident">width</span>())) <span class="kw">as</span> <span class="ident">u32</span>,
+            ),
+            <span class="ident">habitat</span>.<span class="ident">get_extent</span>().<span class="ident">y</span>().<span class="ident">wrapping_add</span>(
+                (<span class="ident">dispersal_target_index</span> <span class="op">/</span> <span class="ident">usize::from</span>(<span class="ident">habitat</span>.<span class="ident">get_extent</span>().<span class="ident">width</span>())) <span class="kw">as</span> <span class="ident">u32</span>,
+            ),
         )
     }
 }

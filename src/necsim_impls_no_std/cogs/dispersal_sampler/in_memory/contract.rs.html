@@ -79,8 +79,8 @@
     <span class="kw">for</span> <span class="ident">row_index</span> <span class="kw">in</span> <span class="number">0</span>..<span class="ident">dispersal</span>.<span class="ident">num_rows</span>() {
         <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::cast_possible_truncation</span>)]</span>
         <span class="kw">let</span> <span class="ident">dispersal_origin</span> <span class="op">=</span> <span class="ident">Location::new</span>(
-            (<span class="ident">row_index</span> <span class="op">%</span> <span class="ident">habitat_width</span> <span class="kw">as</span> <span class="ident">usize</span>) <span class="kw">as</span> <span class="ident">u32</span>,
-            (<span class="ident">row_index</span> <span class="op">/</span> <span class="ident">habitat_width</span> <span class="kw">as</span> <span class="ident">usize</span>) <span class="kw">as</span> <span class="ident">u32</span>,
+            (<span class="ident">row_index</span> <span class="op">%</span> <span class="ident">usize::from</span>(<span class="ident">habitat_width</span>)) <span class="kw">as</span> <span class="ident">u32</span>,
+            (<span class="ident">row_index</span> <span class="op">/</span> <span class="ident">usize::from</span>(<span class="ident">habitat_width</span>)) <span class="kw">as</span> <span class="ident">u32</span>,
         );
 
         <span class="kw">if</span> <span class="ident">habitat</span>.<span class="ident">get_habitat_at_location</span>(<span class="kw-2">&amp;</span><span class="ident">dispersal_origin</span>) <span class="op">&gt;</span> <span class="number">0</span> {
@@ -89,8 +89,8 @@
             <span class="kw">for</span> <span class="ident">col_index</span> <span class="kw">in</span> <span class="number">0</span>..<span class="ident">dispersal</span>.<span class="ident">num_columns</span>() {
                 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::cast_possible_truncation</span>)]</span>
                 <span class="kw">let</span> <span class="ident">dispersal_target</span> <span class="op">=</span> <span class="ident">Location::new</span>(
-                    (<span class="ident">col_index</span> <span class="op">%</span> <span class="ident">habitat_width</span> <span class="kw">as</span> <span class="ident">usize</span>) <span class="kw">as</span> <span class="ident">u32</span>,
-                    (<span class="ident">col_index</span> <span class="op">/</span> <span class="ident">habitat_width</span> <span class="kw">as</span> <span class="ident">usize</span>) <span class="kw">as</span> <span class="ident">u32</span>,
+                    (<span class="ident">col_index</span> <span class="op">%</span> <span class="ident">usize::from</span>(<span class="ident">habitat_width</span>)) <span class="kw">as</span> <span class="ident">u32</span>,
+                    (<span class="ident">col_index</span> <span class="op">/</span> <span class="ident">usize::from</span>(<span class="ident">habitat_width</span>)) <span class="kw">as</span> <span class="ident">u32</span>,
                 );
 
                 <span class="kw">if</span> <span class="ident">dispersal</span>[(<span class="ident">row_index</span>, <span class="ident">col_index</span>)] <span class="op">&gt;</span> <span class="number">0.0_f64</span> {

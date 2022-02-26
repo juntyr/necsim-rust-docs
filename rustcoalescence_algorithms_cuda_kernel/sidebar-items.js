@@ -1,1 +1,0 @@
-initSidebarItems({"macro":[["link_kernel",""]],"trait":[["Kernel",""],["KernelArgs",""]]});

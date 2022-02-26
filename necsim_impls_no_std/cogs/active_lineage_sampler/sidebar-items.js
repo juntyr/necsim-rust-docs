@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["alias",""],["classical",""],["independent",""],["singular",""]]});
+initSidebarItems({"mod":[["alias",""],["classical",""],["independent",""],["resuming",""],["singular",""]]});

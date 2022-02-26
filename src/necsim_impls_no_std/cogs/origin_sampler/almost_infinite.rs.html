@@ -117,17 +117,37 @@
 <span id="116">116</span>
 <span id="117">117</span>
 <span id="118">118</span>
+<span id="119">119</span>
+<span id="120">120</span>
+<span id="121">121</span>
+<span id="122">122</span>
+<span id="123">123</span>
+<span id="124">124</span>
+<span id="125">125</span>
+<span id="126">126</span>
+<span id="127">127</span>
+<span id="128">128</span>
+<span id="129">129</span>
+<span id="130">130</span>
+<span id="131">131</span>
+<span id="132">132</span>
+<span id="133">133</span>
+<span id="134">134</span>
+<span id="135">135</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">core</span>::{<span class="ident">fmt</span>, <span class="ident">iter::Iterator</span>};
 
 <span class="kw">use</span> <span class="ident">necsim_core</span>::{
-    <span class="ident">cogs</span>::{<span class="ident">MathsCore</span>, <span class="ident">OriginSampler</span>},
+    <span class="ident">cogs::MathsCore</span>,
     <span class="ident">landscape</span>::{<span class="ident">IndexedLocation</span>, <span class="ident">LandscapeExtent</span>, <span class="ident">LocationIterator</span>},
     <span class="ident">lineage::Lineage</span>,
 };
+<span class="kw">use</span> <span class="ident">necsim_core_bond::OffByOneU32</span>;
 
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::cogs</span>::{
     <span class="ident">habitat::almost_infinite::AlmostInfiniteHabitat</span>, <span class="ident">origin_sampler::pre_sampler::OriginPreSampler</span>,
 };
+
+<span class="kw">use</span> <span class="kw">super</span>::{<span class="ident">TrustedOriginSampler</span>, <span class="ident">UntrustedOriginSampler</span>};
 
 <span class="kw">const</span> <span class="ident">HABITAT_CENTRE</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="ident">u32::MAX</span> <span class="op">/</span> <span class="number">2</span>;
 
@@ -157,18 +177,22 @@
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;h</span>, <span class="ident">M</span>: <span class="ident">MathsCore</span>, <span class="ident">I</span>: <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">u64</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="ident">AlmostInfiniteOriginSampler</span><span class="op">&lt;</span><span class="lifetime">&#39;h</span>, <span class="ident">M</span>, <span class="ident">I</span><span class="op">&gt;</span> {
-    <span class="attribute">#[<span class="ident">debug_requires</span>(<span class="ident">radius</span> <span class="op">&lt;</span> (<span class="ident">u32::MAX</span> <span class="op">/</span> <span class="number">2</span>), <span class="string">&quot;sample circle fits into almost infinite habitat&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(
         <span class="ident">pre_sampler</span>: <span class="ident">OriginPreSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">I</span><span class="op">&gt;</span>,
         <span class="ident">habitat</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;h</span> <span class="ident">AlmostInfiniteHabitat</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span>,
-        <span class="ident">radius</span>: <span class="ident">u32</span>,
+        <span class="ident">radius</span>: <span class="ident">u16</span>,
     ) -&gt; <span class="self">Self</span> {
+        <span class="comment">// Safety: safe since lower and upper bound are both safe</span>
+        <span class="comment">//  a) radius = 0 --&gt; 0*2 + 1 = 1 --&gt; ok</span>
+        <span class="comment">//  b) radius = u16::MAX --&gt; u16::MAX*2 + 1 = u32::MAX --&gt; ok</span>
+        <span class="kw">let</span> <span class="ident">diameter</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">OffByOneU32::new_unchecked</span>(<span class="ident">u64::from</span>(<span class="ident">radius</span>) <span class="op">*</span> <span class="number">2</span> <span class="op">+</span> <span class="number">1</span>) };
+
         <span class="kw">let</span> <span class="ident">sample_extent</span> <span class="op">=</span> <span class="ident">LandscapeExtent::new</span>(
-            <span class="ident">HABITAT_CENTRE</span> <span class="op">-</span> <span class="ident">radius</span>,
-            <span class="ident">HABITAT_CENTRE</span> <span class="op">-</span> <span class="ident">radius</span>,
-            <span class="ident">radius</span> <span class="op">*</span> <span class="number">2</span> <span class="op">+</span> <span class="number">1</span>,
-            <span class="ident">radius</span> <span class="op">*</span> <span class="number">2</span> <span class="op">+</span> <span class="number">1</span>,
+            <span class="ident">HABITAT_CENTRE</span> <span class="op">-</span> <span class="ident">u32::from</span>(<span class="ident">radius</span>),
+            <span class="ident">HABITAT_CENTRE</span> <span class="op">-</span> <span class="ident">u32::from</span>(<span class="ident">radius</span>),
+            <span class="ident">diameter</span>,
+            <span class="ident">diameter</span>,
         );
 
         <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::cast_possible_truncation</span>, <span class="ident">clippy::cast_sign_loss</span>)]</span>
@@ -191,18 +215,28 @@
 }
 
 <span class="attribute">#[<span class="ident">contract_trait</span>]</span>
-<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;h</span>, <span class="ident">M</span>: <span class="ident">MathsCore</span>, <span class="ident">I</span>: <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">u64</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="ident">OriginSampler</span><span class="op">&lt;</span><span class="lifetime">&#39;h</span>, <span class="ident">M</span><span class="op">&gt;</span>
+<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;h</span>, <span class="ident">M</span>: <span class="ident">MathsCore</span>, <span class="ident">I</span>: <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">u64</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="ident">UntrustedOriginSampler</span><span class="op">&lt;</span><span class="lifetime">&#39;h</span>, <span class="ident">M</span><span class="op">&gt;</span>
     <span class="kw">for</span> <span class="ident">AlmostInfiniteOriginSampler</span><span class="op">&lt;</span><span class="lifetime">&#39;h</span>, <span class="ident">M</span>, <span class="ident">I</span><span class="op">&gt;</span>
 {
     <span class="kw">type</span> <span class="ident">Habitat</span> <span class="op">=</span> <span class="ident">AlmostInfiniteHabitat</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">PreSampler</span> <span class="op">=</span> <span class="ident">I</span>;
 
     <span class="kw">fn</span> <span class="ident">habitat</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;h</span> <span class="ident"><span class="self">Self</span>::Habitat</span> {
         <span class="self">self</span>.<span class="ident">habitat</span>
     }
 
+    <span class="kw">fn</span> <span class="ident">into_pre_sampler</span>(<span class="self">self</span>) -&gt; <span class="ident">OriginPreSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident"><span class="self">Self</span>::PreSampler</span><span class="op">&gt;</span> {
+        <span class="self">self</span>.<span class="ident">pre_sampler</span>
+    }
+
     <span class="kw">fn</span> <span class="ident">full_upper_bound_size_hint</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">u64</span> {
         <span class="self">self</span>.<span class="ident">upper_bound_size_hint</span>
     }
+}
+
+<span class="kw">unsafe</span> <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;h</span>, <span class="ident">M</span>: <span class="ident">MathsCore</span>, <span class="ident">I</span>: <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">u64</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="ident">TrustedOriginSampler</span><span class="op">&lt;</span><span class="lifetime">&#39;h</span>, <span class="ident">M</span><span class="op">&gt;</span>
+    <span class="kw">for</span> <span class="ident">AlmostInfiniteOriginSampler</span><span class="op">&lt;</span><span class="lifetime">&#39;h</span>, <span class="ident">M</span>, <span class="ident">I</span><span class="op">&gt;</span>
+{
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;h</span>, <span class="ident">M</span>: <span class="ident">MathsCore</span>, <span class="ident">I</span>: <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">u64</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="ident">Iterator</span> <span class="kw">for</span> <span class="ident">AlmostInfiniteOriginSampler</span><span class="op">&lt;</span><span class="lifetime">&#39;h</span>, <span class="ident">M</span>, <span class="ident">I</span><span class="op">&gt;</span> {

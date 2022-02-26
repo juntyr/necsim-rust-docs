@@ -313,6 +313,8 @@
 <span id="312">312</span>
 <span id="313">313</span>
 <span id="314">314</span>
+<span id="315">315</span>
+<span id="316">316</span>
 </pre><pre class="rust"><code><span class="attribute">#![<span class="ident">allow</span>(<span class="ident">clippy::type_complexity</span>)]</span>
 
 <span class="kw">use</span> <span class="ident">core</span>::{<span class="ident">marker::PhantomData</span>, <span class="ident">num::Wrapping</span>};
@@ -482,11 +484,11 @@
     <span class="op">&gt;</span> <span class="ident">Simulation</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span>, <span class="ident">R</span>, <span class="ident">S</span>, <span class="ident">X</span>, <span class="ident">D</span>, <span class="ident">C</span>, <span class="ident">T</span>, <span class="ident">N</span>, <span class="ident">E</span>, <span class="ident">I</span>, <span class="ident">A</span><span class="op">&gt;</span>
 {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_mut_split_active_lineage_sampler_and_rng</span><span class="op">&lt;</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_mut_split_active_lineage_sampler_and_rng_and_migration_balance</span><span class="op">&lt;</span>
         <span class="ident">Q</span>,
         <span class="ident">F</span>: <span class="ident">FnOnce</span>(
             <span class="kw-2">&amp;mut</span> <span class="ident">A</span>,
-            <span class="kw-2">&amp;mut</span> <span class="ident"><span class="kw">super</span>::partial::active_lineager_sampler::PartialSimulation</span><span class="op">&lt;</span>
+            <span class="kw-2">&amp;mut</span> <span class="ident"><span class="kw">super</span>::partial::active_lineage_sampler::PartialSimulation</span><span class="op">&lt;</span>
                 <span class="ident">M</span>,
                 <span class="ident">H</span>,
                 <span class="ident">G</span>,
@@ -500,18 +502,19 @@
                 <span class="ident">E</span>,
             <span class="op">&gt;</span>,
             <span class="kw-2">&amp;mut</span> <span class="ident">G</span>,
+            <span class="kw-2">&amp;mut</span> <span class="ident">Wrapping</span><span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span>,
         ) -&gt; <span class="ident">Q</span>,
     <span class="op">&gt;</span>(
         <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
         <span class="ident">func</span>: <span class="ident">F</span>,
     ) -&gt; <span class="ident">Q</span> {
-        <span class="comment">// Cast &amp;self to a &amp;PartialSimulation without the active lineage sampler</span>
-        <span class="comment">//  and rng</span>
+        <span class="comment">// Cast &amp;self to a &amp;PartialSimulation without the active lineage sampler,</span>
+        <span class="comment">//  rng, and migration balance</span>
         <span class="comment">// This is only safe as PartialSimulation&#39;s type and layout is a prefix</span>
         <span class="comment">//  subsequence of Self&#39;s type and layout</span>
         <span class="kw">let</span> <span class="ident">partial_simulation</span> <span class="op">=</span> <span class="kw">unsafe</span> {
             <span class="kw-2">&amp;mut</span> <span class="kw-2">*</span>(<span class="self">self</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="self">Self</span>)
-                .<span class="ident">cast</span>::<span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::partial::active_lineager_sampler::PartialSimulation</span><span class="op">&lt;</span>
+                .<span class="ident">cast</span>::<span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::partial::active_lineage_sampler::PartialSimulation</span><span class="op">&lt;</span>
                     <span class="ident">M</span>,
                     <span class="ident">H</span>,
                     <span class="ident">G</span>,
@@ -530,6 +533,7 @@
             <span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">active_lineage_sampler</span>,
             <span class="ident">partial_simulation</span>,
             <span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">rng</span>,
+            <span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">migration_balance</span>,
         )
     }
 

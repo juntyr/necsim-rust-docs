@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["classical",""],["event_skipping",""]]});
+initSidebarItems({"mod":[["event_skipping",""],["gillespie",""]]});

@@ -38,8 +38,10 @@
 <span id="37">37</span>
 <span id="38">38</span>
 <span id="39">39</span>
+<span id="40">40</span>
 </pre><pre class="rust"><code><span class="attribute">#![<span class="ident">deny</span>(<span class="ident">clippy::pedantic</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">unwrap_infallible</span>)]</span>
+<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">split_array</span>)]</span>
 
 <span class="attribute">#[<span class="ident">macro_use</span>]</span>
 <span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">serde_derive_state</span>;
@@ -55,7 +57,7 @@
 <span class="kw">mod</span> <span class="ident">minimal_logger</span>;
 <span class="kw">mod</span> <span class="ident">reporter</span>;
 
-<span class="kw">use</span> <span class="ident">args::RustcoalescenceArgs</span>;
+<span class="kw">use</span> <span class="ident">args::cli::RustcoalescenceArgs</span>;
 <span class="kw">use</span> <span class="ident">minimal_logger::MinimalLogger</span>;
 
 <span class="kw">static</span> <span class="ident">MINIMAL_LOGGER</span>: <span class="ident">MinimalLogger</span> <span class="op">=</span> <span class="ident">MinimalLogger</span>;

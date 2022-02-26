@@ -140,6 +140,10 @@
 <span id="139">139</span>
 <span id="140">140</span>
 <span id="141">141</span>
+<span id="142">142</span>
+<span id="143">143</span>
+<span id="144">144</span>
+<span id="145">145</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">alloc</span>::{<span class="ident">boxed::Box</span>, <span class="ident">vec::Vec</span>};
 <span class="kw">use</span> <span class="ident">core</span>::{<span class="ident">marker::PhantomData</span>, <span class="ident">ops::Range</span>};
 <span class="kw">use</span> <span class="ident">necsim_core_bond::NonNegativeF64</span>;
@@ -214,8 +218,12 @@
                 <span class="kw">for</span> (<span class="ident">col_index</span>, <span class="ident">dispersal_probability</span>) <span class="kw">in</span> <span class="ident">row</span>.<span class="ident">enumerate</span>() {
                     <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::cast_possible_truncation</span>)]</span>
                     <span class="kw">let</span> <span class="ident">location</span> <span class="op">=</span> <span class="ident">Location::new</span>(
-                        (<span class="ident">col_index</span> <span class="op">%</span> (<span class="ident">habitat_extent</span>.<span class="ident">width</span>() <span class="kw">as</span> <span class="ident">usize</span>)) <span class="kw">as</span> <span class="ident">u32</span> <span class="op">+</span> <span class="ident">habitat_extent</span>.<span class="ident">x</span>(),
-                        (<span class="ident">col_index</span> <span class="op">/</span> (<span class="ident">habitat_extent</span>.<span class="ident">width</span>() <span class="kw">as</span> <span class="ident">usize</span>)) <span class="kw">as</span> <span class="ident">u32</span> <span class="op">+</span> <span class="ident">habitat_extent</span>.<span class="ident">y</span>(),
+                        <span class="ident">habitat_extent</span>
+                            .<span class="ident">x</span>()
+                            .<span class="ident">wrapping_add</span>((<span class="ident">col_index</span> <span class="op">%</span> <span class="ident">usize::from</span>(<span class="ident">habitat_extent</span>.<span class="ident">width</span>())) <span class="kw">as</span> <span class="ident">u32</span>),
+                        <span class="ident">habitat_extent</span>
+                            .<span class="ident">y</span>()
+                            .<span class="ident">wrapping_add</span>((<span class="ident">col_index</span> <span class="op">/</span> <span class="ident">usize::from</span>(<span class="ident">habitat_extent</span>.<span class="ident">width</span>())) <span class="kw">as</span> <span class="ident">u32</span>),
                     );
 
                     <span class="comment">// Multiply all dispersal probabilities by the habitat of their target</span>
@@ -238,8 +246,8 @@
                     <span class="ident">AliasSamplerRange::from</span>(<span class="ident">range_from</span>..<span class="ident">alias_dispersal_buffer</span>.<span class="ident">len</span>())
                 }
             }),
-            <span class="ident">habitat_extent</span>.<span class="ident">height</span>() <span class="kw">as</span> <span class="ident">usize</span>,
-            <span class="ident">habitat_extent</span>.<span class="ident">width</span>() <span class="kw">as</span> <span class="ident">usize</span>,
+            <span class="ident">usize::from</span>(<span class="ident">habitat_extent</span>.<span class="ident">height</span>()),
+            <span class="ident">usize::from</span>(<span class="ident">habitat_extent</span>.<span class="ident">width</span>()),
         )
         .<span class="ident">unwrap</span>(); <span class="comment">// infallible by PRE;</span>
 

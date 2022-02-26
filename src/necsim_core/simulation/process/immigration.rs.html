@@ -130,11 +130,11 @@
 
         <span class="ident">migrating_lineage</span>: <span class="ident">MigratingLineage</span>,
     ) {
-        <span class="comment">// Immigration decrements the migration balance (extra external work)</span>
-        <span class="self">self</span>.<span class="ident">migration_balance</span> <span class="op">-</span><span class="op">=</span> <span class="ident">Wrapping</span>(<span class="number">1_u64</span>);
+        <span class="self">self</span>.<span class="ident">with_mut_split_active_lineage_sampler_and_rng_and_migration_balance</span>(
+            <span class="op">|</span><span class="ident">active_lineage_sampler</span>, <span class="ident">simulation</span>, <span class="ident">rng</span>, <span class="ident">migration_balance</span><span class="op">|</span> {
+                <span class="comment">// Immigration decrements the migration balance (extra external work)</span>
+                <span class="kw-2">*</span><span class="ident">migration_balance</span> <span class="op">-</span><span class="op">=</span> <span class="ident">Wrapping</span>(<span class="number">1_u64</span>);
 
-        <span class="self">self</span>.<span class="ident">with_mut_split_active_lineage_sampler_and_rng</span>(
-            <span class="op">|</span><span class="ident">active_lineage_sampler</span>, <span class="ident">simulation</span>, <span class="ident">rng</span><span class="op">|</span> {
                 <span class="comment">// Sample the missing coalescence using the random sample generated</span>
                 <span class="comment">// in the remote sublandscape from where the lineage emigrated</span>
                 <span class="kw">let</span> (<span class="ident">dispersal_target</span>, <span class="ident">interaction</span>) <span class="op">=</span> <span class="ident">simulation</span>

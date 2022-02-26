@@ -103,6 +103,7 @@
 <span id="102">102</span>
 <span id="103">103</span>
 <span id="104">104</span>
+<span id="105">105</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">alloc::boxed::Box</span>;
 <span class="kw">use</span> <span class="ident">core::marker::PhantomData</span>;
 
@@ -110,6 +111,7 @@
     <span class="ident">cogs</span>::{<span class="ident">Backup</span>, <span class="ident">Habitat</span>, <span class="ident">MathsCore</span>},
     <span class="ident">landscape</span>::{<span class="ident">LandscapeExtent</span>, <span class="ident">Location</span>},
 };
+<span class="kw">use</span> <span class="ident">necsim_core_bond::OffByOneU32</span>;
 <span class="kw">use</span> <span class="ident">necsim_partitioning_core::partition::Partition</span>;
 
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::decomposition::Decomposition</span>;
@@ -171,9 +173,9 @@
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">M</span>: <span class="ident">MathsCore</span>, <span class="ident">H</span>: <span class="ident">Habitat</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="ident">EqualDecomposition</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">next_log2</span>(<span class="ident">coord</span>: <span class="ident">u32</span>) -&gt; <span class="ident">u8</span> {
+    <span class="kw">fn</span> <span class="ident">next_log2</span>(<span class="ident">coord</span>: <span class="ident">OffByOneU32</span>) -&gt; <span class="ident">u8</span> {
         <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::cast_possible_truncation</span>, <span class="ident">clippy::cast_sign_loss</span>)]</span>
-        <span class="kw">if</span> <span class="ident">coord</span> <span class="op">&gt;</span> <span class="number">1</span> {
+        <span class="kw">if</span> <span class="ident">coord</span>.<span class="ident">get</span>() <span class="op">&gt;</span> <span class="number">1</span> {
             <span class="ident">M::ceil</span>(<span class="ident">M::ln</span>(<span class="ident">f64::from</span>(<span class="ident">coord</span>)) <span class="op">/</span> <span class="ident">core::f64::consts::LN_2</span>) <span class="kw">as</span> <span class="ident">u8</span>
         } <span class="kw">else</span> {
             <span class="number">0</span>

@@ -59,18 +59,18 @@
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">alloc</span>::{<span class="ident">boxed::Box</span>, <span class="ident">vec::Vec</span>};
 <span class="kw">use</span> <span class="ident">core::hash</span>::{<span class="ident">BuildHasher</span>, <span class="ident">Hash</span>, <span class="ident">Hasher</span>};
 
-<span class="kw">use</span> <span class="ident">hashbrown::hash_map::DefaultHashBuilder</span>;
+<span class="kw">use</span> <span class="ident">fnv::FnvBuildHasher</span>;
 
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::module_name_repetitions</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">DirectMappedCache</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Hash</span> <span class="op">+</span> <span class="ident">PartialEq</span>, <span class="ident">S</span>: <span class="ident">BuildHasher</span> <span class="op">=</span> <span class="ident">DefaultHashBuilder</span><span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">DirectMappedCache</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Hash</span> <span class="op">+</span> <span class="ident">PartialEq</span>, <span class="ident">S</span>: <span class="ident">BuildHasher</span> <span class="op">=</span> <span class="ident">FnvBuildHasher</span><span class="op">&gt;</span> {
     <span class="ident">cache</span>: <span class="ident">Box</span><span class="op">&lt;</span>[<span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>]<span class="op">&gt;</span>,
     <span class="ident">build_hasher</span>: <span class="ident">S</span>,
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Hash</span> <span class="op">+</span> <span class="ident">PartialEq</span><span class="op">&gt;</span> <span class="ident">DirectMappedCache</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">DefaultHashBuilder</span><span class="op">&gt;</span> {
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Hash</span> <span class="op">+</span> <span class="ident">PartialEq</span><span class="op">&gt;</span> <span class="ident">DirectMappedCache</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">FnvBuildHasher</span><span class="op">&gt;</span> {
     <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_capacity</span>(<span class="ident">capacity</span>: <span class="ident">usize</span>) -&gt; <span class="self">Self</span> {
-        <span class="ident"><span class="self">Self</span>::with_capacity_and_hasher</span>(<span class="ident">capacity</span>, <span class="ident">DefaultHashBuilder::default</span>())
+        <span class="ident"><span class="self">Self</span>::with_capacity_and_hasher</span>(<span class="ident">capacity</span>, <span class="ident">FnvBuildHasher::default</span>())
     }
 }
 

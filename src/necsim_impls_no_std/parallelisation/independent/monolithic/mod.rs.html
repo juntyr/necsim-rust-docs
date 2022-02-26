@@ -249,15 +249,33 @@
 <span id="248">248</span>
 <span id="249">249</span>
 <span id="250">250</span>
+<span id="251">251</span>
+<span id="252">252</span>
+<span id="253">253</span>
+<span id="254">254</span>
+<span id="255">255</span>
+<span id="256">256</span>
+<span id="257">257</span>
+<span id="258">258</span>
+<span id="259">259</span>
+<span id="260">260</span>
+<span id="261">261</span>
+<span id="262">262</span>
+<span id="263">263</span>
+<span id="264">264</span>
+<span id="265">265</span>
+<span id="266">266</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">alloc::collections::VecDeque</span>;
-<span class="kw">use</span> <span class="ident">core::num</span>::{<span class="ident">NonZeroU64</span>, <span class="ident">Wrapping</span>};
+<span class="kw">use</span> <span class="ident">core</span>::{
+    <span class="ident">num</span>::{<span class="ident">NonZeroU64</span>, <span class="ident">Wrapping</span>},
+    <span class="ident">ops::ControlFlow</span>,
+};
 
 <span class="kw">use</span> <span class="ident">necsim_core_bond</span>::{<span class="ident">NonNegativeF64</span>, <span class="ident">PositiveF64</span>};
 
 <span class="kw">use</span> <span class="ident">necsim_core</span>::{
     <span class="ident">cogs</span>::{
-        <span class="ident">ActiveLineageSampler</span>, <span class="ident">DispersalSampler</span>, <span class="ident">Habitat</span>, <span class="ident">MathsCore</span>, <span class="ident">PrimeableRng</span>,
-        <span class="ident">SpeciationProbability</span>, <span class="ident">TurnoverRate</span>,
+        <span class="ident">DispersalSampler</span>, <span class="ident">Habitat</span>, <span class="ident">MathsCore</span>, <span class="ident">PrimeableRng</span>, <span class="ident">SpeciationProbability</span>, <span class="ident">TurnoverRate</span>,
     },
     <span class="ident">lineage</span>::{<span class="ident">GlobalLineageReference</span>, <span class="ident">Lineage</span>},
     <span class="ident">reporter</span>::{<span class="ident">boolean::Boolean</span>, <span class="ident">Reporter</span>},
@@ -268,10 +286,7 @@
 
 <span class="kw">use</span> <span class="kw">crate</span>::{
     <span class="ident">cogs</span>::{
-        <span class="ident">active_lineage_sampler</span>::{
-            <span class="ident">independent</span>::{<span class="ident">event_time_sampler::EventTimeSampler</span>, <span class="ident">IndependentActiveLineageSampler</span>},
-            <span class="ident">singular::SingularActiveLineageSampler</span>,
-        },
+        <span class="ident">active_lineage_sampler::singular::SingularActiveLineageSampler</span>,
         <span class="ident">coalescence_sampler::independent::IndependentCoalescenceSampler</span>,
         <span class="ident">emigration_exit::never::NeverEmigrationExit</span>,
         <span class="ident">event_sampler</span>::{
@@ -299,7 +314,20 @@
     <span class="ident">D</span>: <span class="ident">DispersalSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span><span class="op">&gt;</span>,
     <span class="ident">T</span>: <span class="ident">TurnoverRate</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span><span class="op">&gt;</span>,
     <span class="ident">N</span>: <span class="ident">SpeciationProbability</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span><span class="op">&gt;</span>,
-    <span class="ident">J</span>: <span class="ident">EventTimeSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span>, <span class="ident">T</span><span class="op">&gt;</span>,
+    <span class="ident">A</span>: <span class="ident">SingularActiveLineageSampler</span><span class="op">&lt;</span>
+        <span class="ident">M</span>,
+        <span class="ident">H</span>,
+        <span class="ident">G</span>,
+        <span class="ident">GlobalLineageReference</span>,
+        <span class="ident">IndependentLineageStore</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span><span class="op">&gt;</span>,
+        <span class="ident">NeverEmigrationExit</span>,
+        <span class="ident">D</span>,
+        <span class="ident">IndependentCoalescenceSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span><span class="op">&gt;</span>,
+        <span class="ident">T</span>,
+        <span class="ident">N</span>,
+        <span class="ident">IndependentEventSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span>, <span class="ident">NeverEmigrationExit</span>, <span class="ident">D</span>, <span class="ident">T</span>, <span class="ident">N</span><span class="op">&gt;</span>,
+        <span class="ident">NeverImmigrationEntry</span>,
+    <span class="op">&gt;</span>,
     <span class="ident">R</span>: <span class="ident">Reporter</span>,
     <span class="ident">P</span>: <span class="ident">LocalPartition</span><span class="op">&lt;</span><span class="ident">R</span><span class="op">&gt;</span>,
     <span class="ident">L</span>: <span class="ident">IntoIterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">Lineage</span><span class="op">&gt;</span>,
@@ -317,7 +345,7 @@
         <span class="ident">N</span>,
         <span class="ident">IndependentEventSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span>, <span class="ident">NeverEmigrationExit</span>, <span class="ident">D</span>, <span class="ident">T</span>, <span class="ident">N</span><span class="op">&gt;</span>,
         <span class="ident">NeverImmigrationEntry</span>,
-        <span class="ident">IndependentActiveLineageSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span>, <span class="ident">NeverEmigrationExit</span>, <span class="ident">D</span>, <span class="ident">T</span>, <span class="ident">N</span>, <span class="ident">J</span><span class="op">&gt;</span>,
+        <span class="ident">A</span>,
     <span class="op">&gt;</span>,
     <span class="ident">lineages</span>: <span class="ident">L</span>,
     <span class="ident">dedup_cache</span>: <span class="ident">DedupCache</span>,
@@ -464,7 +492,11 @@
                 <span class="op">|</span><span class="kw">_</span>, <span class="ident">steps</span>, <span class="ident">next_event_time</span><span class="op">|</span> {
                     <span class="ident">previous_next_event_time</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">next_event_time</span>);
 
-                    <span class="ident">steps</span> <span class="op">&gt;</span><span class="op">=</span> <span class="ident">step_slice</span>.<span class="ident">get</span>() <span class="op">|</span><span class="op">|</span> <span class="ident">next_event_time</span> <span class="op">&gt;</span><span class="op">=</span> <span class="ident">level_time</span>
+                    <span class="kw">if</span> <span class="ident">steps</span> <span class="op">&gt;</span><span class="op">=</span> <span class="ident">step_slice</span>.<span class="ident">get</span>() <span class="op">|</span><span class="op">|</span> <span class="ident">next_event_time</span> <span class="op">&gt;</span><span class="op">=</span> <span class="ident">level_time</span> {
+                        <span class="ident">ControlFlow::BREAK</span>
+                    } <span class="kw">else</span> {
+                        <span class="ident">ControlFlow::CONTINUE</span>
+                    }
                 },
                 <span class="kw-2">&amp;mut</span> <span class="ident">proxy</span>,
             );

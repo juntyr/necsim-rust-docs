@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["write_resume_config",""]]});
