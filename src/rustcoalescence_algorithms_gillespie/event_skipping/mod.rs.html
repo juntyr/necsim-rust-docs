@@ -139,13 +139,8 @@
 <span id="138">138</span>
 <span id="139">139</span>
 <span id="140">140</span>
-<span id="141">141</span>
-<span id="142">142</span>
-<span id="143">143</span>
-<span id="144">144</span>
-<span id="145">145</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">necsim_core</span>::{
-    <span class="ident">cogs</span>::{<span class="ident">GloballyCoherentLineageStore</span>, <span class="ident">SeparableDispersalSampler</span>},
+    <span class="ident">cogs</span>::{<span class="ident">GloballyCoherentLineageStore</span>, <span class="ident">MathsCore</span>, <span class="ident">SeparableDispersalSampler</span>},
     <span class="ident">lineage::Lineage</span>,
     <span class="ident">reporter::Reporter</span>,
 };
@@ -163,7 +158,7 @@
 <span class="kw">use</span> <span class="ident">rustcoalescence_algorithms</span>::{
     <span class="ident">result</span>::{<span class="ident">ResumeError</span>, <span class="ident">SimulationOutcome</span>},
     <span class="ident">strategy::RestartFixUpStrategy</span>,
-    <span class="ident">Algorithm</span>, <span class="ident">AlgorithmParamters</span>,
+    <span class="ident">Algorithm</span>, <span class="ident">AlgorithmDefaults</span>, <span class="ident">AlgorithmParamters</span>,
 };
 <span class="kw">use</span> <span class="ident">rustcoalescence_scenarios::Scenario</span>;
 
@@ -184,41 +179,36 @@
     <span class="kw">type</span> <span class="ident">Error</span> <span class="op">=</span> <span class="op">!</span>;
 }
 
+<span class="kw">impl</span> <span class="ident">AlgorithmDefaults</span> <span class="kw">for</span> <span class="ident">EventSkippingAlgorithm</span> {
+    <span class="kw">type</span> <span class="ident">MathsCore</span> <span class="op">=</span> <span class="ident">IntrinsicsMathsCore</span>;
+}
+
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::type_complexity</span>)]</span>
 <span class="kw">impl</span><span class="op">&lt;</span>
-        <span class="ident">O</span>: <span class="ident">Scenario</span><span class="op">&lt;</span>
-            <span class="ident">IntrinsicsMathsCore</span>,
-            <span class="ident">Pcg</span><span class="op">&lt;</span><span class="ident">IntrinsicsMathsCore</span><span class="op">&gt;</span>,
-            <span class="ident">LineageReference</span> <span class="op">=</span> <span class="ident">InMemoryLineageReference</span>,
-        <span class="op">&gt;</span>,
+        <span class="ident">O</span>: <span class="ident">Scenario</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">Pcg</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span>, <span class="ident">LineageReference</span> <span class="op">=</span> <span class="ident">InMemoryLineageReference</span><span class="op">&gt;</span>,
         <span class="ident">R</span>: <span class="ident">Reporter</span>,
         <span class="ident">P</span>: <span class="ident">LocalPartition</span><span class="op">&lt;</span><span class="ident">R</span><span class="op">&gt;</span>,
-    <span class="op">&gt;</span> <span class="ident">Algorithm</span><span class="op">&lt;</span><span class="ident">O</span>, <span class="ident">R</span>, <span class="ident">P</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">EventSkippingAlgorithm</span>
+        <span class="ident">M</span>: <span class="ident">MathsCore</span>,
+    <span class="op">&gt;</span> <span class="ident">Algorithm</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">O</span>, <span class="ident">R</span>, <span class="ident">P</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">EventSkippingAlgorithm</span>
 <span class="kw">where</span>
-    <span class="ident">O::LineageStore</span><span class="op">&lt;</span><span class="ident">GillespieLineageStore</span><span class="op">&lt;</span><span class="ident">IntrinsicsMathsCore</span>, <span class="ident">O::Habitat</span><span class="op">&gt;</span><span class="op">&gt;</span>:
-        <span class="ident">GloballyCoherentLineageStore</span><span class="op">&lt;</span><span class="ident">IntrinsicsMathsCore</span>, <span class="ident">O::Habitat</span>, <span class="ident">InMemoryLineageReference</span><span class="op">&gt;</span>,
-    <span class="ident">O::DispersalSampler</span><span class="op">&lt;</span>
-        <span class="ident">InMemorySeparableAliasDispersalSampler</span><span class="op">&lt;</span>
-            <span class="ident">IntrinsicsMathsCore</span>,
-            <span class="ident">O::Habitat</span>,
-            <span class="ident">Pcg</span><span class="op">&lt;</span><span class="ident">IntrinsicsMathsCore</span><span class="op">&gt;</span>,
-        <span class="op">&gt;</span>,
-    <span class="op">&gt;</span>: <span class="ident">SeparableDispersalSampler</span><span class="op">&lt;</span><span class="ident">IntrinsicsMathsCore</span>, <span class="ident">O::Habitat</span>, <span class="ident">Pcg</span><span class="op">&lt;</span><span class="ident">IntrinsicsMathsCore</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+    <span class="ident">O::LineageStore</span><span class="op">&lt;</span><span class="ident">GillespieLineageStore</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">O::Habitat</span><span class="op">&gt;</span><span class="op">&gt;</span>:
+        <span class="ident">GloballyCoherentLineageStore</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">O::Habitat</span>, <span class="ident">InMemoryLineageReference</span><span class="op">&gt;</span>,
+    <span class="ident">O::DispersalSampler</span><span class="op">&lt;</span><span class="ident">InMemorySeparableAliasDispersalSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">O::Habitat</span>, <span class="ident">Pcg</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>:
+        <span class="ident">SeparableDispersalSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">O::Habitat</span>, <span class="ident">Pcg</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span><span class="op">&gt;</span>,
 {
     <span class="kw">type</span> <span class="ident">LineageReference</span> <span class="op">=</span> <span class="ident">InMemoryLineageReference</span>;
-    <span class="kw">type</span> <span class="ident">LineageStore</span> <span class="op">=</span> <span class="ident">O::LineageStore</span><span class="op">&lt;</span><span class="ident">GillespieLineageStore</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::MathsCore</span>, <span class="ident">O::Habitat</span><span class="op">&gt;</span><span class="op">&gt;</span>;
-    <span class="kw">type</span> <span class="ident">MathsCore</span> <span class="op">=</span> <span class="ident">IntrinsicsMathsCore</span>;
-    <span class="kw">type</span> <span class="ident">Rng</span> <span class="op">=</span> <span class="ident">Pcg</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::MathsCore</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">LineageStore</span> <span class="op">=</span> <span class="ident">O::LineageStore</span><span class="op">&lt;</span><span class="ident">GillespieLineageStore</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">O::Habitat</span><span class="op">&gt;</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Rng</span> <span class="op">=</span> <span class="ident">Pcg</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span>;
 
     <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::shadow_unrelated</span>, <span class="ident">clippy::too_many_lines</span>)]</span>
     <span class="kw">fn</span> <span class="ident">initialise_and_simulate</span><span class="op">&lt;</span><span class="ident">I</span>: <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">u64</span><span class="op">&gt;</span><span class="op">&gt;</span>(
         <span class="ident">args</span>: <span class="ident"><span class="self">Self</span>::Arguments</span>,
         <span class="ident">rng</span>: <span class="ident"><span class="self">Self</span>::Rng</span>,
         <span class="ident">scenario</span>: <span class="ident">O</span>,
-        <span class="ident">pre_sampler</span>: <span class="ident">OriginPreSampler</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::MathsCore</span>, <span class="ident">I</span><span class="op">&gt;</span>,
+        <span class="ident">pre_sampler</span>: <span class="ident">OriginPreSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">I</span><span class="op">&gt;</span>,
         <span class="ident">pause_before</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">NonNegativeF64</span><span class="op">&gt;</span>,
         <span class="ident">local_partition</span>: <span class="kw-2">&amp;mut</span> <span class="ident">P</span>,
-    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">SimulationOutcome</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::MathsCore</span>, <span class="ident"><span class="self">Self</span>::Rng</span><span class="op">&gt;</span>, <span class="ident"><span class="self">Self</span>::Error</span><span class="op">&gt;</span> {
+    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">SimulationOutcome</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident"><span class="self">Self</span>::Rng</span><span class="op">&gt;</span>, <span class="ident"><span class="self">Self</span>::Error</span><span class="op">&gt;</span> {
         <span class="ident">launch::initialise_and_simulate</span>(
             <span class="ident">args</span>,
             <span class="ident">rng</span>,
@@ -239,12 +229,12 @@
         <span class="ident">args</span>: <span class="ident"><span class="self">Self</span>::Arguments</span>,
         <span class="ident">rng</span>: <span class="ident"><span class="self">Self</span>::Rng</span>,
         <span class="ident">scenario</span>: <span class="ident">O</span>,
-        <span class="ident">pre_sampler</span>: <span class="ident">OriginPreSampler</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::MathsCore</span>, <span class="ident">I</span><span class="op">&gt;</span>,
+        <span class="ident">pre_sampler</span>: <span class="ident">OriginPreSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">I</span><span class="op">&gt;</span>,
         <span class="ident">lineages</span>: <span class="ident">L</span>,
         <span class="ident">resume_after</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">NonNegativeF64</span><span class="op">&gt;</span>,
         <span class="ident">pause_before</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">NonNegativeF64</span><span class="op">&gt;</span>,
         <span class="ident">local_partition</span>: <span class="kw-2">&amp;mut</span> <span class="ident">P</span>,
-    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">SimulationOutcome</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::MathsCore</span>, <span class="ident"><span class="self">Self</span>::Rng</span><span class="op">&gt;</span>, <span class="ident">ResumeError</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Error</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">SimulationOutcome</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident"><span class="self">Self</span>::Rng</span><span class="op">&gt;</span>, <span class="ident">ResumeError</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Error</span><span class="op">&gt;</span><span class="op">&gt;</span> {
         <span class="ident">launch::initialise_and_simulate</span>(
             <span class="ident">args</span>,
             <span class="ident">rng</span>,
@@ -268,12 +258,12 @@
         <span class="ident">args</span>: <span class="ident"><span class="self">Self</span>::Arguments</span>,
         <span class="ident">rng</span>: <span class="ident"><span class="self">Self</span>::Rng</span>,
         <span class="ident">scenario</span>: <span class="ident">O</span>,
-        <span class="ident">pre_sampler</span>: <span class="ident">OriginPreSampler</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::MathsCore</span>, <span class="ident">I</span><span class="op">&gt;</span>,
+        <span class="ident">pre_sampler</span>: <span class="ident">OriginPreSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">I</span><span class="op">&gt;</span>,
         <span class="ident">lineages</span>: <span class="ident">L</span>,
         <span class="ident">restart_at</span>: <span class="ident">PositiveF64</span>,
         <span class="ident">fixup_strategy</span>: <span class="ident">RestartFixUpStrategy</span>,
         <span class="ident">local_partition</span>: <span class="kw-2">&amp;mut</span> <span class="ident">P</span>,
-    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">SimulationOutcome</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::MathsCore</span>, <span class="ident"><span class="self">Self</span>::Rng</span><span class="op">&gt;</span>, <span class="ident">ResumeError</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Error</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">SimulationOutcome</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident"><span class="self">Self</span>::Rng</span><span class="op">&gt;</span>, <span class="ident">ResumeError</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Error</span><span class="op">&gt;</span><span class="op">&gt;</span> {
         <span class="ident">launch::initialise_and_simulate</span>(
             <span class="ident">args</span>,
             <span class="ident">rng</span>,

@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["intrinsics",""]]});
+initSidebarItems({"mod":[["intrinsics",""],["reproducible",""]]});

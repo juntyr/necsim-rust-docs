@@ -120,31 +120,54 @@
 <span id="119">119</span>
 <span id="120">120</span>
 <span id="121">121</span>
+<span id="122">122</span>
+<span id="123">123</span>
+<span id="124">124</span>
+<span id="125">125</span>
+<span id="126">126</span>
+<span id="127">127</span>
+<span id="128">128</span>
+<span id="129">129</span>
+<span id="130">130</span>
+<span id="131">131</span>
+<span id="132">132</span>
+<span id="133">133</span>
+<span id="134">134</span>
+<span id="135">135</span>
+<span id="136">136</span>
+<span id="137">137</span>
+<span id="138">138</span>
+<span id="139">139</span>
+<span id="140">140</span>
+<span id="141">141</span>
+<span id="142">142</span>
+<span id="143">143</span>
+<span id="144">144</span>
+<span id="145">145</span>
+<span id="146">146</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">necsim_core::cogs::MathsCore</span>;
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::module_name_repetitions</span>)]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">NvptxMathsCore</span> {}
 
-<span class="comment">// TODO: Ensure consistency for cached calculations on the CPU,</span>
-<span class="comment">//        maybe guard with linker error?</span>
 <span class="kw">impl</span> <span class="ident">MathsCore</span> <span class="kw">for</span> <span class="ident">NvptxMathsCore</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">fn</span> <span class="ident">floor</span>(<span class="ident">x</span>: <span class="ident">f64</span>) -&gt; <span class="ident">f64</span> {
+        <span class="comment">// IEEE-compliant implementation on CPU and GPU</span>
         <span class="kw">unsafe</span> { <span class="ident">core::intrinsics::floorf64</span>(<span class="ident">x</span>) }
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">fn</span> <span class="ident">ceil</span>(<span class="ident">x</span>: <span class="ident">f64</span>) -&gt; <span class="ident">f64</span> {
+        <span class="comment">// IEEE-compliant implementation on CPU and GPU</span>
         <span class="kw">unsafe</span> { <span class="ident">core::intrinsics::ceilf64</span>(<span class="ident">x</span>) }
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">fn</span> <span class="ident">ln</span>(<span class="ident">x</span>: <span class="ident">f64</span>) -&gt; <span class="ident">f64</span> {
-        <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;cuda&quot;</span>))]</span>
-        <span class="kw">unsafe</span> {
-            <span class="ident">core::intrinsics::logf64</span>(<span class="ident">x</span>)
-        }
+        <span class="comment">// Guard against usage on the CPU as results will NOT match</span>
+
         <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;cuda&quot;</span>)]</span>
         <span class="kw">unsafe</span> {
             <span class="kw">const</span> <span class="ident">FRAC_1_LOG2_E</span>: <span class="ident">f64</span> <span class="op">=</span> <span class="number">1.0_f64</span> <span class="op">/</span> <span class="ident">core::f64::consts::LOG2_E</span>;
@@ -158,14 +181,20 @@
             <span class="comment">// f / log_2(e)</span>
             <span class="ident">f64::from</span>(<span class="ident">f</span>) <span class="op">*</span> <span class="ident">FRAC_1_LOG2_E</span>
         }
+        <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;cuda&quot;</span>))]</span>
+        {
+            <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> {
+                <span class="kw">fn</span> <span class="ident">nvptx_maths_core_ln_on_cpu</span>(<span class="ident">_x</span>: <span class="ident">f64</span>) -&gt; <span class="op">!</span>;
+            }
+
+            <span class="kw">unsafe</span> { <span class="ident">nvptx_maths_core_ln_on_cpu</span>(<span class="ident">x</span>) }
+        }
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">fn</span> <span class="ident">exp</span>(<span class="ident">x</span>: <span class="ident">f64</span>) -&gt; <span class="ident">f64</span> {
-        <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;cuda&quot;</span>))]</span>
-        <span class="kw">unsafe</span> {
-            <span class="ident">core::intrinsics::expf64</span>(<span class="ident">x</span>)
-        }
+        <span class="comment">// Guard against usage on the CPU as results will NOT match</span>
+
         <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;cuda&quot;</span>)]</span>
         <span class="kw">unsafe</span> {
             <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::cast_possible_truncation</span>)]</span>
@@ -176,19 +205,26 @@
 
             <span class="ident">f64::from</span>(<span class="ident">f</span>)
         }
+        <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;cuda&quot;</span>))]</span>
+        {
+            <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> {
+                <span class="kw">fn</span> <span class="ident">nvptx_maths_core_exp_on_cpu</span>(<span class="ident">_x</span>: <span class="ident">f64</span>) -&gt; <span class="op">!</span>;
+            }
+
+            <span class="kw">unsafe</span> { <span class="ident">nvptx_maths_core_exp_on_cpu</span>(<span class="ident">x</span>) }
+        }
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">fn</span> <span class="ident">sqrt</span>(<span class="ident">x</span>: <span class="ident">f64</span>) -&gt; <span class="ident">f64</span> {
+        <span class="comment">// IEEE-compliant implementation on CPU and GPU</span>
         <span class="kw">unsafe</span> { <span class="ident">core::intrinsics::sqrtf64</span>(<span class="ident">x</span>) }
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">fn</span> <span class="ident">sin</span>(<span class="ident">x</span>: <span class="ident">f64</span>) -&gt; <span class="ident">f64</span> {
-        <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;cuda&quot;</span>))]</span>
-        <span class="kw">unsafe</span> {
-            <span class="ident">core::intrinsics::sinf64</span>(<span class="ident">x</span>)
-        }
+        <span class="comment">// Guard against usage on the CPU as results will NOT match</span>
+
         <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;cuda&quot;</span>)]</span>
         <span class="kw">unsafe</span> {
             <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::cast_possible_truncation</span>)]</span>
@@ -199,14 +235,20 @@
 
             <span class="ident">f64::from</span>(<span class="ident">f</span>)
         }
+        <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;cuda&quot;</span>))]</span>
+        {
+            <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> {
+                <span class="kw">fn</span> <span class="ident">nvptx_maths_core_sin_on_cpu</span>(<span class="ident">_x</span>: <span class="ident">f64</span>) -&gt; <span class="op">!</span>;
+            }
+
+            <span class="kw">unsafe</span> { <span class="ident">nvptx_maths_core_sin_on_cpu</span>(<span class="ident">x</span>) }
+        }
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">fn</span> <span class="ident">cos</span>(<span class="ident">x</span>: <span class="ident">f64</span>) -&gt; <span class="ident">f64</span> {
-        <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;cuda&quot;</span>))]</span>
-        <span class="kw">unsafe</span> {
-            <span class="ident">core::intrinsics::cosf64</span>(<span class="ident">x</span>)
-        }
+        <span class="comment">// Guard against usage on the CPU as results will NOT match</span>
+
         <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;cuda&quot;</span>)]</span>
         <span class="kw">unsafe</span> {
             <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::cast_possible_truncation</span>)]</span>
@@ -217,28 +259,36 @@
 
             <span class="ident">f64::from</span>(<span class="ident">f</span>)
         }
+        <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;cuda&quot;</span>))]</span>
+        {
+            <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> {
+                <span class="kw">fn</span> <span class="ident">nvptx_maths_core_cos_on_cpu</span>(<span class="ident">_x</span>: <span class="ident">f64</span>) -&gt; <span class="op">!</span>;
+            }
+
+            <span class="kw">unsafe</span> { <span class="ident">nvptx_maths_core_cos_on_cpu</span>(<span class="ident">x</span>) }
+        }
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">fn</span> <span class="ident">round</span>(<span class="ident">x</span>: <span class="ident">f64</span>) -&gt; <span class="ident">f64</span> {
-        <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;cuda&quot;</span>))]</span>
-        <span class="kw">unsafe</span> {
-            <span class="ident">core::intrinsics::roundf64</span>(<span class="ident">x</span>)
-        }
+        <span class="comment">// Implementation based on IEEE-compliant f64::trunc() on CPU and GPU</span>
+        <span class="comment">// Logic adapted from libm (Apache 2.0 / MIT dual-licensed):</span>
+        <span class="comment">// https://github.com/rust-lang/libm/blob/1f7b8/src/math/round.rs#L6-L8</span>
+
+        <span class="kw">const</span> <span class="ident">ROUND_TRUNC_OFFSET</span>: <span class="ident">f64</span> <span class="op">=</span> <span class="number">0.5_f64</span> <span class="op">-</span> <span class="number">0.25_f64</span> <span class="op">*</span> <span class="ident">f64::EPSILON</span>;
+
+        <span class="kw">let</span> <span class="ident">offset</span>: <span class="ident">f64</span>;
+
         <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;cuda&quot;</span>)]</span>
         <span class="kw">unsafe</span> {
-            <span class="kw">const</span> <span class="ident">ROUND_TRUNC_OFFSET</span>: <span class="ident">f64</span> <span class="op">=</span> <span class="number">0.5_f64</span> <span class="op">-</span> <span class="number">0.25_f64</span> <span class="op">*</span> <span class="ident">f64::EPSILON</span>;
-
-            <span class="kw">let</span> <span class="ident">offset</span>: <span class="ident">f64</span>;
-            <span class="macro">core::arch::asm!</span>(<span class="string">&quot;copysign {}, {}, {};&quot;</span>, <span class="ident">out</span>(<span class="ident">reg64</span>) <span class="ident">offset</span>, <span class="kw">in</span>(<span class="ident">reg64</span>) <span class="ident">x</span>, <span class="kw">const</span> <span class="ident">ROUND_TRUNC_OFFSET</span>.<span class="ident">to_bits</span>(), <span class="ident">options</span>(<span class="ident">pure</span>, <span class="ident">nomem</span>, <span class="ident">nostack</span>));
-
-            <span class="kw">let</span> <span class="ident">overshot</span> <span class="op">=</span> <span class="ident">x</span> <span class="op">+</span> <span class="ident">offset</span>;
-
-            <span class="kw">let</span> <span class="ident">round</span>: <span class="ident">f64</span>;
-            <span class="macro">core::arch::asm!</span>(<span class="string">&quot;cvt.rzi.f64.f64 {}, {};&quot;</span>, <span class="ident">out</span>(<span class="ident">reg64</span>) <span class="ident">round</span>, <span class="kw">in</span>(<span class="ident">reg64</span>) <span class="ident">overshot</span>, <span class="ident">options</span>(<span class="ident">pure</span>, <span class="ident">nomem</span>, <span class="ident">nostack</span>));
-
-            <span class="ident">round</span>
+            <span class="macro">core::arch::asm!</span>(<span class="string">&quot;copysign.f64 {}, {}, {};&quot;</span>, <span class="ident">out</span>(<span class="ident">reg64</span>) <span class="ident">offset</span>, <span class="kw">in</span>(<span class="ident">reg64</span>) <span class="ident">x</span>, <span class="kw">const</span> <span class="ident">ROUND_TRUNC_OFFSET</span>.<span class="ident">to_bits</span>(), <span class="ident">options</span>(<span class="ident">pure</span>, <span class="ident">nomem</span>, <span class="ident">nostack</span>));
         }
+        <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;cuda&quot;</span>))]</span>
+        <span class="kw">unsafe</span> {
+            <span class="ident">offset</span> <span class="op">=</span> <span class="ident">core::intrinsics::copysignf64</span>(<span class="ident">ROUND_TRUNC_OFFSET</span>, <span class="ident">x</span>);
+        }
+
+        <span class="kw">unsafe</span> { <span class="ident">core::intrinsics::truncf64</span>(<span class="ident">x</span> <span class="op">+</span> <span class="ident">offset</span>) }
     }
 }
 </code></pre></div>

@@ -180,9 +180,25 @@
 <span id="179">179</span>
 <span id="180">180</span>
 <span id="181">181</span>
+<span id="182">182</span>
+<span id="183">183</span>
+<span id="184">184</span>
+<span id="185">185</span>
+<span id="186">186</span>
+<span id="187">187</span>
+<span id="188">188</span>
+<span id="189">189</span>
+<span id="190">190</span>
+<span id="191">191</span>
+<span id="192">192</span>
+<span id="193">193</span>
+<span id="194">194</span>
+<span id="195">195</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">necsim_core::reporter::Reporter</span>;
 <span class="kw">use</span> <span class="ident">necsim_core_bond</span>::{<span class="ident">NonNegativeF64</span>, <span class="ident">OpenClosedUnitF64</span> <span class="kw">as</span> <span class="ident">PositiveUnitF64</span>};
 <span class="kw">use</span> <span class="ident">necsim_partitioning_core::LocalPartition</span>;
+
+<span class="kw">use</span> <span class="ident">rustcoalescence_algorithms::AlgorithmDefaults</span>;
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rustcoalescence-algorithms-cuda&quot;</span>)]</span>
 <span class="kw">use</span> <span class="ident">rustcoalescence_algorithms_cuda::CudaAlgorithm</span>;
@@ -299,28 +315,40 @@
     {
         <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rustcoalescence-algorithms-gillespie&quot;</span>)]</span>
         <span class="ident">AlgorithmArgs::Gillespie</span>(<span class="ident">algorithm_args</span>) =&gt; {
-            <span class="ident">rng::dispatch</span>::<span class="op">&lt;</span><span class="ident">GillespieAlgorithm</span>, <span class="kw">_</span>, <span class="ident">R</span>, <span class="ident">P</span><span class="op">&gt;</span>(
+            <span class="ident">rng::dispatch</span>::<span class="op">&lt;</span>
+                <span class="op">&lt;</span><span class="ident">GillespieAlgorithm</span> <span class="kw">as</span> <span class="ident">AlgorithmDefaults</span><span class="op">&gt;</span><span class="ident">::MathsCore</span>,
+                <span class="ident">GillespieAlgorithm</span>, <span class="kw">_</span>, <span class="ident">R</span>, <span class="ident">P</span>,
+            <span class="op">&gt;</span>(
                 <span class="ident">local_partition</span>, <span class="ident">sample</span>, <span class="ident">algorithm_args</span>, <span class="ident">scenario</span>,
                 <span class="ident">pause_before</span>, <span class="ident">ron_args</span>, <span class="ident">normalised_args</span>,
             )
         },
         <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rustcoalescence-algorithms-gillespie&quot;</span>)]</span>
         <span class="ident">AlgorithmArgs::EventSkipping</span>(<span class="ident">algorithm_args</span>) =&gt; {
-            <span class="ident">rng::dispatch</span>::<span class="op">&lt;</span><span class="ident">EventSkippingAlgorithm</span>, <span class="kw">_</span>, <span class="ident">R</span>, <span class="ident">P</span><span class="op">&gt;</span>(
+            <span class="ident">rng::dispatch</span>::<span class="op">&lt;</span>
+                <span class="op">&lt;</span><span class="ident">EventSkippingAlgorithm</span> <span class="kw">as</span> <span class="ident">AlgorithmDefaults</span><span class="op">&gt;</span><span class="ident">::MathsCore</span>,
+                <span class="ident">EventSkippingAlgorithm</span>, <span class="kw">_</span>, <span class="ident">R</span>, <span class="ident">P</span>,
+            <span class="op">&gt;</span>(
                 <span class="ident">local_partition</span>, <span class="ident">sample</span>, <span class="ident">algorithm_args</span>, <span class="ident">scenario</span>,
                 <span class="ident">pause_before</span>, <span class="ident">ron_args</span>, <span class="ident">normalised_args</span>,
             )
         },
         <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rustcoalescence-algorithms-independent&quot;</span>)]</span>
         <span class="ident">AlgorithmArgs::Independent</span>(<span class="ident">algorithm_args</span>) =&gt; {
-            <span class="ident">rng::dispatch</span>::<span class="op">&lt;</span><span class="ident">IndependentAlgorithm</span>, <span class="kw">_</span>, <span class="ident">R</span>, <span class="ident">P</span><span class="op">&gt;</span>(
+            <span class="ident">rng::dispatch</span>::<span class="op">&lt;</span>
+                <span class="op">&lt;</span><span class="ident">IndependentAlgorithm</span> <span class="kw">as</span> <span class="ident">AlgorithmDefaults</span><span class="op">&gt;</span><span class="ident">::MathsCore</span>,
+                <span class="ident">IndependentAlgorithm</span>, <span class="kw">_</span>, <span class="ident">R</span>, <span class="ident">P</span>,
+            <span class="op">&gt;</span>(
                 <span class="ident">local_partition</span>, <span class="ident">sample</span>, <span class="ident">algorithm_args</span>, <span class="ident">scenario</span>,
                 <span class="ident">pause_before</span>, <span class="ident">ron_args</span>, <span class="ident">normalised_args</span>,
             )
         },
         <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rustcoalescence-algorithms-cuda&quot;</span>)]</span>
         <span class="ident">AlgorithmArgs::Cuda</span>(<span class="ident">algorithm_args</span>) =&gt; {
-            <span class="ident">rng::dispatch</span>::<span class="op">&lt;</span><span class="ident">CudaAlgorithm</span>, <span class="kw">_</span>, <span class="ident">R</span>, <span class="ident">P</span><span class="op">&gt;</span>(
+            <span class="ident">rng::dispatch</span>::<span class="op">&lt;</span>
+                <span class="op">&lt;</span><span class="ident">CudaAlgorithm</span> <span class="kw">as</span> <span class="ident">AlgorithmDefaults</span><span class="op">&gt;</span><span class="ident">::MathsCore</span>,
+                <span class="ident">CudaAlgorithm</span>, <span class="kw">_</span>, <span class="ident">R</span>, <span class="ident">P</span>,
+            <span class="op">&gt;</span>(
                 <span class="ident">local_partition</span>, <span class="ident">sample</span>, <span class="ident">algorithm_args</span>, <span class="ident">scenario</span>,
                 <span class="ident">pause_before</span>, <span class="ident">ron_args</span>, <span class="ident">normalised_args</span>,
             )

@@ -86,11 +86,12 @@
 <span id="85">85</span>
 <span id="86">86</span>
 <span id="87">87</span>
+<span id="88">88</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">anyhow::Context</span>;
 
 <span class="kw">use</span> <span class="ident">rustcoalescence_algorithms</span>::{<span class="ident">result::SimulationOutcome</span>, <span class="ident">Algorithm</span>};
 
-<span class="kw">use</span> <span class="ident">necsim_core::reporter::Reporter</span>;
+<span class="kw">use</span> <span class="ident">necsim_core</span>::{<span class="ident">cogs::MathsCore</span>, <span class="ident">reporter::Reporter</span>};
 <span class="kw">use</span> <span class="ident">necsim_core_bond</span>::{<span class="ident">NonNegativeF64</span>, <span class="ident">PositiveF64</span>};
 <span class="kw">use</span> <span class="ident">necsim_impls_no_std::cogs::origin_sampler::pre_sampler::OriginPreSampler</span>;
 <span class="kw">use</span> <span class="ident">necsim_partitioning_core::LocalPartition</span>;
@@ -100,8 +101,9 @@
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::args::config::sample</span>::{<span class="ident">Sample</span>, <span class="ident">SampleMode</span>, <span class="ident">SampleModeRestart</span>, <span class="ident">SampleOrigin</span>};
 
 <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">simulate</span><span class="op">&lt;</span>
-    <span class="ident">A</span>: <span class="ident">Algorithm</span><span class="op">&lt;</span><span class="ident">O</span>, <span class="ident">R</span>, <span class="ident">P</span><span class="op">&gt;</span>,
-    <span class="ident">O</span>: <span class="ident">Scenario</span><span class="op">&lt;</span><span class="ident">A::MathsCore</span>, <span class="ident">A::Rng</span><span class="op">&gt;</span>,
+    <span class="ident">M</span>: <span class="ident">MathsCore</span>,
+    <span class="ident">A</span>: <span class="ident">Algorithm</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">O</span>, <span class="ident">R</span>, <span class="ident">P</span><span class="op">&gt;</span>,
+    <span class="ident">O</span>: <span class="ident">Scenario</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">A::Rng</span><span class="op">&gt;</span>,
     <span class="ident">R</span>: <span class="ident">Reporter</span>,
     <span class="ident">P</span>: <span class="ident">LocalPartition</span><span class="op">&lt;</span><span class="ident">R</span><span class="op">&gt;</span>,
 <span class="op">&gt;</span>(
@@ -111,7 +113,7 @@
     <span class="ident">sample</span>: <span class="ident">Sample</span>,
     <span class="ident">pause_before</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">NonNegativeF64</span><span class="op">&gt;</span>,
     <span class="ident">local_partition</span>: <span class="kw-2">&amp;mut</span> <span class="ident">P</span>,
-) -&gt; <span class="ident">anyhow::Result</span><span class="op">&lt;</span><span class="ident">SimulationOutcome</span><span class="op">&lt;</span><span class="ident">A::MathsCore</span>, <span class="ident">A::Rng</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+) -&gt; <span class="ident">anyhow::Result</span><span class="op">&lt;</span><span class="ident">SimulationOutcome</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">A::Rng</span><span class="op">&gt;</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">lineages</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">sample</span>.<span class="ident">origin</span> {
         <span class="ident">SampleOrigin::Habitat</span> =&gt; {
             <span class="kw">return</span> <span class="ident">A::initialise_and_simulate</span>(

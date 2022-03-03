@@ -241,25 +241,15 @@
 <span id="240">240</span>
 <span id="241">241</span>
 <span id="242">242</span>
-<span id="243">243</span>
-<span id="244">244</span>
-<span id="245">245</span>
-<span id="246">246</span>
-<span id="247">247</span>
-<span id="248">248</span>
-<span id="249">249</span>
-<span id="250">250</span>
-<span id="251">251</span>
-<span id="252">252</span>
-<span id="253">253</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">std::marker::PhantomData</span>;
 
 <span class="kw">use</span> <span class="ident">necsim_core</span>::{
-    <span class="ident">lineage::GlobalLineageReference</span>, <span class="ident">reporter::Reporter</span>, <span class="ident">simulation::SimulationBuilder</span>,
+    <span class="ident">cogs::MathsCore</span>, <span class="ident">lineage::GlobalLineageReference</span>, <span class="ident">reporter::Reporter</span>,
+    <span class="ident">simulation::SimulationBuilder</span>,
 };
 <span class="kw">use</span> <span class="ident">necsim_core_bond::NonNegativeF64</span>;
 
-<span class="kw">use</span> <span class="ident">necsim_impls_cuda::cogs</span>::{<span class="ident">maths::NvptxMathsCore</span>, <span class="ident">rng::CudaRng</span>};
+<span class="kw">use</span> <span class="ident">necsim_impls_cuda::cogs::rng::CudaRng</span>;
 <span class="kw">use</span> <span class="ident">necsim_impls_no_std</span>::{
     <span class="ident">cogs</span>::{
         <span class="ident">active_lineage_sampler::independent::event_time_sampler::exp::ExpEventTimeSampler</span>,
@@ -303,52 +293,43 @@
 
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::too_many_lines</span>)]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">initialise_and_simulate</span><span class="op">&lt;</span>
-    <span class="ident">O</span>: <span class="ident">Scenario</span><span class="op">&lt;</span><span class="ident">NvptxMathsCore</span>, <span class="ident">CudaRng</span><span class="op">&lt;</span><span class="ident">NvptxMathsCore</span>, <span class="ident">WyHash</span><span class="op">&lt;</span><span class="ident">NvptxMathsCore</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+    <span class="ident">M</span>: <span class="ident">MathsCore</span>,
+    <span class="ident">O</span>: <span class="ident">Scenario</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">CudaRng</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">WyHash</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     <span class="ident">R</span>: <span class="ident">Reporter</span>,
     <span class="ident">P</span>: <span class="ident">LocalPartition</span><span class="op">&lt;</span><span class="ident">R</span><span class="op">&gt;</span>,
     <span class="ident">I</span>: <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">u64</span><span class="op">&gt;</span>,
-    <span class="ident">L</span>: <span class="ident">CudaLineageStoreSampleInitialiser</span><span class="op">&lt;</span>
-        <span class="ident">NvptxMathsCore</span>,
-        <span class="ident">CudaRng</span><span class="op">&lt;</span><span class="ident">NvptxMathsCore</span>, <span class="ident">WyHash</span><span class="op">&lt;</span><span class="ident">NvptxMathsCore</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-        <span class="ident">O</span>,
-        <span class="ident">Error</span>,
-    <span class="op">&gt;</span>,
+    <span class="ident">L</span>: <span class="ident">CudaLineageStoreSampleInitialiser</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">CudaRng</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">WyHash</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span><span class="op">&gt;</span>, <span class="ident">O</span>, <span class="ident">Error</span><span class="op">&gt;</span>,
     <span class="ident">Error</span>: <span class="ident">From</span><span class="op">&lt;</span><span class="ident">CudaError</span><span class="op">&gt;</span>,
 <span class="op">&gt;</span>(
     <span class="ident">args</span>: <span class="kw-2">&amp;</span><span class="ident">CudaArguments</span>,
-    <span class="ident">rng</span>: <span class="ident">CudaRng</span><span class="op">&lt;</span><span class="ident">NvptxMathsCore</span>, <span class="ident">WyHash</span><span class="op">&lt;</span><span class="ident">NvptxMathsCore</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+    <span class="ident">rng</span>: <span class="ident">CudaRng</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">WyHash</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     <span class="ident">scenario</span>: <span class="ident">O</span>,
-    <span class="ident">pre_sampler</span>: <span class="ident">OriginPreSampler</span><span class="op">&lt;</span><span class="ident">NvptxMathsCore</span>, <span class="ident">I</span><span class="op">&gt;</span>,
+    <span class="ident">pre_sampler</span>: <span class="ident">OriginPreSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">I</span><span class="op">&gt;</span>,
     <span class="ident">pause_before</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">NonNegativeF64</span><span class="op">&gt;</span>,
     <span class="ident">local_partition</span>: <span class="kw-2">&amp;mut</span> <span class="ident">P</span>,
     <span class="ident">lineage_store_sampler_initialiser</span>: <span class="ident">L</span>,
-) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">SimulationOutcome</span><span class="op">&lt;</span><span class="ident">NvptxMathsCore</span>, <span class="ident">CudaRng</span><span class="op">&lt;</span><span class="ident">NvptxMathsCore</span>, <span class="ident">WyHash</span><span class="op">&lt;</span><span class="ident">NvptxMathsCore</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>, <span class="ident">Error</span><span class="op">&gt;</span>
+) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">SimulationOutcome</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">CudaRng</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">WyHash</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>, <span class="ident">Error</span><span class="op">&gt;</span>
 <span class="kw">where</span>
     <span class="ident">O::Habitat</span>: <span class="ident">RustToCuda</span>,
-    <span class="ident">O::DispersalSampler</span><span class="op">&lt;</span>
-        <span class="ident">InMemoryPackedAliasDispersalSampler</span><span class="op">&lt;</span>
-            <span class="ident">NvptxMathsCore</span>,
-            <span class="ident">O::Habitat</span>,
-            <span class="ident">CudaRng</span><span class="op">&lt;</span><span class="ident">NvptxMathsCore</span>, <span class="ident">WyHash</span><span class="op">&lt;</span><span class="ident">NvptxMathsCore</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-        <span class="op">&gt;</span>,
-    <span class="op">&gt;</span>: <span class="ident">RustToCuda</span>,
+    <span class="ident">O::DispersalSampler</span><span class="op">&lt;</span><span class="ident">InMemoryPackedAliasDispersalSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">O::Habitat</span>, <span class="ident">CudaRng</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">WyHash</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>:
+        <span class="ident">RustToCuda</span>,
     <span class="ident">O::TurnoverRate</span>: <span class="ident">RustToCuda</span>,
     <span class="ident">O::SpeciationProbability</span>: <span class="ident">RustToCuda</span>,
     <span class="ident">SimulationKernel</span><span class="op">&lt;</span>
-        <span class="ident">NvptxMathsCore</span>,
+        <span class="ident">M</span>,
         <span class="ident">O::Habitat</span>,
-        <span class="ident">CudaRng</span><span class="op">&lt;</span><span class="ident">NvptxMathsCore</span>, <span class="ident">WyHash</span><span class="op">&lt;</span><span class="ident">NvptxMathsCore</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+        <span class="ident">CudaRng</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">WyHash</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span><span class="op">&gt;</span>,
         <span class="ident">GlobalLineageReference</span>,
-        <span class="ident">IndependentLineageStore</span><span class="op">&lt;</span><span class="ident">NvptxMathsCore</span>, <span class="ident">O::Habitat</span><span class="op">&gt;</span>,
+        <span class="ident">IndependentLineageStore</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">O::Habitat</span><span class="op">&gt;</span>,
         <span class="ident">NeverEmigrationExit</span>,
         <span class="ident">L::DispersalSampler</span>,
-        <span class="ident">IndependentCoalescenceSampler</span><span class="op">&lt;</span><span class="ident">NvptxMathsCore</span>, <span class="ident">O::Habitat</span><span class="op">&gt;</span>,
+        <span class="ident">IndependentCoalescenceSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">O::Habitat</span><span class="op">&gt;</span>,
         <span class="ident">O::TurnoverRate</span>,
         <span class="ident">O::SpeciationProbability</span>,
         <span class="ident">IndependentEventSampler</span><span class="op">&lt;</span>
-            <span class="ident">NvptxMathsCore</span>,
+            <span class="ident">M</span>,
             <span class="ident">O::Habitat</span>,
-            <span class="ident">CudaRng</span><span class="op">&lt;</span><span class="ident">NvptxMathsCore</span>, <span class="ident">WyHash</span><span class="op">&lt;</span><span class="ident">NvptxMathsCore</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+            <span class="ident">CudaRng</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">WyHash</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span><span class="op">&gt;</span>,
             <span class="ident">NeverEmigrationExit</span>,
             <span class="ident">L::DispersalSampler</span>,
             <span class="ident">O::TurnoverRate</span>,
@@ -359,20 +340,20 @@
         <span class="ident">R::ReportSpeciation</span>,
         <span class="ident">R::ReportDispersal</span>,
     <span class="op">&gt;</span>: <span class="ident">SimulatableKernel</span><span class="op">&lt;</span>
-        <span class="ident">NvptxMathsCore</span>,
+        <span class="ident">M</span>,
         <span class="ident">O::Habitat</span>,
-        <span class="ident">CudaRng</span><span class="op">&lt;</span><span class="ident">NvptxMathsCore</span>, <span class="ident">WyHash</span><span class="op">&lt;</span><span class="ident">NvptxMathsCore</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+        <span class="ident">CudaRng</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">WyHash</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span><span class="op">&gt;</span>,
         <span class="ident">GlobalLineageReference</span>,
-        <span class="ident">IndependentLineageStore</span><span class="op">&lt;</span><span class="ident">NvptxMathsCore</span>, <span class="ident">O::Habitat</span><span class="op">&gt;</span>,
+        <span class="ident">IndependentLineageStore</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">O::Habitat</span><span class="op">&gt;</span>,
         <span class="ident">NeverEmigrationExit</span>,
         <span class="ident">L::DispersalSampler</span>,
-        <span class="ident">IndependentCoalescenceSampler</span><span class="op">&lt;</span><span class="ident">NvptxMathsCore</span>, <span class="ident">O::Habitat</span><span class="op">&gt;</span>,
+        <span class="ident">IndependentCoalescenceSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">O::Habitat</span><span class="op">&gt;</span>,
         <span class="ident">O::TurnoverRate</span>,
         <span class="ident">O::SpeciationProbability</span>,
         <span class="ident">IndependentEventSampler</span><span class="op">&lt;</span>
-            <span class="ident">NvptxMathsCore</span>,
+            <span class="ident">M</span>,
             <span class="ident">O::Habitat</span>,
-            <span class="ident">CudaRng</span><span class="op">&lt;</span><span class="ident">NvptxMathsCore</span>, <span class="ident">WyHash</span><span class="op">&lt;</span><span class="ident">NvptxMathsCore</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+            <span class="ident">CudaRng</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">WyHash</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span><span class="op">&gt;</span>,
             <span class="ident">NeverEmigrationExit</span>,
             <span class="ident">L::DispersalSampler</span>,
             <span class="ident">O::TurnoverRate</span>,
@@ -391,11 +372,8 @@
         <span class="ident">speciation_probability</span>,
         <span class="ident">origin_sampler_auxiliary</span>,
         <span class="ident">decomposition_auxiliary</span>,
-    ) <span class="op">=</span> <span class="ident">scenario</span>.<span class="ident">build</span>::<span class="op">&lt;</span><span class="ident">InMemoryPackedAliasDispersalSampler</span><span class="op">&lt;</span>
-        <span class="ident">NvptxMathsCore</span>,
-        <span class="ident">O::Habitat</span>,
-        <span class="ident">CudaRng</span><span class="op">&lt;</span><span class="ident">NvptxMathsCore</span>, <span class="ident">WyHash</span><span class="op">&lt;</span><span class="ident">NvptxMathsCore</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    <span class="op">&gt;</span><span class="op">&gt;</span>();
+    ) <span class="op">=</span> <span class="ident">scenario</span>
+        .<span class="ident">build</span>::<span class="op">&lt;</span><span class="ident">InMemoryPackedAliasDispersalSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">O::Habitat</span>, <span class="ident">CudaRng</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">WyHash</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>();
     <span class="kw">let</span> <span class="ident">coalescence_sampler</span> <span class="op">=</span> <span class="ident">IndependentCoalescenceSampler::default</span>();
     <span class="kw">let</span> <span class="ident">event_sampler</span> <span class="op">=</span> <span class="ident">IndependentEventSampler::default</span>();
 
@@ -436,7 +414,7 @@
     <span class="kw">let</span> <span class="ident">immigration_entry</span> <span class="op">=</span> <span class="ident">NeverImmigrationEntry::default</span>();
 
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">simulation</span> <span class="op">=</span> <span class="ident">SimulationBuilder</span> {
-        <span class="ident">maths</span>: <span class="ident">PhantomData</span>::<span class="op">&lt;</span><span class="ident">NvptxMathsCore</span><span class="op">&gt;</span>,
+        <span class="ident">maths</span>: <span class="ident">PhantomData</span>::<span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span>,
         <span class="ident">habitat</span>,
         <span class="ident">lineage_reference</span>: <span class="ident">PhantomData</span>::<span class="op">&lt;</span><span class="ident">GlobalLineageReference</span><span class="op">&gt;</span>,
         <span class="ident">lineage_store</span>,

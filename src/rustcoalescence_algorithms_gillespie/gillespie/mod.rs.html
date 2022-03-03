@@ -13,7 +13,15 @@
 <span id="12">12</span>
 <span id="13">13</span>
 <span id="14">14</span>
-</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">rustcoalescence_algorithms::AlgorithmParamters</span>;
+<span id="15">15</span>
+<span id="16">16</span>
+<span id="17">17</span>
+<span id="18">18</span>
+<span id="19">19</span>
+<span id="20">20</span>
+</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">necsim_impls_no_std::cogs::maths::intrinsics::IntrinsicsMathsCore</span>;
+
+<span class="kw">use</span> <span class="ident">rustcoalescence_algorithms</span>::{<span class="ident">AlgorithmDefaults</span>, <span class="ident">AlgorithmParamters</span>};
 
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::arguments::MonolithicArguments</span>;
 
@@ -26,6 +34,10 @@
 <span class="kw">impl</span> <span class="ident">AlgorithmParamters</span> <span class="kw">for</span> <span class="ident">GillespieAlgorithm</span> {
     <span class="kw">type</span> <span class="ident">Arguments</span> <span class="op">=</span> <span class="ident">MonolithicArguments</span>;
     <span class="kw">type</span> <span class="ident">Error</span> <span class="op">=</span> <span class="op">!</span>;
+}
+
+<span class="kw">impl</span> <span class="ident">AlgorithmDefaults</span> <span class="kw">for</span> <span class="ident">GillespieAlgorithm</span> {
+    <span class="kw">type</span> <span class="ident">MathsCore</span> <span class="op">=</span> <span class="ident">IntrinsicsMathsCore</span>;
 }
 </code></pre></div>
 </section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="rustcoalescence_algorithms_gillespie" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.59.0-nightly (c5ecc1570 2021-12-15)" ></div>

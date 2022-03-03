@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["result",""],["strategy",""]],"trait":[["Algorithm",""],["AlgorithmParamters",""]]});
+initSidebarItems({"mod":[["result",""],["strategy",""]],"trait":[["Algorithm",""],["AlgorithmDefaults",""],["AlgorithmParamters",""]]});
