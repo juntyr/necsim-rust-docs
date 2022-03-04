@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["seahash",""],["wyhash",""]]});
+initSidebarItems({"mod":[["rand",""],["seahash",""],["wyhash",""]]});
