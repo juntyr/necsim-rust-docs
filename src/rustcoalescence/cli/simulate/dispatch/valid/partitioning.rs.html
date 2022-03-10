@@ -64,11 +64,7 @@
 <span id="63">63</span>
 <span id="64">64</span>
 <span id="65">65</span>
-<span id="66">66</span>
-<span id="67">67</span>
-</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">anyhow::Context</span>;
-
-<span class="kw">use</span> <span class="ident">necsim_core_bond</span>::{<span class="ident">NonNegativeF64</span>, <span class="ident">OpenClosedUnitF64</span> <span class="kw">as</span> <span class="ident">PositiveUnitF64</span>};
+</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">necsim_core_bond</span>::{<span class="ident">NonNegativeF64</span>, <span class="ident">OpenClosedUnitF64</span> <span class="kw">as</span> <span class="ident">PositiveUnitF64</span>};
 <span class="kw">use</span> <span class="ident">necsim_impls_std::event_log::recorder::EventLogRecorder</span>;
 <span class="kw">use</span> <span class="ident">necsim_partitioning_core::Partitioning</span> <span class="kw">as</span> <span class="kw">_</span>;
 <span class="kw">use</span> <span class="ident">necsim_plugins_core</span>::{<span class="ident">import::AnyReporterPluginVec</span>, <span class="ident">match_any_reporter_plugin_vec</span>};
@@ -105,32 +101,32 @@
     <span class="macro">match_any_reporter_plugin_vec!</span>(<span class="ident">reporters</span> =&gt; <span class="op">|</span><span class="ident">reporter</span><span class="op">|</span> {
         <span class="comment">// Initialise the local partition and the simulation</span>
         <span class="kw">match</span> <span class="ident">partitioning</span> {
-            <span class="ident">Partitioning::Monolithic</span>(<span class="ident">partitioning</span>) =&gt; <span class="kw">match</span> <span class="ident">partitioning</span>.<span class="ident">into_local_partition</span>(
-                <span class="ident">DynamicReporterContext::new</span>(<span class="ident">reporter</span>), <span class="ident">event_log</span>
-            ).<span class="ident">with_context</span>(<span class="op">|</span><span class="op">|</span> <span class="string">&quot;Failed to initialise the local monolithic partition.&quot;</span>)<span class="question-mark">?</span> {
-                <span class="ident">MonolithicLocalPartition::Live</span>(<span class="ident">partition</span>) =&gt; <span class="ident">algorithm_scenario::dispatch</span>(
-                    <span class="kw-2">*</span><span class="ident">partition</span>, <span class="ident">speciation_probability_per_generation</span>, <span class="ident">sample</span>, <span class="ident">scenario</span>,
-                    <span class="ident">algorithm</span>, <span class="ident">pause_before</span>, <span class="ident">ron_args</span>, <span class="ident">normalised_args</span>,
-                ),
-                <span class="ident">MonolithicLocalPartition::Recorded</span>(<span class="ident">partition</span>) =&gt; <span class="ident">algorithm_scenario::dispatch</span>(
-                    <span class="kw-2">*</span><span class="ident">partition</span>, <span class="ident">speciation_probability_per_generation</span>, <span class="ident">sample</span>, <span class="ident">scenario</span>,
-                    <span class="ident">algorithm</span>, <span class="ident">pause_before</span>, <span class="ident">ron_args</span>, <span class="ident">normalised_args</span>,
-                ),
-            },
+            <span class="ident">Partitioning::Monolithic</span>(<span class="ident">partitioning</span>) =&gt; <span class="ident">partitioning</span>.<span class="ident">with_local_partition</span>(
+                <span class="ident">DynamicReporterContext::new</span>(<span class="ident">reporter</span>), <span class="ident">event_log</span>, <span class="op">|</span><span class="ident">partition</span><span class="op">|</span> <span class="kw">match</span> <span class="ident">partition</span> {
+                    <span class="ident">MonolithicLocalPartition::Live</span>(<span class="ident">partition</span>) =&gt; <span class="ident">algorithm_scenario::dispatch</span>(
+                        <span class="kw-2">*</span><span class="ident">partition</span>, <span class="ident">speciation_probability_per_generation</span>, <span class="ident">sample</span>, <span class="ident">scenario</span>,
+                        <span class="ident">algorithm</span>, <span class="ident">pause_before</span>, <span class="ident">ron_args</span>, <span class="ident">normalised_args</span>,
+                    ),
+                    <span class="ident">MonolithicLocalPartition::Recorded</span>(<span class="ident">partition</span>) =&gt; <span class="ident">algorithm_scenario::dispatch</span>(
+                        <span class="kw-2">*</span><span class="ident">partition</span>, <span class="ident">speciation_probability_per_generation</span>, <span class="ident">sample</span>, <span class="ident">scenario</span>,
+                        <span class="ident">algorithm</span>, <span class="ident">pause_before</span>, <span class="ident">ron_args</span>, <span class="ident">normalised_args</span>,
+                    ),
+                },
+            ),
             <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;necsim-partitioning-mpi&quot;</span>)]</span>
-            <span class="ident">Partitioning::Mpi</span>(<span class="ident">partitioning</span>) =&gt; <span class="kw">match</span> <span class="ident">partitioning</span>.<span class="ident">into_local_partition</span>(
-                <span class="ident">DynamicReporterContext::new</span>(<span class="ident">reporter</span>), <span class="ident">event_log</span>
-            ).<span class="ident">with_context</span>(<span class="op">|</span><span class="op">|</span> <span class="string">&quot;Failed to initialise the local MPI partition.&quot;</span>)<span class="question-mark">?</span> {
-                <span class="ident">MpiLocalPartition::Root</span>(<span class="ident">partition</span>) =&gt; <span class="ident">algorithm_scenario::dispatch</span>(
-                    <span class="kw-2">*</span><span class="ident">partition</span>, <span class="ident">speciation_probability_per_generation</span>, <span class="ident">sample</span>, <span class="ident">scenario</span>,
-                    <span class="ident">algorithm</span>, <span class="ident">pause_before</span>, <span class="ident">ron_args</span>, <span class="ident">normalised_args</span>,
-                ),
-                <span class="ident">MpiLocalPartition::Parallel</span>(<span class="ident">partition</span>) =&gt; <span class="ident">algorithm_scenario::dispatch</span>(
-                    <span class="kw-2">*</span><span class="ident">partition</span>, <span class="ident">speciation_probability_per_generation</span>, <span class="ident">sample</span>, <span class="ident">scenario</span>,
-                    <span class="ident">algorithm</span>, <span class="ident">pause_before</span>, <span class="ident">ron_args</span>, <span class="ident">normalised_args</span>,
-                ),
-            },
-        }
+            <span class="ident">Partitioning::Mpi</span>(<span class="ident">partitioning</span>) =&gt; <span class="ident">partitioning</span>.<span class="ident">with_local_partition</span>(
+                <span class="ident">DynamicReporterContext::new</span>(<span class="ident">reporter</span>), <span class="ident">event_log</span>, <span class="op">|</span><span class="ident">partition</span><span class="op">|</span> <span class="kw">match</span> <span class="ident">partition</span> {
+                    <span class="ident">MpiLocalPartition::Root</span>(<span class="ident">partition</span>) =&gt; <span class="ident">algorithm_scenario::dispatch</span>(
+                        <span class="kw-2">*</span><span class="ident">partition</span>, <span class="ident">speciation_probability_per_generation</span>, <span class="ident">sample</span>, <span class="ident">scenario</span>,
+                        <span class="ident">algorithm</span>, <span class="ident">pause_before</span>, <span class="ident">ron_args</span>, <span class="ident">normalised_args</span>,
+                    ),
+                    <span class="ident">MpiLocalPartition::Parallel</span>(<span class="ident">partition</span>) =&gt; <span class="ident">algorithm_scenario::dispatch</span>(
+                        <span class="kw-2">*</span><span class="ident">partition</span>, <span class="ident">speciation_probability_per_generation</span>, <span class="ident">sample</span>, <span class="ident">scenario</span>,
+                        <span class="ident">algorithm</span>, <span class="ident">pause_before</span>, <span class="ident">ron_args</span>, <span class="ident">normalised_args</span>,
+                    ),
+                },
+            ),
+        }.<span class="ident">flatten</span>()
     })
 }
 </code></pre></div>

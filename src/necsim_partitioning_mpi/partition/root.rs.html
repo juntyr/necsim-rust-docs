@@ -430,26 +430,9 @@
 <span id="429">429</span>
 <span id="430">430</span>
 <span id="431">431</span>
-<span id="432">432</span>
-<span id="433">433</span>
-<span id="434">434</span>
-<span id="435">435</span>
-<span id="436">436</span>
-<span id="437">437</span>
-<span id="438">438</span>
-<span id="439">439</span>
-<span id="440">440</span>
-<span id="441">441</span>
-<span id="442">442</span>
-<span id="443">443</span>
-<span id="444">444</span>
-<span id="445">445</span>
-<span id="446">446</span>
-<span id="447">447</span>
-<span id="448">448</span>
-<span id="449">449</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">std</span>::{
     <span class="ident">fmt</span>,
+    <span class="ident">marker::PhantomData</span>,
     <span class="ident">mem::ManuallyDrop</span>,
     <span class="ident">num</span>::{<span class="ident">NonZeroU32</span>, <span class="ident">Wrapping</span>},
     <span class="ident">time</span>::{<span class="ident">Duration</span>, <span class="ident">Instant</span>},
@@ -460,7 +443,6 @@
     <span class="ident">datatype::Equivalence</span>,
     <span class="ident">environment::Universe</span>,
     <span class="ident">point_to_point</span>::{<span class="ident">Destination</span>, <span class="ident">Source</span>},
-    <span class="ident">request</span>::{<span class="ident">CancelGuard</span>, <span class="ident">Request</span>, <span class="ident">StaticScope</span>},
     <span class="ident">topology</span>::{<span class="ident">Communicator</span>, <span class="ident">SystemCommunicator</span>},
 };
 
@@ -479,38 +461,39 @@
     <span class="ident">iterator::ImmigrantPopIterator</span>, <span class="ident">partition::Partition</span>, <span class="ident">LocalPartition</span>, <span class="ident">MigrationMode</span>,
 };
 
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::MpiPartitioning</span>;
+<span class="kw">use</span> <span class="kw">crate</span>::{
+    <span class="ident">partition::utils</span>::{<span class="ident">reduce_lexicographic_min_time_rank</span>, <span class="ident">MpiMigratingLineage</span>},
+    <span class="ident">request::DataOrRequest</span>,
+    <span class="ident">MpiPartitioning</span>,
+};
 
-<span class="kw">use</span> <span class="ident"><span class="kw">super</span>::utils</span>::{<span class="ident">reduce_lexicographic_min_time_rank</span>, <span class="ident">MpiMigratingLineage</span>};
-
-<span class="kw">static</span> <span class="kw-2">mut</span> <span class="ident">MPI_LOCAL_CONTINUE</span>: <span class="ident">bool</span> <span class="op">=</span> <span class="bool-val">false</span>;
-<span class="kw">static</span> <span class="kw-2">mut</span> <span class="ident">MPI_GLOBAL_CONTINUE</span>: <span class="ident">bool</span> <span class="op">=</span> <span class="bool-val">false</span>;
-
-<span class="kw">static</span> <span class="kw-2">mut</span> <span class="ident">MPI_MIGRATION_BUFFERS</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">MigratingLineage</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Vec::new</span>();
-
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">MpiRootPartition</span><span class="op">&lt;</span><span class="ident">R</span>: <span class="ident">Reporter</span><span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">MpiRootPartition</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span>, <span class="ident">R</span>: <span class="ident">Reporter</span><span class="op">&gt;</span> {
     <span class="ident">_universe</span>: <span class="ident">Universe</span>,
     <span class="ident">world</span>: <span class="ident">SystemCommunicator</span>,
-    <span class="ident">last_report_time</span>: <span class="ident">Instant</span>,
-    <span class="ident">all_remaining</span>: <span class="ident">Box</span><span class="op">&lt;</span>[<span class="ident">u64</span>]<span class="op">&gt;</span>,
+    <span class="ident">mpi_local_global_wait</span>: <span class="ident">DataOrRequest</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span>, (<span class="ident">bool</span>, <span class="ident">bool</span>)<span class="op">&gt;</span>,
+    <span class="ident">mpi_migration_buffers</span>: <span class="ident">Box</span><span class="op">&lt;</span>[<span class="ident">DataOrRequest</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span>, <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">MigratingLineage</span><span class="op">&gt;</span><span class="op">&gt;</span>]<span class="op">&gt;</span>,
     <span class="ident">migration_buffers</span>: <span class="ident">Box</span><span class="op">&lt;</span>[<span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">MigratingLineage</span><span class="op">&gt;</span>]<span class="op">&gt;</span>,
+    <span class="ident">all_remaining</span>: <span class="ident">Box</span><span class="op">&lt;</span>[<span class="ident">u64</span>]<span class="op">&gt;</span>,
+    <span class="ident">last_report_time</span>: <span class="ident">Instant</span>,
     <span class="ident">last_migration_times</span>: <span class="ident">Box</span><span class="op">&lt;</span>[<span class="ident">Instant</span>]<span class="op">&gt;</span>,
-    <span class="ident">emigration_requests</span>: <span class="ident">Box</span><span class="op">&lt;</span>[<span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Request</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span>, <span class="ident">StaticScope</span><span class="op">&gt;</span><span class="op">&gt;</span>]<span class="op">&gt;</span>,
+    <span class="ident">communicated_since_last_barrier</span>: <span class="ident">bool</span>,
     <span class="ident">reporter</span>: <span class="ident">ManuallyDrop</span><span class="op">&lt;</span><span class="ident">FilteredReporter</span><span class="op">&lt;</span><span class="ident">R</span>, <span class="ident">False</span>, <span class="ident">False</span>, <span class="ident">True</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     <span class="ident">recorder</span>: <span class="ident">EventLogRecorder</span>,
-    <span class="ident">barrier</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Request</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span>, <span class="ident">StaticScope</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    <span class="ident">communicated_since_last_barrier</span>: <span class="ident">bool</span>,
     <span class="ident">finalised</span>: <span class="ident">bool</span>,
+    <span class="ident">migration_interval</span>: <span class="ident">Duration</span>,
+    <span class="ident">progress_interval</span>: <span class="ident">Duration</span>,
+    <span class="ident">_marker</span>: <span class="ident">PhantomData</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;p</span> ()<span class="op">&gt;</span>,
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">R</span>: <span class="ident">Reporter</span><span class="op">&gt;</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">MpiRootPartition</span><span class="op">&lt;</span><span class="ident">R</span><span class="op">&gt;</span> {
+<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span>, <span class="ident">R</span>: <span class="ident">Reporter</span><span class="op">&gt;</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">MpiRootPartition</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span>, <span class="ident">R</span><span class="op">&gt;</span> {
     <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">fmt</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="ident">fmt</span>.<span class="ident">debug_struct</span>(<span class="macro">stringify!</span>(<span class="ident">MpiRootPartition</span>)).<span class="ident">finish</span>()
     }
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">R</span>: <span class="ident">Reporter</span><span class="op">&gt;</span> <span class="ident">Drop</span> <span class="kw">for</span> <span class="ident">MpiRootPartition</span><span class="op">&lt;</span><span class="ident">R</span><span class="op">&gt;</span> {
+<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span>, <span class="ident">R</span>: <span class="ident">Reporter</span><span class="op">&gt;</span> <span class="ident">Drop</span> <span class="kw">for</span> <span class="ident">MpiRootPartition</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span>, <span class="ident">R</span><span class="op">&gt;</span> {
     <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
+        <span class="comment">// Safety: destructor is only run once</span>
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">finalised</span> {
             <span class="kw">unsafe</span> { <span class="ident">ManuallyDrop::take</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">reporter</span>) }.<span class="ident">finalise</span>();
         } <span class="kw">else</span> {
@@ -518,71 +501,61 @@
                 <span class="ident">ManuallyDrop::drop</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">reporter</span>);
             }
         }
-
-        <span class="kw">for</span> <span class="ident">request</span> <span class="kw">in</span> <span class="self">self</span>.<span class="ident">emigration_requests</span>.<span class="ident">iter_mut</span>() {
-            <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">request</span>) <span class="op">=</span> <span class="ident">request</span>.<span class="ident">take</span>() {
-                <span class="ident">std::mem::drop</span>(<span class="ident">CancelGuard::from</span>(<span class="ident">request</span>));
-            }
-        }
-
-        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">barrier</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">barrier</span>.<span class="ident">take</span>() {
-            <span class="ident">std::mem::drop</span>(<span class="ident">CancelGuard::from</span>(<span class="ident">barrier</span>));
-        }
     }
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">R</span>: <span class="ident">Reporter</span><span class="op">&gt;</span> <span class="ident">MpiRootPartition</span><span class="op">&lt;</span><span class="ident">R</span><span class="op">&gt;</span> {
-    <span class="kw">const</span> <span class="ident">MPI_MIGRATION_WAIT_TIME</span>: <span class="ident">Duration</span> <span class="op">=</span> <span class="ident">Duration::from_millis</span>(<span class="number">100_u64</span>);
-    <span class="kw">const</span> <span class="ident">MPI_PROGRESS_WAIT_TIME</span>: <span class="ident">Duration</span> <span class="op">=</span> <span class="ident">Duration::from_millis</span>(<span class="number">100_u64</span>);
-
+<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span>, <span class="ident">R</span>: <span class="ident">Reporter</span><span class="op">&gt;</span> <span class="ident">MpiRootPartition</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span>, <span class="ident">R</span><span class="op">&gt;</span> {
     <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">new</span>(
         <span class="ident">universe</span>: <span class="ident">Universe</span>,
-        <span class="ident">world</span>: <span class="ident">SystemCommunicator</span>,
+        <span class="ident">mpi_local_global_wait</span>: <span class="ident">DataOrRequest</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span>, (<span class="ident">bool</span>, <span class="ident">bool</span>)<span class="op">&gt;</span>,
+        <span class="ident">mpi_migration_buffers</span>: <span class="ident">Box</span><span class="op">&lt;</span>[<span class="ident">DataOrRequest</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span>, <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">MigratingLineage</span><span class="op">&gt;</span><span class="op">&gt;</span>]<span class="op">&gt;</span>,
         <span class="ident">reporter</span>: <span class="ident">FilteredReporter</span><span class="op">&lt;</span><span class="ident">R</span>, <span class="ident">False</span>, <span class="ident">False</span>, <span class="ident">True</span><span class="op">&gt;</span>,
         <span class="kw-2">mut</span> <span class="ident">recorder</span>: <span class="ident">EventLogRecorder</span>,
+        <span class="ident">migration_interval</span>: <span class="ident">Duration</span>,
+        <span class="ident">progress_interval</span>: <span class="ident">Duration</span>,
     ) -&gt; <span class="self">Self</span> {
         <span class="ident">recorder</span>.<span class="ident">set_event_filter</span>(<span class="ident">R::ReportSpeciation::VALUE</span>, <span class="ident">R::ReportDispersal::VALUE</span>);
+
+        <span class="kw">let</span> <span class="ident">world</span> <span class="op">=</span> <span class="ident">universe</span>.<span class="ident">world</span>();
 
         <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::cast_sign_loss</span>)]</span>
         <span class="kw">let</span> <span class="ident">world_size</span> <span class="op">=</span> <span class="ident">world</span>.<span class="ident">size</span>() <span class="kw">as</span> <span class="ident">usize</span>;
 
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">mpi_migration_buffers</span> <span class="op">=</span> <span class="ident">Vec::with_capacity</span>(<span class="ident">world_size</span>);
-        <span class="ident">mpi_migration_buffers</span>.<span class="ident">resize_with</span>(<span class="ident">world_size</span>, <span class="ident">Vec::new</span>);
-
-        <span class="kw">unsafe</span> {
-            <span class="ident">MPI_MIGRATION_BUFFERS</span> <span class="op">=</span> <span class="ident">mpi_migration_buffers</span>;
-        }
-
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">migration_buffers</span> <span class="op">=</span> <span class="ident">Vec::with_capacity</span>(<span class="ident">world_size</span>);
         <span class="ident">migration_buffers</span>.<span class="ident">resize_with</span>(<span class="ident">world_size</span>, <span class="ident">Vec::new</span>);
-
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">emigration_requests</span> <span class="op">=</span> <span class="ident">Vec::with_capacity</span>(<span class="ident">world_size</span>);
-        <span class="ident">emigration_requests</span>.<span class="ident">resize_with</span>(<span class="ident">world_size</span>, <span class="op">|</span><span class="op">|</span> <span class="prelude-val">None</span>);
 
         <span class="kw">let</span> <span class="ident">now</span> <span class="op">=</span> <span class="ident">Instant::now</span>();
 
         <span class="self">Self</span> {
             <span class="ident">_universe</span>: <span class="ident">universe</span>,
             <span class="ident">world</span>,
-            <span class="ident">last_report_time</span>: <span class="ident">now</span>.<span class="ident">checked_sub</span>(<span class="ident"><span class="self">Self</span>::MPI_PROGRESS_WAIT_TIME</span>).<span class="ident">unwrap_or</span>(<span class="ident">now</span>),
-            <span class="ident">all_remaining</span>: <span class="macro">vec!</span>[<span class="number">0</span>; <span class="ident">world_size</span>].<span class="ident">into_boxed_slice</span>(),
+            <span class="ident">mpi_local_global_wait</span>,
+            <span class="ident">mpi_migration_buffers</span>,
             <span class="ident">migration_buffers</span>: <span class="ident">migration_buffers</span>.<span class="ident">into_boxed_slice</span>(),
-            <span class="ident">last_migration_times</span>: <span class="macro">vec!</span>[<span class="ident">now</span>; <span class="ident">world_size</span>].<span class="ident">into_boxed_slice</span>(),
-            <span class="ident">emigration_requests</span>: <span class="ident">emigration_requests</span>.<span class="ident">into_boxed_slice</span>(),
+            <span class="ident">all_remaining</span>: <span class="macro">vec!</span>[<span class="number">0</span>; <span class="ident">world_size</span>].<span class="ident">into_boxed_slice</span>(),
+            <span class="ident">last_report_time</span>: <span class="ident">now</span>.<span class="ident">checked_sub</span>(<span class="ident">progress_interval</span>).<span class="ident">unwrap_or</span>(<span class="ident">now</span>),
+            <span class="ident">last_migration_times</span>: <span class="macro">vec!</span>[
+                <span class="ident">now</span>.<span class="ident">checked_sub</span>(<span class="ident">migration_interval</span>).<span class="ident">unwrap_or</span>(<span class="ident">now</span>);
+                <span class="ident">world_size</span>
+            ]
+            .<span class="ident">into_boxed_slice</span>(),
+            <span class="ident">communicated_since_last_barrier</span>: <span class="bool-val">false</span>,
             <span class="ident">reporter</span>: <span class="ident">ManuallyDrop::new</span>(<span class="ident">reporter</span>),
             <span class="ident">recorder</span>,
-            <span class="ident">barrier</span>: <span class="prelude-val">None</span>,
-            <span class="ident">communicated_since_last_barrier</span>: <span class="bool-val">false</span>,
             <span class="ident">finalised</span>: <span class="bool-val">false</span>,
+            <span class="ident">migration_interval</span>,
+            <span class="ident">progress_interval</span>,
+            <span class="ident">_marker</span>: <span class="ident">PhantomData</span>::<span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;p</span> ()<span class="op">&gt;</span>,
         }
     }
 }
 
 <span class="attribute">#[<span class="ident">contract_trait</span>]</span>
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">R</span>: <span class="ident">Reporter</span><span class="op">&gt;</span> <span class="ident">LocalPartition</span><span class="op">&lt;</span><span class="ident">R</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">MpiRootPartition</span><span class="op">&lt;</span><span class="ident">R</span><span class="op">&gt;</span> {
+<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span>, <span class="ident">R</span>: <span class="ident">Reporter</span><span class="op">&gt;</span> <span class="ident">LocalPartition</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span>, <span class="ident">R</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">MpiRootPartition</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span>, <span class="ident">R</span><span class="op">&gt;</span> {
     <span class="kw">type</span> <span class="ident">ImmigrantIterator</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>
     <span class="kw">where</span>
+        <span class="lifetime">&#39;p</span>: <span class="lifetime">&#39;a</span>,
         <span class="ident">R</span>: <span class="lifetime">&#39;a</span>,
     <span class="op">=</span> <span class="ident">ImmigrantPopIterator</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>;
     <span class="kw">type</span> <span class="ident">IsLive</span> <span class="op">=</span> <span class="ident">False</span>;
@@ -605,12 +578,15 @@
         <span class="kw">unsafe</span> { <span class="ident">Partition::new_unchecked</span>(<span class="ident">rank</span>, <span class="ident">size</span>) }
     }
 
-    <span class="kw">fn</span> <span class="ident">migrate_individuals</span><span class="op">&lt;</span><span class="ident">E</span>: <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> (<span class="ident">u32</span>, <span class="ident">MigratingLineage</span>)<span class="op">&gt;</span><span class="op">&gt;</span>(
-        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
+    <span class="kw">fn</span> <span class="ident">migrate_individuals</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">E</span>: <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> (<span class="ident">u32</span>, <span class="ident">MigratingLineage</span>)<span class="op">&gt;</span><span class="op">&gt;</span>(
+        <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> <span class="self">self</span>,
         <span class="ident">emigrants</span>: <span class="kw-2">&amp;mut</span> <span class="ident">E</span>,
         <span class="ident">emigration_mode</span>: <span class="ident">MigrationMode</span>,
         <span class="ident">immigration_mode</span>: <span class="ident">MigrationMode</span>,
-    ) -&gt; <span class="ident"><span class="self">Self</span>::ImmigrantIterator</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
+    ) -&gt; <span class="ident"><span class="self">Self</span>::ImmigrantIterator</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>
+    <span class="kw">where</span>
+        <span class="lifetime">&#39;p</span>: <span class="lifetime">&#39;a</span>,
+    {
         <span class="kw">for</span> (<span class="ident">partition</span>, <span class="ident">emigrant</span>) <span class="kw">in</span> <span class="ident">emigrants</span> {
             <span class="self">self</span>.<span class="ident">migration_buffers</span>[<span class="ident">partition</span> <span class="kw">as</span> <span class="ident">usize</span>].<span class="ident">push</span>(<span class="ident">emigrant</span>);
         }
@@ -619,12 +595,12 @@
 
         <span class="kw">let</span> <span class="ident">now</span> <span class="op">=</span> <span class="ident">Instant::now</span>();
 
-        <span class="comment">// Receive incomming immigrating lineages</span>
+        <span class="comment">// Receive incoming immigrating lineages</span>
         <span class="kw">if</span> <span class="kw">match</span> <span class="ident">immigration_mode</span> {
             <span class="ident">MigrationMode::Force</span> =&gt; <span class="bool-val">true</span>,
             <span class="ident">MigrationMode::Default</span> =&gt; {
                 <span class="ident">now</span>.<span class="ident">duration_since</span>(<span class="self">self</span>.<span class="ident">last_migration_times</span>[<span class="ident">self_rank_index</span>])
-                    <span class="op">&gt;</span><span class="op">=</span> <span class="ident"><span class="self">Self</span>::MPI_MIGRATION_WAIT_TIME</span>
+                    <span class="op">&gt;</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">migration_interval</span>
             },
             <span class="ident">MigrationMode::Hold</span> =&gt; <span class="bool-val">false</span>,
         } {
@@ -634,7 +610,7 @@
 
             <span class="kw">let</span> <span class="ident">any_process</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">world</span>.<span class="ident">any_process</span>();
 
-            <span class="comment">// Probe MPI to receive</span>
+            <span class="comment">// Probe MPI to receive immigrating lineages</span>
             <span class="kw">while</span> <span class="kw">let</span> <span class="prelude-val">Some</span>((<span class="ident">msg</span>, <span class="ident">status</span>)) <span class="op">=</span>
                 <span class="ident">any_process</span>.<span class="ident">immediate_matched_probe_with_tag</span>(<span class="ident">MpiPartitioning::MPI_MIGRATION_TAG</span>)
             {
@@ -651,16 +627,9 @@
                     <span class="ident">immigration_buffer</span>.<span class="ident">reserve</span>(<span class="ident">number_immigrants</span>);
                     <span class="ident">immigration_buffer</span>.<span class="ident">set_len</span>(<span class="ident">receive_start</span> <span class="op">+</span> <span class="ident">number_immigrants</span>);
 
-                    <span class="comment">// Safety: `MpiMigratingLineage` is a transparent newtype wrapper around</span>
-                    <span class="comment">//         `MigratingLineage`</span>
-                    <span class="kw">let</span> <span class="ident">immigration_slice</span>: <span class="kw-2">&amp;mut</span> [<span class="ident">MpiMigratingLineage</span>] <span class="op">=</span>
-                        <span class="ident">std::slice::from_raw_parts_mut</span>(
-                            <span class="ident">immigration_buffer</span>
-                                .<span class="ident">as_mut_ptr</span>()
-                                .<span class="ident">cast</span>::<span class="op">&lt;</span><span class="ident">MpiMigratingLineage</span><span class="op">&gt;</span>()
-                                .<span class="ident">add</span>(<span class="ident">receive_start</span>),
-                            <span class="ident">number_immigrants</span>,
-                        );
+                    <span class="kw">let</span> <span class="ident">immigration_slice</span> <span class="op">=</span> <span class="ident">MpiMigratingLineage::from_mut_slice</span>(
+                        <span class="kw-2">&amp;mut</span> <span class="ident">immigration_buffer</span>[<span class="ident">receive_start</span>..],
+                    );
 
                     <span class="ident">msg</span>.<span class="ident">matched_receive_into</span>(<span class="ident">immigration_slice</span>);
                 }
@@ -676,54 +645,51 @@
                     <span class="ident">MigrationMode::Force</span> =&gt; <span class="bool-val">true</span>,
                     <span class="ident">MigrationMode::Default</span> =&gt; {
                         <span class="ident">now</span>.<span class="ident">duration_since</span>(<span class="self">self</span>.<span class="ident">last_migration_times</span>[<span class="ident">rank_index</span>])
-                            <span class="op">&gt;</span><span class="op">=</span> <span class="ident"><span class="self">Self</span>::MPI_PROGRESS_WAIT_TIME</span>
+                            <span class="op">&gt;</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">migration_interval</span>
                     },
                     <span class="ident">MigrationMode::Hold</span> =&gt; <span class="bool-val">false</span>,
                 }
             {
                 <span class="comment">// Check if the prior send request has finished</span>
-                <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">request</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">emigration_requests</span>[<span class="ident">rank_index</span>].<span class="ident">take</span>() {
-                    <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Err</span>(<span class="ident">request</span>) <span class="op">=</span> <span class="ident">request</span>.<span class="ident">test</span>() {
-                        <span class="self">self</span>.<span class="ident">emigration_requests</span>[<span class="ident">rank_index</span>] <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">request</span>);
-                    } <span class="kw">else</span> {
-                        <span class="kw">unsafe</span> {
-                            <span class="ident">MPI_MIGRATION_BUFFERS</span>[<span class="ident">rank_index</span>].<span class="ident">clear</span>();
-                        }
-                    }
+                <span class="comment">//  and clear the buffer if it has finished</span>
+                <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">emigration_buffer</span>) <span class="op">=</span>
+                    <span class="self">self</span>.<span class="ident">mpi_migration_buffers</span>[<span class="ident">rank_index</span>].<span class="ident">test_for_data_mut</span>()
+                {
+                    <span class="ident">emigration_buffer</span>.<span class="ident">clear</span>();
                 }
 
                 <span class="kw">let</span> <span class="ident">emigration_buffer</span> <span class="op">=</span> <span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">migration_buffers</span>[<span class="ident">rank_index</span>];
 
-                <span class="comment">// Send a new non-empty request iff the prior one has finished</span>
-                <span class="kw">if</span> <span class="self">self</span>.<span class="ident">emigration_requests</span>[<span class="ident">rank_index</span>].<span class="ident">is_none</span>() <span class="op">&amp;&amp;</span> <span class="op">!</span><span class="ident">emigration_buffer</span>.<span class="ident">is_empty</span>() {
-                    <span class="self">self</span>.<span class="ident">last_migration_times</span>[<span class="ident">rank_index</span>] <span class="op">=</span> <span class="ident">now</span>;
-
-                    <span class="comment">// MPI cannot terminate in this round since this partition gave up work</span>
-                    <span class="self">self</span>.<span class="ident">communicated_since_last_barrier</span> <span class="op">=</span> <span class="bool-val">true</span>;
-
-                    <span class="kw">let</span> <span class="ident">local_emigration_buffer</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="kw-2">mut</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">MigratingLineage</span><span class="op">&gt;</span> <span class="op">=</span>
-                        <span class="kw">unsafe</span> { <span class="kw-2">&amp;mut</span> <span class="ident">MPI_MIGRATION_BUFFERS</span>[<span class="ident">rank_index</span>] };
-
-                    <span class="ident">std::mem::swap</span>(<span class="ident">emigration_buffer</span>, <span class="ident">local_emigration_buffer</span>);
-
-                    <span class="comment">// Safety: `MpiMigratingLineage` is a transparent newtype wrapper around</span>
-                    <span class="comment">//         `MigratingLineage`</span>
-                    <span class="kw">let</span> <span class="ident">local_emigration_slice</span>: <span class="kw-2">&amp;</span>[<span class="ident">MpiMigratingLineage</span>] <span class="op">=</span> <span class="kw">unsafe</span> {
-                        <span class="ident">std::slice::from_raw_parts</span>(
-                            <span class="ident">local_emigration_buffer</span>.<span class="ident">as_ptr</span>().<span class="ident">cast</span>(),
-                            <span class="ident">local_emigration_buffer</span>.<span class="ident">len</span>(),
-                        )
-                    };
-
+                <span class="kw">if</span> <span class="op">!</span><span class="ident">emigration_buffer</span>.<span class="ident">is_empty</span>() {
                     <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::cast_possible_wrap</span>)]</span>
                     <span class="kw">let</span> <span class="ident">receiver_process</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">world</span>.<span class="ident">process_at_rank</span>(<span class="ident">rank</span> <span class="kw">as</span> <span class="ident">i32</span>);
 
-                    <span class="self">self</span>.<span class="ident">emigration_requests</span>[<span class="ident">rank_index</span>] <span class="op">=</span>
-                        <span class="prelude-val">Some</span>(<span class="ident">receiver_process</span>.<span class="ident">immediate_synchronous_send_with_tag</span>(
-                            <span class="ident">StaticScope</span>,
-                            <span class="ident">local_emigration_slice</span>,
-                            <span class="ident">MpiPartitioning::MPI_MIGRATION_TAG</span>,
-                        ));
+                    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">last_migration_time</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">last_migration_times</span>[<span class="ident">rank_index</span>];
+                    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">communicated_since_last_barrier</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">communicated_since_last_barrier</span>;
+
+                    <span class="comment">// Send a new non-empty request iff the prior one has finished</span>
+                    <span class="self">self</span>.<span class="ident">mpi_migration_buffers</span>[<span class="ident">rank_index</span>].<span class="ident">request_if_data</span>(
+                        <span class="op">|</span><span class="ident">mpi_emigration_buffer</span>, <span class="ident">scope</span><span class="op">|</span> {
+                            <span class="ident">last_migration_time</span> <span class="op">=</span> <span class="ident">now</span>;
+
+                            <span class="comment">// MPI cannot terminate in this round since this partition gave up work</span>
+                            <span class="ident">communicated_since_last_barrier</span> <span class="op">=</span> <span class="bool-val">true</span>;
+
+                            <span class="comment">// Any prior send request has already finished</span>
+                            <span class="ident">mpi_emigration_buffer</span>.<span class="ident">clear</span>();
+
+                            <span class="ident">std::mem::swap</span>(<span class="ident">emigration_buffer</span>, <span class="ident">mpi_emigration_buffer</span>);
+
+                            <span class="ident">receiver_process</span>.<span class="ident">immediate_synchronous_send_with_tag</span>(
+                                <span class="ident">scope</span>,
+                                <span class="ident">MpiMigratingLineage::from_slice</span>(<span class="ident">mpi_emigration_buffer</span>),
+                                <span class="ident">MpiPartitioning::MPI_MIGRATION_TAG</span>,
+                            )
+                        },
+                    );
+
+                    <span class="self">self</span>.<span class="ident">last_migration_times</span>[<span class="ident">rank_index</span>] <span class="op">=</span> <span class="ident">last_migration_time</span>;
+                    <span class="self">self</span>.<span class="ident">communicated_since_last_barrier</span> <span class="op">=</span> <span class="ident">communicated_since_last_barrier</span>;
                 }
             }
         }
@@ -763,52 +729,50 @@
                 <span class="kw">return</span> <span class="bool-val">true</span>;
             }
         }
-        <span class="kw">for</span> <span class="ident">request</span> <span class="kw">in</span> <span class="self">self</span>.<span class="ident">emigration_requests</span>.<span class="ident">iter</span>() {
-            <span class="kw">if</span> <span class="ident">request</span>.<span class="ident">is_some</span>() {
+
+        <span class="comment">// This partition can only terminate if all emigrations have been</span>
+        <span class="comment">//  sent and acknowledged (request finished + empty buffers)</span>
+        <span class="kw">for</span> <span class="ident">buffer</span> <span class="kw">in</span> <span class="self">self</span>.<span class="ident">mpi_migration_buffers</span>.<span class="ident">iter</span>() {
+            <span class="kw">if</span> <span class="op">!</span><span class="ident">buffer</span>.<span class="ident">get_data</span>().<span class="ident">map_or</span>(<span class="bool-val">false</span>, <span class="ident">Vec::is_empty</span>) {
                 <span class="kw">return</span> <span class="bool-val">true</span>;
             }
         }
-        <span class="kw">for</span> <span class="ident">buffer</span> <span class="kw">in</span> <span class="kw">unsafe</span> { <span class="kw-2">&amp;mut</span> <span class="ident">MPI_MIGRATION_BUFFERS</span> } {
-            <span class="kw">if</span> <span class="op">!</span><span class="ident">buffer</span>.<span class="ident">is_empty</span>() {
-                <span class="kw">return</span> <span class="bool-val">true</span>;
-            }
-        }
+
+        <span class="kw">let</span> <span class="ident">world</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">world</span>;
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">communicated_since_last_barrier</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">communicated_since_last_barrier</span>;
 
         <span class="comment">// Create a new termination attempt if the last one failed</span>
-        <span class="kw">let</span> <span class="ident">barrier</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">barrier</span>.<span class="ident">take</span>().<span class="ident">unwrap_or_else</span>(<span class="op">|</span><span class="op">|</span> {
-            <span class="kw">let</span> <span class="ident">local_continue</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="kw-2">mut</span> <span class="ident">bool</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="kw-2">&amp;mut</span> <span class="ident">MPI_LOCAL_CONTINUE</span> };
-            <span class="kw">let</span> <span class="ident">global_continue</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="kw-2">mut</span> <span class="ident">bool</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="kw-2">&amp;mut</span> <span class="ident">MPI_GLOBAL_CONTINUE</span> };
+        <span class="self">self</span>.<span class="ident">mpi_local_global_wait</span>
+            .<span class="ident">request_if_data</span>(<span class="op">|</span>(<span class="ident">local_wait</span>, <span class="ident">global_wait</span>), <span class="ident">scope</span><span class="op">|</span> {
+                <span class="kw-2">*</span><span class="ident">local_wait</span> <span class="op">=</span> <span class="ident">communicated_since_last_barrier</span>;
+                <span class="ident">communicated_since_last_barrier</span> <span class="op">=</span> <span class="bool-val">false</span>;
+                <span class="kw-2">*</span><span class="ident">global_wait</span> <span class="op">=</span> <span class="bool-val">false</span>;
 
-            <span class="kw-2">*</span><span class="ident">local_continue</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">communicated_since_last_barrier</span>;
-            <span class="self">self</span>.<span class="ident">communicated_since_last_barrier</span> <span class="op">=</span> <span class="bool-val">false</span>;
-            <span class="kw-2">*</span><span class="ident">global_continue</span> <span class="op">=</span> <span class="bool-val">false</span>;
+                <span class="ident">world</span>.<span class="ident">immediate_all_reduce_into</span>(
+                    <span class="ident">scope</span>,
+                    <span class="ident">local_wait</span>,
+                    <span class="ident">global_wait</span>,
+                    <span class="ident">SystemOperation::logical_or</span>(),
+                )
+            });
 
-            <span class="self">self</span>.<span class="ident">world</span>.<span class="ident">immediate_all_reduce_into</span>(
-                <span class="ident">StaticScope</span>,
-                <span class="ident">local_continue</span>,
-                <span class="ident">global_continue</span>,
-                <span class="ident">SystemOperation::logical_or</span>(),
-            )
-        });
+        <span class="self">self</span>.<span class="ident">communicated_since_last_barrier</span> <span class="op">=</span> <span class="ident">communicated_since_last_barrier</span>;
 
-        <span class="kw">match</span> <span class="ident">barrier</span>.<span class="ident">test</span>() {
-            <span class="prelude-val">Ok</span>(<span class="kw">_</span>) =&gt; {
-                <span class="kw">let</span> <span class="ident">global_continue</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="kw-2">mut</span> <span class="ident">bool</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="kw-2">&amp;mut</span> <span class="ident">MPI_GLOBAL_CONTINUE</span> };
+        <span class="comment">// Wait if voting is ongoing or at least one partition voted to wait</span>
+        <span class="kw">let</span> <span class="ident">should_wait</span> <span class="op">=</span> <span class="kw">match</span> <span class="self">self</span>.<span class="ident">mpi_local_global_wait</span>.<span class="ident">test_for_data_mut</span>() {
+            <span class="prelude-val">Some</span>((<span class="ident">_local_wait</span>, <span class="ident">global_wait</span>)) =&gt; {
+                <span class="kw">let</span> <span class="ident">should_wait</span> <span class="op">=</span> <span class="kw-2">*</span><span class="ident">global_wait</span>;
 
-                <span class="kw">if</span> <span class="op">!</span><span class="kw-2">*</span><span class="ident">global_continue</span> {
-                    <span class="kw">let</span> <span class="ident">remaining</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">all_remaining</span>[<span class="self">self</span>.<span class="ident">get_partition</span>().<span class="ident">rank</span>() <span class="kw">as</span> <span class="ident">usize</span>];
+                <span class="comment">// Check for pending progress updates from other partitions</span>
+                <span class="kw">let</span> <span class="ident">remaining</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">all_remaining</span>[<span class="self">self</span>.<span class="ident">get_partition</span>().<span class="ident">rank</span>() <span class="kw">as</span> <span class="ident">usize</span>];
+                <span class="self">self</span>.<span class="ident">report_progress</span>(<span class="kw-2">&amp;</span><span class="ident">remaining</span>.<span class="ident">into</span>());
 
-                    <span class="self">self</span>.<span class="ident">report_progress</span>(<span class="kw-2">&amp;</span><span class="ident">remaining</span>.<span class="ident">into</span>());
-                }
-
-                <span class="kw-2">*</span><span class="ident">global_continue</span>
+                <span class="ident">should_wait</span>
             },
-            <span class="prelude-val">Err</span>(<span class="ident">barrier</span>) =&gt; {
-                <span class="self">self</span>.<span class="ident">barrier</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">barrier</span>);
+            <span class="prelude-val">None</span> =&gt; <span class="bool-val">true</span>,
+        };
 
-                <span class="bool-val">true</span>
-            },
-        }
+        <span class="ident">should_wait</span>
     }
 
     <span class="kw">fn</span> <span class="ident">reduce_global_time_steps</span>(
@@ -858,7 +822,7 @@
     }
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">R</span>: <span class="ident">Reporter</span><span class="op">&gt;</span> <span class="ident">Reporter</span> <span class="kw">for</span> <span class="ident">MpiRootPartition</span><span class="op">&lt;</span><span class="ident">R</span><span class="op">&gt;</span> {
+<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span>, <span class="ident">R</span>: <span class="ident">Reporter</span><span class="op">&gt;</span> <span class="ident">Reporter</span> <span class="kw">for</span> <span class="ident">MpiRootPartition</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span>, <span class="ident">R</span><span class="op">&gt;</span> {
     <span class="macro">impl_report!</span>(<span class="ident">speciation</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">speciation</span>: <span class="ident">MaybeUsed</span><span class="op">&lt;</span><span class="ident">R::ReportSpeciation</span><span class="op">&gt;</span>) {
         <span class="self">self</span>.<span class="ident">recorder</span>.<span class="ident">record_speciation</span>(<span class="ident">speciation</span>);
     });
@@ -870,7 +834,7 @@
     <span class="macro">impl_report!</span>(<span class="ident">progress</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">remaining</span>: <span class="ident">MaybeUsed</span><span class="op">&lt;</span><span class="ident">R::ReportProgress</span><span class="op">&gt;</span>) {
         <span class="kw">let</span> <span class="ident">now</span> <span class="op">=</span> <span class="ident">Instant::now</span>();
 
-        <span class="kw">if</span> <span class="ident">now</span>.<span class="ident">duration_since</span>(<span class="self">self</span>.<span class="ident">last_report_time</span>) <span class="op">&gt;</span><span class="op">=</span> <span class="ident"><span class="self">Self</span>::MPI_PROGRESS_WAIT_TIME</span> {
+        <span class="kw">if</span> <span class="ident">now</span>.<span class="ident">duration_since</span>(<span class="self">self</span>.<span class="ident">last_report_time</span>) <span class="op">&gt;</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">progress_interval</span> {
             <span class="self">self</span>.<span class="ident">last_report_time</span> <span class="op">=</span> <span class="ident">now</span>;
 
             <span class="self">self</span>.<span class="ident">all_remaining</span>[<span class="ident">MpiPartitioning::ROOT_RANK</span> <span class="kw">as</span> <span class="ident">usize</span>] <span class="op">=</span> <span class="kw-2">*</span><span class="ident">remaining</span>;

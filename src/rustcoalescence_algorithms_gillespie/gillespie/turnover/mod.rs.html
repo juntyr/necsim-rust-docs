@@ -128,6 +128,13 @@
 <span id="127">127</span>
 <span id="128">128</span>
 <span id="129">129</span>
+<span id="130">130</span>
+<span id="131">131</span>
+<span id="132">132</span>
+<span id="133">133</span>
+<span id="134">134</span>
+<span id="135">135</span>
+<span id="136">136</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">necsim_core</span>::{
     <span class="ident">cogs</span>::{<span class="ident">LocallyCoherentLineageStore</span>, <span class="ident">MathsCore</span>},
     <span class="ident">lineage::Lineage</span>,
@@ -141,7 +148,7 @@
     <span class="ident">origin_sampler::pre_sampler::OriginPreSampler</span>,
 };
 <span class="kw">use</span> <span class="ident">necsim_impls_std::cogs::rng::pcg::Pcg</span>;
-<span class="kw">use</span> <span class="ident">necsim_partitioning_core::LocalPartition</span>;
+<span class="kw">use</span> <span class="ident">necsim_partitioning_core</span>::{<span class="ident">partition::Partition</span>, <span class="ident">LocalPartition</span>};
 
 <span class="kw">use</span> <span class="ident">rustcoalescence_algorithms</span>::{
     <span class="ident">result</span>::{<span class="ident">ResumeError</span>, <span class="ident">SimulationOutcome</span>},
@@ -149,6 +156,8 @@
     <span class="ident">Algorithm</span>,
 };
 <span class="kw">use</span> <span class="ident">rustcoalescence_scenarios::Scenario</span>;
+
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::arguments::get_gillespie_logical_partition</span>;
 
 <span class="kw">use</span> <span class="ident"><span class="kw">super</span>::GillespieAlgorithm</span>;
 
@@ -162,11 +171,12 @@
 <span class="comment">// Default &#39;Gillespie&#39; implementation for any turnover sampler</span>
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::type_complexity</span>)]</span>
 <span class="kw">impl</span><span class="op">&lt;</span>
+        <span class="lifetime">&#39;p</span>,
         <span class="ident">O</span>: <span class="ident">Scenario</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">Pcg</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span>, <span class="ident">LineageReference</span> <span class="op">=</span> <span class="ident">InMemoryLineageReference</span><span class="op">&gt;</span>,
         <span class="ident">R</span>: <span class="ident">Reporter</span>,
-        <span class="ident">P</span>: <span class="ident">LocalPartition</span><span class="op">&lt;</span><span class="ident">R</span><span class="op">&gt;</span>,
+        <span class="ident">P</span>: <span class="ident">LocalPartition</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span>, <span class="ident">R</span><span class="op">&gt;</span>,
         <span class="ident">M</span>: <span class="ident">MathsCore</span>,
-    <span class="op">&gt;</span> <span class="ident">Algorithm</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">O</span>, <span class="ident">R</span>, <span class="ident">P</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">GillespieAlgorithm</span>
+    <span class="op">&gt;</span> <span class="ident">Algorithm</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span>, <span class="ident">M</span>, <span class="ident">O</span>, <span class="ident">R</span>, <span class="ident">P</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">GillespieAlgorithm</span>
 <span class="kw">where</span>
     <span class="ident">O::LineageStore</span><span class="op">&lt;</span><span class="ident">ClassicalLineageStore</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">O::Habitat</span><span class="op">&gt;</span><span class="op">&gt;</span>:
         <span class="ident">LocallyCoherentLineageStore</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">O::Habitat</span>, <span class="ident">InMemoryLineageReference</span><span class="op">&gt;</span>,
@@ -174,6 +184,10 @@
     <span class="kw">type</span> <span class="ident">LineageReference</span> <span class="op">=</span> <span class="ident">InMemoryLineageReference</span>;
     <span class="kw">type</span> <span class="ident">LineageStore</span> <span class="op">=</span> <span class="ident">O::LineageStore</span><span class="op">&lt;</span><span class="ident">ClassicalLineageStore</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">O::Habitat</span><span class="op">&gt;</span><span class="op">&gt;</span>;
     <span class="kw">type</span> <span class="ident">Rng</span> <span class="op">=</span> <span class="ident">Pcg</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span>;
+
+    <span class="ident">default</span> <span class="kw">fn</span> <span class="ident">get_logical_partition</span>(<span class="ident">args</span>: <span class="kw-2">&amp;</span><span class="ident"><span class="self">Self</span>::Arguments</span>, <span class="ident">local_partition</span>: <span class="kw-2">&amp;</span><span class="ident">P</span>) -&gt; <span class="ident">Partition</span> {
+        <span class="ident">get_gillespie_logical_partition</span>(<span class="ident">args</span>, <span class="ident">local_partition</span>)
+    }
 
     <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::shadow_unrelated</span>, <span class="ident">clippy::too_many_lines</span>)]</span>
     <span class="ident">default</span> <span class="kw">fn</span> <span class="ident">initialise_and_simulate</span><span class="op">&lt;</span><span class="ident">I</span>: <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">u64</span><span class="op">&gt;</span><span class="op">&gt;</span>(

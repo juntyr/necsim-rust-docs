@@ -52,33 +52,41 @@
 <span id="51">51</span>
 <span id="52">52</span>
 <span id="53">53</span>
+<span id="54">54</span>
+<span id="55">55</span>
+<span id="56">56</span>
+<span id="57">57</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">core</span>::{<span class="ident">fmt</span>, <span class="ident">marker::PhantomData</span>};
 
 <span class="kw">use</span> <span class="ident">necsim_core</span>::{<span class="ident">impl_report</span>, <span class="ident">reporter::Reporter</span>};
 
 <span class="kw">use</span> <span class="ident">necsim_partitioning_core::LocalPartition</span>;
 
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">IgnoreProgressReporterProxy</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span>, <span class="ident">R</span>: <span class="ident">Reporter</span>, <span class="ident">P</span>: <span class="ident">LocalPartition</span><span class="op">&lt;</span><span class="ident">R</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-    <span class="ident">local_partition</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;p</span> <span class="kw-2">mut</span> <span class="ident">P</span>,
-    <span class="ident">_marker</span>: <span class="ident">PhantomData</span><span class="op">&lt;</span><span class="ident">R</span><span class="op">&gt;</span>,
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">IgnoreProgressReporterProxy</span><span class="op">&lt;</span><span class="lifetime">&#39;l</span>, <span class="lifetime">&#39;p</span>, <span class="ident">R</span>: <span class="ident">Reporter</span>, <span class="ident">P</span>: <span class="ident">LocalPartition</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span>, <span class="ident">R</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+    <span class="ident">local_partition</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;l</span> <span class="kw-2">mut</span> <span class="ident">P</span>,
+    <span class="ident">_marker</span>: <span class="ident">PhantomData</span><span class="op">&lt;</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;p</span> (), <span class="ident">R</span>)<span class="op">&gt;</span>,
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span>, <span class="ident">R</span>: <span class="ident">Reporter</span>, <span class="ident">P</span>: <span class="ident">LocalPartition</span><span class="op">&lt;</span><span class="ident">R</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">IgnoreProgressReporterProxy</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span>, <span class="ident">R</span>, <span class="ident">P</span><span class="op">&gt;</span> {
+<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;l</span>, <span class="lifetime">&#39;p</span>, <span class="ident">R</span>: <span class="ident">Reporter</span>, <span class="ident">P</span>: <span class="ident">LocalPartition</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span>, <span class="ident">R</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="ident">fmt::Debug</span>
+    <span class="kw">for</span> <span class="ident">IgnoreProgressReporterProxy</span><span class="op">&lt;</span><span class="lifetime">&#39;l</span>, <span class="lifetime">&#39;p</span>, <span class="ident">R</span>, <span class="ident">P</span><span class="op">&gt;</span>
+{
     <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">fmt</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="ident">fmt</span>.<span class="ident">debug_struct</span>(<span class="macro">stringify!</span>(<span class="ident">IgnoreProgressReporterProxy</span>))
             .<span class="ident">finish</span>()
     }
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span>, <span class="ident">R</span>: <span class="ident">Reporter</span>, <span class="ident">P</span>: <span class="ident">LocalPartition</span><span class="op">&lt;</span><span class="ident">R</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="ident">Reporter</span> <span class="kw">for</span> <span class="ident">IgnoreProgressReporterProxy</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span>, <span class="ident">R</span>, <span class="ident">P</span><span class="op">&gt;</span> {
+<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;l</span>, <span class="lifetime">&#39;p</span>, <span class="ident">R</span>: <span class="ident">Reporter</span>, <span class="ident">P</span>: <span class="ident">LocalPartition</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span>, <span class="ident">R</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="ident">Reporter</span>
+    <span class="kw">for</span> <span class="ident">IgnoreProgressReporterProxy</span><span class="op">&lt;</span><span class="lifetime">&#39;l</span>, <span class="lifetime">&#39;p</span>, <span class="ident">R</span>, <span class="ident">P</span><span class="op">&gt;</span>
+{
     <span class="macro">impl_report!</span>(<span class="ident">speciation</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">speciation</span>: <span class="ident">MaybeUsed</span><span class="op">&lt;</span>
-        <span class="op">&lt;</span><span class="op">&lt;</span><span class="ident">P</span> <span class="kw">as</span> <span class="ident">LocalPartition</span><span class="op">&lt;</span><span class="ident">R</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::Reporter</span> <span class="kw">as</span> <span class="ident">Reporter</span>
+        <span class="op">&lt;</span><span class="op">&lt;</span><span class="ident">P</span> <span class="kw">as</span> <span class="ident">LocalPartition</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span>, <span class="ident">R</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::Reporter</span> <span class="kw">as</span> <span class="ident">Reporter</span>
     <span class="op">&gt;</span><span class="ident">::ReportSpeciation</span><span class="op">&gt;</span>) {
         <span class="self">self</span>.<span class="ident">local_partition</span>.<span class="ident">get_reporter</span>().<span class="ident">report_speciation</span>(<span class="ident">speciation</span>.<span class="ident">into</span>());
     });
 
     <span class="macro">impl_report!</span>(<span class="ident">dispersal</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">dispersal</span>: <span class="ident">MaybeUsed</span><span class="op">&lt;</span>
-        <span class="op">&lt;</span><span class="op">&lt;</span><span class="ident">P</span> <span class="kw">as</span> <span class="ident">LocalPartition</span><span class="op">&lt;</span><span class="ident">R</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::Reporter</span> <span class="kw">as</span> <span class="ident">Reporter</span>
+        <span class="op">&lt;</span><span class="op">&lt;</span><span class="ident">P</span> <span class="kw">as</span> <span class="ident">LocalPartition</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span>, <span class="ident">R</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::Reporter</span> <span class="kw">as</span> <span class="ident">Reporter</span>
     <span class="op">&gt;</span><span class="ident">::ReportDispersal</span><span class="op">&gt;</span>) {
         <span class="self">self</span>.<span class="ident">local_partition</span>.<span class="ident">get_reporter</span>().<span class="ident">report_dispersal</span>(<span class="ident">dispersal</span>.<span class="ident">into</span>());
     });
@@ -86,11 +94,11 @@
     <span class="macro">impl_report!</span>(<span class="ident">progress</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">_progress</span>: <span class="ident">Ignored</span>) {});
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span>, <span class="ident">R</span>: <span class="ident">Reporter</span>, <span class="ident">P</span>: <span class="ident">LocalPartition</span><span class="op">&lt;</span><span class="ident">R</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="ident">IgnoreProgressReporterProxy</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span>, <span class="ident">R</span>, <span class="ident">P</span><span class="op">&gt;</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">local_partition</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;p</span> <span class="kw-2">mut</span> <span class="ident">P</span>) -&gt; <span class="self">Self</span> {
+<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;l</span>, <span class="lifetime">&#39;p</span>, <span class="ident">R</span>: <span class="ident">Reporter</span>, <span class="ident">P</span>: <span class="ident">LocalPartition</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span>, <span class="ident">R</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="ident">IgnoreProgressReporterProxy</span><span class="op">&lt;</span><span class="lifetime">&#39;l</span>, <span class="lifetime">&#39;p</span>, <span class="ident">R</span>, <span class="ident">P</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">local_partition</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;l</span> <span class="kw-2">mut</span> <span class="ident">P</span>) -&gt; <span class="self">Self</span> {
         <span class="self">Self</span> {
             <span class="ident">local_partition</span>,
-            <span class="ident">_marker</span>: <span class="ident">PhantomData</span>::<span class="op">&lt;</span><span class="ident">R</span><span class="op">&gt;</span>,
+            <span class="ident">_marker</span>: <span class="ident">PhantomData</span>::<span class="op">&lt;</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;p</span> (), <span class="ident">R</span>)<span class="op">&gt;</span>,
         }
     }
 

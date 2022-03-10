@@ -87,6 +87,7 @@
 <span id="86">86</span>
 <span id="87">87</span>
 <span id="88">88</span>
+<span id="89">89</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">anyhow::Context</span>;
 
 <span class="kw">use</span> <span class="ident">rustcoalescence_algorithms</span>::{<span class="ident">result::SimulationOutcome</span>, <span class="ident">Algorithm</span>};
@@ -101,11 +102,12 @@
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::args::config::sample</span>::{<span class="ident">Sample</span>, <span class="ident">SampleMode</span>, <span class="ident">SampleModeRestart</span>, <span class="ident">SampleOrigin</span>};
 
 <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">simulate</span><span class="op">&lt;</span>
+    <span class="lifetime">&#39;p</span>,
     <span class="ident">M</span>: <span class="ident">MathsCore</span>,
-    <span class="ident">A</span>: <span class="ident">Algorithm</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">O</span>, <span class="ident">R</span>, <span class="ident">P</span><span class="op">&gt;</span>,
+    <span class="ident">A</span>: <span class="ident">Algorithm</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span>, <span class="ident">M</span>, <span class="ident">O</span>, <span class="ident">R</span>, <span class="ident">P</span><span class="op">&gt;</span>,
     <span class="ident">O</span>: <span class="ident">Scenario</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">A::Rng</span><span class="op">&gt;</span>,
     <span class="ident">R</span>: <span class="ident">Reporter</span>,
-    <span class="ident">P</span>: <span class="ident">LocalPartition</span><span class="op">&lt;</span><span class="ident">R</span><span class="op">&gt;</span>,
+    <span class="ident">P</span>: <span class="ident">LocalPartition</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span>, <span class="ident">R</span><span class="op">&gt;</span>,
 <span class="op">&gt;</span>(
     <span class="ident">algorithm_args</span>: <span class="ident">A::Arguments</span>,
     <span class="ident">rng</span>: <span class="ident">A::Rng</span>,

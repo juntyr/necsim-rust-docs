@@ -241,6 +241,7 @@
 <span id="240">240</span>
 <span id="241">241</span>
 <span id="242">242</span>
+<span id="243">243</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">std::marker::PhantomData</span>;
 
 <span class="kw">use</span> <span class="ident">necsim_core</span>::{
@@ -293,10 +294,11 @@
 
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::too_many_lines</span>)]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">initialise_and_simulate</span><span class="op">&lt;</span>
+    <span class="lifetime">&#39;p</span>,
     <span class="ident">M</span>: <span class="ident">MathsCore</span>,
     <span class="ident">O</span>: <span class="ident">Scenario</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">CudaRng</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">WyHash</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     <span class="ident">R</span>: <span class="ident">Reporter</span>,
-    <span class="ident">P</span>: <span class="ident">LocalPartition</span><span class="op">&lt;</span><span class="ident">R</span><span class="op">&gt;</span>,
+    <span class="ident">P</span>: <span class="ident">LocalPartition</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span>, <span class="ident">R</span><span class="op">&gt;</span>,
     <span class="ident">I</span>: <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">u64</span><span class="op">&gt;</span>,
     <span class="ident">L</span>: <span class="ident">CudaLineageStoreSampleInitialiser</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">CudaRng</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">WyHash</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span><span class="op">&gt;</span>, <span class="ident">O</span>, <span class="ident">Error</span><span class="op">&gt;</span>,
     <span class="ident">Error</span>: <span class="ident">From</span><span class="op">&lt;</span><span class="ident">CudaError</span><span class="op">&gt;</span>,
@@ -479,7 +481,7 @@
                 .<span class="ident">chain</span>(<span class="ident">passthrough</span>.<span class="ident">into_iter</span>())
                 .<span class="ident">collect</span>(),
             <span class="ident">rng</span>: <span class="ident">simulation</span>.<span class="ident">rng_mut</span>().<span class="ident">clone</span>(),
-            <span class="ident">marker</span>: <span class="ident">PhantomData</span>,
+            <span class="ident">marker</span>: <span class="ident">PhantomData</span>::<span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span>,
         }),
     }
 }

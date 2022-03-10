@@ -139,6 +139,7 @@
 <span id="138">138</span>
 <span id="139">139</span>
 <span id="140">140</span>
+<span id="141">141</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">core::ops::ControlFlow</span>;
 
 <span class="kw">use</span> <span class="ident">necsim_core</span>::{
@@ -165,6 +166,7 @@
 
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::type_complexity</span>)]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">simulate</span><span class="op">&lt;</span>
+    <span class="lifetime">&#39;p</span>,
     <span class="ident">M</span>: <span class="ident">MathsCore</span>,
     <span class="ident">H</span>: <span class="ident">Habitat</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span>,
     <span class="ident">G</span>: <span class="ident">RngCore</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span>,
@@ -191,7 +193,7 @@
         <span class="ident">BufferedImmigrationEntry</span>,
     <span class="op">&gt;</span>,
     <span class="ident">P</span>: <span class="ident">Reporter</span>,
-    <span class="ident">L</span>: <span class="ident">LocalPartition</span><span class="op">&lt;</span><span class="ident">P</span><span class="op">&gt;</span>,
+    <span class="ident">L</span>: <span class="ident">LocalPartition</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span>, <span class="ident">P</span><span class="op">&gt;</span>,
 <span class="op">&gt;</span>(
     <span class="ident">simulation</span>: <span class="kw-2">&amp;mut</span> <span class="ident">Simulation</span><span class="op">&lt;</span>
         <span class="ident">M</span>,

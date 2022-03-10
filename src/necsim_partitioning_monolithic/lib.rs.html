@@ -223,6 +223,21 @@
 <span id="222">222</span>
 <span id="223">223</span>
 <span id="224">224</span>
+<span id="225">225</span>
+<span id="226">226</span>
+<span id="227">227</span>
+<span id="228">228</span>
+<span id="229">229</span>
+<span id="230">230</span>
+<span id="231">231</span>
+<span id="232">232</span>
+<span id="233">233</span>
+<span id="234">234</span>
+<span id="235">235</span>
+<span id="236">236</span>
+<span id="237">237</span>
+<span id="238">238</span>
+<span id="239">239</span>
 </pre><pre class="rust"><code><span class="attribute">#![<span class="ident">deny</span>(<span class="ident">clippy::pedantic</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">generic_associated_types</span>)]</span>
 
@@ -277,7 +292,7 @@
 <span class="attribute">#[<span class="ident">contract_trait</span>]</span>
 <span class="kw">impl</span> <span class="ident">Partitioning</span> <span class="kw">for</span> <span class="ident">MonolithicPartitioning</span> {
     <span class="kw">type</span> <span class="ident">Auxiliary</span> <span class="op">=</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">EventLogRecorder</span><span class="op">&gt;</span>;
-    <span class="kw">type</span> <span class="ident">LocalPartition</span><span class="op">&lt;</span><span class="ident">R</span>: <span class="ident">Reporter</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">MonolithicLocalPartition</span><span class="op">&lt;</span><span class="ident">R</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">LocalPartition</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span>, <span class="ident">R</span>: <span class="ident">Reporter</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">MonolithicLocalPartition</span><span class="op">&lt;</span><span class="ident">R</span><span class="op">&gt;</span>;
 
     <span class="kw">fn</span> <span class="ident">is_monolithic</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="bool-val">true</span>
@@ -291,25 +306,36 @@
         <span class="ident">Partition::monolithic</span>()
     }
 
-    <span class="kw">fn</span> <span class="ident">into_local_partition</span><span class="op">&lt;</span><span class="ident">R</span>: <span class="ident">Reporter</span>, <span class="ident">P</span>: <span class="ident">ReporterContext</span><span class="op">&lt;</span><span class="ident">Reporter</span> <span class="op">=</span> <span class="ident">R</span><span class="op">&gt;</span><span class="op">&gt;</span>(
+    <span class="doccomment">/// # Errors</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Returns an error if the provided event log is not empty.</span>
+    <span class="kw">fn</span> <span class="ident">with_local_partition</span><span class="op">&lt;</span>
+        <span class="ident">R</span>: <span class="ident">Reporter</span>,
+        <span class="ident">P</span>: <span class="ident">ReporterContext</span><span class="op">&lt;</span><span class="ident">Reporter</span> <span class="op">=</span> <span class="ident">R</span><span class="op">&gt;</span>,
+        <span class="ident">F</span>: <span class="kw">for</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span> <span class="ident">FnOnce</span>(<span class="ident"><span class="self">Self</span>::LocalPartition</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span>, <span class="ident">R</span><span class="op">&gt;</span>) -&gt; <span class="ident">Q</span>,
+        <span class="ident">Q</span>,
+    <span class="op">&gt;</span>(
         <span class="self">self</span>,
         <span class="ident">reporter_context</span>: <span class="ident">P</span>,
         <span class="ident">event_log</span>: <span class="ident"><span class="self">Self</span>::Auxiliary</span>,
-    ) -&gt; <span class="ident">anyhow::Result</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::LocalPartition</span><span class="op">&lt;</span><span class="ident">R</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">event_log</span>) <span class="op">=</span> <span class="ident">event_log</span> {
-            <span class="prelude-val">Ok</span>(<span class="ident">MonolithicLocalPartition::Recorded</span>(<span class="ident">Box::new</span>(
+        <span class="ident">inner</span>: <span class="ident">F</span>,
+    ) -&gt; <span class="ident">anyhow::Result</span><span class="op">&lt;</span><span class="ident">Q</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="ident">local_partition</span> <span class="op">=</span> <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">event_log</span>) <span class="op">=</span> <span class="ident">event_log</span> {
+            <span class="ident">MonolithicLocalPartition::Recorded</span>(<span class="ident">Box::new</span>(
                 <span class="ident">recorded::RecordedMonolithicLocalPartition::try_from_context_and_recorder</span>(
                     <span class="ident">reporter_context</span>,
                     <span class="ident">event_log</span>
                         .<span class="ident">assert_empty</span>()
                         .<span class="ident">context</span>(<span class="string">&quot;Failed to create the event log.&quot;</span>)<span class="question-mark">?</span>,
                 )<span class="question-mark">?</span>,
-            )))
+            ))
         } <span class="kw">else</span> {
-            <span class="prelude-val">Ok</span>(<span class="ident">MonolithicLocalPartition::Live</span>(<span class="ident">Box::new</span>(
+            <span class="ident">MonolithicLocalPartition::Live</span>(<span class="ident">Box::new</span>(
                 <span class="ident">live::LiveMonolithicLocalPartition::try_from_context</span>(<span class="ident">reporter_context</span>)<span class="question-mark">?</span>,
-            )))
-        }
+            ))
+        };
+
+        <span class="prelude-val">Ok</span>(<span class="ident">inner</span>(<span class="ident">local_partition</span>))
     }
 }
 
@@ -321,9 +347,10 @@
 }
 
 <span class="attribute">#[<span class="ident">contract_trait</span>]</span>
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">R</span>: <span class="ident">Reporter</span><span class="op">&gt;</span> <span class="ident">LocalPartition</span><span class="op">&lt;</span><span class="ident">R</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">MonolithicLocalPartition</span><span class="op">&lt;</span><span class="ident">R</span><span class="op">&gt;</span> {
+<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span>, <span class="ident">R</span>: <span class="ident">Reporter</span><span class="op">&gt;</span> <span class="ident">LocalPartition</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span>, <span class="ident">R</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">MonolithicLocalPartition</span><span class="op">&lt;</span><span class="ident">R</span><span class="op">&gt;</span> {
     <span class="kw">type</span> <span class="ident">ImmigrantIterator</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>
     <span class="kw">where</span>
+        <span class="lifetime">&#39;p</span>: <span class="lifetime">&#39;a</span>,
         <span class="ident">R</span>: <span class="lifetime">&#39;a</span>,
     <span class="op">=</span> <span class="ident">ImmigrantPopIterator</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>;
     <span class="comment">// pessimistic</span>
@@ -348,12 +375,15 @@
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">migrate_individuals</span><span class="op">&lt;</span><span class="ident">E</span>: <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> (<span class="ident">u32</span>, <span class="ident">MigratingLineage</span>)<span class="op">&gt;</span><span class="op">&gt;</span>(
-        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
+    <span class="kw">fn</span> <span class="ident">migrate_individuals</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">E</span>: <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> (<span class="ident">u32</span>, <span class="ident">MigratingLineage</span>)<span class="op">&gt;</span><span class="op">&gt;</span>(
+        <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> <span class="self">self</span>,
         <span class="ident">emigrants</span>: <span class="kw-2">&amp;mut</span> <span class="ident">E</span>,
         <span class="ident">emigration_mode</span>: <span class="ident">MigrationMode</span>,
         <span class="ident">immigration_mode</span>: <span class="ident">MigrationMode</span>,
-    ) -&gt; <span class="ident"><span class="self">Self</span>::ImmigrantIterator</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
+    ) -&gt; <span class="ident"><span class="self">Self</span>::ImmigrantIterator</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>
+    <span class="kw">where</span>
+        <span class="lifetime">&#39;p</span>: <span class="lifetime">&#39;a</span>,
+    {
         <span class="kw">match</span> <span class="self">self</span> {
             <span class="ident"><span class="self">Self</span>::Live</span>(<span class="ident">partition</span>) =&gt; {
                 <span class="ident">partition</span>.<span class="ident">migrate_individuals</span>(<span class="ident">emigrants</span>, <span class="ident">emigration_mode</span>, <span class="ident">immigration_mode</span>)

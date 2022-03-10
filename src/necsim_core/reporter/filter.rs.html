@@ -126,7 +126,7 @@
     <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">reporter</span>: <span class="ident">R</span>) -&gt; <span class="self">Self</span> {
         <span class="self">Self</span> {
             <span class="ident">reporter</span>,
-            <span class="ident">marker</span>: <span class="ident">PhantomData</span>,
+            <span class="ident">marker</span>: <span class="ident">PhantomData</span>::<span class="op">&lt;</span>(<span class="ident">KeepSpeciation</span>, <span class="ident">KeepDispersal</span>, <span class="ident">KeepProgress</span>)<span class="op">&gt;</span>,
         }
     }
 }

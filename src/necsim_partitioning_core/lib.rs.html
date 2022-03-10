@@ -89,6 +89,15 @@
 <span id="88">88</span>
 <span id="89">89</span>
 <span id="90">90</span>
+<span id="91">91</span>
+<span id="92">92</span>
+<span id="93">93</span>
+<span id="94">94</span>
+<span id="95">95</span>
+<span id="96">96</span>
+<span id="97">97</span>
+<span id="98">98</span>
+<span id="99">99</span>
 </pre><pre class="rust"><code><span class="attribute">#![<span class="ident">deny</span>(<span class="ident">clippy::pedantic</span>)]</span>
 <span class="attribute">#![<span class="ident">no_std</span>]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">generic_associated_types</span>)]</span>
@@ -114,7 +123,7 @@
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::inline_always</span>, <span class="ident">clippy::inline_fn_without_body</span>)]</span>
 <span class="attribute">#[<span class="ident">contract_trait</span>]</span>
 <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">Partitioning</span>: <span class="ident">Sized</span> {
-    <span class="kw">type</span> <span class="ident">LocalPartition</span><span class="op">&lt;</span><span class="ident">R</span>: <span class="ident">Reporter</span><span class="op">&gt;</span>: <span class="ident">LocalPartition</span><span class="op">&lt;</span><span class="ident">R</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">LocalPartition</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span>, <span class="ident">R</span>: <span class="ident">Reporter</span><span class="op">&gt;</span>: <span class="ident">LocalPartition</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span>, <span class="ident">R</span><span class="op">&gt;</span>;
     <span class="kw">type</span> <span class="ident">Auxiliary</span>;
 
     <span class="kw">fn</span> <span class="ident">is_monolithic</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span>;
@@ -127,11 +136,17 @@
 
     <span class="kw">fn</span> <span class="ident">get_partition</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Partition</span>;
 
-    <span class="kw">fn</span> <span class="ident">into_local_partition</span><span class="op">&lt;</span><span class="ident">R</span>: <span class="ident">Reporter</span>, <span class="ident">P</span>: <span class="ident">ReporterContext</span><span class="op">&lt;</span><span class="ident">Reporter</span> <span class="op">=</span> <span class="ident">R</span><span class="op">&gt;</span><span class="op">&gt;</span>(
+    <span class="kw">fn</span> <span class="ident">with_local_partition</span><span class="op">&lt;</span>
+        <span class="ident">R</span>: <span class="ident">Reporter</span>,
+        <span class="ident">P</span>: <span class="ident">ReporterContext</span><span class="op">&lt;</span><span class="ident">Reporter</span> <span class="op">=</span> <span class="ident">R</span><span class="op">&gt;</span>,
+        <span class="ident">F</span>: <span class="kw">for</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span> <span class="ident">FnOnce</span>(<span class="ident"><span class="self">Self</span>::LocalPartition</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span>, <span class="ident">R</span><span class="op">&gt;</span>) -&gt; <span class="ident">Q</span>,
+        <span class="ident">Q</span>,
+    <span class="op">&gt;</span>(
         <span class="self">self</span>,
         <span class="ident">reporter_context</span>: <span class="ident">P</span>,
         <span class="ident">auxiliary</span>: <span class="ident"><span class="self">Self</span>::Auxiliary</span>,
-    ) -&gt; <span class="ident">anyhow::Result</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::LocalPartition</span><span class="op">&lt;</span><span class="ident">R</span><span class="op">&gt;</span><span class="op">&gt;</span>;
+        <span class="ident">inner</span>: <span class="ident">F</span>,
+    ) -&gt; <span class="ident">anyhow::Result</span><span class="op">&lt;</span><span class="ident">Q</span><span class="op">&gt;</span>;
 }
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>)]</span>
@@ -143,12 +158,13 @@
 
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::inline_always</span>, <span class="ident">clippy::inline_fn_without_body</span>)]</span>
 <span class="attribute">#[<span class="ident">contract_trait</span>]</span>
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">LocalPartition</span><span class="op">&lt;</span><span class="ident">R</span>: <span class="ident">Reporter</span><span class="op">&gt;</span>: <span class="ident">Sized</span> {
+<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">LocalPartition</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span>, <span class="ident">R</span>: <span class="ident">Reporter</span><span class="op">&gt;</span>: <span class="ident">Sized</span> {
     <span class="kw">type</span> <span class="ident">Reporter</span>: <span class="ident">Reporter</span>;
     <span class="kw">type</span> <span class="ident">IsLive</span>: <span class="ident">Boolean</span>;
     <span class="kw">type</span> <span class="ident">ImmigrantIterator</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>: <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">MigratingLineage</span><span class="op">&gt;</span>
     <span class="kw">where</span>
-        <span class="self">Self</span>: <span class="lifetime">&#39;a</span>;
+        <span class="self">Self</span>: <span class="lifetime">&#39;a</span>,
+        <span class="lifetime">&#39;p</span>: <span class="lifetime">&#39;a</span>;
 
     <span class="kw">fn</span> <span class="ident">get_reporter</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="ident"><span class="self">Self</span>::Reporter</span>;
 
@@ -156,12 +172,14 @@
 
     <span class="kw">fn</span> <span class="ident">get_partition</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Partition</span>;
 
-    <span class="kw">fn</span> <span class="ident">migrate_individuals</span><span class="op">&lt;</span><span class="ident">E</span>: <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> (<span class="ident">u32</span>, <span class="ident">MigratingLineage</span>)<span class="op">&gt;</span><span class="op">&gt;</span>(
-        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
+    <span class="kw">fn</span> <span class="ident">migrate_individuals</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">E</span>: <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> (<span class="ident">u32</span>, <span class="ident">MigratingLineage</span>)<span class="op">&gt;</span><span class="op">&gt;</span>(
+        <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> <span class="self">self</span>,
         <span class="ident">emigrants</span>: <span class="kw-2">&amp;mut</span> <span class="ident">E</span>,
         <span class="ident">emigration_mode</span>: <span class="ident">MigrationMode</span>,
         <span class="ident">immigration_mode</span>: <span class="ident">MigrationMode</span>,
-    ) -&gt; <span class="ident"><span class="self">Self</span>::ImmigrantIterator</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>;
+    ) -&gt; <span class="ident"><span class="self">Self</span>::ImmigrantIterator</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>
+    <span class="kw">where</span>
+        <span class="lifetime">&#39;p</span>: <span class="lifetime">&#39;a</span>;
 
     <span class="kw">fn</span> <span class="ident">reduce_vote_continue</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">local_continue</span>: <span class="ident">bool</span>) -&gt; <span class="ident">bool</span>;
 

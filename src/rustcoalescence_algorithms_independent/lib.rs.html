@@ -132,6 +132,19 @@
 <span id="131">131</span>
 <span id="132">132</span>
 <span id="133">133</span>
+<span id="134">134</span>
+<span id="135">135</span>
+<span id="136">136</span>
+<span id="137">137</span>
+<span id="138">138</span>
+<span id="139">139</span>
+<span id="140">140</span>
+<span id="141">141</span>
+<span id="142">142</span>
+<span id="143">143</span>
+<span id="144">144</span>
+<span id="145">145</span>
+<span id="146">146</span>
 </pre><pre class="rust"><code><span class="attribute">#![<span class="ident">deny</span>(<span class="ident">clippy::pedantic</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">never_type</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">generic_associated_types</span>)]</span>
@@ -150,7 +163,7 @@
     <span class="ident">lineage_store::independent::IndependentLineageStore</span>, <span class="ident">maths::intrinsics::IntrinsicsMathsCore</span>,
     <span class="ident">origin_sampler::pre_sampler::OriginPreSampler</span>, <span class="ident">rng::wyhash::WyHash</span>,
 };
-<span class="kw">use</span> <span class="ident">necsim_partitioning_core::LocalPartition</span>;
+<span class="kw">use</span> <span class="ident">necsim_partitioning_core</span>::{<span class="ident">partition::Partition</span>, <span class="ident">LocalPartition</span>};
 
 <span class="kw">use</span> <span class="ident">rustcoalescence_algorithms</span>::{
     <span class="ident">result</span>::{<span class="ident">ResumeError</span>, <span class="ident">SimulationOutcome</span>},
@@ -163,7 +176,7 @@
 <span class="kw">mod</span> <span class="ident">initialiser</span>;
 <span class="kw">mod</span> <span class="ident">launch</span>;
 
-<span class="kw">use</span> <span class="ident">arguments::IndependentArguments</span>;
+<span class="kw">use</span> <span class="ident">arguments</span>::{<span class="ident">IndependentArguments</span>, <span class="ident">IsolatedParallelismMode</span>, <span class="ident">ParallelismMode</span>};
 <span class="kw">use</span> <span class="ident">initialiser</span>::{
     <span class="ident">fixup::FixUpInitialiser</span>, <span class="ident">genesis::GenesisInitialiser</span>, <span class="ident">resume::ResumeInitialiser</span>,
 };
@@ -181,12 +194,25 @@
 }
 
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::type_complexity</span>)]</span>
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">O</span>: <span class="ident">Scenario</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">WyHash</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span><span class="op">&gt;</span>, <span class="ident">R</span>: <span class="ident">Reporter</span>, <span class="ident">P</span>: <span class="ident">LocalPartition</span><span class="op">&lt;</span><span class="ident">R</span><span class="op">&gt;</span>, <span class="ident">M</span>: <span class="ident">MathsCore</span><span class="op">&gt;</span>
-    <span class="ident">Algorithm</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">O</span>, <span class="ident">R</span>, <span class="ident">P</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">IndependentAlgorithm</span>
+<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span>, <span class="ident">O</span>: <span class="ident">Scenario</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">WyHash</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span><span class="op">&gt;</span>, <span class="ident">R</span>: <span class="ident">Reporter</span>, <span class="ident">P</span>: <span class="ident">LocalPartition</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span>, <span class="ident">R</span><span class="op">&gt;</span>, <span class="ident">M</span>: <span class="ident">MathsCore</span><span class="op">&gt;</span>
+    <span class="ident">Algorithm</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span>, <span class="ident">M</span>, <span class="ident">O</span>, <span class="ident">R</span>, <span class="ident">P</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">IndependentAlgorithm</span>
 {
     <span class="kw">type</span> <span class="ident">LineageReference</span> <span class="op">=</span> <span class="ident">GlobalLineageReference</span>;
     <span class="kw">type</span> <span class="ident">LineageStore</span> <span class="op">=</span> <span class="ident">IndependentLineageStore</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">O::Habitat</span><span class="op">&gt;</span>;
     <span class="kw">type</span> <span class="ident">Rng</span> <span class="op">=</span> <span class="ident">WyHash</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span>;
+
+    <span class="kw">fn</span> <span class="ident">get_logical_partition</span>(<span class="ident">args</span>: <span class="kw-2">&amp;</span><span class="ident"><span class="self">Self</span>::Arguments</span>, <span class="ident">local_partition</span>: <span class="kw-2">&amp;</span><span class="ident">P</span>) -&gt; <span class="ident">Partition</span> {
+        <span class="kw">match</span> <span class="kw-2">&amp;</span><span class="ident">args</span>.<span class="ident">parallelism_mode</span> {
+            <span class="ident">ParallelismMode::Monolithic</span>(<span class="kw">_</span>) =&gt; <span class="ident">Partition::monolithic</span>(),
+            <span class="ident">ParallelismMode::IsolatedIndividuals</span>(<span class="ident">IsolatedParallelismMode</span> { <span class="ident">partition</span>, .. })
+            <span class="op">|</span> <span class="ident">ParallelismMode::IsolatedLandscape</span>(<span class="ident">IsolatedParallelismMode</span> { <span class="ident">partition</span>, .. }) =&gt; {
+                <span class="kw-2">*</span><span class="ident">partition</span>
+            },
+            <span class="ident">ParallelismMode::Individuals</span>
+            <span class="op">|</span> <span class="ident">ParallelismMode::Landscape</span>
+            <span class="op">|</span> <span class="ident">ParallelismMode::Probabilistic</span>(<span class="kw">_</span>) =&gt; <span class="ident">local_partition</span>.<span class="ident">get_partition</span>(),
+        }
+    }
 
     <span class="kw">fn</span> <span class="ident">initialise_and_simulate</span><span class="op">&lt;</span><span class="ident">I</span>: <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">u64</span><span class="op">&gt;</span><span class="op">&gt;</span>(
         <span class="ident">args</span>: <span class="ident"><span class="self">Self</span>::Arguments</span>,

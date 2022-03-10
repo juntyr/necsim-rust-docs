@@ -73,6 +73,8 @@
 <span id="72">72</span>
 <span id="73">73</span>
 <span id="74">74</span>
+<span id="75">75</span>
+<span id="76">76</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">core</span>::{<span class="ident">fmt</span>, <span class="ident">marker::PhantomData</span>};
 <span class="kw">use</span> <span class="ident">necsim_core_bond::NonNegativeF64</span>;
 
@@ -83,15 +85,15 @@
 <span class="kw">use</span> <span class="ident"><span class="kw">super</span>::WaterLevelReporterProxy</span>;
 
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::module_name_repetitions</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">RecordedWaterLevelReporterProxy</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span>, <span class="ident">R</span>: <span class="ident">Reporter</span>, <span class="ident">P</span>: <span class="ident">LocalPartition</span><span class="op">&lt;</span><span class="ident">R</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">RecordedWaterLevelReporterProxy</span><span class="op">&lt;</span><span class="lifetime">&#39;l</span>, <span class="lifetime">&#39;p</span>, <span class="ident">R</span>: <span class="ident">Reporter</span>, <span class="ident">P</span>: <span class="ident">LocalPartition</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span>, <span class="ident">R</span><span class="op">&gt;</span><span class="op">&gt;</span> {
     <span class="ident">water_level</span>: <span class="ident">NonNegativeF64</span>,
 
-    <span class="ident">local_partition</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;p</span> <span class="kw-2">mut</span> <span class="ident">P</span>,
-    <span class="ident">_marker</span>: <span class="ident">PhantomData</span><span class="op">&lt;</span><span class="ident">R</span><span class="op">&gt;</span>,
+    <span class="ident">local_partition</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;l</span> <span class="kw-2">mut</span> <span class="ident">P</span>,
+    <span class="ident">_marker</span>: <span class="ident">PhantomData</span><span class="op">&lt;</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;p</span> (), <span class="ident">R</span>)<span class="op">&gt;</span>,
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span>, <span class="ident">R</span>: <span class="ident">Reporter</span>, <span class="ident">P</span>: <span class="ident">LocalPartition</span><span class="op">&lt;</span><span class="ident">R</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="ident">fmt::Debug</span>
-    <span class="kw">for</span> <span class="ident">RecordedWaterLevelReporterProxy</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span>, <span class="ident">R</span>, <span class="ident">P</span><span class="op">&gt;</span>
+<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;l</span>, <span class="lifetime">&#39;p</span>, <span class="ident">R</span>: <span class="ident">Reporter</span>, <span class="ident">P</span>: <span class="ident">LocalPartition</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span>, <span class="ident">R</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="ident">fmt::Debug</span>
+    <span class="kw">for</span> <span class="ident">RecordedWaterLevelReporterProxy</span><span class="op">&lt;</span><span class="lifetime">&#39;l</span>, <span class="lifetime">&#39;p</span>, <span class="ident">R</span>, <span class="ident">P</span><span class="op">&gt;</span>
 {
     <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">fmt</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="kw">struct</span> <span class="ident">EventBufferLen</span>(<span class="ident">usize</span>);
@@ -108,7 +110,9 @@
     }
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span>, <span class="ident">R</span>: <span class="ident">Reporter</span>, <span class="ident">P</span>: <span class="ident">LocalPartition</span><span class="op">&lt;</span><span class="ident">R</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="ident">Reporter</span> <span class="kw">for</span> <span class="ident">RecordedWaterLevelReporterProxy</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span>, <span class="ident">R</span>, <span class="ident">P</span><span class="op">&gt;</span> {
+<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;l</span>, <span class="lifetime">&#39;p</span>, <span class="ident">R</span>: <span class="ident">Reporter</span>, <span class="ident">P</span>: <span class="ident">LocalPartition</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span>, <span class="ident">R</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="ident">Reporter</span>
+    <span class="kw">for</span> <span class="ident">RecordedWaterLevelReporterProxy</span><span class="op">&lt;</span><span class="lifetime">&#39;l</span>, <span class="lifetime">&#39;p</span>, <span class="ident">R</span>, <span class="ident">P</span><span class="op">&gt;</span>
+{
     <span class="macro">impl_report!</span>(<span class="ident">speciation</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">speciation</span>: <span class="ident">MaybeUsed</span><span class="op">&lt;</span><span class="ident">R::ReportSpeciation</span><span class="op">&gt;</span>) {
         <span class="self">self</span>.<span class="ident">local_partition</span>.<span class="ident">get_reporter</span>().<span class="ident">report_speciation</span>(<span class="ident">speciation</span>.<span class="ident">into</span>());
     });
@@ -121,17 +125,17 @@
 }
 
 <span class="attribute">#[<span class="ident">contract_trait</span>]</span>
-<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span>, <span class="ident">R</span>: <span class="ident">Reporter</span>, <span class="ident">P</span>: <span class="ident">LocalPartition</span><span class="op">&lt;</span><span class="ident">R</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="ident">WaterLevelReporterProxy</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span>, <span class="ident">R</span>, <span class="ident">P</span><span class="op">&gt;</span>
-    <span class="kw">for</span> <span class="ident">RecordedWaterLevelReporterProxy</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span>, <span class="ident">R</span>, <span class="ident">P</span><span class="op">&gt;</span>
+<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;l</span>, <span class="lifetime">&#39;p</span>, <span class="ident">R</span>: <span class="ident">Reporter</span>, <span class="ident">P</span>: <span class="ident">LocalPartition</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span>, <span class="ident">R</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="ident">WaterLevelReporterProxy</span><span class="op">&lt;</span><span class="lifetime">&#39;l</span>, <span class="lifetime">&#39;p</span>, <span class="ident">R</span>, <span class="ident">P</span><span class="op">&gt;</span>
+    <span class="kw">for</span> <span class="ident">RecordedWaterLevelReporterProxy</span><span class="op">&lt;</span><span class="lifetime">&#39;l</span>, <span class="lifetime">&#39;p</span>, <span class="ident">R</span>, <span class="ident">P</span><span class="op">&gt;</span>
 {
-    <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">_capacity</span>: <span class="ident">usize</span>, <span class="ident">local_partition</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;p</span> <span class="kw-2">mut</span> <span class="ident">P</span>) -&gt; <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">_capacity</span>: <span class="ident">usize</span>, <span class="ident">local_partition</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;l</span> <span class="kw-2">mut</span> <span class="ident">P</span>) -&gt; <span class="self">Self</span> {
         <span class="macro">info!</span>(<span class="string">&quot;Events will be reported using the recorded water-level algorithm ...&quot;</span>);
 
         <span class="self">Self</span> {
             <span class="ident">water_level</span>: <span class="ident">NonNegativeF64::zero</span>(),
 
             <span class="ident">local_partition</span>,
-            <span class="ident">_marker</span>: <span class="ident">PhantomData</span>::<span class="op">&lt;</span><span class="ident">R</span><span class="op">&gt;</span>,
+            <span class="ident">_marker</span>: <span class="ident">PhantomData</span>::<span class="op">&lt;</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;p</span> (), <span class="ident">R</span>)<span class="op">&gt;</span>,
         }
     }
 

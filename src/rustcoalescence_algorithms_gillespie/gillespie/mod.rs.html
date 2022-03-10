@@ -23,7 +23,7 @@
 
 <span class="kw">use</span> <span class="ident">rustcoalescence_algorithms</span>::{<span class="ident">AlgorithmDefaults</span>, <span class="ident">AlgorithmParamters</span>};
 
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::arguments::MonolithicArguments</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::arguments::GillespieArguments</span>;
 
 <span class="kw">mod</span> <span class="ident">classical</span>;
 <span class="kw">mod</span> <span class="ident">turnover</span>;
@@ -32,7 +32,7 @@
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">GillespieAlgorithm</span> {}
 
 <span class="kw">impl</span> <span class="ident">AlgorithmParamters</span> <span class="kw">for</span> <span class="ident">GillespieAlgorithm</span> {
-    <span class="kw">type</span> <span class="ident">Arguments</span> <span class="op">=</span> <span class="ident">MonolithicArguments</span>;
+    <span class="kw">type</span> <span class="ident">Arguments</span> <span class="op">=</span> <span class="ident">GillespieArguments</span>;
     <span class="kw">type</span> <span class="ident">Error</span> <span class="op">=</span> <span class="op">!</span>;
 }
 

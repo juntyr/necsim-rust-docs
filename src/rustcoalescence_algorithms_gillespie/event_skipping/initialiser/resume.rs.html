@@ -137,6 +137,7 @@
 <span id="136">136</span>
 <span id="137">137</span>
 <span id="138">138</span>
+<span id="139">139</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">necsim_core</span>::{
     <span class="ident">cogs</span>::{
         <span class="ident">EmigrationExit</span>, <span class="ident">GloballyCoherentLineageStore</span>, <span class="ident">ImmigrationEntry</span>, <span class="ident">LineageReference</span>,
@@ -208,13 +209,14 @@
 
     <span class="kw">fn</span> <span class="ident">init</span><span class="op">&lt;</span>
         <span class="lifetime">&#39;h</span>,
+        <span class="lifetime">&#39;p</span>,
         <span class="ident">T</span>: <span class="ident">TrustedOriginSampler</span><span class="op">&lt;</span><span class="lifetime">&#39;h</span>, <span class="ident">M</span>, <span class="ident">Habitat</span> <span class="op">=</span> <span class="ident">O::Habitat</span><span class="op">&gt;</span>,
         <span class="ident">R</span>: <span class="ident">LineageReference</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">O::Habitat</span><span class="op">&gt;</span>,
         <span class="ident">S</span>: <span class="ident">GloballyCoherentLineageStore</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">O::Habitat</span>, <span class="ident">R</span><span class="op">&gt;</span>,
         <span class="ident">X</span>: <span class="ident">EmigrationExit</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">O::Habitat</span>, <span class="ident">G</span>, <span class="ident">R</span>, <span class="ident">S</span><span class="op">&gt;</span>,
         <span class="ident">I</span>: <span class="ident">ImmigrationEntry</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span>,
         <span class="ident">Q</span>: <span class="ident">Reporter</span>,
-        <span class="ident">P</span>: <span class="ident">LocalPartition</span><span class="op">&lt;</span><span class="ident">Q</span><span class="op">&gt;</span>,
+        <span class="ident">P</span>: <span class="ident">LocalPartition</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span>, <span class="ident">Q</span><span class="op">&gt;</span>,
     <span class="op">&gt;</span>(
         <span class="self">self</span>,
         <span class="ident">origin_sampler</span>: <span class="ident">T</span>,
