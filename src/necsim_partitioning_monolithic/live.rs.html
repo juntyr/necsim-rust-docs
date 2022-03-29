@@ -157,7 +157,7 @@
 
 <span class="attribute">#[<span class="ident">contract_trait</span>]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span>, <span class="ident">R</span>: <span class="ident">Reporter</span><span class="op">&gt;</span> <span class="ident">LocalPartition</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span>, <span class="ident">R</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">LiveMonolithicLocalPartition</span><span class="op">&lt;</span><span class="ident">R</span><span class="op">&gt;</span> {
-    <span class="kw">type</span> <span class="ident">ImmigrantIterator</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>
+    <span class="kw">type</span> <span class="ident">ImmigrantIterator</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>:
     <span class="kw">where</span>
         <span class="lifetime">&#39;p</span>: <span class="lifetime">&#39;a</span>,
         <span class="ident">R</span>: <span class="lifetime">&#39;a</span>,
