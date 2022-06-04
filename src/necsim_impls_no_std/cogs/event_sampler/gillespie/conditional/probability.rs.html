@@ -81,11 +81,10 @@
 <span id="76">76</span>
 <span id="77">77</span>
 <span id="78">78</span>
-<span id="79">79</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">necsim_core</span>::{
     <span class="ident">cogs</span>::{
-        <span class="ident">GloballyCoherentLineageStore</span>, <span class="ident">Habitat</span>, <span class="ident">LineageReference</span>, <span class="ident">MathsCore</span>, <span class="ident">RngCore</span>,
-        <span class="ident">SeparableDispersalSampler</span>, <span class="ident">SpeciationProbability</span>,
+        <span class="ident">GloballyCoherentLineageStore</span>, <span class="ident">Habitat</span>, <span class="ident">MathsCore</span>, <span class="ident">RngCore</span>, <span class="ident">SeparableDispersalSampler</span>,
+        <span class="ident">SpeciationProbability</span>,
     },
     <span class="ident">landscape::Location</span>,
 };
@@ -106,8 +105,7 @@
         <span class="ident">M</span>: <span class="ident">MathsCore</span>,
         <span class="ident">H</span>: <span class="ident">Habitat</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span>,
         <span class="ident">G</span>: <span class="ident">RngCore</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span>,
-        <span class="ident">R</span>: <span class="ident">LineageReference</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span><span class="op">&gt;</span>,
-        <span class="ident">S</span>: <span class="ident">GloballyCoherentLineageStore</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">R</span><span class="op">&gt;</span>,
+        <span class="ident">S</span>: <span class="ident">GloballyCoherentLineageStore</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span><span class="op">&gt;</span>,
         <span class="ident">D</span>: <span class="ident">SeparableDispersalSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span><span class="op">&gt;</span>,
         <span class="ident">N</span>: <span class="ident">SpeciationProbability</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span><span class="op">&gt;</span>,
     <span class="op">&gt;</span>(
@@ -115,7 +113,7 @@
         <span class="ident">habitat</span>: <span class="kw-2">&amp;</span><span class="ident">H</span>,
         <span class="ident">lineage_store</span>: <span class="kw-2">&amp;</span><span class="ident">S</span>,
         <span class="ident">dispersal_sampler</span>: <span class="kw-2">&amp;</span><span class="ident">D</span>,
-        <span class="ident">coalescence_sampler</span>: <span class="kw-2">&amp;</span><span class="ident">ConditionalCoalescenceSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">R</span>, <span class="ident">S</span><span class="op">&gt;</span>,
+        <span class="ident">coalescence_sampler</span>: <span class="kw-2">&amp;</span><span class="ident">ConditionalCoalescenceSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">S</span><span class="op">&gt;</span>,
         <span class="ident">speciation_probability</span>: <span class="kw-2">&amp;</span><span class="ident">N</span>,
         <span class="ident">lineage_store_includes_self</span>: <span class="ident">bool</span>,
     ) -&gt; <span class="self">Self</span> {

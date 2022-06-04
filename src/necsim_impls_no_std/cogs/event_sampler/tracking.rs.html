@@ -83,15 +83,14 @@
 <span id="78">78</span>
 <span id="79">79</span>
 <span id="80">80</span>
-<span id="81">81</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">core::hash</span>::{<span class="ident">Hash</span>, <span class="ident">Hasher</span>};
 
 <span class="kw">use</span> <span class="ident">necsim_core_bond</span>::{<span class="ident">ClosedOpenUnitF64</span>, <span class="ident">PositiveF64</span>};
 
 <span class="kw">use</span> <span class="ident">necsim_core</span>::{
     <span class="ident">cogs</span>::{
-        <span class="ident">CoalescenceSampler</span>, <span class="ident">DispersalSampler</span>, <span class="ident">EmigrationExit</span>, <span class="ident">EventSampler</span>, <span class="ident">Habitat</span>,
-        <span class="ident">LineageReference</span>, <span class="ident">LineageStore</span>, <span class="ident">MathsCore</span>, <span class="ident">RngCore</span>, <span class="ident">SpeciationProbability</span>, <span class="ident">TurnoverRate</span>,
+        <span class="ident">CoalescenceSampler</span>, <span class="ident">DispersalSampler</span>, <span class="ident">EmigrationExit</span>, <span class="ident">EventSampler</span>, <span class="ident">Habitat</span>, <span class="ident">LineageStore</span>,
+        <span class="ident">MathsCore</span>, <span class="ident">RngCore</span>, <span class="ident">SpeciationProbability</span>, <span class="ident">TurnoverRate</span>,
     },
     <span class="ident">landscape::IndexedLocation</span>,
 };
@@ -100,14 +99,13 @@
     <span class="ident">M</span>: <span class="ident">MathsCore</span>,
     <span class="ident">H</span>: <span class="ident">Habitat</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span>,
     <span class="ident">G</span>: <span class="ident">RngCore</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span>,
-    <span class="ident">R</span>: <span class="ident">LineageReference</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span><span class="op">&gt;</span>,
-    <span class="ident">S</span>: <span class="ident">LineageStore</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">R</span><span class="op">&gt;</span>,
-    <span class="ident">X</span>: <span class="ident">EmigrationExit</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span>, <span class="ident">R</span>, <span class="ident">S</span><span class="op">&gt;</span>,
+    <span class="ident">S</span>: <span class="ident">LineageStore</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span><span class="op">&gt;</span>,
+    <span class="ident">X</span>: <span class="ident">EmigrationExit</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span>, <span class="ident">S</span><span class="op">&gt;</span>,
     <span class="ident">D</span>: <span class="ident">DispersalSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span><span class="op">&gt;</span>,
-    <span class="ident">C</span>: <span class="ident">CoalescenceSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">R</span>, <span class="ident">S</span><span class="op">&gt;</span>,
+    <span class="ident">C</span>: <span class="ident">CoalescenceSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">S</span><span class="op">&gt;</span>,
     <span class="ident">T</span>: <span class="ident">TurnoverRate</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span><span class="op">&gt;</span>,
     <span class="ident">N</span>: <span class="ident">SpeciationProbability</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span><span class="op">&gt;</span>,
-<span class="op">&gt;</span>: <span class="ident">EventSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span>, <span class="ident">R</span>, <span class="ident">S</span>, <span class="ident">X</span>, <span class="ident">D</span>, <span class="ident">C</span>, <span class="ident">T</span>, <span class="ident">N</span><span class="op">&gt;</span>
+<span class="op">&gt;</span>: <span class="ident">EventSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span>, <span class="ident">S</span>, <span class="ident">X</span>, <span class="ident">D</span>, <span class="ident">C</span>, <span class="ident">T</span>, <span class="ident">N</span><span class="op">&gt;</span>
 {
     <span class="kw">fn</span> <span class="ident">replace_min_speciation</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">new</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">SpeciationSample</span><span class="op">&gt;</span>)
         -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">SpeciationSample</span><span class="op">&gt;</span>;

@@ -147,14 +147,11 @@
 <span id="142">142</span>
 <span id="143">143</span>
 <span id="144">144</span>
-<span id="145">145</span>
-<span id="146">146</span>
-<span id="147">147</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">alloc::vec::Vec</span>;
 <span class="kw">use</span> <span class="ident">core::marker::PhantomData</span>;
 
 <span class="kw">use</span> <span class="ident">necsim_core::cogs</span>::{
-    <span class="ident">Backup</span>, <span class="ident">DispersalSampler</span>, <span class="ident">EmigrationExit</span>, <span class="ident">Habitat</span>, <span class="ident">ImmigrationEntry</span>, <span class="ident">LineageReference</span>,
+    <span class="ident">Backup</span>, <span class="ident">DispersalSampler</span>, <span class="ident">EmigrationExit</span>, <span class="ident">Habitat</span>, <span class="ident">ImmigrationEntry</span>,
     <span class="ident">LocallyCoherentLineageStore</span>, <span class="ident">MathsCore</span>, <span class="ident">RngCore</span>, <span class="ident">SpeciationProbability</span>,
 };
 <span class="kw">use</span> <span class="ident">necsim_core_bond::NonNegativeF64</span>;
@@ -172,14 +169,13 @@
     <span class="ident">M</span>: <span class="ident">MathsCore</span>,
     <span class="ident">H</span>: <span class="ident">Habitat</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span>,
     <span class="ident">G</span>: <span class="ident">RngCore</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span>,
-    <span class="ident">R</span>: <span class="ident">LineageReference</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span><span class="op">&gt;</span>,
-    <span class="ident">S</span>: <span class="ident">LocallyCoherentLineageStore</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">R</span><span class="op">&gt;</span>,
-    <span class="ident">X</span>: <span class="ident">EmigrationExit</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span>, <span class="ident">R</span>, <span class="ident">S</span><span class="op">&gt;</span>,
+    <span class="ident">S</span>: <span class="ident">LocallyCoherentLineageStore</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span><span class="op">&gt;</span>,
+    <span class="ident">X</span>: <span class="ident">EmigrationExit</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span>, <span class="ident">S</span><span class="op">&gt;</span>,
     <span class="ident">D</span>: <span class="ident">DispersalSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span><span class="op">&gt;</span>,
     <span class="ident">N</span>: <span class="ident">SpeciationProbability</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span><span class="op">&gt;</span>,
     <span class="ident">I</span>: <span class="ident">ImmigrationEntry</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span>,
 <span class="op">&gt;</span> {
-    <span class="ident">active_lineage_references</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">R</span><span class="op">&gt;</span>,
+    <span class="ident">active_lineage_references</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">S::LocalLineageReference</span><span class="op">&gt;</span>,
     <span class="ident">last_event_time</span>: <span class="ident">NonNegativeF64</span>,
     <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::type_complexity</span>)]</span>
     <span class="ident">_marker</span>: <span class="ident">PhantomData</span><span class="op">&lt;</span>(<span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span>, <span class="ident">S</span>, <span class="ident">X</span>, <span class="ident">D</span>, <span class="ident">N</span>, <span class="ident">I</span>)<span class="op">&gt;</span>,
@@ -189,13 +185,12 @@
         <span class="ident">M</span>: <span class="ident">MathsCore</span>,
         <span class="ident">H</span>: <span class="ident">Habitat</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span>,
         <span class="ident">G</span>: <span class="ident">RngCore</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span>,
-        <span class="ident">R</span>: <span class="ident">LineageReference</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span><span class="op">&gt;</span>,
-        <span class="ident">S</span>: <span class="ident">LocallyCoherentLineageStore</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">R</span><span class="op">&gt;</span>,
-        <span class="ident">X</span>: <span class="ident">EmigrationExit</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span>, <span class="ident">R</span>, <span class="ident">S</span><span class="op">&gt;</span>,
+        <span class="ident">S</span>: <span class="ident">LocallyCoherentLineageStore</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span><span class="op">&gt;</span>,
+        <span class="ident">X</span>: <span class="ident">EmigrationExit</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span>, <span class="ident">S</span><span class="op">&gt;</span>,
         <span class="ident">D</span>: <span class="ident">DispersalSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span><span class="op">&gt;</span>,
         <span class="ident">N</span>: <span class="ident">SpeciationProbability</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span><span class="op">&gt;</span>,
         <span class="ident">I</span>: <span class="ident">ImmigrationEntry</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span>,
-    <span class="op">&gt;</span> <span class="ident">ClassicalActiveLineageSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span>, <span class="ident">R</span>, <span class="ident">S</span>, <span class="ident">X</span>, <span class="ident">D</span>, <span class="ident">N</span>, <span class="ident">I</span><span class="op">&gt;</span>
+    <span class="op">&gt;</span> <span class="ident">ClassicalActiveLineageSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span>, <span class="ident">S</span>, <span class="ident">X</span>, <span class="ident">D</span>, <span class="ident">N</span>, <span class="ident">I</span><span class="op">&gt;</span>
 {
     <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">init_with_store</span><span class="op">&lt;</span><span class="lifetime">&#39;h</span>, <span class="ident">O</span>: <span class="ident">TrustedOriginSampler</span><span class="op">&lt;</span><span class="lifetime">&#39;h</span>, <span class="ident">M</span>, <span class="ident">Habitat</span> <span class="op">=</span> <span class="ident">H</span><span class="op">&gt;</span><span class="op">&gt;</span>(
@@ -281,13 +276,12 @@
         <span class="ident">M</span>: <span class="ident">MathsCore</span>,
         <span class="ident">H</span>: <span class="ident">Habitat</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span>,
         <span class="ident">G</span>: <span class="ident">RngCore</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span>,
-        <span class="ident">R</span>: <span class="ident">LineageReference</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span><span class="op">&gt;</span>,
-        <span class="ident">S</span>: <span class="ident">LocallyCoherentLineageStore</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">R</span><span class="op">&gt;</span>,
-        <span class="ident">X</span>: <span class="ident">EmigrationExit</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span>, <span class="ident">R</span>, <span class="ident">S</span><span class="op">&gt;</span>,
+        <span class="ident">S</span>: <span class="ident">LocallyCoherentLineageStore</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span><span class="op">&gt;</span>,
+        <span class="ident">X</span>: <span class="ident">EmigrationExit</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span>, <span class="ident">S</span><span class="op">&gt;</span>,
         <span class="ident">D</span>: <span class="ident">DispersalSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span><span class="op">&gt;</span>,
         <span class="ident">N</span>: <span class="ident">SpeciationProbability</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span><span class="op">&gt;</span>,
         <span class="ident">I</span>: <span class="ident">ImmigrationEntry</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span>,
-    <span class="op">&gt;</span> <span class="ident">Backup</span> <span class="kw">for</span> <span class="ident">ClassicalActiveLineageSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span>, <span class="ident">R</span>, <span class="ident">S</span>, <span class="ident">X</span>, <span class="ident">D</span>, <span class="ident">N</span>, <span class="ident">I</span><span class="op">&gt;</span>
+    <span class="op">&gt;</span> <span class="ident">Backup</span> <span class="kw">for</span> <span class="ident">ClassicalActiveLineageSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span>, <span class="ident">S</span>, <span class="ident">X</span>, <span class="ident">D</span>, <span class="ident">N</span>, <span class="ident">I</span><span class="op">&gt;</span>
 {
     <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">backup_unchecked</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="self">Self</span> {
         <span class="self">Self</span> {

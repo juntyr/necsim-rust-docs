@@ -55,7 +55,6 @@
 <span id="50">50</span>
 <span id="51">51</span>
 <span id="52">52</span>
-<span id="53">53</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">core::marker::PhantomData</span>;
 
 <span class="kw">use</span> <span class="ident">necsim_core</span>::{
@@ -63,7 +62,7 @@
         <span class="ident">coalescence_sampler::CoalescenceRngSample</span>, <span class="ident">Backup</span>, <span class="ident">CoalescenceSampler</span>, <span class="ident">Habitat</span>, <span class="ident">MathsCore</span>,
     },
     <span class="ident">landscape</span>::{<span class="ident">IndexedLocation</span>, <span class="ident">Location</span>},
-    <span class="ident">lineage</span>::{<span class="ident">GlobalLineageReference</span>, <span class="ident">LineageInteraction</span>},
+    <span class="ident">lineage::LineageInteraction</span>,
 };
 
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::cogs::lineage_store::independent::IndependentLineageStore</span>;
@@ -88,8 +87,7 @@
 }
 
 <span class="attribute">#[<span class="ident">contract_trait</span>]</span>
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">M</span>: <span class="ident">MathsCore</span>, <span class="ident">H</span>: <span class="ident">Habitat</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span><span class="op">&gt;</span>
-    <span class="ident">CoalescenceSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">GlobalLineageReference</span>, <span class="ident">IndependentLineageStore</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span><span class="op">&gt;</span><span class="op">&gt;</span>
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">M</span>: <span class="ident">MathsCore</span>, <span class="ident">H</span>: <span class="ident">Habitat</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="ident">CoalescenceSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">IndependentLineageStore</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span><span class="op">&gt;</span><span class="op">&gt;</span>
     <span class="kw">for</span> <span class="ident">IndependentCoalescenceSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span><span class="op">&gt;</span>
 {
     <span class="attribute">#[<span class="ident">must_use</span>]</span>

@@ -134,7 +134,6 @@
 <span id="129">129</span>
 <span id="130">130</span>
 <span id="131">131</span>
-<span id="132">132</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">alloc::vec::Vec</span>;
 <span class="kw">use</span> <span class="ident">core::marker::PhantomData</span>;
 
@@ -143,7 +142,7 @@
 <span class="kw">use</span> <span class="ident">necsim_core</span>::{
     <span class="ident">cogs</span>::{
         <span class="ident">coalescence_sampler::CoalescenceRngSample</span>, <span class="ident">Backup</span>, <span class="ident">EmigrationExit</span>, <span class="ident">Habitat</span>,
-        <span class="ident">LineageReference</span>, <span class="ident">LocallyCoherentLineageStore</span>, <span class="ident">MathsCore</span>, <span class="ident">RngCore</span>,
+        <span class="ident">LocallyCoherentLineageStore</span>, <span class="ident">MathsCore</span>, <span class="ident">RngCore</span>,
     },
     <span class="ident">landscape</span>::{<span class="ident">IndexedLocation</span>, <span class="ident">Location</span>},
     <span class="ident">lineage</span>::{<span class="ident">GlobalLineageReference</span>, <span class="ident">MigratingLineage</span>},
@@ -183,9 +182,8 @@
         <span class="ident">H</span>: <span class="ident">Habitat</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span>,
         <span class="ident">C</span>: <span class="ident">Decomposition</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span><span class="op">&gt;</span>,
         <span class="ident">G</span>: <span class="ident">RngCore</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span>,
-        <span class="ident">R</span>: <span class="ident">LineageReference</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span><span class="op">&gt;</span>,
-        <span class="ident">S</span>: <span class="ident">LocallyCoherentLineageStore</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">R</span><span class="op">&gt;</span>,
-    <span class="op">&gt;</span> <span class="ident">EmigrationExit</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span>, <span class="ident">R</span>, <span class="ident">S</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">DomainEmigrationExit</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">C</span><span class="op">&gt;</span>
+        <span class="ident">S</span>: <span class="ident">LocallyCoherentLineageStore</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span><span class="op">&gt;</span>,
+    <span class="op">&gt;</span> <span class="ident">EmigrationExit</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span>, <span class="ident">S</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">DomainEmigrationExit</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">C</span><span class="op">&gt;</span>
 {
     <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="attribute">#[<span class="ident">debug_ensures</span>(<span class="ident">ret</span>.<span class="ident">is_some</span>() <span class="op">==</span> (
@@ -200,7 +198,7 @@
         <span class="ident">dispersal_target</span>: <span class="ident">Location</span>,
         <span class="ident">prior_time</span>: <span class="ident">NonNegativeF64</span>,
         <span class="ident">event_time</span>: <span class="ident">PositiveF64</span>,
-        <span class="ident">simulation</span>: <span class="kw-2">&amp;mut</span> <span class="ident">PartialSimulation</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span>, <span class="ident">R</span>, <span class="ident">S</span><span class="op">&gt;</span>,
+        <span class="ident">simulation</span>: <span class="kw-2">&amp;mut</span> <span class="ident">PartialSimulation</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span>, <span class="ident">S</span><span class="op">&gt;</span>,
         <span class="ident">rng</span>: <span class="kw-2">&amp;mut</span> <span class="ident">G</span>,
     ) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span>(
         <span class="ident">GlobalLineageReference</span>,

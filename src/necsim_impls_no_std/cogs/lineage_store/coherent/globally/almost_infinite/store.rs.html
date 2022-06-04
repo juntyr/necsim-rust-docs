@@ -128,18 +128,6 @@
 <span id="123">123</span>
 <span id="124">124</span>
 <span id="125">125</span>
-<span id="126">126</span>
-<span id="127">127</span>
-<span id="128">128</span>
-<span id="129">129</span>
-<span id="130">130</span>
-<span id="131">131</span>
-<span id="132">132</span>
-<span id="133">133</span>
-<span id="134">134</span>
-<span id="135">135</span>
-<span id="136">136</span>
-<span id="137">137</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">core::marker::PhantomData</span>;
 
 <span class="kw">use</span> <span class="ident">fnv::FnvBuildHasher</span>;
@@ -160,11 +148,8 @@
 <span class="kw">use</span> <span class="ident"><span class="kw">super</span>::AlmostInfiniteLineageStore</span>;
 
 <span class="attribute">#[<span class="ident">contract_trait</span>]</span>
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">M</span>: <span class="ident">MathsCore</span><span class="op">&gt;</span> <span class="ident">LineageStore</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">AlmostInfiniteHabitat</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span>, <span class="ident">InMemoryLineageReference</span><span class="op">&gt;</span>
-    <span class="kw">for</span> <span class="ident">AlmostInfiniteLineageStore</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span>
-{
-    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::type_complexity</span>)]</span>
-    <span class="kw">type</span> <span class="ident">LineageReferenceIterator</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="op">=</span> <span class="kw">impl</span> <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">InMemoryLineageReference</span><span class="op">&gt;</span>;
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">M</span>: <span class="ident">MathsCore</span><span class="op">&gt;</span> <span class="ident">LineageStore</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">AlmostInfiniteHabitat</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">AlmostInfiniteLineageStore</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span> {
+    <span class="kw">type</span> <span class="ident">LocalLineageReference</span> <span class="op">=</span> <span class="ident">InMemoryLineageReference</span>;
 
     <span class="kw">fn</span> <span class="ident">with_capacity</span>(<span class="ident">_habitat</span>: <span class="kw-2">&amp;</span><span class="ident">AlmostInfiniteHabitat</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span>, <span class="ident">capacity</span>: <span class="ident">usize</span>) -&gt; <span class="self">Self</span> {
         <span class="self">Self</span> {
@@ -178,13 +163,6 @@
     }
 
     <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">fn</span> <span class="ident">iter_local_lineage_references</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident"><span class="self">Self</span>::LineageReferenceIterator</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">lineages_store</span>
-            .<span class="ident">iter</span>()
-            .<span class="ident">map</span>(<span class="op">|</span>(<span class="ident">reference</span>, <span class="kw">_</span>)<span class="op">|</span> <span class="ident">InMemoryLineageReference::from</span>(<span class="ident">reference</span>))
-    }
-
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="kw">fn</span> <span class="ident">get_lineage_for_local_reference</span>(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         <span class="ident">reference</span>: <span class="ident">InMemoryLineageReference</span>,
@@ -194,8 +172,7 @@
 }
 
 <span class="attribute">#[<span class="ident">contract_trait</span>]</span>
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">M</span>: <span class="ident">MathsCore</span><span class="op">&gt;</span>
-    <span class="ident">LocallyCoherentLineageStore</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">AlmostInfiniteHabitat</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span>, <span class="ident">InMemoryLineageReference</span><span class="op">&gt;</span>
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">M</span>: <span class="ident">MathsCore</span><span class="op">&gt;</span> <span class="ident">LocallyCoherentLineageStore</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">AlmostInfiniteHabitat</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span><span class="op">&gt;</span>
     <span class="kw">for</span> <span class="ident">AlmostInfiniteLineageStore</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span>
 {
     <span class="attribute">#[<span class="ident">must_use</span>]</span>
@@ -248,8 +225,7 @@
 }
 
 <span class="attribute">#[<span class="ident">contract_trait</span>]</span>
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">M</span>: <span class="ident">MathsCore</span><span class="op">&gt;</span>
-    <span class="ident">GloballyCoherentLineageStore</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">AlmostInfiniteHabitat</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span>, <span class="ident">InMemoryLineageReference</span><span class="op">&gt;</span>
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">M</span>: <span class="ident">MathsCore</span><span class="op">&gt;</span> <span class="ident">GloballyCoherentLineageStore</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">AlmostInfiniteHabitat</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span><span class="op">&gt;</span>
     <span class="kw">for</span> <span class="ident">AlmostInfiniteLineageStore</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span>
 {
     <span class="kw">type</span> <span class="ident">LocationIterator</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="op">=</span> <span class="kw">impl</span> <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">Location</span><span class="op">&gt;</span>;

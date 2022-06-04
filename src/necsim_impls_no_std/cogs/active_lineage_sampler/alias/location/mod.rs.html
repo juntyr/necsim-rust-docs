@@ -247,11 +247,6 @@
 <span id="242">242</span>
 <span id="243">243</span>
 <span id="244">244</span>
-<span id="245">245</span>
-<span id="246">246</span>
-<span id="247">247</span>
-<span id="248">248</span>
-<span id="249">249</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">alloc::vec::Vec</span>;
 <span class="kw">use</span> <span class="ident">core::marker::PhantomData</span>;
 
@@ -260,8 +255,7 @@
 <span class="kw">use</span> <span class="ident">necsim_core</span>::{
     <span class="ident">cogs</span>::{
         <span class="ident">Backup</span>, <span class="ident">CoalescenceSampler</span>, <span class="ident">DispersalSampler</span>, <span class="ident">EmigrationExit</span>, <span class="ident">GloballyCoherentLineageStore</span>,
-        <span class="ident">Habitat</span>, <span class="ident">ImmigrationEntry</span>, <span class="ident">LineageReference</span>, <span class="ident">MathsCore</span>, <span class="ident">RngCore</span>, <span class="ident">SpeciationProbability</span>,
-        <span class="ident">TurnoverRate</span>,
+        <span class="ident">Habitat</span>, <span class="ident">ImmigrationEntry</span>, <span class="ident">MathsCore</span>, <span class="ident">RngCore</span>, <span class="ident">SpeciationProbability</span>, <span class="ident">TurnoverRate</span>,
     },
     <span class="ident">landscape::Location</span>,
 };
@@ -282,36 +276,34 @@
     <span class="ident">M</span>: <span class="ident">MathsCore</span>,
     <span class="ident">H</span>: <span class="ident">Habitat</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span>,
     <span class="ident">G</span>: <span class="ident">RngCore</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span>,
-    <span class="ident">R</span>: <span class="ident">LineageReference</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span><span class="op">&gt;</span>,
-    <span class="ident">S</span>: <span class="ident">GloballyCoherentLineageStore</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">R</span><span class="op">&gt;</span>,
-    <span class="ident">X</span>: <span class="ident">EmigrationExit</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span>, <span class="ident">R</span>, <span class="ident">S</span><span class="op">&gt;</span>,
+    <span class="ident">S</span>: <span class="ident">GloballyCoherentLineageStore</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span><span class="op">&gt;</span>,
+    <span class="ident">X</span>: <span class="ident">EmigrationExit</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span>, <span class="ident">S</span><span class="op">&gt;</span>,
     <span class="ident">D</span>: <span class="ident">DispersalSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span><span class="op">&gt;</span>,
-    <span class="ident">C</span>: <span class="ident">CoalescenceSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">R</span>, <span class="ident">S</span><span class="op">&gt;</span>,
+    <span class="ident">C</span>: <span class="ident">CoalescenceSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">S</span><span class="op">&gt;</span>,
     <span class="ident">T</span>: <span class="ident">TurnoverRate</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span><span class="op">&gt;</span>,
     <span class="ident">N</span>: <span class="ident">SpeciationProbability</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span><span class="op">&gt;</span>,
-    <span class="ident">E</span>: <span class="ident">GillespieEventSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span>, <span class="ident">R</span>, <span class="ident">S</span>, <span class="ident">X</span>, <span class="ident">D</span>, <span class="ident">C</span>, <span class="ident">T</span>, <span class="ident">N</span><span class="op">&gt;</span>,
+    <span class="ident">E</span>: <span class="ident">GillespieEventSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span>, <span class="ident">S</span>, <span class="ident">X</span>, <span class="ident">D</span>, <span class="ident">C</span>, <span class="ident">T</span>, <span class="ident">N</span><span class="op">&gt;</span>,
     <span class="ident">I</span>: <span class="ident">ImmigrationEntry</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span>,
 <span class="op">&gt;</span> {
     <span class="ident">alias_sampler</span>: <span class="ident">DynamicAliasMethodIndexedSampler</span><span class="op">&lt;</span><span class="ident">Location</span><span class="op">&gt;</span>,
     <span class="ident">number_active_lineages</span>: <span class="ident">usize</span>,
     <span class="ident">last_event_time</span>: <span class="ident">NonNegativeF64</span>,
-    <span class="ident">marker</span>: <span class="ident">PhantomData</span><span class="op">&lt;</span>(<span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span>, <span class="ident">R</span>, <span class="ident">S</span>, <span class="ident">X</span>, <span class="ident">D</span>, <span class="ident">C</span>, <span class="ident">T</span>, <span class="ident">N</span>, <span class="ident">E</span>, <span class="ident">I</span>)<span class="op">&gt;</span>,
+    <span class="ident">marker</span>: <span class="ident">PhantomData</span><span class="op">&lt;</span>(<span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span>, <span class="ident">S</span>, <span class="ident">X</span>, <span class="ident">D</span>, <span class="ident">C</span>, <span class="ident">T</span>, <span class="ident">N</span>, <span class="ident">E</span>, <span class="ident">I</span>)<span class="op">&gt;</span>,
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span>
         <span class="ident">M</span>: <span class="ident">MathsCore</span>,
         <span class="ident">H</span>: <span class="ident">Habitat</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span>,
         <span class="ident">G</span>: <span class="ident">RngCore</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span>,
-        <span class="ident">R</span>: <span class="ident">LineageReference</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span><span class="op">&gt;</span>,
-        <span class="ident">S</span>: <span class="ident">GloballyCoherentLineageStore</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">R</span><span class="op">&gt;</span>,
-        <span class="ident">X</span>: <span class="ident">EmigrationExit</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span>, <span class="ident">R</span>, <span class="ident">S</span><span class="op">&gt;</span>,
+        <span class="ident">S</span>: <span class="ident">GloballyCoherentLineageStore</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span><span class="op">&gt;</span>,
+        <span class="ident">X</span>: <span class="ident">EmigrationExit</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span>, <span class="ident">S</span><span class="op">&gt;</span>,
         <span class="ident">D</span>: <span class="ident">DispersalSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span><span class="op">&gt;</span>,
-        <span class="ident">C</span>: <span class="ident">CoalescenceSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">R</span>, <span class="ident">S</span><span class="op">&gt;</span>,
+        <span class="ident">C</span>: <span class="ident">CoalescenceSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">S</span><span class="op">&gt;</span>,
         <span class="ident">T</span>: <span class="ident">TurnoverRate</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span><span class="op">&gt;</span>,
         <span class="ident">N</span>: <span class="ident">SpeciationProbability</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span><span class="op">&gt;</span>,
-        <span class="ident">E</span>: <span class="ident">GillespieEventSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span>, <span class="ident">R</span>, <span class="ident">S</span>, <span class="ident">X</span>, <span class="ident">D</span>, <span class="ident">C</span>, <span class="ident">T</span>, <span class="ident">N</span><span class="op">&gt;</span>,
+        <span class="ident">E</span>: <span class="ident">GillespieEventSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span>, <span class="ident">S</span>, <span class="ident">X</span>, <span class="ident">D</span>, <span class="ident">C</span>, <span class="ident">T</span>, <span class="ident">N</span><span class="op">&gt;</span>,
         <span class="ident">I</span>: <span class="ident">ImmigrationEntry</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span>,
-    <span class="op">&gt;</span> <span class="ident">LocationAliasActiveLineageSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span>, <span class="ident">R</span>, <span class="ident">S</span>, <span class="ident">X</span>, <span class="ident">D</span>, <span class="ident">C</span>, <span class="ident">T</span>, <span class="ident">N</span>, <span class="ident">E</span>, <span class="ident">I</span><span class="op">&gt;</span>
+    <span class="op">&gt;</span> <span class="ident">LocationAliasActiveLineageSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span>, <span class="ident">S</span>, <span class="ident">X</span>, <span class="ident">D</span>, <span class="ident">C</span>, <span class="ident">T</span>, <span class="ident">N</span>, <span class="ident">E</span>, <span class="ident">I</span><span class="op">&gt;</span>
 {
     <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">init_with_store</span><span class="op">&lt;</span><span class="lifetime">&#39;h</span>, <span class="ident">O</span>: <span class="ident">TrustedOriginSampler</span><span class="op">&lt;</span><span class="lifetime">&#39;h</span>, <span class="ident">M</span>, <span class="ident">Habitat</span> <span class="op">=</span> <span class="ident">H</span><span class="op">&gt;</span><span class="op">&gt;</span>(
@@ -446,7 +438,7 @@
                 <span class="ident">alias_sampler</span>,
                 <span class="ident">number_active_lineages</span>,
                 <span class="ident">last_event_time</span>,
-                <span class="ident">marker</span>: <span class="ident">PhantomData</span>::<span class="op">&lt;</span>(<span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span>, <span class="ident">R</span>, <span class="ident">S</span>, <span class="ident">X</span>, <span class="ident">D</span>, <span class="ident">C</span>, <span class="ident">T</span>, <span class="ident">N</span>, <span class="ident">E</span>, <span class="ident">I</span>)<span class="op">&gt;</span>,
+                <span class="ident">marker</span>: <span class="ident">PhantomData</span>::<span class="op">&lt;</span>(<span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span>, <span class="ident">S</span>, <span class="ident">X</span>, <span class="ident">D</span>, <span class="ident">C</span>, <span class="ident">T</span>, <span class="ident">N</span>, <span class="ident">E</span>, <span class="ident">I</span>)<span class="op">&gt;</span>,
             },
             <span class="ident">exceptional_lineages</span>,
         )
@@ -457,16 +449,15 @@
         <span class="ident">M</span>: <span class="ident">MathsCore</span>,
         <span class="ident">H</span>: <span class="ident">Habitat</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span>,
         <span class="ident">G</span>: <span class="ident">RngCore</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span>,
-        <span class="ident">R</span>: <span class="ident">LineageReference</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span><span class="op">&gt;</span>,
-        <span class="ident">S</span>: <span class="ident">GloballyCoherentLineageStore</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">R</span><span class="op">&gt;</span>,
-        <span class="ident">X</span>: <span class="ident">EmigrationExit</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span>, <span class="ident">R</span>, <span class="ident">S</span><span class="op">&gt;</span>,
+        <span class="ident">S</span>: <span class="ident">GloballyCoherentLineageStore</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span><span class="op">&gt;</span>,
+        <span class="ident">X</span>: <span class="ident">EmigrationExit</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span>, <span class="ident">S</span><span class="op">&gt;</span>,
         <span class="ident">D</span>: <span class="ident">DispersalSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span><span class="op">&gt;</span>,
-        <span class="ident">C</span>: <span class="ident">CoalescenceSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">R</span>, <span class="ident">S</span><span class="op">&gt;</span>,
+        <span class="ident">C</span>: <span class="ident">CoalescenceSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">S</span><span class="op">&gt;</span>,
         <span class="ident">T</span>: <span class="ident">TurnoverRate</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span><span class="op">&gt;</span>,
         <span class="ident">N</span>: <span class="ident">SpeciationProbability</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span><span class="op">&gt;</span>,
-        <span class="ident">E</span>: <span class="ident">GillespieEventSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span>, <span class="ident">R</span>, <span class="ident">S</span>, <span class="ident">X</span>, <span class="ident">D</span>, <span class="ident">C</span>, <span class="ident">T</span>, <span class="ident">N</span><span class="op">&gt;</span>,
+        <span class="ident">E</span>: <span class="ident">GillespieEventSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span>, <span class="ident">S</span>, <span class="ident">X</span>, <span class="ident">D</span>, <span class="ident">C</span>, <span class="ident">T</span>, <span class="ident">N</span><span class="op">&gt;</span>,
         <span class="ident">I</span>: <span class="ident">ImmigrationEntry</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span>,
-    <span class="op">&gt;</span> <span class="ident">core::fmt::Debug</span> <span class="kw">for</span> <span class="ident">LocationAliasActiveLineageSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span>, <span class="ident">R</span>, <span class="ident">S</span>, <span class="ident">X</span>, <span class="ident">D</span>, <span class="ident">C</span>, <span class="ident">T</span>, <span class="ident">N</span>, <span class="ident">E</span>, <span class="ident">I</span><span class="op">&gt;</span>
+    <span class="op">&gt;</span> <span class="ident">core::fmt::Debug</span> <span class="kw">for</span> <span class="ident">LocationAliasActiveLineageSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span>, <span class="ident">S</span>, <span class="ident">X</span>, <span class="ident">D</span>, <span class="ident">C</span>, <span class="ident">T</span>, <span class="ident">N</span>, <span class="ident">E</span>, <span class="ident">I</span><span class="op">&gt;</span>
 {
     <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">core::fmt::Formatter</span>) -&gt; <span class="ident">core::fmt::Result</span> {
         <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;LocationAliasActiveLineageSampler&quot;</span>)
@@ -481,23 +472,22 @@
         <span class="ident">M</span>: <span class="ident">MathsCore</span>,
         <span class="ident">H</span>: <span class="ident">Habitat</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span>,
         <span class="ident">G</span>: <span class="ident">RngCore</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span>,
-        <span class="ident">R</span>: <span class="ident">LineageReference</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span><span class="op">&gt;</span>,
-        <span class="ident">S</span>: <span class="ident">GloballyCoherentLineageStore</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">R</span><span class="op">&gt;</span>,
-        <span class="ident">X</span>: <span class="ident">EmigrationExit</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span>, <span class="ident">R</span>, <span class="ident">S</span><span class="op">&gt;</span>,
+        <span class="ident">S</span>: <span class="ident">GloballyCoherentLineageStore</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span><span class="op">&gt;</span>,
+        <span class="ident">X</span>: <span class="ident">EmigrationExit</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span>, <span class="ident">S</span><span class="op">&gt;</span>,
         <span class="ident">D</span>: <span class="ident">DispersalSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span><span class="op">&gt;</span>,
-        <span class="ident">C</span>: <span class="ident">CoalescenceSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">R</span>, <span class="ident">S</span><span class="op">&gt;</span>,
+        <span class="ident">C</span>: <span class="ident">CoalescenceSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">S</span><span class="op">&gt;</span>,
         <span class="ident">T</span>: <span class="ident">TurnoverRate</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span><span class="op">&gt;</span>,
         <span class="ident">N</span>: <span class="ident">SpeciationProbability</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span><span class="op">&gt;</span>,
-        <span class="ident">E</span>: <span class="ident">GillespieEventSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span>, <span class="ident">R</span>, <span class="ident">S</span>, <span class="ident">X</span>, <span class="ident">D</span>, <span class="ident">C</span>, <span class="ident">T</span>, <span class="ident">N</span><span class="op">&gt;</span>,
+        <span class="ident">E</span>: <span class="ident">GillespieEventSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span>, <span class="ident">S</span>, <span class="ident">X</span>, <span class="ident">D</span>, <span class="ident">C</span>, <span class="ident">T</span>, <span class="ident">N</span><span class="op">&gt;</span>,
         <span class="ident">I</span>: <span class="ident">ImmigrationEntry</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span>,
-    <span class="op">&gt;</span> <span class="ident">Backup</span> <span class="kw">for</span> <span class="ident">LocationAliasActiveLineageSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span>, <span class="ident">R</span>, <span class="ident">S</span>, <span class="ident">X</span>, <span class="ident">D</span>, <span class="ident">C</span>, <span class="ident">T</span>, <span class="ident">N</span>, <span class="ident">E</span>, <span class="ident">I</span><span class="op">&gt;</span>
+    <span class="op">&gt;</span> <span class="ident">Backup</span> <span class="kw">for</span> <span class="ident">LocationAliasActiveLineageSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span>, <span class="ident">S</span>, <span class="ident">X</span>, <span class="ident">D</span>, <span class="ident">C</span>, <span class="ident">T</span>, <span class="ident">N</span>, <span class="ident">E</span>, <span class="ident">I</span><span class="op">&gt;</span>
 {
     <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">backup_unchecked</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="self">Self</span> {
         <span class="self">Self</span> {
             <span class="ident">alias_sampler</span>: <span class="self">self</span>.<span class="ident">alias_sampler</span>.<span class="ident">clone</span>(),
             <span class="ident">number_active_lineages</span>: <span class="self">self</span>.<span class="ident">number_active_lineages</span>,
             <span class="ident">last_event_time</span>: <span class="self">self</span>.<span class="ident">last_event_time</span>,
-            <span class="ident">marker</span>: <span class="ident">PhantomData</span>::<span class="op">&lt;</span>(<span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span>, <span class="ident">R</span>, <span class="ident">S</span>, <span class="ident">X</span>, <span class="ident">D</span>, <span class="ident">C</span>, <span class="ident">T</span>, <span class="ident">N</span>, <span class="ident">E</span>, <span class="ident">I</span>)<span class="op">&gt;</span>,
+            <span class="ident">marker</span>: <span class="ident">PhantomData</span>::<span class="op">&lt;</span>(<span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span>, <span class="ident">S</span>, <span class="ident">X</span>, <span class="ident">D</span>, <span class="ident">C</span>, <span class="ident">T</span>, <span class="ident">N</span>, <span class="ident">E</span>, <span class="ident">I</span>)<span class="op">&gt;</span>,
         }
     }
 }

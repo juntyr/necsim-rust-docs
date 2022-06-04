@@ -372,26 +372,13 @@
 <span id="367">367</span>
 <span id="368">368</span>
 <span id="369">369</span>
-<span id="370">370</span>
-<span id="371">371</span>
-<span id="372">372</span>
-<span id="373">373</span>
-<span id="374">374</span>
-<span id="375">375</span>
-<span id="376">376</span>
-<span id="377">377</span>
-<span id="378">378</span>
 </pre><pre class="rust"><code><span class="attribute">#![<span class="ident">deny</span>(<span class="ident">clippy::pedantic</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">generic_associated_types</span>)]</span>
 
 <span class="attribute">#[<span class="ident">macro_use</span>]</span>
 <span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">serde_derive_state</span>;
 
-<span class="kw">use</span> <span class="ident">necsim_core</span>::{
-    <span class="ident">cogs::MathsCore</span>,
-    <span class="ident">lineage</span>::{<span class="ident">GlobalLineageReference</span>, <span class="ident">Lineage</span>},
-    <span class="ident">reporter::Reporter</span>,
-};
+<span class="kw">use</span> <span class="ident">necsim_core</span>::{<span class="ident">cogs::MathsCore</span>, <span class="ident">lineage::Lineage</span>, <span class="ident">reporter::Reporter</span>};
 <span class="kw">use</span> <span class="ident">necsim_core_bond</span>::{<span class="ident">NonNegativeF64</span>, <span class="ident">PositiveF64</span>};
 
 <span class="kw">use</span> <span class="ident">necsim_impls_cuda::cogs</span>::{<span class="ident">maths::NvptxMathsCore</span>, <span class="ident">rng::CudaRng</span>};
@@ -476,7 +463,6 @@
         <span class="ident">M</span>,
         <span class="ident">O::Habitat</span>,
         <span class="ident">CudaRng</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">WyHash</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-        <span class="ident">GlobalLineageReference</span>,
         <span class="ident">IndependentLineageStore</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">O::Habitat</span><span class="op">&gt;</span>,
         <span class="ident">NeverEmigrationExit</span>,
         <span class="ident">O::DispersalSampler</span><span class="op">&lt;</span>
@@ -515,7 +501,6 @@
         <span class="ident">M</span>,
         <span class="ident">O::Habitat</span>,
         <span class="ident">CudaRng</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">WyHash</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-        <span class="ident">GlobalLineageReference</span>,
         <span class="ident">IndependentLineageStore</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">O::Habitat</span><span class="op">&gt;</span>,
         <span class="ident">NeverEmigrationExit</span>,
         <span class="ident">O::DispersalSampler</span><span class="op">&lt;</span>
@@ -555,7 +540,6 @@
         <span class="ident">M</span>,
         <span class="ident">O::Habitat</span>,
         <span class="ident">CudaRng</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">WyHash</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-        <span class="ident">GlobalLineageReference</span>,
         <span class="ident">IndependentLineageStore</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">O::Habitat</span><span class="op">&gt;</span>,
         <span class="ident">NeverEmigrationExit</span>,
         <span class="ident">TrespassingDispersalSampler</span><span class="op">&lt;</span>
@@ -612,7 +596,6 @@
         <span class="ident">M</span>,
         <span class="ident">O::Habitat</span>,
         <span class="ident">CudaRng</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">WyHash</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-        <span class="ident">GlobalLineageReference</span>,
         <span class="ident">IndependentLineageStore</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">O::Habitat</span><span class="op">&gt;</span>,
         <span class="ident">NeverEmigrationExit</span>,
         <span class="ident">TrespassingDispersalSampler</span><span class="op">&lt;</span>
@@ -667,7 +650,6 @@
         <span class="ident">R::ReportDispersal</span>,
     <span class="op">&gt;</span>,
 {
-    <span class="kw">type</span> <span class="ident">LineageReference</span> <span class="op">=</span> <span class="ident">GlobalLineageReference</span>;
     <span class="kw">type</span> <span class="ident">LineageStore</span> <span class="op">=</span> <span class="ident">IndependentLineageStore</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">O::Habitat</span><span class="op">&gt;</span>;
     <span class="kw">type</span> <span class="ident">Rng</span> <span class="op">=</span> <span class="ident">CudaRng</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">WyHash</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span><span class="op">&gt;</span>;
 

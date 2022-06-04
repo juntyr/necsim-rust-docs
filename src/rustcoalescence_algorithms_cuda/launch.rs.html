@@ -240,18 +240,9 @@
 <span id="235">235</span>
 <span id="236">236</span>
 <span id="237">237</span>
-<span id="238">238</span>
-<span id="239">239</span>
-<span id="240">240</span>
-<span id="241">241</span>
-<span id="242">242</span>
-<span id="243">243</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">std::marker::PhantomData</span>;
 
-<span class="kw">use</span> <span class="ident">necsim_core</span>::{
-    <span class="ident">cogs::MathsCore</span>, <span class="ident">lineage::GlobalLineageReference</span>, <span class="ident">reporter::Reporter</span>,
-    <span class="ident">simulation::SimulationBuilder</span>,
-};
+<span class="kw">use</span> <span class="ident">necsim_core</span>::{<span class="ident">cogs::MathsCore</span>, <span class="ident">reporter::Reporter</span>, <span class="ident">simulation::SimulationBuilder</span>};
 <span class="kw">use</span> <span class="ident">necsim_core_bond::NonNegativeF64</span>;
 
 <span class="kw">use</span> <span class="ident">necsim_impls_cuda::cogs::rng::CudaRng</span>;
@@ -325,7 +316,6 @@
         <span class="ident">M</span>,
         <span class="ident">O::Habitat</span>,
         <span class="ident">CudaRng</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">WyHash</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-        <span class="ident">GlobalLineageReference</span>,
         <span class="ident">IndependentLineageStore</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">O::Habitat</span><span class="op">&gt;</span>,
         <span class="ident">NeverEmigrationExit</span>,
         <span class="ident">L::DispersalSampler</span>,
@@ -349,7 +339,6 @@
         <span class="ident">M</span>,
         <span class="ident">O::Habitat</span>,
         <span class="ident">CudaRng</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">WyHash</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-        <span class="ident">GlobalLineageReference</span>,
         <span class="ident">IndependentLineageStore</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">O::Habitat</span><span class="op">&gt;</span>,
         <span class="ident">NeverEmigrationExit</span>,
         <span class="ident">L::DispersalSampler</span>,
@@ -422,7 +411,6 @@
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">simulation</span> <span class="op">=</span> <span class="ident">SimulationBuilder</span> {
         <span class="ident">maths</span>: <span class="ident">PhantomData</span>::<span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span>,
         <span class="ident">habitat</span>,
-        <span class="ident">lineage_reference</span>: <span class="ident">PhantomData</span>::<span class="op">&lt;</span><span class="ident">GlobalLineageReference</span><span class="op">&gt;</span>,
         <span class="ident">lineage_store</span>,
         <span class="ident">dispersal_sampler</span>,
         <span class="ident">coalescence_sampler</span>,

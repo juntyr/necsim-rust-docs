@@ -215,9 +215,6 @@
 <span id="210">210</span>
 <span id="211">211</span>
 <span id="212">212</span>
-<span id="213">213</span>
-<span id="214">214</span>
-<span id="215">215</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">hint::unreachable_unchecked</span>, <span class="ident">marker::PhantomData</span>};
 
 <span class="kw">use</span> <span class="ident">necsim_core</span>::{
@@ -234,7 +231,6 @@
         <span class="ident">emigration_exit</span>::{<span class="ident">domain::DomainEmigrationExit</span>, <span class="ident">never::NeverEmigrationExit</span>},
         <span class="ident">event_sampler::unconditional::UnconditionalEventSampler</span>,
         <span class="ident">immigration_entry</span>::{<span class="ident">buffered::BufferedImmigrationEntry</span>, <span class="ident">never::NeverImmigrationEntry</span>},
-        <span class="ident">lineage_reference::in_memory::InMemoryLineageReference</span>,
         <span class="ident">lineage_store::coherent::locally::classical::ClassicalLineageStore</span>,
         <span class="ident">origin_sampler</span>::{
             <span class="ident">decomposition::DecompositionOriginSampler</span>, <span class="ident">pre_sampler::OriginPreSampler</span>,
@@ -258,7 +254,7 @@
     <span class="lifetime">&#39;p</span>,
     <span class="ident">M</span>: <span class="ident">MathsCore</span>,
     <span class="ident">G</span>: <span class="ident">SplittableRng</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span>,
-    <span class="ident">O</span>: <span class="ident">Scenario</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">G</span>, <span class="ident">LineageReference</span> <span class="op">=</span> <span class="ident">InMemoryLineageReference</span><span class="op">&gt;</span>,
+    <span class="ident">O</span>: <span class="ident">Scenario</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">G</span><span class="op">&gt;</span>,
     <span class="ident">R</span>: <span class="ident">Reporter</span>,
     <span class="ident">P</span>: <span class="ident">LocalPartition</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span>, <span class="ident">R</span><span class="op">&gt;</span>,
     <span class="ident">I</span>: <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">u64</span><span class="op">&gt;</span>,
@@ -275,7 +271,7 @@
 ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">SimulationOutcome</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">G</span><span class="op">&gt;</span>, <span class="ident">Error</span><span class="op">&gt;</span>
 <span class="kw">where</span>
     <span class="ident">O::LineageStore</span><span class="op">&lt;</span><span class="ident">ClassicalLineageStore</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">O::Habitat</span><span class="op">&gt;</span><span class="op">&gt;</span>:
-        <span class="ident">LocallyCoherentLineageStore</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">O::Habitat</span>, <span class="ident">InMemoryLineageReference</span><span class="op">&gt;</span>,
+        <span class="ident">LocallyCoherentLineageStore</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">O::Habitat</span><span class="op">&gt;</span>,
 {
     <span class="kw">match</span> <span class="ident">args</span>.<span class="ident">parallelism_mode</span> {
         <span class="ident">ParallelismMode::Monolithic</span> =&gt; {
@@ -307,7 +303,6 @@
             <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">simulation</span> <span class="op">=</span> <span class="ident">SimulationBuilder</span> {
                 <span class="ident">maths</span>: <span class="ident">PhantomData</span>::<span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span>,
                 <span class="ident">habitat</span>,
-                <span class="ident">lineage_reference</span>: <span class="ident">PhantomData</span>::<span class="op">&lt;</span><span class="ident">InMemoryLineageReference</span><span class="op">&gt;</span>,
                 <span class="ident">lineage_store</span>,
                 <span class="ident">dispersal_sampler</span>,
                 <span class="ident">coalescence_sampler</span>,
@@ -386,7 +381,6 @@
             <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">simulation</span> <span class="op">=</span> <span class="ident">SimulationBuilder</span> {
                 <span class="ident">maths</span>: <span class="ident">PhantomData</span>::<span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span>,
                 <span class="ident">habitat</span>,
-                <span class="ident">lineage_reference</span>: <span class="ident">PhantomData</span>::<span class="op">&lt;</span><span class="ident">InMemoryLineageReference</span><span class="op">&gt;</span>,
                 <span class="ident">lineage_store</span>,
                 <span class="ident">dispersal_sampler</span>,
                 <span class="ident">coalescence_sampler</span>,

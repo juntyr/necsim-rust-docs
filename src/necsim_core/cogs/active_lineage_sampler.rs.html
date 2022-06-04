@@ -94,14 +94,13 @@
 <span id="89">89</span>
 <span id="90">90</span>
 <span id="91">91</span>
-<span id="92">92</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">core::ops::ControlFlow</span>;
 
 <span class="kw">use</span> <span class="ident">necsim_core_bond</span>::{<span class="ident">NonNegativeF64</span>, <span class="ident">PositiveF64</span>};
 
 <span class="kw">use</span> <span class="kw">super</span>::{
     <span class="ident">CoalescenceSampler</span>, <span class="ident">DispersalSampler</span>, <span class="ident">EmigrationExit</span>, <span class="ident">EventSampler</span>, <span class="ident">Habitat</span>, <span class="ident">ImmigrationEntry</span>,
-    <span class="ident">LineageReference</span>, <span class="ident">LineageStore</span>, <span class="ident">MathsCore</span>, <span class="ident">RngCore</span>, <span class="ident">SpeciationProbability</span>, <span class="ident">TurnoverRate</span>,
+    <span class="ident">LineageStore</span>, <span class="ident">MathsCore</span>, <span class="ident">RngCore</span>, <span class="ident">SpeciationProbability</span>, <span class="ident">TurnoverRate</span>,
 };
 
 <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">lineage::Lineage</span>, <span class="ident">simulation::partial::active_lineage_sampler::PartialSimulation</span>};
@@ -113,14 +112,13 @@
     <span class="ident">M</span>: <span class="ident">MathsCore</span>,
     <span class="ident">H</span>: <span class="ident">Habitat</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span>,
     <span class="ident">G</span>: <span class="ident">RngCore</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span>,
-    <span class="ident">R</span>: <span class="ident">LineageReference</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span><span class="op">&gt;</span>,
-    <span class="ident">S</span>: <span class="ident">LineageStore</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">R</span><span class="op">&gt;</span>,
-    <span class="ident">X</span>: <span class="ident">EmigrationExit</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span>, <span class="ident">R</span>, <span class="ident">S</span><span class="op">&gt;</span>,
+    <span class="ident">S</span>: <span class="ident">LineageStore</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span><span class="op">&gt;</span>,
+    <span class="ident">X</span>: <span class="ident">EmigrationExit</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span>, <span class="ident">S</span><span class="op">&gt;</span>,
     <span class="ident">D</span>: <span class="ident">DispersalSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span><span class="op">&gt;</span>,
-    <span class="ident">C</span>: <span class="ident">CoalescenceSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">R</span>, <span class="ident">S</span><span class="op">&gt;</span>,
+    <span class="ident">C</span>: <span class="ident">CoalescenceSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">S</span><span class="op">&gt;</span>,
     <span class="ident">T</span>: <span class="ident">TurnoverRate</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span><span class="op">&gt;</span>,
     <span class="ident">N</span>: <span class="ident">SpeciationProbability</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span><span class="op">&gt;</span>,
-    <span class="ident">E</span>: <span class="ident">EventSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span>, <span class="ident">R</span>, <span class="ident">S</span>, <span class="ident">X</span>, <span class="ident">D</span>, <span class="ident">C</span>, <span class="ident">T</span>, <span class="ident">N</span><span class="op">&gt;</span>,
+    <span class="ident">E</span>: <span class="ident">EventSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span>, <span class="ident">S</span>, <span class="ident">X</span>, <span class="ident">D</span>, <span class="ident">C</span>, <span class="ident">T</span>, <span class="ident">N</span><span class="op">&gt;</span>,
     <span class="ident">I</span>: <span class="ident">ImmigrationEntry</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span>,
 <span class="op">&gt;</span>: <span class="ident"><span class="kw">crate</span>::cogs::Backup</span> <span class="op">+</span> <span class="ident">core::fmt::Debug</span>
 {
@@ -167,7 +165,7 @@
     } <span class="kw">else</span> { <span class="bool-val">true</span> }, <span class="string">&quot;updates the time of the last event&quot;</span>)]</span>
     <span class="kw">fn</span> <span class="ident">pop_active_lineage_and_event_time</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">FnOnce</span>(<span class="ident">PositiveF64</span>) -&gt; <span class="ident">ControlFlow</span><span class="op">&lt;</span>(), ()<span class="op">&gt;</span><span class="op">&gt;</span>(
         <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
-        <span class="ident">simulation</span>: <span class="kw-2">&amp;mut</span> <span class="ident">PartialSimulation</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span>, <span class="ident">R</span>, <span class="ident">S</span>, <span class="ident">X</span>, <span class="ident">D</span>, <span class="ident">C</span>, <span class="ident">T</span>, <span class="ident">N</span>, <span class="ident">E</span><span class="op">&gt;</span>,
+        <span class="ident">simulation</span>: <span class="kw-2">&amp;mut</span> <span class="ident">PartialSimulation</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span>, <span class="ident">S</span>, <span class="ident">X</span>, <span class="ident">D</span>, <span class="ident">C</span>, <span class="ident">T</span>, <span class="ident">N</span>, <span class="ident">E</span><span class="op">&gt;</span>,
         <span class="ident">rng</span>: <span class="kw-2">&amp;mut</span> <span class="ident">G</span>,
         <span class="ident">early_peek_stop</span>: <span class="ident">P</span>,
     ) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span>(<span class="ident">Lineage</span>, <span class="ident">PositiveF64</span>)<span class="op">&gt;</span>;
@@ -183,7 +181,7 @@
     <span class="kw">fn</span> <span class="ident">push_active_lineage</span>(
         <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
         <span class="ident">lineage</span>: <span class="ident">Lineage</span>,
-        <span class="ident">simulation</span>: <span class="kw-2">&amp;mut</span> <span class="ident">PartialSimulation</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span>, <span class="ident">R</span>, <span class="ident">S</span>, <span class="ident">X</span>, <span class="ident">D</span>, <span class="ident">C</span>, <span class="ident">T</span>, <span class="ident">N</span>, <span class="ident">E</span><span class="op">&gt;</span>,
+        <span class="ident">simulation</span>: <span class="kw-2">&amp;mut</span> <span class="ident">PartialSimulation</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span>, <span class="ident">S</span>, <span class="ident">X</span>, <span class="ident">D</span>, <span class="ident">C</span>, <span class="ident">T</span>, <span class="ident">N</span>, <span class="ident">E</span><span class="op">&gt;</span>,
         <span class="ident">rng</span>: <span class="kw-2">&amp;mut</span> <span class="ident">G</span>,
     );
 }

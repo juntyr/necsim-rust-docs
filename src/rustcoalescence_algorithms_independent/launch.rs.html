@@ -349,16 +349,10 @@
 <span id="344">344</span>
 <span id="345">345</span>
 <span id="346">346</span>
-<span id="347">347</span>
-<span id="348">348</span>
-<span id="349">349</span>
-<span id="350">350</span>
-<span id="351">351</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">std::marker::PhantomData</span>;
 
 <span class="kw">use</span> <span class="ident">necsim_core</span>::{
     <span class="ident">cogs</span>::{<span class="ident">MathsCore</span>, <span class="ident">PrimeableRng</span>},
-    <span class="ident">lineage::GlobalLineageReference</span>,
     <span class="ident">reporter::Reporter</span>,
     <span class="ident">simulation::SimulationBuilder</span>,
 };
@@ -476,7 +470,6 @@
             <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">simulation</span> <span class="op">=</span> <span class="ident">SimulationBuilder</span> {
                 <span class="ident">maths</span>: <span class="ident">PhantomData</span>::<span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span>,
                 <span class="ident">habitat</span>,
-                <span class="ident">lineage_reference</span>: <span class="ident">PhantomData</span>::<span class="op">&lt;</span><span class="ident">GlobalLineageReference</span><span class="op">&gt;</span>,
                 <span class="ident">lineage_store</span>,
                 <span class="ident">dispersal_sampler</span>,
                 <span class="ident">coalescence_sampler</span>,
@@ -548,7 +541,6 @@
             <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">simulation</span> <span class="op">=</span> <span class="ident">SimulationBuilder</span> {
                 <span class="ident">maths</span>: <span class="ident">PhantomData</span>::<span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span>,
                 <span class="ident">habitat</span>,
-                <span class="ident">lineage_reference</span>: <span class="ident">PhantomData</span>::<span class="op">&lt;</span><span class="ident">GlobalLineageReference</span><span class="op">&gt;</span>,
                 <span class="ident">lineage_store</span>,
                 <span class="ident">dispersal_sampler</span>,
                 <span class="ident">coalescence_sampler</span>,
@@ -610,7 +602,6 @@
             <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">simulation</span> <span class="op">=</span> <span class="ident">SimulationBuilder</span> {
                 <span class="ident">maths</span>: <span class="ident">PhantomData</span>::<span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span>,
                 <span class="ident">habitat</span>,
-                <span class="ident">lineage_reference</span>: <span class="ident">PhantomData</span>::<span class="op">&lt;</span><span class="ident">GlobalLineageReference</span><span class="op">&gt;</span>,
                 <span class="ident">lineage_store</span>,
                 <span class="ident">dispersal_sampler</span>,
                 <span class="ident">coalescence_sampler</span>,
@@ -676,7 +667,6 @@
             <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">simulation</span> <span class="op">=</span> <span class="ident">SimulationBuilder</span> {
                 <span class="ident">maths</span>: <span class="ident">PhantomData</span>::<span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span>,
                 <span class="ident">habitat</span>,
-                <span class="ident">lineage_reference</span>: <span class="ident">PhantomData</span>::<span class="op">&lt;</span><span class="ident">GlobalLineageReference</span><span class="op">&gt;</span>,
                 <span class="ident">lineage_store</span>,
                 <span class="ident">dispersal_sampler</span>,
                 <span class="ident">coalescence_sampler</span>,

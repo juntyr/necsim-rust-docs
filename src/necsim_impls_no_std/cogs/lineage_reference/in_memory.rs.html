@@ -31,19 +31,13 @@
 <span id="26">26</span>
 <span id="27">27</span>
 <span id="28">28</span>
-<span id="29">29</span>
-<span id="30">30</span>
-<span id="31">31</span>
-</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">core</span>::{<span class="ident">hash::Hash</span>, <span class="ident">num::NonZeroUsize</span>};
+</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">core::hash::Hash</span>;
 
 <span class="kw">use</span> <span class="ident">necsim_core::cogs</span>::{<span class="ident">Backup</span>, <span class="ident">Habitat</span>, <span class="ident">LineageReference</span>, <span class="ident">MathsCore</span>};
 
-<span class="comment">// InMemoryLineageReference uses a NonZeroUsize internally to enable same-size</span>
-<span class="comment">// Option optimisation</span>
-
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Hash</span>, <span class="ident">Debug</span>, <span class="ident">TypeLayout</span>)]</span>
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::module_name_repetitions</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">InMemoryLineageReference</span>(<span class="ident">NonZeroUsize</span>);
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">InMemoryLineageReference</span>(<span class="ident">usize</span>);
 
 <span class="attribute">#[<span class="ident">contract_trait</span>]</span>
 <span class="kw">impl</span> <span class="ident">Backup</span> <span class="kw">for</span> <span class="ident">InMemoryLineageReference</span> {
@@ -56,13 +50,13 @@
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">InMemoryLineageReference</span> {
     <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">reference</span>: <span class="ident">usize</span>) -&gt; <span class="self">Self</span> {
-        <span class="self">Self</span>(<span class="kw">unsafe</span> { <span class="ident">NonZeroUsize::new_unchecked</span>(<span class="ident">reference</span> <span class="op">+</span> <span class="number">1</span>) })
+        <span class="self">Self</span>(<span class="ident">reference</span>)
     }
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">InMemoryLineageReference</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">usize</span> {
     <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">reference</span>: <span class="ident">InMemoryLineageReference</span>) -&gt; <span class="self">Self</span> {
-        <span class="ident">reference</span>.<span class="number">0</span>.<span class="ident">get</span>() <span class="op">-</span> <span class="number">1</span>
+        <span class="ident">reference</span>.<span class="number">0</span>
     }
 }
 </code></pre></div>

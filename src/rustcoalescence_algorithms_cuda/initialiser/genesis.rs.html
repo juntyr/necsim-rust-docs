@@ -93,21 +93,9 @@
 <span id="88">88</span>
 <span id="89">89</span>
 <span id="90">90</span>
-<span id="91">91</span>
-<span id="92">92</span>
-<span id="93">93</span>
-<span id="94">94</span>
-<span id="95">95</span>
-<span id="96">96</span>
-<span id="97">97</span>
-<span id="98">98</span>
-<span id="99">99</span>
-<span id="100">100</span>
-<span id="101">101</span>
-<span id="102">102</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">necsim_core</span>::{
     <span class="ident">cogs</span>::{<span class="ident">EmigrationExit</span>, <span class="ident">MathsCore</span>, <span class="ident">PrimeableRng</span>},
-    <span class="ident">lineage</span>::{<span class="ident">GlobalLineageReference</span>, <span class="ident">Lineage</span>},
+    <span class="ident">lineage::Lineage</span>,
 };
 
 <span class="kw">use</span> <span class="ident">necsim_impls_no_std::cogs</span>::{
@@ -140,13 +128,7 @@
     <span class="ident">O::SpeciationProbability</span>: <span class="ident">RustToCuda</span>,
 {
     <span class="kw">type</span> <span class="ident">ActiveLineageSampler</span><span class="op">&lt;</span>
-        <span class="ident">X</span>: <span class="ident">EmigrationExit</span><span class="op">&lt;</span>
-                <span class="ident">M</span>,
-                <span class="ident">O::Habitat</span>,
-                <span class="ident">G</span>,
-                <span class="ident">GlobalLineageReference</span>,
-                <span class="ident">IndependentLineageStore</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">O::Habitat</span><span class="op">&gt;</span>,
-            <span class="op">&gt;</span> <span class="op">+</span> <span class="ident">RustToCuda</span>,
+        <span class="ident">X</span>: <span class="ident">EmigrationExit</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">O::Habitat</span>, <span class="ident">G</span>, <span class="ident">IndependentLineageStore</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">O::Habitat</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">RustToCuda</span>,
         <span class="ident">J</span>: <span class="ident">EventTimeSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">O::Habitat</span>, <span class="ident">G</span>, <span class="ident">O::TurnoverRate</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">RustToCuda</span>,
     <span class="op">&gt;</span> <span class="op">=</span> <span class="ident">IndependentActiveLineageSampler</span><span class="op">&lt;</span>
         <span class="ident">M</span>,
@@ -165,13 +147,7 @@
         <span class="lifetime">&#39;h</span>,
         <span class="ident">T</span>: <span class="ident">TrustedOriginSampler</span><span class="op">&lt;</span><span class="lifetime">&#39;h</span>, <span class="ident">M</span>, <span class="ident">Habitat</span> <span class="op">=</span> <span class="ident">O::Habitat</span><span class="op">&gt;</span>,
         <span class="ident">J</span>: <span class="ident">EventTimeSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">O::Habitat</span>, <span class="ident">G</span>, <span class="ident">O::TurnoverRate</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">RustToCuda</span>,
-        <span class="ident">X</span>: <span class="ident">EmigrationExit</span><span class="op">&lt;</span>
-                <span class="ident">M</span>,
-                <span class="ident">O::Habitat</span>,
-                <span class="ident">G</span>,
-                <span class="ident">GlobalLineageReference</span>,
-                <span class="ident">IndependentLineageStore</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">O::Habitat</span><span class="op">&gt;</span>,
-            <span class="op">&gt;</span> <span class="op">+</span> <span class="ident">RustToCuda</span>,
+        <span class="ident">X</span>: <span class="ident">EmigrationExit</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">O::Habitat</span>, <span class="ident">G</span>, <span class="ident">IndependentLineageStore</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">O::Habitat</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">RustToCuda</span>,
     <span class="op">&gt;</span>(
         <span class="self">self</span>,
         <span class="ident">origin_sampler</span>: <span class="ident">T</span>,

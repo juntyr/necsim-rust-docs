@@ -222,9 +222,6 @@
 <span id="217">217</span>
 <span id="218">218</span>
 <span id="219">219</span>
-<span id="220">220</span>
-<span id="221">221</span>
-<span id="222">222</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">hint::unreachable_unchecked</span>, <span class="ident">marker::PhantomData</span>};
 
 <span class="kw">use</span> <span class="ident">necsim_core</span>::{
@@ -243,7 +240,6 @@
         <span class="ident">dispersal_sampler::in_memory::separable_alias::InMemorySeparableAliasDispersalSampler</span>,
         <span class="ident">emigration_exit</span>::{<span class="ident">domain::DomainEmigrationExit</span>, <span class="ident">never::NeverEmigrationExit</span>},
         <span class="ident">immigration_entry</span>::{<span class="ident">buffered::BufferedImmigrationEntry</span>, <span class="ident">never::NeverImmigrationEntry</span>},
-        <span class="ident">lineage_reference::in_memory::InMemoryLineageReference</span>,
         <span class="ident">lineage_store::coherent::globally::gillespie::GillespieLineageStore</span>,
         <span class="ident">origin_sampler</span>::{
             <span class="ident">decomposition::DecompositionOriginSampler</span>, <span class="ident">pre_sampler::OriginPreSampler</span>,
@@ -266,7 +262,7 @@
     <span class="lifetime">&#39;p</span>,
     <span class="ident">M</span>: <span class="ident">MathsCore</span>,
     <span class="ident">G</span>: <span class="ident">SplittableRng</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span>,
-    <span class="ident">O</span>: <span class="ident">Scenario</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">G</span>, <span class="ident">LineageReference</span> <span class="op">=</span> <span class="ident">InMemoryLineageReference</span><span class="op">&gt;</span>,
+    <span class="ident">O</span>: <span class="ident">Scenario</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">G</span><span class="op">&gt;</span>,
     <span class="ident">R</span>: <span class="ident">Reporter</span>,
     <span class="ident">P</span>: <span class="ident">LocalPartition</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span>, <span class="ident">R</span><span class="op">&gt;</span>,
     <span class="ident">I</span>: <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">u64</span><span class="op">&gt;</span>,
@@ -283,7 +279,7 @@
 ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">SimulationOutcome</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">G</span><span class="op">&gt;</span>, <span class="ident">Error</span><span class="op">&gt;</span>
 <span class="kw">where</span>
     <span class="ident">O::LineageStore</span><span class="op">&lt;</span><span class="ident">GillespieLineageStore</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">O::Habitat</span><span class="op">&gt;</span><span class="op">&gt;</span>:
-        <span class="ident">GloballyCoherentLineageStore</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">O::Habitat</span>, <span class="ident">InMemoryLineageReference</span><span class="op">&gt;</span>,
+        <span class="ident">GloballyCoherentLineageStore</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">O::Habitat</span><span class="op">&gt;</span>,
     <span class="ident">O::DispersalSampler</span><span class="op">&lt;</span><span class="ident">InMemorySeparableAliasDispersalSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">O::Habitat</span>, <span class="ident">G</span><span class="op">&gt;</span><span class="op">&gt;</span>:
         <span class="ident">SeparableDispersalSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">O::Habitat</span>, <span class="ident">G</span><span class="op">&gt;</span>,
 {
@@ -319,7 +315,6 @@
             <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">simulation</span> <span class="op">=</span> <span class="ident">SimulationBuilder</span> {
                 <span class="ident">maths</span>: <span class="ident">PhantomData</span>::<span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span>,
                 <span class="ident">habitat</span>,
-                <span class="ident">lineage_reference</span>: <span class="ident">PhantomData</span>::<span class="op">&lt;</span><span class="ident">InMemoryLineageReference</span><span class="op">&gt;</span>,
                 <span class="ident">lineage_store</span>,
                 <span class="ident">dispersal_sampler</span>,
                 <span class="ident">coalescence_sampler</span>,
@@ -400,7 +395,6 @@
             <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">simulation</span> <span class="op">=</span> <span class="ident">SimulationBuilder</span> {
                 <span class="ident">maths</span>: <span class="ident">PhantomData</span>::<span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span>,
                 <span class="ident">habitat</span>,
-                <span class="ident">lineage_reference</span>: <span class="ident">PhantomData</span>::<span class="op">&lt;</span><span class="ident">InMemoryLineageReference</span><span class="op">&gt;</span>,
                 <span class="ident">lineage_store</span>,
                 <span class="ident">dispersal_sampler</span>,
                 <span class="ident">coalescence_sampler</span>,

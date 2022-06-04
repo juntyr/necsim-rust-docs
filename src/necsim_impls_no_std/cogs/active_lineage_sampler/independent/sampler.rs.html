@@ -149,9 +149,6 @@
 <span id="144">144</span>
 <span id="145">145</span>
 <span id="146">146</span>
-<span id="147">147</span>
-<span id="148">148</span>
-<span id="149">149</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">core::ops::ControlFlow</span>;
 
 <span class="kw">use</span> <span class="ident">necsim_core</span>::{
@@ -159,7 +156,7 @@
         <span class="ident">ActiveLineageSampler</span>, <span class="ident">DispersalSampler</span>, <span class="ident">EmigrationExit</span>, <span class="ident">Habitat</span>, <span class="ident">MathsCore</span>, <span class="ident">PrimeableRng</span>,
         <span class="ident">SpeciationProbability</span>, <span class="ident">TurnoverRate</span>,
     },
-    <span class="ident">lineage</span>::{<span class="ident">GlobalLineageReference</span>, <span class="ident">Lineage</span>},
+    <span class="ident">lineage::Lineage</span>,
     <span class="ident">simulation::partial::active_lineage_sampler::PartialSimulation</span>,
 };
 <span class="kw">use</span> <span class="ident">necsim_core_bond</span>::{<span class="ident">NonNegativeF64</span>, <span class="ident">PositiveF64</span>};
@@ -178,7 +175,7 @@
         <span class="ident">M</span>: <span class="ident">MathsCore</span>,
         <span class="ident">H</span>: <span class="ident">Habitat</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span>,
         <span class="ident">G</span>: <span class="ident">PrimeableRng</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span>,
-        <span class="ident">X</span>: <span class="ident">EmigrationExit</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span>, <span class="ident">GlobalLineageReference</span>, <span class="ident">IndependentLineageStore</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+        <span class="ident">X</span>: <span class="ident">EmigrationExit</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span>, <span class="ident">IndependentLineageStore</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span><span class="op">&gt;</span><span class="op">&gt;</span>,
         <span class="ident">D</span>: <span class="ident">DispersalSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span><span class="op">&gt;</span>,
         <span class="ident">T</span>: <span class="ident">TurnoverRate</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span><span class="op">&gt;</span>,
         <span class="ident">N</span>: <span class="ident">SpeciationProbability</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span><span class="op">&gt;</span>,
@@ -188,7 +185,6 @@
         <span class="ident">M</span>,
         <span class="ident">H</span>,
         <span class="ident">G</span>,
-        <span class="ident">GlobalLineageReference</span>,
         <span class="ident">IndependentLineageStore</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span><span class="op">&gt;</span>,
         <span class="ident">X</span>,
         <span class="ident">D</span>,
@@ -228,7 +224,6 @@
             <span class="ident">M</span>,
             <span class="ident">H</span>,
             <span class="ident">G</span>,
-            <span class="ident">GlobalLineageReference</span>,
             <span class="ident">IndependentLineageStore</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span><span class="op">&gt;</span>,
             <span class="ident">X</span>,
             <span class="ident">D</span>,
@@ -285,7 +280,6 @@
             <span class="ident">M</span>,
             <span class="ident">H</span>,
             <span class="ident">G</span>,
-            <span class="ident">GlobalLineageReference</span>,
             <span class="ident">IndependentLineageStore</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span><span class="op">&gt;</span>,
             <span class="ident">X</span>,
             <span class="ident">D</span>,

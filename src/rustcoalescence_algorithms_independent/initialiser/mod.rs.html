@@ -72,16 +72,9 @@
 <span id="67">67</span>
 <span id="68">68</span>
 <span id="69">69</span>
-<span id="70">70</span>
-<span id="71">71</span>
-<span id="72">72</span>
-<span id="73">73</span>
-<span id="74">74</span>
-<span id="75">75</span>
-<span id="76">76</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">necsim_core</span>::{
     <span class="ident">cogs</span>::{<span class="ident">DispersalSampler</span>, <span class="ident">EmigrationExit</span>, <span class="ident">MathsCore</span>, <span class="ident">PrimeableRng</span>},
-    <span class="ident">lineage</span>::{<span class="ident">GlobalLineageReference</span>, <span class="ident">Lineage</span>},
+    <span class="ident">lineage::Lineage</span>,
 };
 
 <span class="kw">use</span> <span class="ident">necsim_impls_no_std::cogs</span>::{
@@ -116,10 +109,9 @@
         <span class="ident">M</span>,
         <span class="ident">O::Habitat</span>,
         <span class="ident">G</span>,
-        <span class="ident">GlobalLineageReference</span>,
         <span class="ident">IndependentLineageStore</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">O::Habitat</span><span class="op">&gt;</span>,
     <span class="op">&gt;</span>, <span class="ident">J</span>: <span class="ident">EventTimeSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">O::Habitat</span>, <span class="ident">G</span>, <span class="ident">O::TurnoverRate</span><span class="op">&gt;</span><span class="op">&gt;</span>: <span class="ident">SingularActiveLineageSampler</span><span class="op">&lt;</span>
-        <span class="ident">M</span>, <span class="ident">O::Habitat</span>, <span class="ident">G</span>, <span class="ident">GlobalLineageReference</span>, <span class="ident">IndependentLineageStore</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">O::Habitat</span><span class="op">&gt;</span>,
+        <span class="ident">M</span>, <span class="ident">O::Habitat</span>, <span class="ident">G</span>, <span class="ident">IndependentLineageStore</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">O::Habitat</span><span class="op">&gt;</span>,
         <span class="ident">X</span>, <span class="ident"><span class="self">Self</span>::DispersalSampler</span>, <span class="ident">IndependentCoalescenceSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">O::Habitat</span><span class="op">&gt;</span>, <span class="ident">O::TurnoverRate</span>,
         <span class="ident">O::SpeciationProbability</span>, <span class="ident">IndependentEventSampler</span><span class="op">&lt;</span>
             <span class="ident">M</span>, <span class="ident">O::Habitat</span>, <span class="ident">G</span>, <span class="ident">X</span>, <span class="ident"><span class="self">Self</span>::DispersalSampler</span>, <span class="ident">O::TurnoverRate</span>, <span class="ident">O::SpeciationProbability</span>
@@ -130,13 +122,7 @@
         <span class="lifetime">&#39;h</span>,
         <span class="ident">T</span>: <span class="ident">TrustedOriginSampler</span><span class="op">&lt;</span><span class="lifetime">&#39;h</span>, <span class="ident">M</span>, <span class="ident">Habitat</span> <span class="op">=</span> <span class="ident">O::Habitat</span><span class="op">&gt;</span>,
         <span class="ident">J</span>: <span class="ident">EventTimeSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">O::Habitat</span>, <span class="ident">G</span>, <span class="ident">O::TurnoverRate</span><span class="op">&gt;</span>,
-        <span class="ident">X</span>: <span class="ident">EmigrationExit</span><span class="op">&lt;</span>
-            <span class="ident">M</span>,
-            <span class="ident">O::Habitat</span>,
-            <span class="ident">G</span>,
-            <span class="ident">GlobalLineageReference</span>,
-            <span class="ident">IndependentLineageStore</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">O::Habitat</span><span class="op">&gt;</span>,
-        <span class="op">&gt;</span>,
+        <span class="ident">X</span>: <span class="ident">EmigrationExit</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">O::Habitat</span>, <span class="ident">G</span>, <span class="ident">IndependentLineageStore</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">O::Habitat</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     <span class="op">&gt;</span>(
         <span class="self">self</span>,
         <span class="ident">origin_sampler</span>: <span class="ident">T</span>,
