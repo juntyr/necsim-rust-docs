@@ -190,6 +190,10 @@
 <span id="185">185</span>
 <span id="186">186</span>
 <span id="187">187</span>
+<span id="188">188</span>
+<span id="189">189</span>
+<span id="190">190</span>
+<span id="191">191</span>
 </pre><pre class="rust"><code><span class="attribute">#![<span class="ident">deny</span>(<span class="ident">clippy::pedantic</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_eval_limit</span>)]</span>
 <span class="attribute">#![<span class="ident">const_eval_limit</span> <span class="op">=</span> <span class="string">&quot;1000000000000&quot;</span>]</span>
@@ -262,6 +266,7 @@
     <span class="ident">stream</span>: <span class="ident">CudaDropWrapper</span><span class="op">&lt;</span><span class="ident">Stream</span><span class="op">&gt;</span>,
     <span class="ident">grid</span>: <span class="ident">GridSize</span>,
     <span class="ident">block</span>: <span class="ident">BlockSize</span>,
+    <span class="ident">ptx_jit</span>: <span class="ident">bool</span>,
     <span class="ident">watcher</span>: <span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">FnMut</span>(<span class="kw-2">&amp;</span><span class="ident">Function</span>) -&gt; <span class="ident">CudaResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span><span class="op">&gt;</span>,
 }
 
@@ -289,6 +294,7 @@
         <span class="ident">stream</span>: <span class="ident">Stream</span>,
         <span class="ident">grid</span>: <span class="ident">GridSize</span>,
         <span class="ident">block</span>: <span class="ident">BlockSize</span>,
+        <span class="ident">ptx_jit</span>: <span class="ident">bool</span>,
         <span class="ident">on_compile</span>: <span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">FnMut</span>(<span class="kw-2">&amp;</span><span class="ident">Function</span>) -&gt; <span class="ident">CudaResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span><span class="op">&gt;</span>,
     ) -&gt; <span class="ident">CudaResult</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>
     <span class="kw">where</span>
@@ -317,6 +323,7 @@
             <span class="ident">stream</span>,
             <span class="ident">grid</span>,
             <span class="ident">block</span>,
+            <span class="ident">ptx_jit</span>,
             <span class="ident">watcher</span>: <span class="ident">on_compile</span>,
         })
     }
@@ -364,6 +371,7 @@
                 <span class="ident">grid</span>: <span class="self">self</span>.<span class="ident">grid</span>.<span class="ident">clone</span>(),
                 <span class="ident">block</span>: <span class="self">self</span>.<span class="ident">block</span>.<span class="ident">clone</span>(),
                 <span class="ident">shared_memory_size</span>: <span class="number">0_u32</span>,
+                <span class="ident">ptx_jit</span>: <span class="self">self</span>.<span class="ident">ptx_jit</span>,
             },
 
             <span class="ident">kernel</span>: <span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">kernel</span>,

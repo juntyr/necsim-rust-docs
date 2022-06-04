@@ -240,6 +240,7 @@
 <span id="235">235</span>
 <span id="236">236</span>
 <span id="237">237</span>
+<span id="238">238</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">std::marker::PhantomData</span>;
 
 <span class="kw">use</span> <span class="ident">necsim_core</span>::{<span class="ident">cogs::MathsCore</span>, <span class="ident">reporter::Reporter</span>, <span class="ident">simulation::SimulationBuilder</span>};
@@ -441,6 +442,7 @@
             <span class="ident">Stream::new</span>(<span class="ident">StreamFlags::NON_BLOCKING</span>, <span class="prelude-val">None</span>)<span class="question-mark">?</span>,
             <span class="ident">grid_size</span>.<span class="ident">clone</span>(),
             <span class="ident">block_size</span>.<span class="ident">clone</span>(),
+            <span class="ident">args</span>.<span class="ident">ptx_jit</span>,
             <span class="ident">Box::new</span>(<span class="op">|</span><span class="ident">kernel</span><span class="op">|</span> {
                 <span class="ident"><span class="kw">crate</span>::info::print_kernel_function_attributes</span>(<span class="ident">kernel</span>);
                 <span class="prelude-val">Ok</span>(())
