@@ -355,22 +355,13 @@
 <span id="350">350</span>
 <span id="351">351</span>
 <span id="352">352</span>
-<span id="353">353</span>
-<span id="354">354</span>
-<span id="355">355</span>
-<span id="356">356</span>
-<span id="357">357</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">collections::VecDeque</span>, <span class="ident">convert::TryInto</span>, <span class="ident">num::NonZeroU64</span>, <span class="ident">sync::atomic::AtomicU64</span>};
 
-<span class="kw">use</span> <span class="ident">anyhow</span>::{<span class="ident">Context</span>, <span class="prelude-ty">Result</span>};
-
 <span class="kw">use</span> <span class="ident">rust_cuda</span>::{
-    <span class="ident">host::HostAndDeviceMutRef</span>,
+    <span class="ident">common::RustToCuda</span>,
+    <span class="ident">host</span>::{<span class="ident">HostAndDeviceMutRef</span>, <span class="ident">LendToCuda</span>},
     <span class="ident">rustacuda::function</span>::{<span class="ident">BlockSize</span>, <span class="ident">GridSize</span>},
-};
-
-<span class="kw">use</span> <span class="ident">rust_cuda</span>::{
-    <span class="ident">common::RustToCuda</span>, <span class="ident">host::LendToCuda</span>, <span class="ident">utils::exchange::wrapper::ExchangeWrapperOnHost</span>,
+    <span class="ident">utils::exchange::wrapper::ExchangeWrapperOnHost</span>,
 };
 
 <span class="kw">use</span> <span class="ident">necsim_core</span>::{
@@ -405,6 +396,10 @@
 
 <span class="kw">use</span> <span class="ident">rustcoalescence_algorithms_cuda_cpu_kernel::SimulationKernel</span>;
 <span class="kw">use</span> <span class="ident">rustcoalescence_algorithms_cuda_gpu_kernel::SimulatableKernel</span>;
+
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::error::CudaError</span>;
+
+<span class="kw">type</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">E</span> <span class="op">=</span> <span class="ident">CudaError</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">std::result::Result</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">E</span><span class="op">&gt;</span>;
 
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::type_complexity</span>, <span class="ident">clippy::too_many_lines</span>)]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">simulate</span><span class="op">&lt;</span>
@@ -535,7 +530,7 @@
     <span class="op">&gt;</span> <span class="op">=</span> <span class="ident">ExchangeWrapperOnHost::new</span>(<span class="ident">EventBuffer::new</span>(
         <span class="kw-2">&amp;</span><span class="ident">block_size</span>,
         <span class="kw-2">&amp;</span><span class="ident">grid_size</span>,
-        <span class="ident">step_slice</span>.<span class="ident">get</span>().<span class="ident">try_into</span>()<span class="question-mark">?</span>,
+        <span class="ident">step_slice</span>.<span class="ident">get</span>().<span class="ident">try_into</span>().<span class="ident">unwrap_or</span>(<span class="ident">usize::MAX</span>),
     )<span class="question-mark">?</span>)<span class="question-mark">?</span>;
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">min_spec_sample_buffer</span> <span class="op">=</span>
         <span class="ident">ExchangeWrapperOnHost::new</span>(<span class="ident">ValueBuffer::new</span>(<span class="kw-2">&amp;</span><span class="ident">block_size</span>, <span class="kw-2">&amp;</span><span class="ident">grid_size</span>)<span class="question-mark">?</span>)<span class="question-mark">?</span>;
@@ -558,142 +553,137 @@
     <span class="ident">HostAndDeviceMutRef::with_new</span>(<span class="kw-2">&amp;mut</span> <span class="ident">total_time_max</span>, <span class="op">|</span><span class="ident">total_time_max</span><span class="op">|</span> -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="ident">HostAndDeviceMutRef::with_new</span>(<span class="kw-2">&amp;mut</span> <span class="ident">total_steps_sum</span>, <span class="op">|</span><span class="ident">total_steps_sum</span><span class="op">|</span> -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
             <span class="comment">// TODO: Pipeline async launches and callbacks of simulation/event analysis</span>
-            <span class="ident">simulation</span>
-                .<span class="ident">lend_to_cuda_mut</span>(<span class="op">|</span><span class="kw-2">mut</span> <span class="ident">simulation_cuda_repr</span><span class="op">|</span> -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
-                    <span class="kw">while</span> <span class="op">!</span><span class="ident">slow_lineages</span>.<span class="ident">is_empty</span>()
-                        <span class="op">&amp;&amp;</span> <span class="ident">pause_before</span>.<span class="ident">map_or</span>(<span class="bool-val">true</span>, <span class="op">|</span><span class="ident">pause_before</span><span class="op">|</span> <span class="ident">level_time</span> <span class="op">&lt;</span> <span class="ident">pause_before</span>)
-                    {
-                        <span class="kw">let</span> <span class="ident">total_event_rate</span>: <span class="ident">NonNegativeF64</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">P::ReportDispersal::VALUE</span> {
-                            <span class="comment">// Full event rate lambda with speciation</span>
-                            <span class="ident">slow_lineages</span>
-                                .<span class="ident">iter</span>()
-                                .<span class="ident">map</span>(<span class="op">|</span>(<span class="ident">lineage</span>, <span class="kw">_</span>)<span class="op">|</span> {
-                                    <span class="ident">cpu_turnover_rate</span>.<span class="ident">get_turnover_rate_at_location</span>(
-                                        <span class="ident">lineage</span>.<span class="ident">indexed_location</span>.<span class="ident">location</span>(),
-                                        <span class="kw-2">&amp;</span><span class="ident">cpu_habitat</span>,
-                                    )
-                                })
-                                .<span class="ident">sum</span>()
-                        } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">P::ReportSpeciation::VALUE</span> {
-                            <span class="comment">// Only speciation event rate lambda * nu</span>
-                            <span class="ident">slow_lineages</span>
-                                .<span class="ident">iter</span>()
-                                .<span class="ident">map</span>(<span class="op">|</span>(<span class="ident">lineage</span>, <span class="kw">_</span>)<span class="op">|</span> {
-                                    <span class="kw">let</span> <span class="ident">location</span> <span class="op">=</span> <span class="ident">lineage</span>.<span class="ident">indexed_location</span>.<span class="ident">location</span>();
+            <span class="ident">simulation</span>.<span class="ident">lend_to_cuda_mut</span>(<span class="op">|</span><span class="kw-2">mut</span> <span class="ident">simulation_cuda_repr</span><span class="op">|</span> -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+                <span class="kw">while</span> <span class="op">!</span><span class="ident">slow_lineages</span>.<span class="ident">is_empty</span>()
+                    <span class="op">&amp;&amp;</span> <span class="ident">pause_before</span>.<span class="ident">map_or</span>(<span class="bool-val">true</span>, <span class="op">|</span><span class="ident">pause_before</span><span class="op">|</span> <span class="ident">level_time</span> <span class="op">&lt;</span> <span class="ident">pause_before</span>)
+                {
+                    <span class="kw">let</span> <span class="ident">total_event_rate</span>: <span class="ident">NonNegativeF64</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">P::ReportDispersal::VALUE</span> {
+                        <span class="comment">// Full event rate lambda with speciation</span>
+                        <span class="ident">slow_lineages</span>
+                            .<span class="ident">iter</span>()
+                            .<span class="ident">map</span>(<span class="op">|</span>(<span class="ident">lineage</span>, <span class="kw">_</span>)<span class="op">|</span> {
+                                <span class="ident">cpu_turnover_rate</span>.<span class="ident">get_turnover_rate_at_location</span>(
+                                    <span class="ident">lineage</span>.<span class="ident">indexed_location</span>.<span class="ident">location</span>(),
+                                    <span class="kw-2">&amp;</span><span class="ident">cpu_habitat</span>,
+                                )
+                            })
+                            .<span class="ident">sum</span>()
+                    } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">P::ReportSpeciation::VALUE</span> {
+                        <span class="comment">// Only speciation event rate lambda * nu</span>
+                        <span class="ident">slow_lineages</span>
+                            .<span class="ident">iter</span>()
+                            .<span class="ident">map</span>(<span class="op">|</span>(<span class="ident">lineage</span>, <span class="kw">_</span>)<span class="op">|</span> {
+                                <span class="kw">let</span> <span class="ident">location</span> <span class="op">=</span> <span class="ident">lineage</span>.<span class="ident">indexed_location</span>.<span class="ident">location</span>();
 
-                                    <span class="ident">cpu_turnover_rate</span>
-                                        .<span class="ident">get_turnover_rate_at_location</span>(<span class="ident">location</span>, <span class="kw-2">&amp;</span><span class="ident">cpu_habitat</span>)
-                                        <span class="op">*</span> <span class="ident">cpu_speciation_probability</span>
-                                            .<span class="ident">get_speciation_probability_at_location</span>(
-                                                <span class="ident">location</span>,
-                                                <span class="kw-2">&amp;</span><span class="ident">cpu_habitat</span>,
-                                            )
-                                })
-                                .<span class="ident">sum</span>()
-                        } <span class="kw">else</span> {
-                            <span class="comment">// No events produced -&gt; no restriction</span>
-                            <span class="ident">NonNegativeF64::zero</span>()
-                        };
+                                <span class="ident">cpu_turnover_rate</span>
+                                    .<span class="ident">get_turnover_rate_at_location</span>(<span class="ident">location</span>, <span class="kw-2">&amp;</span><span class="ident">cpu_habitat</span>)
+                                    <span class="op">*</span> <span class="ident">cpu_speciation_probability</span>
+                                        .<span class="ident">get_speciation_probability_at_location</span>(
+                                            <span class="ident">location</span>,
+                                            <span class="kw-2">&amp;</span><span class="ident">cpu_habitat</span>,
+                                        )
+                            })
+                            .<span class="ident">sum</span>()
+                    } <span class="kw">else</span> {
+                        <span class="comment">// No events produced -&gt; no restriction</span>
+                        <span class="ident">NonNegativeF64::zero</span>()
+                    };
 
-                        <span class="ident">level_time</span> <span class="op">+</span><span class="op">=</span> <span class="ident">NonNegativeF64::from</span>(<span class="ident">event_slice</span>.<span class="ident">get</span>()) <span class="op">/</span> <span class="ident">total_event_rate</span>;
+                    <span class="ident">level_time</span> <span class="op">+</span><span class="op">=</span> <span class="ident">NonNegativeF64::from</span>(<span class="ident">event_slice</span>.<span class="ident">get</span>()) <span class="op">/</span> <span class="ident">total_event_rate</span>;
 
-                        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">pause_before</span>) <span class="op">=</span> <span class="ident">pause_before</span> {
-                            <span class="ident">level_time</span> <span class="op">=</span> <span class="ident">level_time</span>.<span class="ident">min</span>(<span class="ident">pause_before</span>);
+                    <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">pause_before</span>) <span class="op">=</span> <span class="ident">pause_before</span> {
+                        <span class="ident">level_time</span> <span class="op">=</span> <span class="ident">level_time</span>.<span class="ident">min</span>(<span class="ident">pause_before</span>);
+                    }
+
+                    <span class="comment">// [Report all events below the water level] + Advance the water level</span>
+                    <span class="ident">proxy</span>.<span class="ident">advance_water_level</span>(<span class="ident">level_time</span>);
+
+                    <span class="comment">// Simulate all slow lineages until they have finished or exceeded the</span>
+                    <span class="comment">// new water  level</span>
+                    <span class="kw">while</span> <span class="op">!</span><span class="ident">slow_lineages</span>.<span class="ident">is_empty</span>() {
+                        <span class="comment">// Upload the new tasks from the front of the task queue</span>
+                        <span class="kw">for</span> <span class="kw-2">mut</span> <span class="ident">task</span> <span class="kw">in</span> <span class="ident">task_list</span>.<span class="ident">iter_mut</span>() {
+                            <span class="kw">let</span> <span class="ident">next_slow_lineage</span> <span class="op">=</span> <span class="kw">loop</span> {
+                                <span class="kw">match</span> <span class="ident">slow_lineages</span>.<span class="ident">pop_front</span>() {
+                                    <span class="prelude-val">None</span> =&gt; <span class="kw">break</span> <span class="prelude-val">None</span>,
+                                    <span class="prelude-val">Some</span>((<span class="ident">slow_lineage</span>, <span class="ident">next_event</span>)) <span class="kw">if</span> <span class="ident">next_event</span> <span class="op">&lt;</span> <span class="ident">level_time</span> =&gt; {
+                                        <span class="kw">break</span> <span class="prelude-val">Some</span>(<span class="ident">slow_lineage</span>)
+                                    },
+                                    <span class="prelude-val">Some</span>((<span class="ident">fast_lineage</span>, <span class="ident">next_event</span>)) =&gt; {
+                                        <span class="ident">fast_lineages</span>.<span class="ident">push_back</span>((<span class="ident">fast_lineage</span>, <span class="ident">next_event</span>));
+                                    },
+                                }
+                            };
+
+                            <span class="ident">task</span>.<span class="ident">replace</span>(<span class="ident">next_slow_lineage</span>);
                         }
 
-                        <span class="comment">// [Report all events below the water level] + Advance the water level</span>
-                        <span class="ident">proxy</span>.<span class="ident">advance_water_level</span>(<span class="ident">level_time</span>);
+                        <span class="comment">// Move the task list, event buffer and min speciation sample buffer</span>
+                        <span class="comment">// to CUDA</span>
+                        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">event_buffer_cuda</span> <span class="op">=</span> <span class="ident">event_buffer</span>.<span class="ident">move_to_device</span>()<span class="question-mark">?</span>;
+                        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">min_spec_sample_buffer_cuda</span> <span class="op">=</span>
+                            <span class="ident">min_spec_sample_buffer</span>.<span class="ident">move_to_device</span>()<span class="question-mark">?</span>;
+                        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">next_event_time_buffer_cuda</span> <span class="op">=</span>
+                            <span class="ident">next_event_time_buffer</span>.<span class="ident">move_to_device</span>()<span class="question-mark">?</span>;
+                        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">task_list_cuda</span> <span class="op">=</span> <span class="ident">task_list</span>.<span class="ident">move_to_device</span>()<span class="question-mark">?</span>;
 
-                        <span class="comment">// Simulate all slow lineages until they have finished or exceeded the new</span>
-                        <span class="comment">// water  level</span>
-                        <span class="kw">while</span> <span class="op">!</span><span class="ident">slow_lineages</span>.<span class="ident">is_empty</span>() {
-                            <span class="comment">// Upload the new tasks from the front of the task queue</span>
-                            <span class="kw">for</span> <span class="kw-2">mut</span> <span class="ident">task</span> <span class="kw">in</span> <span class="ident">task_list</span>.<span class="ident">iter_mut</span>() {
-                                <span class="kw">let</span> <span class="ident">next_slow_lineage</span> <span class="op">=</span> <span class="kw">loop</span> {
-                                    <span class="kw">match</span> <span class="ident">slow_lineages</span>.<span class="ident">pop_front</span>() {
-                                        <span class="prelude-val">None</span> =&gt; <span class="kw">break</span> <span class="prelude-val">None</span>,
-                                        <span class="prelude-val">Some</span>((<span class="ident">slow_lineage</span>, <span class="ident">next_event</span>))
-                                            <span class="kw">if</span> <span class="ident">next_event</span> <span class="op">&lt;</span> <span class="ident">level_time</span> =&gt;
-                                        {
-                                            <span class="kw">break</span> <span class="prelude-val">Some</span>(<span class="ident">slow_lineage</span>)
-                                        },
-                                        <span class="prelude-val">Some</span>((<span class="ident">fast_lineage</span>, <span class="ident">next_event</span>)) =&gt; {
-                                            <span class="ident">fast_lineages</span>.<span class="ident">push_back</span>((<span class="ident">fast_lineage</span>, <span class="ident">next_event</span>));
-                                        },
-                                    }
-                                };
+                        <span class="ident">kernel</span>.<span class="ident">simulate_raw</span>(
+                            <span class="ident">simulation_cuda_repr</span>.<span class="ident">as_mut</span>(),
+                            <span class="ident">task_list_cuda</span>.<span class="ident">as_mut</span>(),
+                            <span class="ident">event_buffer_cuda</span>.<span class="ident">as_mut</span>(),
+                            <span class="ident">min_spec_sample_buffer_cuda</span>.<span class="ident">as_mut</span>(),
+                            <span class="ident">next_event_time_buffer_cuda</span>.<span class="ident">as_mut</span>(),
+                            <span class="ident">total_time_max</span>.<span class="ident">as_ref</span>(),
+                            <span class="ident">total_steps_sum</span>.<span class="ident">as_ref</span>(),
+                            <span class="ident">step_slice</span>.<span class="ident">get</span>().<span class="ident">into</span>(),
+                            <span class="ident">level_time</span>.<span class="ident">into</span>(),
+                        )<span class="question-mark">?</span>;
 
-                                <span class="ident">task</span>.<span class="ident">replace</span>(<span class="ident">next_slow_lineage</span>);
-                            }
+                        <span class="ident">min_spec_sample_buffer</span> <span class="op">=</span> <span class="ident">min_spec_sample_buffer_cuda</span>.<span class="ident">move_to_host</span>()<span class="question-mark">?</span>;
+                        <span class="ident">next_event_time_buffer</span> <span class="op">=</span> <span class="ident">next_event_time_buffer_cuda</span>.<span class="ident">move_to_host</span>()<span class="question-mark">?</span>;
+                        <span class="ident">task_list</span> <span class="op">=</span> <span class="ident">task_list_cuda</span>.<span class="ident">move_to_host</span>()<span class="question-mark">?</span>;
+                        <span class="ident">event_buffer</span> <span class="op">=</span> <span class="ident">event_buffer_cuda</span>.<span class="ident">move_to_host</span>()<span class="question-mark">?</span>;
 
-                            <span class="comment">// Move the task list, event buffer and min speciation sample buffer to</span>
-                            <span class="comment">// CUDA</span>
-                            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">event_buffer_cuda</span> <span class="op">=</span> <span class="ident">event_buffer</span>.<span class="ident">move_to_device</span>()<span class="question-mark">?</span>;
-                            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">min_spec_sample_buffer_cuda</span> <span class="op">=</span>
-                                <span class="ident">min_spec_sample_buffer</span>.<span class="ident">move_to_device</span>()<span class="question-mark">?</span>;
-                            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">next_event_time_buffer_cuda</span> <span class="op">=</span>
-                                <span class="ident">next_event_time_buffer</span>.<span class="ident">move_to_device</span>()<span class="question-mark">?</span>;
-                            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">task_list_cuda</span> <span class="op">=</span> <span class="ident">task_list</span>.<span class="ident">move_to_device</span>()<span class="question-mark">?</span>;
+                        <span class="comment">// Fetch the completion of the tasks</span>
+                        <span class="kw">for</span> ((<span class="kw-2">mut</span> <span class="ident">spec_sample</span>, <span class="kw-2">mut</span> <span class="ident">next_event_time</span>), <span class="kw-2">mut</span> <span class="ident">task</span>) <span class="kw">in</span>
+                            <span class="ident">min_spec_sample_buffer</span>
+                                .<span class="ident">iter_mut</span>()
+                                .<span class="ident">zip</span>(<span class="ident">next_event_time_buffer</span>.<span class="ident">iter_mut</span>())
+                                .<span class="ident">zip</span>(<span class="ident">task_list</span>.<span class="ident">iter_mut</span>())
+                        {
+                            <span class="kw">let</span> <span class="ident">duplicate_individual</span> <span class="op">=</span> <span class="ident">spec_sample</span>
+                                .<span class="ident">take</span>()
+                                .<span class="ident">map_or</span>(<span class="bool-val">false</span>, <span class="op">|</span><span class="ident">spec_sample</span><span class="op">|</span> <span class="op">!</span><span class="ident">min_spec_samples</span>.<span class="ident">insert</span>(<span class="ident">spec_sample</span>));
 
-                            <span class="ident">kernel</span>.<span class="ident">simulate_raw</span>(
-                                <span class="ident">simulation_cuda_repr</span>.<span class="ident">as_mut</span>(),
-                                <span class="ident">task_list_cuda</span>.<span class="ident">as_mut</span>(),
-                                <span class="ident">event_buffer_cuda</span>.<span class="ident">as_mut</span>(),
-                                <span class="ident">min_spec_sample_buffer_cuda</span>.<span class="ident">as_mut</span>(),
-                                <span class="ident">next_event_time_buffer_cuda</span>.<span class="ident">as_mut</span>(),
-                                <span class="ident">total_time_max</span>.<span class="ident">as_ref</span>(),
-                                <span class="ident">total_steps_sum</span>.<span class="ident">as_ref</span>(),
-                                <span class="ident">step_slice</span>.<span class="ident">get</span>().<span class="ident">into</span>(),
-                                <span class="ident">level_time</span>.<span class="ident">into</span>(),
-                            )<span class="question-mark">?</span>;
-
-                            <span class="ident">min_spec_sample_buffer</span> <span class="op">=</span> <span class="ident">min_spec_sample_buffer_cuda</span>.<span class="ident">move_to_host</span>()<span class="question-mark">?</span>;
-                            <span class="ident">next_event_time_buffer</span> <span class="op">=</span> <span class="ident">next_event_time_buffer_cuda</span>.<span class="ident">move_to_host</span>()<span class="question-mark">?</span>;
-                            <span class="ident">task_list</span> <span class="op">=</span> <span class="ident">task_list_cuda</span>.<span class="ident">move_to_host</span>()<span class="question-mark">?</span>;
-                            <span class="ident">event_buffer</span> <span class="op">=</span> <span class="ident">event_buffer_cuda</span>.<span class="ident">move_to_host</span>()<span class="question-mark">?</span>;
-
-                            <span class="comment">// Fetch the completion of the tasks</span>
-                            <span class="kw">for</span> ((<span class="kw-2">mut</span> <span class="ident">spec_sample</span>, <span class="kw-2">mut</span> <span class="ident">next_event_time</span>), <span class="kw-2">mut</span> <span class="ident">task</span>) <span class="kw">in</span>
-                                <span class="ident">min_spec_sample_buffer</span>
-                                    .<span class="ident">iter_mut</span>()
-                                    .<span class="ident">zip</span>(<span class="ident">next_event_time_buffer</span>.<span class="ident">iter_mut</span>())
-                                    .<span class="ident">zip</span>(<span class="ident">task_list</span>.<span class="ident">iter_mut</span>())
+                            <span class="kw">if</span> <span class="kw">let</span> (<span class="prelude-val">Some</span>(<span class="ident">task</span>), <span class="prelude-val">Some</span>(<span class="ident">next_event_time</span>)) <span class="op">=</span>
+                                (<span class="ident">task</span>.<span class="ident">take</span>(), <span class="ident">next_event_time</span>.<span class="ident">take</span>())
                             {
-                                <span class="kw">let</span> <span class="ident">duplicate_individual</span> <span class="op">=</span>
-                                    <span class="ident">spec_sample</span>.<span class="ident">take</span>().<span class="ident">map_or</span>(<span class="bool-val">false</span>, <span class="op">|</span><span class="ident">spec_sample</span><span class="op">|</span> {
-                                        <span class="op">!</span><span class="ident">min_spec_samples</span>.<span class="ident">insert</span>(<span class="ident">spec_sample</span>)
-                                    });
-
-                                <span class="kw">if</span> <span class="kw">let</span> (<span class="prelude-val">Some</span>(<span class="ident">task</span>), <span class="prelude-val">Some</span>(<span class="ident">next_event_time</span>)) <span class="op">=</span>
-                                    (<span class="ident">task</span>.<span class="ident">take</span>(), <span class="ident">next_event_time</span>.<span class="ident">take</span>())
-                                {
-                                    <span class="kw">if</span> <span class="op">!</span><span class="ident">duplicate_individual</span> {
-                                        <span class="comment">// Reclassify lineages as either slow (still below water) or</span>
-                                        <span class="comment">// fast</span>
-                                        <span class="kw">if</span> <span class="ident">next_event_time</span> <span class="op">&lt;</span> <span class="ident">level_time</span> {
-                                            <span class="ident">slow_lineages</span>.<span class="ident">push_back</span>((<span class="ident">task</span>, <span class="ident">next_event_time</span>.<span class="ident">into</span>()));
-                                        } <span class="kw">else</span> {
-                                            <span class="ident">fast_lineages</span>.<span class="ident">push_back</span>((<span class="ident">task</span>, <span class="ident">next_event_time</span>.<span class="ident">into</span>()));
-                                        }
+                                <span class="kw">if</span> <span class="op">!</span><span class="ident">duplicate_individual</span> {
+                                    <span class="comment">// Reclassify lineages as either slow (still below</span>
+                                    <span class="comment">// water) or</span>
+                                    <span class="comment">// fast</span>
+                                    <span class="kw">if</span> <span class="ident">next_event_time</span> <span class="op">&lt;</span> <span class="ident">level_time</span> {
+                                        <span class="ident">slow_lineages</span>.<span class="ident">push_back</span>((<span class="ident">task</span>, <span class="ident">next_event_time</span>.<span class="ident">into</span>()));
+                                    } <span class="kw">else</span> {
+                                        <span class="ident">fast_lineages</span>.<span class="ident">push_back</span>((<span class="ident">task</span>, <span class="ident">next_event_time</span>.<span class="ident">into</span>()));
                                     }
                                 }
                             }
-
-                            <span class="ident">event_buffer</span>.<span class="ident">report_events</span>(<span class="kw-2">&amp;mut</span> <span class="ident">proxy</span>);
-
-                            <span class="ident">proxy</span>.<span class="ident">local_partition</span>().<span class="ident">get_reporter</span>().<span class="ident">report_progress</span>(
-                                <span class="kw-2">&amp;</span>((<span class="ident">slow_lineages</span>.<span class="ident">len</span>() <span class="kw">as</span> <span class="ident">u64</span>) <span class="op">+</span> (<span class="ident">fast_lineages</span>.<span class="ident">len</span>() <span class="kw">as</span> <span class="ident">u64</span>))
-                                    .<span class="ident">into</span>(),
-                            );
                         }
 
-                        <span class="comment">// Fast lineages are now slow again</span>
-                        <span class="ident">std::mem::swap</span>(<span class="kw-2">&amp;mut</span> <span class="ident">slow_lineages</span>, <span class="kw-2">&amp;mut</span> <span class="ident">fast_lineages</span>);
+                        <span class="ident">event_buffer</span>.<span class="ident">report_events</span>(<span class="kw-2">&amp;mut</span> <span class="ident">proxy</span>);
+
+                        <span class="ident">proxy</span>.<span class="ident">local_partition</span>().<span class="ident">get_reporter</span>().<span class="ident">report_progress</span>(
+                            <span class="kw-2">&amp;</span>((<span class="ident">slow_lineages</span>.<span class="ident">len</span>() <span class="kw">as</span> <span class="ident">u64</span>) <span class="op">+</span> (<span class="ident">fast_lineages</span>.<span class="ident">len</span>() <span class="kw">as</span> <span class="ident">u64</span>)).<span class="ident">into</span>(),
+                        );
                     }
 
-                    <span class="prelude-val">Ok</span>(())
-                })
-                .<span class="ident">with_context</span>(<span class="op">|</span><span class="op">|</span> <span class="string">&quot;Running the CUDA kernel failed.&quot;</span>)<span class="question-mark">?</span>;
+                    <span class="comment">// Fast lineages are now slow again</span>
+                    <span class="ident">std::mem::swap</span>(<span class="kw-2">&amp;mut</span> <span class="ident">slow_lineages</span>, <span class="kw-2">&amp;mut</span> <span class="ident">fast_lineages</span>);
+                }
+
+                <span class="prelude-val">Ok</span>(())
+            })<span class="question-mark">?</span>;
 
             <span class="comment">// [Report all remaining events]</span>
             <span class="ident">proxy</span>.<span class="ident">finalise</span>();

@@ -374,6 +374,8 @@
 <span id="369">369</span>
 </pre><pre class="rust"><code><span class="attribute">#![<span class="ident">deny</span>(<span class="ident">clippy::pedantic</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">generic_associated_types</span>)]</span>
+<span class="attribute">#![<span class="ident">allow</span>(<span class="ident">incomplete_features</span>)]</span>
+<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">inline_const_pat</span>)]</span>
 
 <span class="attribute">#[<span class="ident">macro_use</span>]</span>
 <span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">serde_derive_state</span>;
@@ -417,6 +419,7 @@
 
 <span class="kw">mod</span> <span class="ident">arguments</span>;
 <span class="kw">mod</span> <span class="ident">cuda</span>;
+<span class="kw">mod</span> <span class="ident">error</span>;
 <span class="kw">mod</span> <span class="ident">info</span>;
 <span class="kw">mod</span> <span class="ident">initialiser</span>;
 <span class="kw">mod</span> <span class="ident">launch</span>;
@@ -424,14 +427,11 @@
 
 <span class="kw">use</span> <span class="kw">crate</span>::{
     <span class="ident">arguments</span>::{<span class="ident">CudaArguments</span>, <span class="ident">IsolatedParallelismMode</span>, <span class="ident">ParallelismMode</span>},
+    <span class="ident">error::CudaError</span>,
     <span class="ident">initialiser</span>::{
         <span class="ident">fixup::FixUpInitialiser</span>, <span class="ident">genesis::GenesisInitialiser</span>, <span class="ident">resume::ResumeInitialiser</span>,
     },
 };
-
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">thiserror::Error</span>, <span class="ident">Debug</span>)]</span>
-<span class="attribute">#[<span class="ident">error</span>(<span class="ident">transparent</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">CudaError</span>(<span class="attribute">#[<span class="ident">from</span>]</span> <span class="ident">anyhow::Error</span>);
 
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::module_name_repetitions</span>, <span class="ident">clippy::empty_enum</span>)]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">CudaAlgorithm</span> {}

@@ -241,6 +241,7 @@
 <span id="236">236</span>
 <span id="237">237</span>
 <span id="238">238</span>
+<span id="239">239</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">std::marker::PhantomData</span>;
 
 <span class="kw">use</span> <span class="ident">necsim_core</span>::{<span class="ident">cogs::MathsCore</span>, <span class="ident">reporter::Reporter</span>, <span class="ident">simulation::SimulationBuilder</span>};
@@ -284,8 +285,9 @@
         <span class="ident">CudaArguments</span>, <span class="ident">IsolatedParallelismMode</span>, <span class="ident">MonolithicParallelismMode</span>, <span class="ident">ParallelismMode</span>,
     },
     <span class="ident">cuda::with_initialised_cuda</span>,
+    <span class="ident">error::CudaError</span>,
     <span class="ident">initialiser::CudaLineageStoreSampleInitialiser</span>,
-    <span class="ident">parallelisation</span>, <span class="ident">CudaError</span>,
+    <span class="ident">parallelisation</span>,
 };
 
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::too_many_lines</span>)]</span>

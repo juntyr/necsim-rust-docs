@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["CudaAlgorithm",""]],"struct":[["CudaError",""]]});
+initSidebarItems({"enum":[["CudaAlgorithm",""]]});

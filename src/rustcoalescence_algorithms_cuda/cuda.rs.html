@@ -39,19 +39,21 @@
 <span id="34">34</span>
 <span id="35">35</span>
 <span id="36">36</span>
-</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">anyhow::Result</span>;
-
-<span class="kw">use</span> <span class="ident">rust_cuda::rustacuda</span>::{
+<span id="37">37</span>
+</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">rust_cuda::rustacuda</span>::{
     <span class="ident">context</span>::{<span class="ident">Context</span>, <span class="ident">CurrentContext</span>, <span class="ident">ResourceLimit</span>},
     <span class="ident">prelude</span>::<span class="kw-2">*</span>,
 };
 
 <span class="kw">use</span> <span class="ident">rust_cuda::host::CudaDropWrapper</span>;
 
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::info</span>;
+<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">error::CudaError</span>, <span class="ident">info</span>};
 
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::module_name_repetitions</span>)]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_initialised_cuda</span><span class="op">&lt;</span><span class="ident">O</span>, <span class="ident">F</span>: <span class="ident">FnOnce</span>() -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">O</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="ident">device</span>: <span class="ident">u32</span>, <span class="ident">inner</span>: <span class="ident">F</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">O</span><span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_initialised_cuda</span><span class="op">&lt;</span><span class="ident">O</span>, <span class="ident">E</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">CudaError</span><span class="op">&gt;</span>, <span class="ident">F</span>: <span class="ident">FnOnce</span>() -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">O</span>, <span class="ident">E</span><span class="op">&gt;</span><span class="op">&gt;</span>(
+    <span class="ident">device</span>: <span class="ident">u32</span>,
+    <span class="ident">inner</span>: <span class="ident">F</span>,
+) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">O</span>, <span class="ident">CudaError</span><span class="op">&gt;</span> {
     <span class="comment">// Initialize the CUDA API</span>
     <span class="ident">rust_cuda::rustacuda::init</span>(<span class="ident">CudaFlags::empty</span>())<span class="question-mark">?</span>;
 
@@ -73,7 +75,7 @@
     <span class="comment">// Explicit drop of the current CUDA context to explicitly end its scope</span>
     <span class="ident">std::mem::drop</span>(<span class="ident">context</span>);
 
-    <span class="ident">result</span>
+    <span class="ident">result</span>.<span class="ident">map_err</span>(<span class="ident">E::into</span>)
 }
 </code></pre></div>
 </section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="rustcoalescence_algorithms_cuda" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.62.0-nightly (60e50fc1c 2022-04-04)" ></div>
