@@ -120,7 +120,18 @@
 <span id="115">115</span>
 <span id="116">116</span>
 <span id="117">117</span>
-</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">collections::HashMap</span>, <span class="ident">fmt</span>, <span class="ident">path::PathBuf</span>};
+<span id="118">118</span>
+<span id="119">119</span>
+<span id="120">120</span>
+<span id="121">121</span>
+<span id="122">122</span>
+<span id="123">123</span>
+<span id="124">124</span>
+<span id="125">125</span>
+<span id="126">126</span>
+<span id="127">127</span>
+<span id="128">128</span>
+</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">collections::HashMap</span>, <span class="ident">fmt</span>, <span class="ident">num::NonZeroI32</span>, <span class="ident">path::PathBuf</span>};
 
 <span class="kw">use</span> <span class="ident">fnv::FnvBuildHasher</span>;
 <span class="kw">use</span> <span class="ident">rusqlite</span>::{<span class="ident">Connection</span>, <span class="ident">OpenFlags</span>};
@@ -155,6 +166,7 @@
     <span class="ident">output</span>: <span class="ident">PathBuf</span>,
     <span class="ident">table</span>: <span class="ident">String</span>,
     <span class="ident">mode</span>: <span class="ident">SpeciesLocationsMode</span>,
+    <span class="ident">cache</span>: <span class="ident">NonZeroI32</span>,
 
     <span class="ident">connection</span>: <span class="ident">Connection</span>,
 }
@@ -164,6 +176,8 @@
         <span class="ident">fmt</span>.<span class="ident">debug_struct</span>(<span class="macro">stringify!</span>(<span class="ident">SpeciesLocationsReporter</span>))
             .<span class="ident">field</span>(<span class="string">&quot;output&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">output</span>)
             .<span class="ident">field</span>(<span class="string">&quot;table&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">table</span>)
+            .<span class="ident">field</span>(<span class="string">&quot;mode&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">mode</span>)
+            .<span class="ident">field</span>(<span class="string">&quot;cache&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">cache</span>)
             .<span class="ident">finish</span>()
     }
 }
@@ -174,6 +188,7 @@
             <span class="ident">output</span>: <span class="self">self</span>.<span class="ident">output</span>.<span class="ident">clone</span>(),
             <span class="ident">table</span>: <span class="self">self</span>.<span class="ident">table</span>.<span class="ident">clone</span>(),
             <span class="ident">mode</span>: <span class="self">self</span>.<span class="ident">mode</span>.<span class="ident">clone</span>(),
+            <span class="ident">cache</span>: <span class="self">self</span>.<span class="ident">cache</span>,
         }
         .<span class="ident">serialize</span>(<span class="ident">serializer</span>)
     }
@@ -206,6 +221,7 @@
             <span class="ident">output</span>: <span class="ident">args</span>.<span class="ident">output</span>,
             <span class="ident">table</span>: <span class="ident">args</span>.<span class="ident">table</span>,
             <span class="ident">mode</span>: <span class="ident">args</span>.<span class="ident">mode</span>,
+            <span class="ident">cache</span>: <span class="ident">args</span>.<span class="ident">cache</span>,
 
             <span class="ident">connection</span>,
         })
@@ -220,13 +236,19 @@
     <span class="ident">table</span>: <span class="ident">String</span>,
     <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">default</span>)]</span>
     <span class="ident">mode</span>: <span class="ident">SpeciesLocationsMode</span>,
+    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">default</span> <span class="op">=</span> <span class="string">&quot;default_cache_size&quot;</span>)]</span>
+    <span class="ident">cache</span>: <span class="ident">NonZeroI32</span>,
 }
 
 <span class="kw">fn</span> <span class="ident">default_table_name</span>() -&gt; <span class="ident">String</span> {
     <span class="ident">String::from</span>(<span class="string">&quot;SPECIES_LOCATIONS&quot;</span>)
 }
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
+<span class="kw">fn</span> <span class="ident">default_cache_size</span>() -&gt; <span class="ident">NonZeroI32</span> {
+    <span class="ident">NonZeroI32::new</span>(<span class="number">1_000_000_i32</span>).<span class="ident">unwrap</span>()
+}
+
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
 <span class="kw">enum</span> <span class="ident">SpeciesLocationsMode</span> {
     <span class="ident">Create</span>,
     <span class="ident">Resume</span>,
