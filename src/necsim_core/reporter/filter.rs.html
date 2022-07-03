@@ -135,12 +135,12 @@
     }
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">R</span>: <span class="ident">Reporter</span>, <span class="ident">KeepSpeciation</span>: <span class="ident">Boolean</span>, <span class="ident">KeepDispersal</span>: <span class="ident">Boolean</span>, <span class="ident">KeepProgress</span>: <span class="ident">Boolean</span><span class="op">&gt;</span> <span class="ident">Reporter</span>
-    <span class="kw">for</span> <span class="ident">FilteredReporter</span><span class="op">&lt;</span><span class="ident">R</span>, <span class="ident">KeepSpeciation</span>, <span class="ident">KeepDispersal</span>, <span class="ident">KeepProgress</span><span class="op">&gt;</span>
-<span class="kw">where</span>
-    <span class="ident">KeepSpeciation</span>: <span class="ident">And</span><span class="op">&lt;</span><span class="ident">R::ReportSpeciation</span><span class="op">&gt;</span>,
-    <span class="ident">KeepDispersal</span>: <span class="ident">And</span><span class="op">&lt;</span><span class="ident">R::ReportDispersal</span><span class="op">&gt;</span>,
-    <span class="ident">KeepProgress</span>: <span class="ident">And</span><span class="op">&lt;</span><span class="ident">R::ReportProgress</span><span class="op">&gt;</span>,
+<span class="kw">impl</span><span class="op">&lt;</span>
+        <span class="ident">R</span>: <span class="ident">Reporter</span>,
+        <span class="ident">KeepSpeciation</span>: <span class="ident">Boolean</span> <span class="op">+</span> <span class="ident">And</span><span class="op">&lt;</span><span class="ident">R::ReportSpeciation</span><span class="op">&gt;</span>,
+        <span class="ident">KeepDispersal</span>: <span class="ident">Boolean</span> <span class="op">+</span> <span class="ident">And</span><span class="op">&lt;</span><span class="ident">R::ReportDispersal</span><span class="op">&gt;</span>,
+        <span class="ident">KeepProgress</span>: <span class="ident">Boolean</span> <span class="op">+</span> <span class="ident">And</span><span class="op">&lt;</span><span class="ident">R::ReportProgress</span><span class="op">&gt;</span>,
+    <span class="op">&gt;</span> <span class="ident">Reporter</span> <span class="kw">for</span> <span class="ident">FilteredReporter</span><span class="op">&lt;</span><span class="ident">R</span>, <span class="ident">KeepSpeciation</span>, <span class="ident">KeepDispersal</span>, <span class="ident">KeepProgress</span><span class="op">&gt;</span>
 {
     <span class="macro">impl_report!</span>(<span class="ident">speciation</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">speciation</span>: <span class="ident">MaybeUsed</span><span class="op">&lt;</span>
         <span class="op">&lt;</span><span class="ident">KeepSpeciation</span> <span class="kw">as</span> <span class="ident">And</span><span class="op">&lt;</span><span class="ident">R::ReportSpeciation</span><span class="op">&gt;</span>
@@ -178,5 +178,5 @@
     }
 }
 </code></pre></div>
-</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="necsim_core" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.62.0-nightly (60e50fc1c 2022-04-04)" ></div>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="necsim_core" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.62.0-nightly (70b3681bf 2022-05-14)" ></div>
 </body></html>
