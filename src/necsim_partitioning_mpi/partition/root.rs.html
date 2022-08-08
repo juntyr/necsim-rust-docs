@@ -430,6 +430,8 @@
 <span id="425">425</span>
 <span id="426">426</span>
 <span id="427">427</span>
+<span id="428">428</span>
+<span id="429">429</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">std</span>::{
     <span class="ident">fmt</span>,
     <span class="ident">marker::PhantomData</span>,
@@ -470,8 +472,8 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">MpiRootPartition</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span>, <span class="ident">R</span>: <span class="ident">Reporter</span><span class="op">&gt;</span> {
     <span class="ident">_universe</span>: <span class="ident">Universe</span>,
     <span class="ident">world</span>: <span class="ident">SystemCommunicator</span>,
-    <span class="ident">mpi_local_global_wait</span>: <span class="ident">DataOrRequest</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span>, (<span class="ident">bool</span>, <span class="ident">bool</span>)<span class="op">&gt;</span>,
-    <span class="ident">mpi_migration_buffers</span>: <span class="ident">Box</span><span class="op">&lt;</span>[<span class="ident">DataOrRequest</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span>, <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">MigratingLineage</span><span class="op">&gt;</span><span class="op">&gt;</span>]<span class="op">&gt;</span>,
+    <span class="ident">mpi_local_global_wait</span>: <span class="ident">DataOrRequest</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span>, (<span class="ident">bool</span>, <span class="ident">bool</span>), <span class="ident">bool</span><span class="op">&gt;</span>,
+    <span class="ident">mpi_migration_buffers</span>: <span class="ident">Box</span><span class="op">&lt;</span>[<span class="ident">DataOrRequest</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span>, <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">MigratingLineage</span><span class="op">&gt;</span>, [<span class="ident">MpiMigratingLineage</span>]<span class="op">&gt;</span>]<span class="op">&gt;</span>,
     <span class="ident">migration_buffers</span>: <span class="ident">Box</span><span class="op">&lt;</span>[<span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">MigratingLineage</span><span class="op">&gt;</span>]<span class="op">&gt;</span>,
     <span class="ident">all_remaining</span>: <span class="ident">Box</span><span class="op">&lt;</span>[<span class="ident">u64</span>]<span class="op">&gt;</span>,
     <span class="ident">last_report_time</span>: <span class="ident">Instant</span>,
@@ -508,8 +510,10 @@
     <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">new</span>(
         <span class="ident">universe</span>: <span class="ident">Universe</span>,
-        <span class="ident">mpi_local_global_wait</span>: <span class="ident">DataOrRequest</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span>, (<span class="ident">bool</span>, <span class="ident">bool</span>)<span class="op">&gt;</span>,
-        <span class="ident">mpi_migration_buffers</span>: <span class="ident">Box</span><span class="op">&lt;</span>[<span class="ident">DataOrRequest</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span>, <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">MigratingLineage</span><span class="op">&gt;</span><span class="op">&gt;</span>]<span class="op">&gt;</span>,
+        <span class="ident">mpi_local_global_wait</span>: <span class="ident">DataOrRequest</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span>, (<span class="ident">bool</span>, <span class="ident">bool</span>), <span class="ident">bool</span><span class="op">&gt;</span>,
+        <span class="ident">mpi_migration_buffers</span>: <span class="ident">Box</span><span class="op">&lt;</span>
+            [<span class="ident">DataOrRequest</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span>, <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">MigratingLineage</span><span class="op">&gt;</span>, [<span class="ident">MpiMigratingLineage</span>]<span class="op">&gt;</span>],
+        <span class="op">&gt;</span>,
         <span class="ident">reporter</span>: <span class="ident">FilteredReporter</span><span class="op">&lt;</span><span class="ident">R</span>, <span class="ident">False</span>, <span class="ident">False</span>, <span class="ident">True</span><span class="op">&gt;</span>,
         <span class="kw-2">mut</span> <span class="ident">recorder</span>: <span class="ident">EventLogRecorder</span>,
         <span class="ident">migration_interval</span>: <span class="ident">Duration</span>,
