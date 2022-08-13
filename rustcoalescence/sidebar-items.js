@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["main",""]],"mod":[["args",""],["cli",""],["minimal_logger",""],["reporter",""]],"static":[["MINIMAL_LOGGER",""]]});
+window.SIDEBAR_ITEMS = {"fn":[["main",""]],"mod":[["args",""],["cli",""],["minimal_logger",""],["reporter",""]],"static":[["MINIMAL_LOGGER",""]]};

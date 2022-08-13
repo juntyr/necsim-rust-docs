@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["SortedSegment",""]]});
+window.SIDEBAR_ITEMS = {"struct":[["SortedSegment",""]]};

@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["FixedEventTimeSampler",""]]});
+window.SIDEBAR_ITEMS = {"struct":[["FixedEventTimeSampler",""]]};

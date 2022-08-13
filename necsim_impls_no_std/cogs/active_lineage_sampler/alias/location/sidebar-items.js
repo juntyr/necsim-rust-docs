@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["LocationAliasActiveLineageSampler",""]]});
+window.SIDEBAR_ITEMS = {"struct":[["LocationAliasActiveLineageSampler",""]]};

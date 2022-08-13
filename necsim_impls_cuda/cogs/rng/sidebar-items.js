@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["CudaRng",""]]});
+window.SIDEBAR_ITEMS = {"struct":[["CudaRng",""]]};

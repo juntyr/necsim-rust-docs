@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["parse",""],["ser",""]]});
+window.SIDEBAR_ITEMS = {"mod":[["parse",""],["ser",""]]};

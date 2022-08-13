@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["spatially_implicit",""],["uniform",""]]});
+window.SIDEBAR_ITEMS = {"mod":[["spatially_implicit",""],["uniform",""]]};

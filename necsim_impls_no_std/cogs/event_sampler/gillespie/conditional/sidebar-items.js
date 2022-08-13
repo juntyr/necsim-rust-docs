@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["ConditionalGillespieEventSampler",""]]});
+window.SIDEBAR_ITEMS = {"struct":[["ConditionalGillespieEventSampler",""]]};

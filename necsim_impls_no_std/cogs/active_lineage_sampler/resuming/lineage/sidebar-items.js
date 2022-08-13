@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["ExceptionalLineage",""]],"struct":[["SplitExceptionalLineages",""]]});
+window.SIDEBAR_ITEMS = {"enum":[["ExceptionalLineage",""]],"struct":[["SplitExceptionalLineages",""]]};

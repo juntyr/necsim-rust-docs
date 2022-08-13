@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["MonolithicDecomposition",""]]});
+window.SIDEBAR_ITEMS = {"struct":[["MonolithicDecomposition",""]]};

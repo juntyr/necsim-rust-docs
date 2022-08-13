@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["ExecutionTimeReporter",""]]});
+window.SIDEBAR_ITEMS = {"struct":[["ExecutionTimeReporter",""]]};

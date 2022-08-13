@@ -1,1 +1,1 @@
-initSidebarItems({"trait":[["ImmigrationEntry",""]]});
+window.SIDEBAR_ITEMS = {"trait":[["ImmigrationEntry",""]]};

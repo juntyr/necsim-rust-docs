@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["replay_with_logger",""]]});
+window.SIDEBAR_ITEMS = {"fn":[["replay_with_logger",""]]};

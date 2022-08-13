@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["replay",""],["simulate",""]]});
+window.SIDEBAR_ITEMS = {"mod":[["replay",""],["simulate",""]]};

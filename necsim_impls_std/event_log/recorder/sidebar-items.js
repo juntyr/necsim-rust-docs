@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["EventLogRecorder",""]]});
+window.SIDEBAR_ITEMS = {"struct":[["EventLogRecorder",""]]};

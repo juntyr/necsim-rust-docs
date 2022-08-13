@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["domain",""],["independent",""],["never",""]]});
+window.SIDEBAR_ITEMS = {"mod":[["domain",""],["independent",""],["never",""]]};

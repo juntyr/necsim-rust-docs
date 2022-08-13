@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["SpatiallyImplicitDispersalSampler",""]]});
+window.SIDEBAR_ITEMS = {"struct":[["SpatiallyImplicitDispersalSampler",""]]};

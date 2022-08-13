@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["Status",""]],"mod":[["independent",""],["monolithic",""]]});
+window.SIDEBAR_ITEMS = {"enum":[["Status",""]],"mod":[["independent",""],["monolithic",""]]};

@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["alias",""],["classical",""],["independent",""],["resuming",""],["singular",""]]});
+window.SIDEBAR_ITEMS = {"mod":[["alias",""],["classical",""],["independent",""],["resuming",""],["singular",""]]};

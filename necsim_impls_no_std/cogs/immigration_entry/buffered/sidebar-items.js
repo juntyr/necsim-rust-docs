@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["BufferedImmigrationEntry",""]]});
+window.SIDEBAR_ITEMS = {"struct":[["BufferedImmigrationEntry",""]]};

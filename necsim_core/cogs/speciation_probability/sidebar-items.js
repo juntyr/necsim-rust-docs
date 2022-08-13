@@ -1,1 +1,1 @@
-initSidebarItems({"trait":[["SpeciationProbability",""]]});
+window.SIDEBAR_ITEMS = {"trait":[["SpeciationProbability",""]]};

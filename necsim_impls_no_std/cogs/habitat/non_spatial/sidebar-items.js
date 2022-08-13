@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["NonSpatialHabitat",""]]});
+window.SIDEBAR_ITEMS = {"struct":[["NonSpatialHabitat",""]]};

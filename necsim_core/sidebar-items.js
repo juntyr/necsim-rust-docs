@@ -1,1 +1,1 @@
-initSidebarItems({"macro":[["ReporterGroup",""],["ReporterGroupType",""],["ReporterUnGroup",""],["impl_finalise",""],["impl_report",""]],"mod":[["cogs",""],["event",""],["landscape",""],["lineage",""],["reporter",""],["simulation",""]]});
+window.SIDEBAR_ITEMS = {"macro":[["ReporterGroup",""],["ReporterGroupType",""],["ReporterUnGroup",""],["impl_finalise",""],["impl_report",""]],"mod":[["cogs",""],["event",""],["landscape",""],["lineage",""],["reporter",""],["simulation",""]]};

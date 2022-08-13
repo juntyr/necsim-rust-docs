@@ -1,1 +1,1 @@
-initSidebarItems({"trait":[["DispersalSampler",""],["SeparableDispersalSampler",""]]});
+window.SIDEBAR_ITEMS = {"trait":[["DispersalSampler",""],["SeparableDispersalSampler",""]]};

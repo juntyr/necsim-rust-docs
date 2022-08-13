@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["NeverImmigrationEntry",""]]});
+window.SIDEBAR_ITEMS = {"struct":[["NeverImmigrationEntry",""]]};

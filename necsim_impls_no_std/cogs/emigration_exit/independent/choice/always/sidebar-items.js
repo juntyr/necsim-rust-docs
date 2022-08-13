@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["AlwaysEmigrationChoice",""]]});
+window.SIDEBAR_ITEMS = {"struct":[["AlwaysEmigrationChoice",""]]};

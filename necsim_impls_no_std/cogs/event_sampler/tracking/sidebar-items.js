@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["SpeciationSample",""]],"trait":[["MinSpeciationTrackingEventSampler",""]]});
+window.SIDEBAR_ITEMS = {"struct":[["SpeciationSample",""]],"trait":[["MinSpeciationTrackingEventSampler",""]]};

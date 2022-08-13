@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["Scenario",""]]});
+window.SIDEBAR_ITEMS = {"enum":[["Scenario",""]]};

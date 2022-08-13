@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["intrinsics",""],["reproducible",""]]});
+window.SIDEBAR_ITEMS = {"mod":[["intrinsics",""],["reproducible",""]]};

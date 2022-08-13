@@ -1,1 +1,1 @@
-initSidebarItems({"trait":[["LineageReference",""]]});
+window.SIDEBAR_ITEMS = {"trait":[["LineageReference",""]]};

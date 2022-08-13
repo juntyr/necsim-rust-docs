@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["InMemoryDispersalSamplerError",""]]});
+window.SIDEBAR_ITEMS = {"enum":[["InMemoryDispersalSamplerError",""]]};

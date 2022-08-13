@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["GillespieAlgorithm",""]]});
+window.SIDEBAR_ITEMS = {"enum":[["GillespieAlgorithm",""]]};

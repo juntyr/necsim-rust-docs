@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["MigrationMode",""]],"mod":[["context",""],["iterator",""],["partition",""]],"trait":[["LocalPartition",""],["Partitioning",""]]});
+window.SIDEBAR_ITEMS = {"enum":[["MigrationMode",""]],"mod":[["context",""],["iterator",""],["partition",""]],"trait":[["LocalPartition",""],["Partitioning",""]]};

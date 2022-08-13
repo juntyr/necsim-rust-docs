@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["gillespie",""],["independent",""],["tracking",""],["unconditional",""]]});
+window.SIDEBAR_ITEMS = {"mod":[["gillespie",""],["independent",""],["tracking",""],["unconditional",""]]};

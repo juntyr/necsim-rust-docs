@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["EventHandler",""]],"trait":[["EventSampler",""]]});
+window.SIDEBAR_ITEMS = {"struct":[["EventHandler",""]],"trait":[["EventSampler",""]]};

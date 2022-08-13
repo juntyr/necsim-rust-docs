@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["SpatiallyExplicitTurnoverMapArguments",""],["SpatiallyExplicitTurnoverMapScenario",""],["SpatiallyExplicitUniformTurnoverArguments",""],["SpatiallyExplicitUniformTurnoverScenario",""]]});
+window.SIDEBAR_ITEMS = {"struct":[["SpatiallyExplicitTurnoverMapArguments",""],["SpatiallyExplicitTurnoverMapScenario",""],["SpatiallyExplicitUniformTurnoverArguments",""],["SpatiallyExplicitUniformTurnoverScenario",""]]};

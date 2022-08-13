@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["UniformAntiTrespassingDispersalSampler",""]]});
+window.SIDEBAR_ITEMS = {"struct":[["UniformAntiTrespassingDispersalSampler",""]]};

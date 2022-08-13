@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["event_skipping",""],["gillespie",""]]});
+window.SIDEBAR_ITEMS = {"mod":[["event_skipping",""],["gillespie",""]]};

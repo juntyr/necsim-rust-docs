@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["EventType",""],["TypedEvent",""]],"struct":[["Dispersal",""],["DispersalEvent",""],["PackedEvent",""],["SpeciationEvent",""]]});
+window.SIDEBAR_ITEMS = {"enum":[["EventType",""],["TypedEvent",""]],"struct":[["Dispersal",""],["DispersalEvent",""],["PackedEvent",""],["SpeciationEvent",""]]};

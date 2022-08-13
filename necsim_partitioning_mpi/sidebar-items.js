@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["MpiLocalPartition",""],["MpiLocalPartitionError",""],["MpiPartitioningError",""]],"struct":[["MpiParallelPartition",""],["MpiPartitioning",""],["MpiRootPartition",""]]});
+window.SIDEBAR_ITEMS = {"enum":[["MpiLocalPartition",""],["MpiLocalPartitionError",""],["MpiPartitioningError",""]],"struct":[["MpiParallelPartition",""],["MpiPartitioning",""],["MpiRootPartition",""]]};

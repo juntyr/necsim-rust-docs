@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["almost_infinite",""],["non_spatial",""],["spatially_explicit",""],["spatially_implicit",""]],"trait":[["Scenario",""],["ScenarioParameters",""]]});
+window.SIDEBAR_ITEMS = {"mod":[["almost_infinite",""],["non_spatial",""],["spatially_explicit",""],["spatially_implicit",""]],"trait":[["Scenario",""],["ScenarioParameters",""]]};

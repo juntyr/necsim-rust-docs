@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["averaging",""],["lockstep",""],["monolithic",""],["optimistic",""],["optimistic_lockstep",""]]});
+window.SIDEBAR_ITEMS = {"mod":[["averaging",""],["lockstep",""],["monolithic",""],["optimistic",""],["optimistic_lockstep",""]]};

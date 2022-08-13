@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["SpatiallyImplicitOriginSampler",""]]});
+window.SIDEBAR_ITEMS = {"struct":[["SpatiallyImplicitOriginSampler",""]]};

@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["alias",""],["contract",""],["cumulative",""],["packed_alias",""],["separable_alias",""]],"trait":[["InMemoryDispersalSampler",""]]});
+window.SIDEBAR_ITEMS = {"mod":[["alias",""],["contract",""],["cumulative",""],["packed_alias",""],["separable_alias",""]],"trait":[["InMemoryDispersalSampler",""]]};

@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["valid",""]]});
+window.SIDEBAR_ITEMS = {"mod":[["valid",""]]};

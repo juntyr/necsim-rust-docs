@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["Rng",""],["RngRaw",""]],"fn":[["deserialize_rng_sponge",""],["deserialize_rng_state_else_sponge",""]],"mod":[["base32",""]],"struct":[["Base32RngState",""],["ProtectedState",""]]});
+window.SIDEBAR_ITEMS = {"enum":[["Rng",""],["RngRaw",""]],"fn":[["deserialize_rng_sponge",""],["deserialize_rng_state_else_sponge",""]],"mod":[["base32",""]],"struct":[["Base32RngState",""],["ProtectedState",""]]};

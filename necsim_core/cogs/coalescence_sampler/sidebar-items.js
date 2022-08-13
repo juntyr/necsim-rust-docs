@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["CoalescenceRngSample",""]],"trait":[["CoalescenceSampler",""]]});
+window.SIDEBAR_ITEMS = {"struct":[["CoalescenceRngSample",""]],"trait":[["CoalescenceSampler",""]]};

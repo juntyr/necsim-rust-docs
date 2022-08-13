@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["InMemoryOriginSampler",""]]});
+window.SIDEBAR_ITEMS = {"struct":[["InMemoryOriginSampler",""]]};

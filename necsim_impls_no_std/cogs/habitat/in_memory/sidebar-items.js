@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["InMemoryHabitat",""]]});
+window.SIDEBAR_ITEMS = {"struct":[["InMemoryHabitat",""]]};

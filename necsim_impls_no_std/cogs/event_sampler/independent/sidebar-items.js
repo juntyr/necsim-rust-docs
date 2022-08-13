@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["IndependentEventSampler",""]]});
+window.SIDEBAR_ITEMS = {"struct":[["IndependentEventSampler",""]]};

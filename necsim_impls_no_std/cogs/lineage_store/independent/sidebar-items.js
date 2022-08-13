@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["IndependentLineageStore",""]]});
+window.SIDEBAR_ITEMS = {"struct":[["IndependentLineageStore",""]]};

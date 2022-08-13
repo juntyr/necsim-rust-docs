@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["IntrinsicsMathsCore",""]]});
+window.SIDEBAR_ITEMS = {"enum":[["IntrinsicsMathsCore",""]]};

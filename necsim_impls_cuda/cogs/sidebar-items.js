@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["maths",""],["rng",""]]});
+window.SIDEBAR_ITEMS = {"mod":[["maths",""],["rng",""]]};

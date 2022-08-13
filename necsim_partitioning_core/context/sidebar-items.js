@@ -1,1 +1,1 @@
-initSidebarItems({"trait":[["ReporterContext",""]]});
+window.SIDEBAR_ITEMS = {"trait":[["ReporterContext",""]]};

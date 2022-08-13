@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["GlobalLineageReference",""],["Lineage",""],["LineageInteraction",""],["MigratingLineage",""]]});
+window.SIDEBAR_ITEMS = {"struct":[["GlobalLineageReference",""],["Lineage",""],["LineageInteraction",""],["MigratingLineage",""]]};

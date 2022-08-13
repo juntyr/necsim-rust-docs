@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["InMemoryPackedAliasDispersalSampler",""]]});
+window.SIDEBAR_ITEMS = {"struct":[["InMemoryPackedAliasDispersalSampler",""]]};

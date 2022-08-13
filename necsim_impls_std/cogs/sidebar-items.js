@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["dispersal_sampler",""],["rng",""]]});
+window.SIDEBAR_ITEMS = {"mod":[["dispersal_sampler",""],["rng",""]]};

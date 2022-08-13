@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["error",""]],"trait":[["InMemoryDispersalSampler",""]]});
+window.SIDEBAR_ITEMS = {"mod":[["error",""]],"trait":[["InMemoryDispersalSampler",""]]};

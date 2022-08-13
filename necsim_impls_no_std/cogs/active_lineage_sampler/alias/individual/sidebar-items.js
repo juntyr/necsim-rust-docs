@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["IndividualAliasActiveLineageSampler",""]]});
+window.SIDEBAR_ITEMS = {"struct":[["IndividualAliasActiveLineageSampler",""]]};

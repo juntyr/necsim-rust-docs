@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["DomainEmigrationExit",""]]});
+window.SIDEBAR_ITEMS = {"struct":[["DomainEmigrationExit",""]]};

@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["active_lineage_sampler",""],["emigration_exit",""],["event_sampler",""]]});
+window.SIDEBAR_ITEMS = {"mod":[["active_lineage_sampler",""],["emigration_exit",""],["event_sampler",""]]};

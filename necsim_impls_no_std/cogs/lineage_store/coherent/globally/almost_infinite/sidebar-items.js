@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["AlmostInfiniteLineageStore",""]]});
+window.SIDEBAR_ITEMS = {"struct":[["AlmostInfiniteLineageStore",""]]};

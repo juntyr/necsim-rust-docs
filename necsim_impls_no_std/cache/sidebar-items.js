@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["DirectMappedCache",""]]});
+window.SIDEBAR_ITEMS = {"struct":[["DirectMappedCache",""]]};

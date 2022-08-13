@@ -1,1 +1,1 @@
-initSidebarItems({"macro":[["link_kernel",""]],"trait":[["SimulatableKernel",""],["SimulationKernelArgs",""]]});
+window.SIDEBAR_ITEMS = {"macro":[["link_kernel",""]],"trait":[["SimulatableKernel",""],["SimulationKernelArgs",""]]};

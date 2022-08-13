@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["ResumeError",""],["SimulationOutcome",""]]});
+window.SIDEBAR_ITEMS = {"enum":[["ResumeError",""],["SimulationOutcome",""]]};

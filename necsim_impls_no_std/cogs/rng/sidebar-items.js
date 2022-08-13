@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["rand",""],["seahash",""],["wyhash",""]]});
+window.SIDEBAR_ITEMS = {"mod":[["rand",""],["seahash",""],["wyhash",""]]};

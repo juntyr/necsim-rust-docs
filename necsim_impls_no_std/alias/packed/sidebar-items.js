@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["AliasMethodSamplerAtom",""]]});
+window.SIDEBAR_ITEMS = {"struct":[["AliasMethodSamplerAtom",""]]};

@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["always",""],["probabilistic",""]],"trait":[["EmigrationChoice",""]]});
+window.SIDEBAR_ITEMS = {"mod":[["always",""],["probabilistic",""]],"trait":[["EmigrationChoice",""]]};

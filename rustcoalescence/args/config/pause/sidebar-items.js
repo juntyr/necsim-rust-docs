@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["PauseMode",""],["SampleDestiny",""]],"struct":[["FuturePause",""],["Pause",""],["PauseRaw",""],["ResumeConfig",""]]});
+window.SIDEBAR_ITEMS = {"enum":[["PauseMode",""],["SampleDestiny",""]],"struct":[["FuturePause",""],["Pause",""],["PauseRaw",""],["ResumeConfig",""]]};

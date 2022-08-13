@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["ProgressReporter",""]]});
+window.SIDEBAR_ITEMS = {"struct":[["ProgressReporter",""]]};

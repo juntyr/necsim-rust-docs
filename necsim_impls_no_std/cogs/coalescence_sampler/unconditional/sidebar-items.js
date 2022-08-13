@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["UnconditionalCoalescenceSampler",""]]});
+window.SIDEBAR_ITEMS = {"struct":[["UnconditionalCoalescenceSampler",""]]};

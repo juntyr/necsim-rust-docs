@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["NonSpatialOriginSampler",""]]});
+window.SIDEBAR_ITEMS = {"struct":[["NonSpatialOriginSampler",""]]};

@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["ResumingOriginSampler",""]]});
+window.SIDEBAR_ITEMS = {"struct":[["ResumingOriginSampler",""]]};

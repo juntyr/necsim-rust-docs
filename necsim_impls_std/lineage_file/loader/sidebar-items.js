@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["LineageFileLoader",""]]});
+window.SIDEBAR_ITEMS = {"struct":[["LineageFileLoader",""]]};

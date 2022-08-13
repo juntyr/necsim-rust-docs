@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["DynamicReporterContext",""]]});
+window.SIDEBAR_ITEMS = {"struct":[["DynamicReporterContext",""]]};

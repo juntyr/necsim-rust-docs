@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["UniformTurnoverRate",""]]});
+window.SIDEBAR_ITEMS = {"struct":[["UniformTurnoverRate",""]]};

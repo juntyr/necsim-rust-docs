@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["InMemoryTurnoverRateError",""]],"struct":[["InMemoryTurnoverRate",""]]});
+window.SIDEBAR_ITEMS = {"enum":[["InMemoryTurnoverRateError",""]],"struct":[["InMemoryTurnoverRate",""]]};

@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["NonSpatialArguments",""],["NonSpatialScenario",""]]});
+window.SIDEBAR_ITEMS = {"struct":[["NonSpatialArguments",""],["NonSpatialScenario",""]]};

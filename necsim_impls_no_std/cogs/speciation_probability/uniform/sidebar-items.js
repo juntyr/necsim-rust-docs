@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["UniformSpeciationProbability",""]]});
+window.SIDEBAR_ITEMS = {"struct":[["UniformSpeciationProbability",""]]};

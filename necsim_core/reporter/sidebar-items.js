@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["boolean",""],["used",""]],"struct":[["FilteredReporter",""],["NullReporter",""],["ReporterCombinator",""]],"trait":[["Reporter",""]]});
+window.SIDEBAR_ITEMS = {"mod":[["boolean",""],["used",""]],"struct":[["FilteredReporter",""],["NullReporter",""],["ReporterCombinator",""]],"trait":[["Reporter",""]]};

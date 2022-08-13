@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["MetacommunityMigrationReporter",""]]});
+window.SIDEBAR_ITEMS = {"struct":[["MetacommunityMigrationReporter",""]]};

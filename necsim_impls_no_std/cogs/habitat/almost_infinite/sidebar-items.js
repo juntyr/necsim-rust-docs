@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["AlmostInfiniteHabitat",""]]});
+window.SIDEBAR_ITEMS = {"struct":[["AlmostInfiniteHabitat",""]]};

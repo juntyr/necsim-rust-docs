@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["SpatiallyImplicitArguments",""],["SpatiallyImplicitScenario",""]]});
+window.SIDEBAR_ITEMS = {"struct":[["SpatiallyImplicitArguments",""],["SpatiallyImplicitScenario",""]]};

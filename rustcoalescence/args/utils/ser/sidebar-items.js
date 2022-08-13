@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["impl",""]],"struct":[["BufferingSerializeResult",""]]});
+window.SIDEBAR_ITEMS = {"mod":[["impl",""]],"struct":[["BufferingSerializeResult",""]]};

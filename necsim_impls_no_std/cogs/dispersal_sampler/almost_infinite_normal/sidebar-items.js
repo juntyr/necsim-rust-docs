@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["AlmostInfiniteNormalDispersalSampler",""]]});
+window.SIDEBAR_ITEMS = {"struct":[["AlmostInfiniteNormalDispersalSampler",""]]};

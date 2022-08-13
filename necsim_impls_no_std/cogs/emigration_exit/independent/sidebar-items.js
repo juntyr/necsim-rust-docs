@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["choice",""]],"struct":[["IndependentEmigrationExit",""]]});
+window.SIDEBAR_ITEMS = {"mod":[["choice",""]],"struct":[["IndependentEmigrationExit",""]]};

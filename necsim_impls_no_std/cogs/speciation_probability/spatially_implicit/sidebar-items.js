@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["SpatiallyImplicitSpeciationProbability",""]]});
+window.SIDEBAR_ITEMS = {"struct":[["SpatiallyImplicitSpeciationProbability",""]]};

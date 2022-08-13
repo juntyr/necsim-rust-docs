@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["VerboseReporter",""]]});
+window.SIDEBAR_ITEMS = {"struct":[["VerboseReporter",""]]};

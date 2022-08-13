@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["in_memory",""]]});
+window.SIDEBAR_ITEMS = {"mod":[["in_memory",""]]};

@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["False",""],["True",""]],"trait":[["And",""],["Boolean",""],["Or",""]]});
+window.SIDEBAR_ITEMS = {"struct":[["False",""],["True",""]],"trait":[["And",""],["Boolean",""],["Or",""]]};

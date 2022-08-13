@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["GillespieLineageStore",""]]});
+window.SIDEBAR_ITEMS = {"struct":[["GillespieLineageStore",""]]};

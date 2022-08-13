@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["MinimalLogger",""]]});
+window.SIDEBAR_ITEMS = {"struct":[["MinimalLogger",""]]};

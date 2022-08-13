@@ -1,1 +1,1 @@
-initSidebarItems({"trait":[["Habitat",""],["UniformlySampleableHabitat",""]]});
+window.SIDEBAR_ITEMS = {"trait":[["Habitat",""],["UniformlySampleableHabitat",""]]};

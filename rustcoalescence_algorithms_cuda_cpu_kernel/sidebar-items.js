@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["SimulationKernel",""]]});
+window.SIDEBAR_ITEMS = {"struct":[["SimulationKernel",""]],"type":[["KernelCompilationCallback",""]]};

@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["UnconditionalEventSampler",""]]});
+window.SIDEBAR_ITEMS = {"struct":[["UnconditionalEventSampler",""]]};

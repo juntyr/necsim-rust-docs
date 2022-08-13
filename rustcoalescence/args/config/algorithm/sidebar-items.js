@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["Algorithm",""]]});
+window.SIDEBAR_ITEMS = {"enum":[["Algorithm",""]]};

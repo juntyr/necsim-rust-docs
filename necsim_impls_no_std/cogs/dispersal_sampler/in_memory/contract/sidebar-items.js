@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["explicit_in_memory_dispersal_check_contract",""]]});
+window.SIDEBAR_ITEMS = {"fn":[["explicit_in_memory_dispersal_check_contract",""]]};

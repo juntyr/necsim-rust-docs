@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["parse_and_normalise",""]],"struct":[["SimulateArgsSampleOnly",""]]});
+window.SIDEBAR_ITEMS = {"fn":[["parse_and_normalise",""]],"struct":[["SimulateArgsSampleOnly",""]]};

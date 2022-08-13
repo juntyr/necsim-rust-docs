@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["Partition",""],["PartitionRankOutOfBounds",""]]});
+window.SIDEBAR_ITEMS = {"struct":[["Partition",""],["PartitionRankOutOfBounds",""]]};

@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["cli",""],["config",""],["utils",""]]});
+window.SIDEBAR_ITEMS = {"mod":[["cli",""],["config",""],["utils",""]]};

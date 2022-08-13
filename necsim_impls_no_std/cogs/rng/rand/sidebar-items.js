@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["RandRng",""]]});
+window.SIDEBAR_ITEMS = {"struct":[["RandRng",""]]};
