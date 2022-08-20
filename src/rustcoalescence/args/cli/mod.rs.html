@@ -27,23 +27,19 @@
 <span id="21">21</span>
 <span id="22">22</span>
 <span id="23">23</span>
-<span id="24">24</span>
-<span id="25">25</span>
-</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">structopt::StructOpt</span>;
+</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">clap::Parser</span>;
 
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">replay</span>;
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">StructOpt</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Parser</span>)]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">RustcoalescenceArgs</span> {
     <span class="ident">Simulate</span>(<span class="ident">CommandArgs</span>),
     <span class="ident">Replay</span>(<span class="ident">CommandArgs</span>),
 }
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">StructOpt</span>)]</span>
-<span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">template</span>(<span class="string">&quot;{bin} {version}\n\nUSAGE:\n    {usage} args..\n\n{all-args}&quot;</span>))]</span>
-<span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">setting</span>(<span class="ident">structopt::clap::AppSettings::AllowLeadingHyphen</span>))]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Parser</span>)]</span>
+<span class="attribute">#[<span class="ident">clap</span>(<span class="ident">setting</span>(<span class="ident">clap::AppSettings::AllowLeadingHyphen</span>))]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">CommandArgs</span> {
-    <span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">hidden</span>(<span class="bool-val">true</span>))]</span>
     <span class="ident">args</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
 }
 
