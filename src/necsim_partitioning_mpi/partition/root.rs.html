@@ -433,14 +433,10 @@
 <span id="427">427</span>
 <span id="428">428</span>
 <span id="429">429</span>
-<span id="430">430</span>
-<span id="431">431</span>
-<span id="432">432</span>
-<span id="433">433</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">std</span>::{
     <span class="ident">fmt</span>,
     <span class="ident">marker::PhantomData</span>,
-    <span class="ident">mem</span>::{<span class="ident">ManuallyDrop</span>, <span class="ident">MaybeUninit</span>},
+    <span class="ident">mem::ManuallyDrop</span>,
     <span class="ident">num</span>::{<span class="ident">NonZeroU32</span>, <span class="ident">Wrapping</span>},
     <span class="ident">time</span>::{<span class="ident">Duration</span>, <span class="ident">Instant</span>},
 };
@@ -631,11 +627,7 @@
                     <span class="kw-2">&amp;mut</span> <span class="ident">immigration_buffer</span>.<span class="ident">spare_capacity_mut</span>()[..<span class="ident">number_immigrants</span>],
                 );
 
-                <span class="comment">// FIXME: `MaybeUninit::slice_assume_init_mut` is unsafe here</span>
-                <span class="comment">//        but the API does not accept `MaybeUninit` to be equivalent</span>
-                <span class="kw">unsafe</span> {
-                    <span class="ident">msg</span>.<span class="ident">matched_receive_into</span>(<span class="ident">MaybeUninit::slice_assume_init_mut</span>(<span class="ident">immigration_slice</span>));
-                }
+                <span class="ident">msg</span>.<span class="ident">matched_receive_into</span>(<span class="ident">immigration_slice</span>);
 
                 <span class="comment">// Safety: The uninitialised `number_immigrants` items were just initialised</span>
                 <span class="comment">//         in the `matched_receive_into` call</span>
