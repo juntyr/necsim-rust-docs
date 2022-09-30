@@ -79,6 +79,7 @@
 <span id="79">79</span>
 <span id="80">80</span>
 <span id="81">81</span>
+<span id="82">82</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">core::marker::PhantomData</span>;
 
 <span class="kw">use</span> <span class="ident">necsim_core</span>::{
@@ -148,6 +149,7 @@
 <span class="attribute">#[<span class="ident">contract_trait</span>]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">M</span>: <span class="ident">MathsCore</span>, <span class="ident">G</span>: <span class="ident">RngCore</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="ident">UniformlySampleableHabitat</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">G</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">AlmostInfiniteHabitat</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span> {
     <span class="attribute">#[<span class="ident">must_use</span>]</span>
+    <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">fn</span> <span class="ident">sample_habitable_indexed_location</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">rng</span>: <span class="kw-2">&amp;mut</span> <span class="ident">G</span>) -&gt; <span class="ident">IndexedLocation</span> {
         <span class="kw">let</span> <span class="ident">index</span> <span class="op">=</span> <span class="ident">rng</span>.<span class="ident">sample_u64</span>();
 
