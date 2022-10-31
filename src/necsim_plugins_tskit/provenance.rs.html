@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `necsim/plugins/tskit/src/provenance.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>provenance.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../necsim_plugins_tskit/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../necsim_plugins_tskit/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../necsim_plugins_tskit/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `necsim/plugins/tskit/src/provenance.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>provenance.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../normalize.css"><link rel="stylesheet" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../ayu.css" disabled><link rel="stylesheet" href="../../dark.css" disabled><link rel="stylesheet" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../necsim_plugins_tskit/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -176,183 +176,183 @@
 <span id="176">176</span>
 <span id="177">177</span>
 <span id="178">178</span>
-</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">collections::HashMap</span>, <span class="ident">io</span>};
+</pre><pre class="rust"><code><span class="kw">use </span>std::{collections::HashMap, io};
 
-<span class="kw">use</span> <span class="ident">findshlibs</span>::{<span class="ident">SharedLibrary</span>, <span class="ident">TargetSharedLibrary</span>};
-<span class="kw">use</span> <span class="ident">serde::Serialize</span>;
+<span class="kw">use </span>findshlibs::{SharedLibrary, TargetSharedLibrary};
+<span class="kw">use </span>serde::Serialize;
 
-<span class="doccomment">/// tskit&#39;s provenance JSON schema format root for version 1.0.0</span>
-<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::module_name_repetitions</span>)]</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Serialize</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">TskitProvenance</span> {
-    <span class="ident">schema_version</span>: <span class="ident">String</span>,
-    <span class="ident">software</span>: <span class="ident">TskitProvenanceSoftware</span>,
-    <span class="ident">parameters</span>: <span class="ident">TskitProvenanceParameters</span>,
-    <span class="ident">environment</span>: <span class="ident">TskitProvenanceEnvironment</span>,
+<span class="doccomment">/// tskit&#39;s provenance JSON schema format root for version 1.0.0
+</span><span class="attribute">#[allow(clippy::module_name_repetitions)]
+#[derive(Serialize)]
+</span><span class="kw">pub struct </span>TskitProvenance {
+    schema_version: String,
+    software: TskitProvenanceSoftware,
+    parameters: TskitProvenanceParameters,
+    environment: TskitProvenanceEnvironment,
 }
 
-<span class="kw">impl</span> <span class="ident">TskitProvenance</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">try_new</span>() -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
-        <span class="prelude-val">Ok</span>(<span class="self">Self</span> {
-            <span class="ident">schema_version</span>: <span class="string">&quot;1.0.0&quot;</span>.<span class="ident">to_owned</span>(),
-            <span class="ident">software</span>: <span class="ident">TskitProvenanceSoftware::try_new</span>()<span class="question-mark">?</span>,
-            <span class="ident">parameters</span>: <span class="ident">TskitProvenanceParameters::new</span>(),
-            <span class="ident">environment</span>: <span class="ident">TskitProvenanceEnvironment::try_new</span>()<span class="question-mark">?</span>,
+<span class="kw">impl </span>TskitProvenance {
+    <span class="kw">pub fn </span>try_new() -&gt; io::Result&lt;<span class="self">Self</span>&gt; {
+        <span class="prelude-val">Ok</span>(<span class="self">Self </span>{
+            schema_version: <span class="string">&quot;1.0.0&quot;</span>.to_owned(),
+            software: TskitProvenanceSoftware::try_new()<span class="question-mark">?</span>,
+            parameters: TskitProvenanceParameters::new(),
+            environment: TskitProvenanceEnvironment::try_new()<span class="question-mark">?</span>,
         })
     }
 }
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Serialize</span>)]</span>
-<span class="kw">struct</span> <span class="ident">TskitProvenanceSoftware</span> {
-    <span class="ident">name</span>: <span class="ident">String</span>,
-    <span class="ident">version</span>: <span class="ident">String</span>,
-    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">skip_serializing_if</span> <span class="op">=</span> <span class="string">&quot;Option::is_none&quot;</span>)]</span>
-    <span class="ident">commit</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
+<span class="attribute">#[derive(Serialize)]
+</span><span class="kw">struct </span>TskitProvenanceSoftware {
+    name: String,
+    version: String,
+    <span class="attribute">#[serde(skip_serializing_if = <span class="string">&quot;Option::is_none&quot;</span>)]
+    </span>commit: <span class="prelude-ty">Option</span>&lt;String&gt;,
 }
 
-<span class="kw">impl</span> <span class="ident">TskitProvenanceSoftware</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">try_new</span>() -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">executable</span> <span class="op">=</span> <span class="ident">std::env::current_exe</span>()<span class="question-mark">?</span>.<span class="ident">canonicalize</span>()<span class="question-mark">?</span>;
+<span class="kw">impl </span>TskitProvenanceSoftware {
+    <span class="kw">pub fn </span>try_new() -&gt; io::Result&lt;<span class="self">Self</span>&gt; {
+        <span class="kw">let </span>executable = std::env::current_exe()<span class="question-mark">?</span>.canonicalize()<span class="question-mark">?</span>;
 
-        <span class="kw">let</span> <span class="ident">output</span> <span class="op">=</span> <span class="ident">std::process::Command::new</span>(<span class="kw-2">&amp;</span><span class="ident">executable</span>).<span class="ident">arg</span>(<span class="string">&quot;-V&quot;</span>).<span class="ident">output</span>()<span class="question-mark">?</span>;
+        <span class="kw">let </span>output = std::process::Command::new(<span class="kw-2">&amp;</span>executable).arg(<span class="string">&quot;-V&quot;</span>).output()<span class="question-mark">?</span>;
 
-        <span class="kw">let</span> <span class="ident">version_str</span> <span class="op">=</span> <span class="ident">String::from_utf8_lossy</span>(<span class="kw-2">&amp;</span><span class="ident">output</span>.<span class="ident">stdout</span>);
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">version</span> <span class="op">=</span> <span class="ident">version_str</span>.<span class="ident">split_whitespace</span>();
+        <span class="kw">let </span>version_str = String::from_utf8_lossy(<span class="kw-2">&amp;</span>output.stdout);
+        <span class="kw">let </span><span class="kw-2">mut </span>version = version_str.split_whitespace();
 
-        <span class="comment">// Split a version string such as &#39;man 2.9.1&#39; into &#39;man&#39; and &#39;2.9.1&#39;</span>
-        <span class="prelude-val">Ok</span>(<span class="self">Self</span> {
-            <span class="ident">name</span>: <span class="ident">version</span>
-                .<span class="ident">next</span>()
-                .<span class="ident">map_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">executable</span>.<span class="ident">to_string_lossy</span>().<span class="ident">into_owned</span>(), <span class="ident">str::to_owned</span>),
-            <span class="ident">version</span>: <span class="ident">version</span>
-                .<span class="ident">next</span>()
-                .<span class="ident">map_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="string">&quot;???&quot;</span>.<span class="ident">to_owned</span>(), <span class="ident">str::to_owned</span>),
-            <span class="ident">commit</span>: <span class="kw">match</span> <span class="macro">git_version::git_version!</span>(<span class="ident">fallback</span> <span class="op">=</span> <span class="string">&quot;unknown&quot;</span>) {
-                <span class="string">&quot;unknown&quot;</span> =&gt; <span class="prelude-val">None</span>,
-                <span class="ident">version</span> =&gt; <span class="prelude-val">Some</span>(<span class="ident">version</span>.<span class="ident">to_owned</span>()),
+        <span class="comment">// Split a version string such as &#39;man 2.9.1&#39; into &#39;man&#39; and &#39;2.9.1&#39;
+        </span><span class="prelude-val">Ok</span>(<span class="self">Self </span>{
+            name: version
+                .next()
+                .map_or_else(|| executable.to_string_lossy().into_owned(), str::to_owned),
+            version: version
+                .next()
+                .map_or_else(|| <span class="string">&quot;???&quot;</span>.to_owned(), str::to_owned),
+            commit: <span class="kw">match </span><span class="macro">git_version::git_version!</span>(fallback = <span class="string">&quot;unknown&quot;</span>) {
+                <span class="string">&quot;unknown&quot; </span>=&gt; <span class="prelude-val">None</span>,
+                version =&gt; <span class="prelude-val">Some</span>(version.to_owned()),
             },
         })
     }
 }
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Serialize</span>)]</span>
-<span class="kw">struct</span> <span class="ident">TskitProvenanceParameters</span> {
-    <span class="ident">args</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
+<span class="attribute">#[derive(Serialize)]
+</span><span class="kw">struct </span>TskitProvenanceParameters {
+    args: Vec&lt;String&gt;,
 }
 
-<span class="kw">impl</span> <span class="ident">TskitProvenanceParameters</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() -&gt; <span class="self">Self</span> {
-        <span class="self">Self</span> {
-            <span class="ident">args</span>: <span class="ident">std::env::args</span>().<span class="ident">collect</span>(),
+<span class="kw">impl </span>TskitProvenanceParameters {
+    <span class="kw">pub fn </span>new() -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{
+            args: std::env::args().collect(),
         }
     }
 }
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Serialize</span>)]</span>
-<span class="kw">struct</span> <span class="ident">TskitProvenanceEnvironment</span> {
-    <span class="ident">os</span>: <span class="ident">TskitProvenanceEnvironmentOs</span>,
-    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::zero_sized_map_values</span>)]</span>
-    <span class="ident">libraries</span>: <span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">String</span>, <span class="ident">TskitProvenanceEnvironmentLibrary</span><span class="op">&gt;</span>,
-    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">with</span> <span class="op">=</span> <span class="string">&quot;self::rustc_version::VersionMetaDef&quot;</span>)]</span>
-    <span class="ident">rustc</span>: <span class="ident">::rustc_version::VersionMeta</span>,
+<span class="attribute">#[derive(Serialize)]
+</span><span class="kw">struct </span>TskitProvenanceEnvironment {
+    os: TskitProvenanceEnvironmentOs,
+    <span class="attribute">#[allow(clippy::zero_sized_map_values)]
+    </span>libraries: HashMap&lt;String, TskitProvenanceEnvironmentLibrary&gt;,
+    <span class="attribute">#[serde(with = <span class="string">&quot;self::rustc_version::VersionMetaDef&quot;</span>)]
+    </span>rustc: ::rustc_version::VersionMeta,
 }
 
-<span class="kw">impl</span> <span class="ident">TskitProvenanceEnvironment</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">try_new</span>() -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
-        <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::zero_sized_map_values</span>)]</span>
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">libraries</span> <span class="op">=</span> <span class="ident">HashMap::new</span>();
+<span class="kw">impl </span>TskitProvenanceEnvironment {
+    <span class="kw">pub fn </span>try_new() -&gt; io::Result&lt;<span class="self">Self</span>&gt; {
+        <span class="attribute">#[allow(clippy::zero_sized_map_values)]
+        </span><span class="kw">let </span><span class="kw-2">mut </span>libraries = HashMap::new();
 
-        <span class="comment">// Create a map of all dynamically loaded libraries</span>
-        <span class="ident">TargetSharedLibrary::each</span>(<span class="op">|</span><span class="ident">lib</span><span class="op">|</span> {
-            <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Ok</span>(<span class="ident">library</span>) <span class="op">=</span> <span class="ident">TskitProvenanceEnvironmentLibrary::try_new</span>(<span class="ident">lib</span>.<span class="ident">name</span>()) {
-                <span class="ident">libraries</span>.<span class="ident">insert</span>(<span class="ident">lib</span>.<span class="ident">name</span>().<span class="ident">to_string_lossy</span>().<span class="ident">into_owned</span>(), <span class="ident">library</span>);
+        <span class="comment">// Create a map of all dynamically loaded libraries
+        </span>TargetSharedLibrary::each(|lib| {
+            <span class="kw">if let </span><span class="prelude-val">Ok</span>(library) = TskitProvenanceEnvironmentLibrary::try_new(lib.name()) {
+                libraries.insert(lib.name().to_string_lossy().into_owned(), library);
             }
         });
 
-        <span class="prelude-val">Ok</span>(<span class="self">Self</span> {
-            <span class="ident">os</span>: <span class="ident">TskitProvenanceEnvironmentOs::try_new</span>()<span class="question-mark">?</span>,
-            <span class="ident">libraries</span>,
-            <span class="ident">rustc</span>: <span class="ident">rustc_version::version_meta</span>(),
+        <span class="prelude-val">Ok</span>(<span class="self">Self </span>{
+            os: TskitProvenanceEnvironmentOs::try_new()<span class="question-mark">?</span>,
+            libraries,
+            rustc: rustc_version::version_meta(),
         })
     }
 }
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Serialize</span>)]</span>
-<span class="kw">struct</span> <span class="ident">TskitProvenanceEnvironmentOs</span> {
-    <span class="ident">system</span>: <span class="ident">String</span>,
-    <span class="ident">node</span>: <span class="ident">String</span>,
-    <span class="ident">release</span>: <span class="ident">String</span>,
-    <span class="ident">version</span>: <span class="ident">String</span>,
-    <span class="ident">machine</span>: <span class="ident">String</span>,
+<span class="attribute">#[derive(Serialize)]
+</span><span class="kw">struct </span>TskitProvenanceEnvironmentOs {
+    system: String,
+    node: String,
+    release: String,
+    version: String,
+    machine: String,
 }
 
-<span class="kw">impl</span> <span class="ident">TskitProvenanceEnvironmentOs</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">try_new</span>() -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">uname</span> <span class="op">=</span> <span class="ident">uname::uname</span>()<span class="question-mark">?</span>;
+<span class="kw">impl </span>TskitProvenanceEnvironmentOs {
+    <span class="kw">pub fn </span>try_new() -&gt; io::Result&lt;<span class="self">Self</span>&gt; {
+        <span class="kw">let </span>uname = uname::uname()<span class="question-mark">?</span>;
 
-        <span class="prelude-val">Ok</span>(<span class="self">Self</span> {
-            <span class="ident">system</span>: <span class="ident">uname</span>.<span class="ident">sysname</span>,
-            <span class="ident">node</span>: <span class="ident">uname</span>.<span class="ident">nodename</span>,
-            <span class="ident">release</span>: <span class="ident">uname</span>.<span class="ident">release</span>,
-            <span class="ident">version</span>: <span class="ident">uname</span>.<span class="ident">version</span>,
-            <span class="ident">machine</span>: <span class="ident">uname</span>.<span class="ident">machine</span>,
+        <span class="prelude-val">Ok</span>(<span class="self">Self </span>{
+            system: uname.sysname,
+            node: uname.nodename,
+            release: uname.release,
+            version: uname.version,
+            machine: uname.machine,
         })
     }
 }
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Serialize</span>)]</span>
-<span class="kw">struct</span> <span class="ident">TskitProvenanceEnvironmentLibrary</span> {}
+<span class="attribute">#[derive(Serialize)]
+</span><span class="kw">struct </span>TskitProvenanceEnvironmentLibrary {}
 
-<span class="kw">impl</span> <span class="ident">TskitProvenanceEnvironmentLibrary</span> {
-    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::unnecessary_wraps</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">try_new</span>(<span class="ident">_library</span>: <span class="kw-2">&amp;</span><span class="ident">std::ffi::OsStr</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
-        <span class="comment">// TODO: Future work might deduce version information etc.</span>
+<span class="kw">impl </span>TskitProvenanceEnvironmentLibrary {
+    <span class="attribute">#[allow(clippy::unnecessary_wraps)]
+    </span><span class="kw">pub fn </span>try_new(_library: <span class="kw-2">&amp;</span>std::ffi::OsStr) -&gt; io::Result&lt;<span class="self">Self</span>&gt; {
+        <span class="comment">// TODO: Future work might deduce version information etc.
 
-        <span class="prelude-val">Ok</span>(<span class="self">Self</span> {})
+        </span><span class="prelude-val">Ok</span>(<span class="self">Self </span>{})
     }
 }
 
-<span class="kw">mod</span> <span class="ident">rustc_version</span> {
+<span class="kw">mod </span>rustc_version {
     <span class="macro">include!</span>(<span class="macro">concat!</span>(<span class="macro">env!</span>(<span class="string">&quot;OUT_DIR&quot;</span>), <span class="string">&quot;/rustc_version.rs&quot;</span>));
 
-    <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">serde::Serialize</span>)]</span>
-    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">remote</span> <span class="op">=</span> <span class="string">&quot;rustc_version::VersionMeta&quot;</span>)]</span>
-    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">struct</span> <span class="ident">VersionMetaDef</span> {
-        <span class="kw">pub</span> <span class="ident">semver</span>: <span class="ident">Version</span>,
-        <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">skip_serializing_if</span> <span class="op">=</span> <span class="string">&quot;Option::is_none&quot;</span>)]</span>
-        <span class="kw">pub</span> <span class="ident">commit_hash</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
-        <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">skip_serializing_if</span> <span class="op">=</span> <span class="string">&quot;Option::is_none&quot;</span>)]</span>
-        <span class="kw">pub</span> <span class="ident">commit_date</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
-        <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">skip_serializing_if</span> <span class="op">=</span> <span class="string">&quot;Option::is_none&quot;</span>)]</span>
-        <span class="kw">pub</span> <span class="ident">build_date</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
-        <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">serialize_with</span> <span class="op">=</span> <span class="string">&quot;serialize_channel&quot;</span>)]</span>
-        <span class="kw">pub</span> <span class="ident">channel</span>: <span class="ident">Channel</span>,
-        <span class="kw">pub</span> <span class="ident">host</span>: <span class="ident">String</span>,
-        <span class="kw">pub</span> <span class="ident">short_version_string</span>: <span class="ident">String</span>,
-        <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">skip_serializing_if</span> <span class="op">=</span> <span class="string">&quot;Option::is_none&quot;</span>)]</span>
-        <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">serialize_with</span> <span class="op">=</span> <span class="string">&quot;serialize_llvm_version&quot;</span>)]</span>
-        <span class="kw">pub</span> <span class="ident">llvm_version</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">LlvmVersion</span><span class="op">&gt;</span>,
+    <span class="attribute">#[derive(serde::Serialize)]
+    #[serde(remote = <span class="string">&quot;rustc_version::VersionMeta&quot;</span>)]
+    </span><span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">struct </span>VersionMetaDef {
+        <span class="kw">pub </span>semver: Version,
+        <span class="attribute">#[serde(skip_serializing_if = <span class="string">&quot;Option::is_none&quot;</span>)]
+        </span><span class="kw">pub </span>commit_hash: <span class="prelude-ty">Option</span>&lt;String&gt;,
+        <span class="attribute">#[serde(skip_serializing_if = <span class="string">&quot;Option::is_none&quot;</span>)]
+        </span><span class="kw">pub </span>commit_date: <span class="prelude-ty">Option</span>&lt;String&gt;,
+        <span class="attribute">#[serde(skip_serializing_if = <span class="string">&quot;Option::is_none&quot;</span>)]
+        </span><span class="kw">pub </span>build_date: <span class="prelude-ty">Option</span>&lt;String&gt;,
+        <span class="attribute">#[serde(serialize_with = <span class="string">&quot;serialize_channel&quot;</span>)]
+        </span><span class="kw">pub </span>channel: Channel,
+        <span class="kw">pub </span>host: String,
+        <span class="kw">pub </span>short_version_string: String,
+        <span class="attribute">#[serde(skip_serializing_if = <span class="string">&quot;Option::is_none&quot;</span>)]
+        #[serde(serialize_with = <span class="string">&quot;serialize_llvm_version&quot;</span>)]
+        </span><span class="kw">pub </span>llvm_version: <span class="prelude-ty">Option</span>&lt;LlvmVersion&gt;,
     }
 
-    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::trivially_copy_pass_by_ref</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">serialize_channel</span><span class="op">&lt;</span><span class="ident">S</span>: <span class="ident">serde::Serializer</span><span class="op">&gt;</span>(
-        <span class="ident">channel</span>: <span class="kw-2">&amp;</span><span class="ident">Channel</span>,
-        <span class="ident">serializer</span>: <span class="ident">S</span>,
-    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">S::Ok</span>, <span class="ident">S::Error</span><span class="op">&gt;</span> {
-        <span class="ident">serializer</span>.<span class="ident">collect_str</span>(<span class="kw-2">&amp;</span><span class="macro">format!</span>(<span class="string">&quot;{:?}&quot;</span>, <span class="ident">channel</span>))
+    <span class="attribute">#[allow(clippy::trivially_copy_pass_by_ref)]
+    </span><span class="kw">fn </span>serialize_channel&lt;S: serde::Serializer&gt;(
+        channel: <span class="kw-2">&amp;</span>Channel,
+        serializer: S,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;S::Ok, S::Error&gt; {
+        serializer.collect_str(<span class="kw-2">&amp;</span><span class="macro">format!</span>(<span class="string">&quot;{channel:?}&quot;</span>))
     }
 
-    <span class="kw">fn</span> <span class="ident">serialize_llvm_version</span><span class="op">&lt;</span><span class="ident">S</span>: <span class="ident">serde::Serializer</span><span class="op">&gt;</span>(
-        <span class="ident">llvm_version</span>: <span class="kw-2">&amp;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">LlvmVersion</span><span class="op">&gt;</span>,
-        <span class="ident">serializer</span>: <span class="ident">S</span>,
-    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">S::Ok</span>, <span class="ident">S::Error</span><span class="op">&gt;</span> {
-        <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::option_if_let_else</span>)]</span>
-        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">llvm_version</span>) <span class="op">=</span> <span class="ident">llvm_version</span> {
-            <span class="ident">serializer</span>.<span class="ident">collect_str</span>(<span class="ident">llvm_version</span>)
-        } <span class="kw">else</span> {
-            <span class="ident">serializer</span>.<span class="ident">serialize_none</span>()
+    <span class="kw">fn </span>serialize_llvm_version&lt;S: serde::Serializer&gt;(
+        llvm_version: <span class="kw-2">&amp;</span><span class="prelude-ty">Option</span>&lt;LlvmVersion&gt;,
+        serializer: S,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;S::Ok, S::Error&gt; {
+        <span class="attribute">#[allow(clippy::option_if_let_else)]
+        </span><span class="kw">if let </span><span class="prelude-val">Some</span>(llvm_version) = llvm_version {
+            serializer.collect_str(llvm_version)
+        } <span class="kw">else </span>{
+            serializer.serialize_none()
         }
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="necsim_plugins_tskit" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0-nightly (affe0d3a0 2022-08-05)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="necsim_plugins_tskit" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (5e9772042 2022-10-29)" ></div></body></html>

@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `necsim/partitioning/core/src/lib.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>lib.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../necsim_partitioning_core/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../necsim_partitioning_core/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../necsim_partitioning_core/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `necsim/partitioning/core/src/lib.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>lib.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../normalize.css"><link rel="stylesheet" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../ayu.css" disabled><link rel="stylesheet" href="../../dark.css" disabled><link rel="stylesheet" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../necsim_partitioning_core/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -96,105 +96,103 @@
 <span id="96">96</span>
 <span id="97">97</span>
 <span id="98">98</span>
-<span id="99">99</span>
-</pre><pre class="rust"><code><span class="attribute">#![<span class="ident">deny</span>(<span class="ident">clippy::pedantic</span>)]</span>
-<span class="attribute">#![<span class="ident">no_std</span>]</span>
-<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">generic_associated_types</span>)]</span>
+</pre><pre class="rust"><code><span class="attribute">#![deny(clippy::pedantic)]
+#![no_std]
 
-<span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">alloc</span>;
+</span><span class="kw">extern crate </span>alloc;
 
-<span class="attribute">#[<span class="ident">macro_use</span>]</span>
-<span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">contracts</span>;
+<span class="attribute">#[macro_use]
+</span><span class="kw">extern crate </span>contracts;
 
-<span class="kw">use</span> <span class="ident">necsim_core</span>::{
-    <span class="ident">lineage::MigratingLineage</span>,
-    <span class="ident">reporter</span>::{<span class="ident">boolean::Boolean</span>, <span class="ident">Reporter</span>},
+<span class="kw">use </span>necsim_core::{
+    lineage::MigratingLineage,
+    reporter::{boolean::Boolean, Reporter},
 };
-<span class="kw">use</span> <span class="ident">necsim_core_bond</span>::{<span class="ident">NonNegativeF64</span>, <span class="ident">PositiveF64</span>};
+<span class="kw">use </span>necsim_core_bond::{NonNegativeF64, PositiveF64};
 
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">context</span>;
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">iterator</span>;
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">partition</span>;
+<span class="kw">pub mod </span>context;
+<span class="kw">pub mod </span>iterator;
+<span class="kw">pub mod </span>partition;
 
-<span class="kw">use</span> <span class="ident">context::ReporterContext</span>;
-<span class="kw">use</span> <span class="ident">partition::Partition</span>;
+<span class="kw">use </span>context::ReporterContext;
+<span class="kw">use </span>partition::Partition;
 
-<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::inline_always</span>, <span class="ident">clippy::inline_fn_without_body</span>)]</span>
-<span class="attribute">#[<span class="ident">contract_trait</span>]</span>
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">Partitioning</span>: <span class="ident">Sized</span> {
-    <span class="kw">type</span> <span class="ident">LocalPartition</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span>, <span class="ident">R</span>: <span class="ident">Reporter</span><span class="op">&gt;</span>: <span class="ident">LocalPartition</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span>, <span class="ident">R</span><span class="op">&gt;</span>;
-    <span class="kw">type</span> <span class="ident">Auxiliary</span>;
+<span class="attribute">#[allow(clippy::inline_always, clippy::inline_fn_without_body)]
+#[contract_trait]
+</span><span class="kw">pub trait </span>Partitioning: Sized {
+    <span class="kw">type </span>LocalPartition&lt;<span class="lifetime">&#39;p</span>, R: Reporter&gt;: LocalPartition&lt;<span class="lifetime">&#39;p</span>, R&gt;;
+    <span class="kw">type </span>Auxiliary;
 
-    <span class="kw">fn</span> <span class="ident">is_monolithic</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span>;
+    <span class="kw">fn </span>is_monolithic(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool;
 
-    <span class="attribute">#[<span class="ident">debug_ensures</span>(
-        <span class="self">self</span>.<span class="ident">is_monolithic</span>() -&gt; <span class="ident">ret</span>,
-        <span class="string">&quot;monolithic partition is always root&quot;</span>
-    )]</span>
-    <span class="kw">fn</span> <span class="ident">is_root</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span>;
+    <span class="attribute">#[debug_ensures(
+        <span class="self">self</span>.is_monolithic() -&gt; ret,
+        <span class="string">&quot;monolithic partition is always root&quot;
+    </span>)]
+    </span><span class="kw">fn </span>is_root(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool;
 
-    <span class="kw">fn</span> <span class="ident">get_partition</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Partition</span>;
+    <span class="kw">fn </span>get_partition(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Partition;
 
-    <span class="kw">fn</span> <span class="ident">with_local_partition</span><span class="op">&lt;</span>
-        <span class="ident">R</span>: <span class="ident">Reporter</span>,
-        <span class="ident">P</span>: <span class="ident">ReporterContext</span><span class="op">&lt;</span><span class="ident">Reporter</span> <span class="op">=</span> <span class="ident">R</span><span class="op">&gt;</span>,
-        <span class="ident">F</span>: <span class="kw">for</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span> <span class="ident">FnOnce</span>(<span class="ident"><span class="self">Self</span>::LocalPartition</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span>, <span class="ident">R</span><span class="op">&gt;</span>) -&gt; <span class="ident">Q</span>,
-        <span class="ident">Q</span>,
-    <span class="op">&gt;</span>(
+    <span class="kw">fn </span>with_local_partition&lt;
+        R: Reporter,
+        P: ReporterContext&lt;Reporter = R&gt;,
+        F: <span class="kw">for</span>&lt;<span class="lifetime">&#39;p</span>&gt; FnOnce(<span class="self">Self</span>::LocalPartition&lt;<span class="lifetime">&#39;p</span>, R&gt;) -&gt; Q,
+        Q,
+    &gt;(
         <span class="self">self</span>,
-        <span class="ident">reporter_context</span>: <span class="ident">P</span>,
-        <span class="ident">auxiliary</span>: <span class="ident"><span class="self">Self</span>::Auxiliary</span>,
-        <span class="ident">inner</span>: <span class="ident">F</span>,
-    ) -&gt; <span class="ident">anyhow::Result</span><span class="op">&lt;</span><span class="ident">Q</span><span class="op">&gt;</span>;
+        reporter_context: P,
+        auxiliary: <span class="self">Self</span>::Auxiliary,
+        inner: F,
+    ) -&gt; anyhow::Result&lt;Q&gt;;
 }
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>)]</span>
-<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">MigrationMode</span> {
-    <span class="ident">Force</span>,
-    <span class="ident">Default</span>,
-    <span class="ident">Hold</span>,
+<span class="attribute">#[derive(Copy, Clone)]
+</span><span class="kw">pub enum </span>MigrationMode {
+    Force,
+    Default,
+    Hold,
 }
 
-<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::inline_always</span>, <span class="ident">clippy::inline_fn_without_body</span>)]</span>
-<span class="attribute">#[<span class="ident">contract_trait</span>]</span>
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">LocalPartition</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span>, <span class="ident">R</span>: <span class="ident">Reporter</span><span class="op">&gt;</span>: <span class="ident">Sized</span> {
-    <span class="kw">type</span> <span class="ident">Reporter</span>: <span class="ident">Reporter</span>;
-    <span class="kw">type</span> <span class="ident">IsLive</span>: <span class="ident">Boolean</span>;
-    <span class="kw">type</span> <span class="ident">ImmigrantIterator</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>: <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">MigratingLineage</span><span class="op">&gt;</span>
-    <span class="kw">where</span>
-        <span class="self">Self</span>: <span class="lifetime">&#39;a</span>,
+<span class="attribute">#[allow(clippy::inline_always, clippy::inline_fn_without_body)]
+#[contract_trait]
+</span><span class="kw">pub trait </span>LocalPartition&lt;<span class="lifetime">&#39;p</span>, R: Reporter&gt;: Sized {
+    <span class="kw">type </span>Reporter: Reporter;
+    <span class="kw">type </span>IsLive: Boolean;
+    <span class="kw">type </span>ImmigrantIterator&lt;<span class="lifetime">&#39;a</span>&gt;: Iterator&lt;Item = MigratingLineage&gt;
+    <span class="kw">where
+        </span><span class="self">Self</span>: <span class="lifetime">&#39;a</span>,
         <span class="lifetime">&#39;p</span>: <span class="lifetime">&#39;a</span>;
 
-    <span class="kw">fn</span> <span class="ident">get_reporter</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="ident"><span class="self">Self</span>::Reporter</span>;
+    <span class="kw">fn </span>get_reporter(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self</span>::Reporter;
 
-    <span class="kw">fn</span> <span class="ident">is_root</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span>;
+    <span class="kw">fn </span>is_root(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool;
 
-    <span class="kw">fn</span> <span class="ident">get_partition</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Partition</span>;
+    <span class="kw">fn </span>get_partition(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Partition;
 
-    <span class="kw">fn</span> <span class="ident">migrate_individuals</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">E</span>: <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> (<span class="ident">u32</span>, <span class="ident">MigratingLineage</span>)<span class="op">&gt;</span><span class="op">&gt;</span>(
-        <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> <span class="self">self</span>,
-        <span class="ident">emigrants</span>: <span class="kw-2">&amp;mut</span> <span class="ident">E</span>,
-        <span class="ident">emigration_mode</span>: <span class="ident">MigrationMode</span>,
-        <span class="ident">immigration_mode</span>: <span class="ident">MigrationMode</span>,
-    ) -&gt; <span class="ident"><span class="self">Self</span>::ImmigrantIterator</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>
-    <span class="kw">where</span>
-        <span class="lifetime">&#39;p</span>: <span class="lifetime">&#39;a</span>;
+    <span class="kw">fn </span>migrate_individuals&lt;<span class="lifetime">&#39;a</span>, E: Iterator&lt;Item = (u32, MigratingLineage)&gt;&gt;(
+        <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw-2">mut </span><span class="self">self</span>,
+        emigrants: <span class="kw-2">&amp;mut </span>E,
+        emigration_mode: MigrationMode,
+        immigration_mode: MigrationMode,
+    ) -&gt; <span class="self">Self</span>::ImmigrantIterator&lt;<span class="lifetime">&#39;a</span>&gt;
+    <span class="kw">where
+        </span><span class="lifetime">&#39;p</span>: <span class="lifetime">&#39;a</span>;
 
-    <span class="kw">fn</span> <span class="ident">reduce_vote_continue</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">local_continue</span>: <span class="ident">bool</span>) -&gt; <span class="ident">bool</span>;
+    <span class="kw">fn </span>reduce_vote_continue(<span class="kw-2">&amp;</span><span class="self">self</span>, local_continue: bool) -&gt; bool;
 
-    <span class="kw">fn</span> <span class="ident">reduce_vote_min_time</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">local_time</span>: <span class="ident">PositiveF64</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">PositiveF64</span>, <span class="ident">PositiveF64</span><span class="op">&gt;</span>;
+    <span class="kw">fn </span>reduce_vote_min_time(<span class="kw-2">&amp;</span><span class="self">self</span>, local_time: PositiveF64) -&gt; <span class="prelude-ty">Result</span>&lt;PositiveF64, PositiveF64&gt;;
 
-    <span class="kw">fn</span> <span class="ident">wait_for_termination</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="ident">bool</span>;
+    <span class="kw">fn </span>wait_for_termination(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; bool;
 
-    <span class="kw">fn</span> <span class="ident">reduce_global_time_steps</span>(
+    <span class="kw">fn </span>reduce_global_time_steps(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">local_time</span>: <span class="ident">NonNegativeF64</span>,
-        <span class="ident">local_steps</span>: <span class="ident">u64</span>,
-    ) -&gt; (<span class="ident">NonNegativeF64</span>, <span class="ident">u64</span>);
+        local_time: NonNegativeF64,
+        local_steps: u64,
+    ) -&gt; (NonNegativeF64, u64);
 
-    <span class="kw">fn</span> <span class="ident">report_progress_sync</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">remaining</span>: <span class="ident">u64</span>);
+    <span class="kw">fn </span>report_progress_sync(<span class="kw-2">&amp;mut </span><span class="self">self</span>, remaining: u64);
 
-    <span class="kw">fn</span> <span class="ident">finalise_reporting</span>(<span class="self">self</span>);
+    <span class="kw">fn </span>finalise_reporting(<span class="self">self</span>);
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="necsim_partitioning_core" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0-nightly (affe0d3a0 2022-08-05)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="necsim_partitioning_core" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (5e9772042 2022-10-29)" ></div></body></html>

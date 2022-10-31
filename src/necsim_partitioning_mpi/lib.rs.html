@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `necsim/partitioning/mpi/src/lib.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>lib.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../necsim_partitioning_mpi/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../necsim_partitioning_mpi/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../necsim_partitioning_mpi/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `necsim/partitioning/mpi/src/lib.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>lib.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../normalize.css"><link rel="stylesheet" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../ayu.css" disabled><link rel="stylesheet" href="../../dark.css" disabled><link rel="stylesheet" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../necsim_partitioning_mpi/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -285,294 +285,292 @@
 <span id="285">285</span>
 <span id="286">286</span>
 <span id="287">287</span>
-<span id="288">288</span>
-</pre><pre class="rust"><code><span class="attribute">#![<span class="ident">deny</span>(<span class="ident">clippy::pedantic</span>)]</span>
-<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">generic_associated_types</span>)]</span>
+</pre><pre class="rust"><code><span class="attribute">#![deny(clippy::pedantic)]
 
-<span class="attribute">#[<span class="ident">macro_use</span>]</span>
-<span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">contracts</span>;
+#[macro_use]
+</span><span class="kw">extern crate </span>contracts;
 
-<span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">fmt</span>, <span class="ident">mem::ManuallyDrop</span>, <span class="ident">num::NonZeroU32</span>, <span class="ident">time::Duration</span>};
+<span class="kw">use </span>std::{fmt, mem::ManuallyDrop, num::NonZeroU32, time::Duration};
 
-<span class="kw">use</span> <span class="ident">anyhow::Context</span>;
-<span class="kw">use</span> <span class="ident">humantime_serde::re::humantime::format_duration</span>;
-<span class="kw">use</span> <span class="ident">mpi</span>::{
-    <span class="ident">environment::Universe</span>,
-    <span class="ident">topology</span>::{<span class="ident">Communicator</span>, <span class="ident">Rank</span>, <span class="ident">SystemCommunicator</span>},
-    <span class="ident">Tag</span>,
+<span class="kw">use </span>anyhow::Context;
+<span class="kw">use </span>humantime_serde::re::humantime::format_duration;
+<span class="kw">use </span>mpi::{
+    environment::Universe,
+    topology::{Communicator, Rank, SystemCommunicator},
+    Tag,
 };
-<span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">ser::SerializeStruct</span>, <span class="ident">Deserialize</span>, <span class="ident">Serialize</span>, <span class="ident">Serializer</span>};
-<span class="kw">use</span> <span class="ident">serde_derive_state::DeserializeState</span>;
-<span class="kw">use</span> <span class="ident">serde_state</span>::{<span class="ident">DeserializeState</span>, <span class="ident">Deserializer</span>};
-<span class="kw">use</span> <span class="ident">thiserror::Error</span>;
+<span class="kw">use </span>serde::{ser::SerializeStruct, Deserialize, Serialize, Serializer};
+<span class="kw">use </span>serde_derive_state::DeserializeState;
+<span class="kw">use </span>serde_state::{DeserializeState, Deserializer};
+<span class="kw">use </span>thiserror::Error;
 
-<span class="kw">use</span> <span class="ident">necsim_core</span>::{<span class="ident">lineage::MigratingLineage</span>, <span class="ident">reporter::Reporter</span>};
+<span class="kw">use </span>necsim_core::{lineage::MigratingLineage, reporter::Reporter};
 
-<span class="kw">use</span> <span class="ident">necsim_impls_std::event_log::recorder::EventLogRecorder</span>;
-<span class="kw">use</span> <span class="ident">necsim_partitioning_core</span>::{<span class="ident">context::ReporterContext</span>, <span class="ident">partition::Partition</span>, <span class="ident">Partitioning</span>};
+<span class="kw">use </span>necsim_impls_std::event_log::recorder::EventLogRecorder;
+<span class="kw">use </span>necsim_partitioning_core::{context::ReporterContext, partition::Partition, Partitioning};
 
-<span class="kw">mod</span> <span class="ident">partition</span>;
-<span class="kw">mod</span> <span class="ident">request</span>;
+<span class="kw">mod </span>partition;
+<span class="kw">mod </span>request;
 
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">partition</span>::{<span class="ident">MpiLocalPartition</span>, <span class="ident">MpiParallelPartition</span>, <span class="ident">MpiRootPartition</span>};
-<span class="kw">use</span> <span class="ident">request</span>::{<span class="ident">reduce_scope</span>, <span class="ident">DataOrRequest</span>};
+<span class="kw">pub use </span>partition::{MpiLocalPartition, MpiParallelPartition, MpiRootPartition};
+<span class="kw">use </span>request::{reduce_scope, DataOrRequest};
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Error</span>, <span class="ident">Debug</span>)]</span>
-<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">MpiPartitioningError</span> {
-    <span class="attribute">#[<span class="ident">error</span>(<span class="string">&quot;MPI has already been initialised.&quot;</span>)]</span>
-    <span class="ident">AlreadyInitialised</span>,
-    <span class="attribute">#[<span class="ident">error</span>(<span class="string">&quot;MPI must be initialised with at least two partitions.&quot;</span>)]</span>
-    <span class="ident">NoParallelism</span>,
+<span class="attribute">#[derive(Error, Debug)]
+</span><span class="kw">pub enum </span>MpiPartitioningError {
+    <span class="attribute">#[error(<span class="string">&quot;MPI has already been initialised.&quot;</span>)]
+    </span>AlreadyInitialised,
+    <span class="attribute">#[error(<span class="string">&quot;MPI must be initialised with at least two partitions.&quot;</span>)]
+    </span>NoParallelism,
 }
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Error</span>, <span class="ident">Debug</span>)]</span>
-<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">MpiLocalPartitionError</span> {
-    <span class="attribute">#[<span class="ident">error</span>(<span class="string">&quot;MPI partitioning requires an event log.&quot;</span>)]</span>
-    <span class="ident">MissingEventLog</span>,
-    <span class="attribute">#[<span class="ident">error</span>(<span class="string">&quot;Failed to create the event sub-log.&quot;</span>)]</span>
-    <span class="ident">InvalidEventSubLog</span>,
+<span class="attribute">#[derive(Error, Debug)]
+</span><span class="kw">pub enum </span>MpiLocalPartitionError {
+    <span class="attribute">#[error(<span class="string">&quot;MPI partitioning requires an event log.&quot;</span>)]
+    </span>MissingEventLog,
+    <span class="attribute">#[error(<span class="string">&quot;Failed to create the event sub-log.&quot;</span>)]
+    </span>InvalidEventSubLog,
 }
 
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">MpiPartitioning</span> {
-    <span class="ident">universe</span>: <span class="ident">ManuallyDrop</span><span class="op">&lt;</span><span class="ident">Universe</span><span class="op">&gt;</span>,
-    <span class="ident">world</span>: <span class="ident">SystemCommunicator</span>,
-    <span class="ident">migration_interval</span>: <span class="ident">Duration</span>,
-    <span class="ident">progress_interval</span>: <span class="ident">Duration</span>,
+<span class="kw">pub struct </span>MpiPartitioning {
+    universe: ManuallyDrop&lt;Universe&gt;,
+    world: SystemCommunicator,
+    migration_interval: Duration,
+    progress_interval: Duration,
 }
 
-<span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">MpiPartitioning</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">fmt</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span>) -&gt; <span class="ident">fmt::Result</span> {
-        <span class="kw">struct</span> <span class="ident">FormattedDuration</span>(<span class="ident">Duration</span>);
+<span class="kw">impl </span>fmt::Debug <span class="kw">for </span>MpiPartitioning {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, fmt: <span class="kw-2">&amp;mut </span>fmt::Formatter) -&gt; fmt::Result {
+        <span class="kw">struct </span>FormattedDuration(Duration);
 
-        <span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">FormattedDuration</span> {
-            <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">fmt</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span>) -&gt; <span class="ident">fmt::Result</span> {
-                <span class="ident">fmt</span>.<span class="ident">write_str</span>(<span class="kw-2">&amp;</span><span class="ident">format_duration</span>(<span class="self">self</span>.<span class="number">0</span>).<span class="ident">to_string</span>())
+        <span class="kw">impl </span>fmt::Debug <span class="kw">for </span>FormattedDuration {
+            <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, fmt: <span class="kw-2">&amp;mut </span>fmt::Formatter) -&gt; fmt::Result {
+                fmt.write_str(<span class="kw-2">&amp;</span>format_duration(<span class="self">self</span>.<span class="number">0</span>).to_string())
             }
         }
 
-        <span class="ident">fmt</span>.<span class="ident">debug_struct</span>(<span class="macro">stringify!</span>(<span class="ident">MpiPartitioning</span>))
-            .<span class="ident">field</span>(<span class="string">&quot;world&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">get_partition</span>().<span class="ident">size</span>().<span class="ident">get</span>())
-            .<span class="ident">field</span>(
+        fmt.debug_struct(<span class="macro">stringify!</span>(MpiPartitioning))
+            .field(<span class="string">&quot;world&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.get_partition().size().get())
+            .field(
                 <span class="string">&quot;migration_interval&quot;</span>,
-                <span class="kw-2">&amp;</span><span class="ident">FormattedDuration</span>(<span class="self">self</span>.<span class="ident">migration_interval</span>),
+                <span class="kw-2">&amp;</span>FormattedDuration(<span class="self">self</span>.migration_interval),
             )
-            .<span class="ident">field</span>(
+            .field(
                 <span class="string">&quot;progress_interval&quot;</span>,
-                <span class="kw-2">&amp;</span><span class="ident">FormattedDuration</span>(<span class="self">self</span>.<span class="ident">progress_interval</span>),
+                <span class="kw-2">&amp;</span>FormattedDuration(<span class="self">self</span>.progress_interval),
             )
-            .<span class="ident">finish</span>()
+            .finish()
     }
 }
 
-<span class="kw">impl</span> <span class="ident">Serialize</span> <span class="kw">for</span> <span class="ident">MpiPartitioning</span> {
-    <span class="kw">fn</span> <span class="ident">serialize</span><span class="op">&lt;</span><span class="ident">S</span>: <span class="ident">Serializer</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">serializer</span>: <span class="ident">S</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">S::Ok</span>, <span class="ident">S::Error</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">args</span> <span class="op">=</span> <span class="ident">serializer</span>.<span class="ident">serialize_struct</span>(<span class="macro">stringify!</span>(<span class="ident">MpiPartitioning</span>), <span class="number">3</span>)<span class="question-mark">?</span>;
-        <span class="ident">args</span>.<span class="ident">serialize_field</span>(<span class="string">&quot;world&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">get_partition</span>().<span class="ident">size</span>())<span class="question-mark">?</span>;
-        <span class="ident">args</span>.<span class="ident">serialize_field</span>(
+<span class="kw">impl </span>Serialize <span class="kw">for </span>MpiPartitioning {
+    <span class="kw">fn </span>serialize&lt;S: Serializer&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, serializer: S) -&gt; <span class="prelude-ty">Result</span>&lt;S::Ok, S::Error&gt; {
+        <span class="kw">let </span><span class="kw-2">mut </span>args = serializer.serialize_struct(<span class="macro">stringify!</span>(MpiPartitioning), <span class="number">3</span>)<span class="question-mark">?</span>;
+        args.serialize_field(<span class="string">&quot;world&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.get_partition().size())<span class="question-mark">?</span>;
+        args.serialize_field(
             <span class="string">&quot;migration&quot;</span>,
-            <span class="kw-2">&amp;</span><span class="ident">format_duration</span>(<span class="self">self</span>.<span class="ident">migration_interval</span>).<span class="ident">to_string</span>(),
+            <span class="kw-2">&amp;</span>format_duration(<span class="self">self</span>.migration_interval).to_string(),
         )<span class="question-mark">?</span>;
-        <span class="ident">args</span>.<span class="ident">serialize_field</span>(
+        args.serialize_field(
             <span class="string">&quot;progress&quot;</span>,
-            <span class="kw-2">&amp;</span><span class="ident">format_duration</span>(<span class="self">self</span>.<span class="ident">progress_interval</span>).<span class="ident">to_string</span>(),
+            <span class="kw-2">&amp;</span>format_duration(<span class="self">self</span>.progress_interval).to_string(),
         )<span class="question-mark">?</span>;
-        <span class="ident">args</span>.<span class="ident">end</span>()
+        args.end()
     }
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;de</span><span class="op">&gt;</span> <span class="ident">Deserialize</span><span class="op">&lt;</span><span class="lifetime">&#39;de</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">MpiPartitioning</span> {
-    <span class="kw">fn</span> <span class="ident">deserialize</span><span class="op">&lt;</span><span class="ident">D</span>: <span class="ident">Deserializer</span><span class="op">&lt;</span><span class="lifetime">&#39;de</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="ident">deserializer</span>: <span class="ident">D</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">D::Error</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">partitioning</span> <span class="op">=</span> <span class="ident"><span class="self">Self</span>::initialise</span>().<span class="ident">map_err</span>(<span class="ident">serde::de::Error::custom</span>)<span class="question-mark">?</span>;
+<span class="kw">impl</span>&lt;<span class="lifetime">&#39;de</span>&gt; Deserialize&lt;<span class="lifetime">&#39;de</span>&gt; <span class="kw">for </span>MpiPartitioning {
+    <span class="kw">fn </span>deserialize&lt;D: Deserializer&lt;<span class="lifetime">&#39;de</span>&gt;&gt;(deserializer: D) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, D::Error&gt; {
+        <span class="kw">let </span><span class="kw-2">mut </span>partitioning = <span class="self">Self</span>::initialise().map_err(serde::de::Error::custom)<span class="question-mark">?</span>;
 
-        <span class="kw">let</span> <span class="ident">raw</span> <span class="op">=</span> <span class="ident">MpiPartitioningRaw::deserialize_state</span>(
-            <span class="kw-2">&amp;mut</span> <span class="ident">partitioning</span>.<span class="ident">get_partition</span>().<span class="ident">size</span>(),
-            <span class="ident">deserializer</span>,
+        <span class="kw">let </span>raw = MpiPartitioningRaw::deserialize_state(
+            <span class="kw-2">&amp;mut </span>partitioning.get_partition().size(),
+            deserializer,
         )<span class="question-mark">?</span>;
 
-        <span class="ident">partitioning</span>.<span class="ident">set_migration_interval</span>(<span class="ident">raw</span>.<span class="ident">migration_interval</span>);
-        <span class="ident">partitioning</span>.<span class="ident">set_progress_interval</span>(<span class="ident">raw</span>.<span class="ident">progress_interval</span>);
+        partitioning.set_migration_interval(raw.migration_interval);
+        partitioning.set_progress_interval(raw.progress_interval);
 
-        <span class="prelude-val">Ok</span>(<span class="ident">partitioning</span>)
+        <span class="prelude-val">Ok</span>(partitioning)
     }
 }
 
-<span class="kw">impl</span> <span class="ident">MpiPartitioning</span> {
-    <span class="kw">const</span> <span class="ident">MPI_DEFAULT_MIGRATION_INTERVAL</span>: <span class="ident">Duration</span> <span class="op">=</span> <span class="ident">Duration::from_millis</span>(<span class="number">100_u64</span>);
-    <span class="kw">const</span> <span class="ident">MPI_DEFAULT_PROGRESS_INTERVAL</span>: <span class="ident">Duration</span> <span class="op">=</span> <span class="ident">Duration::from_millis</span>(<span class="number">100_u64</span>);
-    <span class="kw">const</span> <span class="ident">MPI_MIGRATION_TAG</span>: <span class="ident">Tag</span> <span class="op">=</span> <span class="number">1</span>;
-    <span class="kw">const</span> <span class="ident">MPI_PROGRESS_TAG</span>: <span class="ident">Tag</span> <span class="op">=</span> <span class="number">0</span>;
-    <span class="kw">const</span> <span class="ident">ROOT_RANK</span>: <span class="ident">Rank</span> <span class="op">=</span> <span class="number">0</span>;
+<span class="kw">impl </span>MpiPartitioning {
+    <span class="kw">const </span>MPI_DEFAULT_MIGRATION_INTERVAL: Duration = Duration::from_millis(<span class="number">100_u64</span>);
+    <span class="kw">const </span>MPI_DEFAULT_PROGRESS_INTERVAL: Duration = Duration::from_millis(<span class="number">100_u64</span>);
+    <span class="kw">const </span>MPI_MIGRATION_TAG: Tag = <span class="number">1</span>;
+    <span class="kw">const </span>MPI_PROGRESS_TAG: Tag = <span class="number">0</span>;
+    <span class="kw">const </span>ROOT_RANK: Rank = <span class="number">0</span>;
 
-    <span class="doccomment">/// # Errors</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Returns `AlreadyInitialised` if MPI was already initialised.</span>
-    <span class="doccomment">/// Returns `NoParallelism` if the MPI world only consists of one or less</span>
-    <span class="doccomment">///  partitions.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">initialise</span>() -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">MpiPartitioningError</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">universe</span> <span class="op">=</span>
-            <span class="ident">ManuallyDrop::new</span>(<span class="ident">mpi::initialize</span>().<span class="ident">ok_or</span>(<span class="ident">MpiPartitioningError::AlreadyInitialised</span>)<span class="question-mark">?</span>);
-        <span class="kw">let</span> <span class="ident">world</span> <span class="op">=</span> <span class="ident">universe</span>.<span class="ident">world</span>();
+    <span class="doccomment">/// # Errors
+    ///
+    /// Returns `AlreadyInitialised` if MPI was already initialised.
+    /// Returns `NoParallelism` if the MPI world only consists of one or less
+    ///  partitions.
+    </span><span class="kw">pub fn </span>initialise() -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, MpiPartitioningError&gt; {
+        <span class="kw">let </span>universe =
+            ManuallyDrop::new(mpi::initialize().ok_or(MpiPartitioningError::AlreadyInitialised)<span class="question-mark">?</span>);
+        <span class="kw">let </span>world = universe.world();
 
-        <span class="kw">if</span> <span class="ident">world</span>.<span class="ident">size</span>() <span class="op">&gt;</span> <span class="number">1</span> {
-            <span class="prelude-val">Ok</span>(<span class="self">Self</span> {
-                <span class="ident">universe</span>,
-                <span class="ident">world</span>,
-                <span class="ident">migration_interval</span>: <span class="ident"><span class="self">Self</span>::MPI_DEFAULT_MIGRATION_INTERVAL</span>,
-                <span class="ident">progress_interval</span>: <span class="ident"><span class="self">Self</span>::MPI_DEFAULT_PROGRESS_INTERVAL</span>,
+        <span class="kw">if </span>world.size() &gt; <span class="number">1 </span>{
+            <span class="prelude-val">Ok</span>(<span class="self">Self </span>{
+                universe,
+                world,
+                migration_interval: <span class="self">Self</span>::MPI_DEFAULT_MIGRATION_INTERVAL,
+                progress_interval: <span class="self">Self</span>::MPI_DEFAULT_PROGRESS_INTERVAL,
             })
-        } <span class="kw">else</span> {
-            <span class="prelude-val">Err</span>(<span class="ident">MpiPartitioningError::NoParallelism</span>)
+        } <span class="kw">else </span>{
+            <span class="prelude-val">Err</span>(MpiPartitioningError::NoParallelism)
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_migration_interval</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">migration_interval</span>: <span class="ident">Duration</span>) {
-        <span class="self">self</span>.<span class="ident">migration_interval</span> <span class="op">=</span> <span class="ident">migration_interval</span>;
+    <span class="kw">pub fn </span>set_migration_interval(<span class="kw-2">&amp;mut </span><span class="self">self</span>, migration_interval: Duration) {
+        <span class="self">self</span>.migration_interval = migration_interval;
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_progress_interval</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">progress_interval</span>: <span class="ident">Duration</span>) {
-        <span class="self">self</span>.<span class="ident">progress_interval</span> <span class="op">=</span> <span class="ident">progress_interval</span>;
+    <span class="kw">pub fn </span>set_progress_interval(<span class="kw-2">&amp;mut </span><span class="self">self</span>, progress_interval: Duration) {
+        <span class="self">self</span>.progress_interval = progress_interval;
     }
 }
 
-<span class="attribute">#[<span class="ident">contract_trait</span>]</span>
-<span class="kw">impl</span> <span class="ident">Partitioning</span> <span class="kw">for</span> <span class="ident">MpiPartitioning</span> {
-    <span class="kw">type</span> <span class="ident">Auxiliary</span> <span class="op">=</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">EventLogRecorder</span><span class="op">&gt;</span>;
-    <span class="kw">type</span> <span class="ident">LocalPartition</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span>, <span class="ident">R</span>: <span class="ident">Reporter</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">MpiLocalPartition</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span>, <span class="ident">R</span><span class="op">&gt;</span>;
+<span class="attribute">#[contract_trait]
+</span><span class="kw">impl </span>Partitioning <span class="kw">for </span>MpiPartitioning {
+    <span class="kw">type </span>Auxiliary = <span class="prelude-ty">Option</span>&lt;EventLogRecorder&gt;;
+    <span class="kw">type </span>LocalPartition&lt;<span class="lifetime">&#39;p</span>, R: Reporter&gt; = MpiLocalPartition&lt;<span class="lifetime">&#39;p</span>, R&gt;;
 
-    <span class="kw">fn</span> <span class="ident">is_monolithic</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">world</span>.<span class="ident">size</span>() <span class="op">&lt;</span><span class="op">=</span> <span class="number">1</span>
+    <span class="kw">fn </span>is_monolithic(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
+        <span class="self">self</span>.world.size() &lt;= <span class="number">1
+    </span>}
+
+    <span class="kw">fn </span>is_root(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
+        <span class="self">self</span>.world.rank() == MpiPartitioning::ROOT_RANK
     }
 
-    <span class="kw">fn</span> <span class="ident">is_root</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">world</span>.<span class="ident">rank</span>() <span class="op">==</span> <span class="ident">MpiPartitioning::ROOT_RANK</span>
+    <span class="kw">fn </span>get_partition(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Partition {
+        <span class="attribute">#[allow(clippy::cast_sign_loss)]
+        </span><span class="kw">let </span>rank = <span class="self">self</span>.world.rank() <span class="kw">as </span>u32;
+        <span class="attribute">#[allow(clippy::cast_sign_loss)]
+        </span><span class="kw">let </span>size = <span class="kw">unsafe </span>{ NonZeroU32::new_unchecked(<span class="self">self</span>.world.size() <span class="kw">as </span>u32) };
+
+        <span class="kw">unsafe </span>{ Partition::new_unchecked(rank, size) }
     }
 
-    <span class="kw">fn</span> <span class="ident">get_partition</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Partition</span> {
-        <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::cast_sign_loss</span>)]</span>
-        <span class="kw">let</span> <span class="ident">rank</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">world</span>.<span class="ident">rank</span>() <span class="kw">as</span> <span class="ident">u32</span>;
-        <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::cast_sign_loss</span>)]</span>
-        <span class="kw">let</span> <span class="ident">size</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">NonZeroU32::new_unchecked</span>(<span class="self">self</span>.<span class="ident">world</span>.<span class="ident">size</span>() <span class="kw">as</span> <span class="ident">u32</span>) };
-
-        <span class="kw">unsafe</span> { <span class="ident">Partition::new_unchecked</span>(<span class="ident">rank</span>, <span class="ident">size</span>) }
-    }
-
-    <span class="doccomment">/// # Errors</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Returns `MissingEventLog` if the local partition is non-monolithic and</span>
-    <span class="doccomment">///  the `event_log` is `None`.</span>
-    <span class="doccomment">/// Returns `InvalidEventSubLog` if creating a sub-`event_log` failed.</span>
-    <span class="kw">fn</span> <span class="ident">with_local_partition</span><span class="op">&lt;</span>
-        <span class="ident">R</span>: <span class="ident">Reporter</span>,
-        <span class="ident">P</span>: <span class="ident">ReporterContext</span><span class="op">&lt;</span><span class="ident">Reporter</span> <span class="op">=</span> <span class="ident">R</span><span class="op">&gt;</span>,
-        <span class="ident">F</span>: <span class="kw">for</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span> <span class="ident">FnOnce</span>(<span class="ident"><span class="self">Self</span>::LocalPartition</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span>, <span class="ident">R</span><span class="op">&gt;</span>) -&gt; <span class="ident">Q</span>,
-        <span class="ident">Q</span>,
-    <span class="op">&gt;</span>(
+    <span class="doccomment">/// # Errors
+    ///
+    /// Returns `MissingEventLog` if the local partition is non-monolithic and
+    ///  the `event_log` is `None`.
+    /// Returns `InvalidEventSubLog` if creating a sub-`event_log` failed.
+    </span><span class="kw">fn </span>with_local_partition&lt;
+        R: Reporter,
+        P: ReporterContext&lt;Reporter = R&gt;,
+        F: <span class="kw">for</span>&lt;<span class="lifetime">&#39;p</span>&gt; FnOnce(<span class="self">Self</span>::LocalPartition&lt;<span class="lifetime">&#39;p</span>, R&gt;) -&gt; Q,
+        Q,
+    &gt;(
         <span class="self">self</span>,
-        <span class="ident">reporter_context</span>: <span class="ident">P</span>,
-        <span class="ident">event_log</span>: <span class="ident"><span class="self">Self</span>::Auxiliary</span>,
-        <span class="ident">inner</span>: <span class="ident">F</span>,
-    ) -&gt; <span class="ident">anyhow::Result</span><span class="op">&lt;</span><span class="ident">Q</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">event_log</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">event_log</span> {
-            <span class="prelude-val">Some</span>(<span class="ident">event_log</span>) =&gt; <span class="ident">event_log</span>,
-            <span class="prelude-val">None</span> =&gt; <span class="macro">anyhow::bail!</span>(<span class="ident">MpiLocalPartitionError::MissingEventLog</span>),
+        reporter_context: P,
+        event_log: <span class="self">Self</span>::Auxiliary,
+        inner: F,
+    ) -&gt; anyhow::Result&lt;Q&gt; {
+        <span class="kw">let </span>event_log = <span class="kw">match </span>event_log {
+            <span class="prelude-val">Some</span>(event_log) =&gt; event_log,
+            <span class="prelude-val">None </span>=&gt; <span class="macro">anyhow::bail!</span>(MpiLocalPartitionError::MissingEventLog),
         };
 
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">directory</span> <span class="op">=</span> <span class="ident">event_log</span>.<span class="ident">directory</span>().<span class="ident">to_owned</span>();
-        <span class="ident">directory</span>.<span class="ident">push</span>(<span class="self">self</span>.<span class="ident">world</span>.<span class="ident">rank</span>().<span class="ident">to_string</span>());
+        <span class="kw">let </span><span class="kw-2">mut </span>directory = event_log.directory().to_owned();
+        directory.push(<span class="self">self</span>.world.rank().to_string());
 
-        <span class="kw">let</span> <span class="ident">event_log</span> <span class="op">=</span> <span class="ident">event_log</span>
-            .<span class="ident">r#move</span>(<span class="kw-2">&amp;</span><span class="ident">directory</span>)
-            .<span class="ident">and_then</span>(<span class="ident">EventLogRecorder::assert_empty</span>)
-            .<span class="ident">context</span>(<span class="ident">MpiLocalPartitionError::InvalidEventSubLog</span>)<span class="question-mark">?</span>;
+        <span class="kw">let </span>event_log = event_log
+            .r#move(<span class="kw-2">&amp;</span>directory)
+            .and_then(EventLogRecorder::assert_empty)
+            .context(MpiLocalPartitionError::InvalidEventSubLog)<span class="question-mark">?</span>;
 
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">mpi_local_global_wait</span> <span class="op">=</span> (<span class="bool-val">false</span>, <span class="bool-val">false</span>);
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">mpi_local_remaining</span> <span class="op">=</span> <span class="number">0_u64</span>;
+        <span class="kw">let </span><span class="kw-2">mut </span>mpi_local_global_wait = (<span class="bool-val">false</span>, <span class="bool-val">false</span>);
+        <span class="kw">let </span><span class="kw-2">mut </span>mpi_local_remaining = <span class="number">0_u64</span>;
 
-        <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::cast_sign_loss</span>)]</span>
-        <span class="kw">let</span> <span class="ident">world_size</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">world</span>.<span class="ident">size</span>() <span class="kw">as</span> <span class="ident">usize</span>;
+        <span class="attribute">#[allow(clippy::cast_sign_loss)]
+        </span><span class="kw">let </span>world_size = <span class="self">self</span>.world.size() <span class="kw">as </span>usize;
 
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">mpi_migration_buffers</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">MigratingLineage</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Vec::with_capacity</span>(<span class="ident">world_size</span>);
-        <span class="ident">mpi_migration_buffers</span>.<span class="ident">resize_with</span>(<span class="ident">world_size</span>, <span class="ident">Vec::new</span>);
+        <span class="kw">let </span><span class="kw-2">mut </span>mpi_migration_buffers: Vec&lt;Vec&lt;MigratingLineage&gt;&gt; = Vec::with_capacity(world_size);
+        mpi_migration_buffers.resize_with(world_size, Vec::new);
 
-        <span class="ident">mpi::request::scope</span>(<span class="op">|</span><span class="ident">scope</span><span class="op">|</span> {
-            <span class="kw">let</span> <span class="ident">scope</span> <span class="op">=</span> <span class="ident">reduce_scope</span>(<span class="ident">scope</span>);
+        mpi::request::scope(|scope| {
+            <span class="kw">let </span>scope = reduce_scope(scope);
 
-            <span class="kw">let</span> <span class="ident">mpi_local_global_wait</span> <span class="op">=</span> <span class="ident">DataOrRequest::new</span>(<span class="kw-2">&amp;mut</span> <span class="ident">mpi_local_global_wait</span>, <span class="ident">scope</span>);
-            <span class="kw">let</span> <span class="ident">mpi_local_remaining</span> <span class="op">=</span> <span class="ident">DataOrRequest::new</span>(<span class="kw-2">&amp;mut</span> <span class="ident">mpi_local_remaining</span>, <span class="ident">scope</span>);
-            <span class="kw">let</span> <span class="ident">mpi_migration_buffers</span> <span class="op">=</span> <span class="ident">mpi_migration_buffers</span>
-                .<span class="ident">iter_mut</span>()
-                .<span class="ident">map</span>(<span class="op">|</span><span class="ident">buffer</span><span class="op">|</span> <span class="ident">DataOrRequest::new</span>(<span class="ident">buffer</span>, <span class="ident">scope</span>))
-                .<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="op">&gt;</span>()
-                .<span class="ident">into_boxed_slice</span>();
+            <span class="kw">let </span>mpi_local_global_wait = DataOrRequest::new(<span class="kw-2">&amp;mut </span>mpi_local_global_wait, scope);
+            <span class="kw">let </span>mpi_local_remaining = DataOrRequest::new(<span class="kw-2">&amp;mut </span>mpi_local_remaining, scope);
+            <span class="kw">let </span>mpi_migration_buffers = mpi_migration_buffers
+                .iter_mut()
+                .map(|buffer| DataOrRequest::new(buffer, scope))
+                .collect::&lt;Vec&lt;<span class="kw">_</span>&gt;&gt;()
+                .into_boxed_slice();
 
-            <span class="kw">let</span> <span class="ident">local_partition</span> <span class="op">=</span> <span class="kw">if</span> <span class="self">self</span>.<span class="ident">world</span>.<span class="ident">rank</span>() <span class="op">==</span> <span class="ident">MpiPartitioning::ROOT_RANK</span> {
-                <span class="ident">MpiLocalPartition::Root</span>(<span class="ident">Box::new</span>(<span class="ident">MpiRootPartition::new</span>(
-                    <span class="ident">ManuallyDrop::into_inner</span>(<span class="self">self</span>.<span class="ident">universe</span>),
-                    <span class="ident">mpi_local_global_wait</span>,
-                    <span class="ident">mpi_migration_buffers</span>,
-                    <span class="ident">reporter_context</span>.<span class="ident">try_build</span>()<span class="question-mark">?</span>,
-                    <span class="ident">event_log</span>,
-                    <span class="self">self</span>.<span class="ident">migration_interval</span>,
-                    <span class="self">self</span>.<span class="ident">progress_interval</span>,
+            <span class="kw">let </span>local_partition = <span class="kw">if </span><span class="self">self</span>.world.rank() == MpiPartitioning::ROOT_RANK {
+                MpiLocalPartition::Root(Box::new(MpiRootPartition::new(
+                    ManuallyDrop::into_inner(<span class="self">self</span>.universe),
+                    mpi_local_global_wait,
+                    mpi_migration_buffers,
+                    reporter_context.try_build()<span class="question-mark">?</span>,
+                    event_log,
+                    <span class="self">self</span>.migration_interval,
+                    <span class="self">self</span>.progress_interval,
                 )))
-            } <span class="kw">else</span> {
-                <span class="ident">MpiLocalPartition::Parallel</span>(<span class="ident">Box::new</span>(<span class="ident">MpiParallelPartition::new</span>(
-                    <span class="ident">ManuallyDrop::into_inner</span>(<span class="self">self</span>.<span class="ident">universe</span>),
-                    <span class="ident">mpi_local_global_wait</span>,
-                    <span class="ident">mpi_local_remaining</span>,
-                    <span class="ident">mpi_migration_buffers</span>,
-                    <span class="ident">event_log</span>,
-                    <span class="self">self</span>.<span class="ident">migration_interval</span>,
-                    <span class="self">self</span>.<span class="ident">progress_interval</span>,
+            } <span class="kw">else </span>{
+                MpiLocalPartition::Parallel(Box::new(MpiParallelPartition::new(
+                    ManuallyDrop::into_inner(<span class="self">self</span>.universe),
+                    mpi_local_global_wait,
+                    mpi_local_remaining,
+                    mpi_migration_buffers,
+                    event_log,
+                    <span class="self">self</span>.migration_interval,
+                    <span class="self">self</span>.progress_interval,
                 )))
             };
 
-            <span class="prelude-val">Ok</span>(<span class="ident">inner</span>(<span class="ident">local_partition</span>))
+            <span class="prelude-val">Ok</span>(inner(local_partition))
         })
     }
 }
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">DeserializeState</span>)]</span>
-<span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;MpiPartitioning&quot;</span>)]</span>
-<span class="attribute">#[<span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>)]</span>
-<span class="attribute">#[<span class="ident">serde</span>(<span class="ident">deserialize_state</span> <span class="op">=</span> <span class="string">&quot;NonZeroU32&quot;</span>)]</span>
-<span class="attribute">#[<span class="ident">serde</span>(<span class="ident">default</span>)]</span>
-<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">dead_code</span>)]</span>
-<span class="kw">struct</span> <span class="ident">MpiPartitioningRaw</span> {
-    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">deserialize_state_with</span> <span class="op">=</span> <span class="string">&quot;deserialize_state_mpi_world&quot;</span>)]</span>
-    <span class="ident">world</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">NonZeroU32</span><span class="op">&gt;</span>,
-    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;migration&quot;</span>)]</span>
-    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">with</span> <span class="op">=</span> <span class="string">&quot;humantime_serde&quot;</span>)]</span>
-    <span class="ident">migration_interval</span>: <span class="ident">Duration</span>,
-    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;progress&quot;</span>)]</span>
-    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">with</span> <span class="op">=</span> <span class="string">&quot;humantime_serde&quot;</span>)]</span>
-    <span class="ident">progress_interval</span>: <span class="ident">Duration</span>,
+<span class="attribute">#[derive(DeserializeState)]
+#[serde(rename = <span class="string">&quot;MpiPartitioning&quot;</span>)]
+#[serde(deny_unknown_fields)]
+#[serde(deserialize_state = <span class="string">&quot;NonZeroU32&quot;</span>)]
+#[serde(default)]
+#[allow(dead_code)]
+</span><span class="kw">struct </span>MpiPartitioningRaw {
+    <span class="attribute">#[serde(deserialize_state_with = <span class="string">&quot;deserialize_state_mpi_world&quot;</span>)]
+    </span>world: <span class="prelude-ty">Option</span>&lt;NonZeroU32&gt;,
+    <span class="attribute">#[serde(alias = <span class="string">&quot;migration&quot;</span>)]
+    #[serde(with = <span class="string">&quot;humantime_serde&quot;</span>)]
+    </span>migration_interval: Duration,
+    <span class="attribute">#[serde(alias = <span class="string">&quot;progress&quot;</span>)]
+    #[serde(with = <span class="string">&quot;humantime_serde&quot;</span>)]
+    </span>progress_interval: Duration,
 }
 
-<span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">MpiPartitioningRaw</span> {
-    <span class="kw">fn</span> <span class="ident">default</span>() -&gt; <span class="self">Self</span> {
-        <span class="self">Self</span> {
-            <span class="ident">world</span>: <span class="prelude-val">None</span>,
-            <span class="ident">migration_interval</span>: <span class="ident">MpiPartitioning::MPI_DEFAULT_MIGRATION_INTERVAL</span>,
-            <span class="ident">progress_interval</span>: <span class="ident">MpiPartitioning::MPI_DEFAULT_PROGRESS_INTERVAL</span>,
+<span class="kw">impl </span>Default <span class="kw">for </span>MpiPartitioningRaw {
+    <span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{
+            world: <span class="prelude-val">None</span>,
+            migration_interval: MpiPartitioning::MPI_DEFAULT_MIGRATION_INTERVAL,
+            progress_interval: MpiPartitioning::MPI_DEFAULT_PROGRESS_INTERVAL,
         }
     }
 }
 
-<span class="kw">fn</span> <span class="ident">deserialize_state_mpi_world</span><span class="op">&lt;</span><span class="lifetime">&#39;de</span>, <span class="ident">D</span>: <span class="ident">Deserializer</span><span class="op">&lt;</span><span class="lifetime">&#39;de</span><span class="op">&gt;</span><span class="op">&gt;</span>(
-    <span class="ident">mpi_world</span>: <span class="kw-2">&amp;mut</span> <span class="ident">NonZeroU32</span>,
-    <span class="ident">deserializer</span>: <span class="ident">D</span>,
-) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">NonZeroU32</span><span class="op">&gt;</span>, <span class="ident">D::Error</span><span class="op">&gt;</span> {
-    <span class="kw">let</span> <span class="ident">maybe_world</span> <span class="op">=</span> <span class="prelude-ty">Option</span>::<span class="op">&lt;</span><span class="ident">NonZeroU32</span><span class="op">&gt;</span><span class="ident">::deserialize</span>(<span class="ident">deserializer</span>)<span class="question-mark">?</span>;
+<span class="kw">fn </span>deserialize_state_mpi_world&lt;<span class="lifetime">&#39;de</span>, D: Deserializer&lt;<span class="lifetime">&#39;de</span>&gt;&gt;(
+    mpi_world: <span class="kw-2">&amp;mut </span>NonZeroU32,
+    deserializer: D,
+) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;NonZeroU32&gt;, D::Error&gt; {
+    <span class="kw">let </span>maybe_world = <span class="prelude-ty">Option</span>::&lt;NonZeroU32&gt;::deserialize(deserializer)<span class="question-mark">?</span>;
 
-    <span class="kw">match</span> <span class="ident">maybe_world</span> {
-        <span class="prelude-val">None</span> =&gt; <span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>),
-        <span class="prelude-val">Some</span>(<span class="ident">world</span>) <span class="kw">if</span> <span class="ident">world</span> <span class="op">==</span> <span class="kw-2">*</span><span class="ident">mpi_world</span> =&gt; <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(<span class="ident">world</span>)),
-        <span class="prelude-val">Some</span>(<span class="kw">_</span>) =&gt; <span class="prelude-val">Err</span>(<span class="ident">serde::de::Error::custom</span>(<span class="macro">format!</span>(
+    <span class="kw">match </span>maybe_world {
+        <span class="prelude-val">None </span>=&gt; <span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>),
+        <span class="prelude-val">Some</span>(world) <span class="kw">if </span>world == <span class="kw-2">*</span>mpi_world =&gt; <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(world)),
+        <span class="prelude-val">Some</span>(<span class="kw">_</span>) =&gt; <span class="prelude-val">Err</span>(serde::de::Error::custom(<span class="macro">format!</span>(
             <span class="string">&quot;mismatch with MPI world size of {}&quot;</span>,
-            <span class="ident">mpi_world</span>
+            mpi_world
         ))),
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="necsim_partitioning_mpi" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0-nightly (affe0d3a0 2022-08-05)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="necsim_partitioning_mpi" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (5e9772042 2022-10-29)" ></div></body></html>

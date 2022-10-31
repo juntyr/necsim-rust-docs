@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `necsim/plugins/species/src/individuals/database.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>database.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../necsim_plugins_species/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../necsim_plugins_species/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../necsim_plugins_species/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `necsim/plugins/species/src/individuals/database.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>database.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../normalize.css"><link rel="stylesheet" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../ayu.css" disabled><link rel="stylesheet" href="../../../dark.css" disabled><link rel="stylesheet" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../../necsim_plugins_species/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -520,127 +520,127 @@
 <span id="520">520</span>
 <span id="521">521</span>
 <span id="522">522</span>
-</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">necsim_core</span>::{
-    <span class="ident">event</span>::{<span class="ident">DispersalEvent</span>, <span class="ident">SpeciationEvent</span>},
-    <span class="ident">landscape</span>::{<span class="ident">IndexedLocation</span>, <span class="ident">Location</span>},
-    <span class="ident">lineage::GlobalLineageReference</span>,
+</pre><pre class="rust"><code><span class="kw">use </span>necsim_core::{
+    event::{DispersalEvent, SpeciationEvent},
+    landscape::{IndexedLocation, Location},
+    lineage::GlobalLineageReference,
 };
-<span class="kw">use</span> <span class="ident">necsim_core_bond</span>::{<span class="ident">NonNegativeF64</span>, <span class="ident">NonZeroOneU64</span>, <span class="ident">PositiveF64</span>};
+<span class="kw">use </span>necsim_core_bond::{NonNegativeF64, NonZeroOneU64, PositiveF64};
 
-<span class="kw">use</span> <span class="ident">bincode::Options</span>;
-<span class="kw">use</span> <span class="ident">rusqlite</span>::{<span class="ident">named_params</span>, <span class="ident">types::Value</span>};
-<span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>};
+<span class="kw">use </span>bincode::Options;
+<span class="kw">use </span>rusqlite::{named_params, types::Value};
+<span class="kw">use </span>serde::{Deserialize, Serialize};
 
-<span class="kw">use</span> <span class="kw">super</span>::{<span class="ident">IndividualLocationSpeciesReporter</span>, <span class="ident">SpeciesIdentity</span>, <span class="ident">SpeciesLocationsMode</span>};
+<span class="kw">use super</span>::{IndividualLocationSpeciesReporter, SpeciesIdentity, SpeciesLocationsMode};
 
-<span class="kw">const</span> <span class="ident">METADATA_TABLE</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;__SPECIES_REPORTER_META&quot;</span>;
+<span class="kw">const </span>METADATA_TABLE: <span class="kw-2">&amp;</span>str = <span class="string">&quot;__SPECIES_REPORTER_META&quot;</span>;
 
-<span class="kw">impl</span> <span class="ident">IndividualLocationSpeciesReporter</span> {
-    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">store_individual_origin</span>(
-        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
-        <span class="ident">individual</span>: <span class="kw-2">&amp;</span><span class="ident">GlobalLineageReference</span>,
-        <span class="ident">origin</span>: <span class="kw-2">&amp;</span><span class="ident">IndexedLocation</span>,
+<span class="kw">impl </span>IndividualLocationSpeciesReporter {
+    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn </span>store_individual_origin(
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        individual: <span class="kw-2">&amp;</span>GlobalLineageReference,
+        origin: <span class="kw-2">&amp;</span>IndexedLocation,
     ) {
-        <span class="self">self</span>.<span class="ident">origins</span>.<span class="ident">insert</span>(<span class="ident">individual</span>.<span class="ident">clone</span>(), <span class="ident">origin</span>.<span class="ident">clone</span>());
+        <span class="self">self</span>.origins.insert(individual.clone(), origin.clone());
     }
 
-    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">store_individual_speciation</span>(
-        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
-        <span class="ident">parent</span>: <span class="kw-2">&amp;</span><span class="ident">GlobalLineageReference</span>,
-        <span class="ident">origin</span>: <span class="kw-2">&amp;</span><span class="ident">IndexedLocation</span>,
-        <span class="ident">time</span>: <span class="ident">PositiveF64</span>,
+    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn </span>store_individual_speciation(
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        parent: <span class="kw-2">&amp;</span>GlobalLineageReference,
+        origin: <span class="kw-2">&amp;</span>IndexedLocation,
+        time: PositiveF64,
     ) {
-        <span class="comment">// Resolve the actual parent, irrespective of duplicate individuals</span>
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">parent</span> <span class="op">=</span> <span class="ident">parent</span>;
-        <span class="kw">while</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">parent_parent</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">parents</span>.<span class="ident">get</span>(<span class="ident">parent</span>) {
-            <span class="ident">parent</span> <span class="op">=</span> <span class="ident">parent_parent</span>;
+        <span class="comment">// Resolve the actual parent, irrespective of duplicate individuals
+        </span><span class="kw">let </span><span class="kw-2">mut </span>parent = parent;
+        <span class="kw">while let </span><span class="prelude-val">Some</span>(parent_parent) = <span class="self">self</span>.parents.get(parent) {
+            parent = parent_parent;
         }
-        <span class="kw">let</span> <span class="ident">parent</span> <span class="op">=</span> <span class="ident">parent</span>.<span class="ident">clone</span>();
+        <span class="kw">let </span>parent = parent.clone();
 
-        <span class="kw">let</span> <span class="ident">location</span> <span class="op">=</span> (<span class="ident">u64::from</span>(<span class="ident">origin</span>.<span class="ident">location</span>().<span class="ident">y</span>()) <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">32</span>) <span class="op">|</span> <span class="ident">u64::from</span>(<span class="ident">origin</span>.<span class="ident">location</span>().<span class="ident">x</span>());
-        <span class="kw">let</span> <span class="ident">index</span> <span class="op">=</span> <span class="ident">u64::from</span>(<span class="ident">origin</span>.<span class="ident">index</span>()) <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">16</span>;
-        <span class="kw">let</span> <span class="ident">time</span> <span class="op">=</span> <span class="ident">time</span>.<span class="ident">get</span>().<span class="ident">to_bits</span>();
+        <span class="kw">let </span>location = (u64::from(origin.location().y()) &lt;&lt; <span class="number">32</span>) | u64::from(origin.location().x());
+        <span class="kw">let </span>index = u64::from(origin.index()) &lt;&lt; <span class="number">16</span>;
+        <span class="kw">let </span>time = time.get().to_bits();
 
-        <span class="kw">let</span> <span class="ident">location_bytes</span> <span class="op">=</span> <span class="ident">seahash_diffuse</span>(<span class="ident">location</span>).<span class="ident">to_le_bytes</span>();
-        <span class="kw">let</span> <span class="ident">index_bytes</span> <span class="op">=</span> <span class="ident">seahash_diffuse</span>(<span class="ident">index</span>).<span class="ident">to_le_bytes</span>();
-        <span class="kw">let</span> <span class="ident">time_bytes</span> <span class="op">=</span> <span class="ident">seahash_diffuse</span>(<span class="ident">time</span>).<span class="ident">to_le_bytes</span>();
+        <span class="kw">let </span>location_bytes = seahash_diffuse(location).to_le_bytes();
+        <span class="kw">let </span>index_bytes = seahash_diffuse(index).to_le_bytes();
+        <span class="kw">let </span>time_bytes = seahash_diffuse(time).to_le_bytes();
 
-        <span class="comment">// Shuffle and mix all 24 bytes of the species identity</span>
-        <span class="kw">let</span> <span class="ident">lower</span> <span class="op">=</span> <span class="ident">u64::from_le_bytes</span>([
-            <span class="ident">location_bytes</span>[<span class="number">3</span>],
-            <span class="ident">time_bytes</span>[<span class="number">0</span>],
-            <span class="ident">index_bytes</span>[<span class="number">5</span>],
-            <span class="ident">location_bytes</span>[<span class="number">1</span>],
-            <span class="ident">time_bytes</span>[<span class="number">4</span>],
-            <span class="ident">time_bytes</span>[<span class="number">7</span>],
-            <span class="ident">time_bytes</span>[<span class="number">5</span>],
-            <span class="ident">location_bytes</span>[<span class="number">5</span>],
+        <span class="comment">// Shuffle and mix all 24 bytes of the species identity
+        </span><span class="kw">let </span>lower = u64::from_le_bytes([
+            location_bytes[<span class="number">3</span>],
+            time_bytes[<span class="number">0</span>],
+            index_bytes[<span class="number">5</span>],
+            location_bytes[<span class="number">1</span>],
+            time_bytes[<span class="number">4</span>],
+            time_bytes[<span class="number">7</span>],
+            time_bytes[<span class="number">5</span>],
+            location_bytes[<span class="number">5</span>],
         ]);
-        <span class="kw">let</span> <span class="ident">middle</span> <span class="op">=</span> <span class="ident">u64::from_le_bytes</span>([
-            <span class="ident">time_bytes</span>[<span class="number">6</span>],
-            <span class="ident">index_bytes</span>[<span class="number">4</span>],
-            <span class="ident">location_bytes</span>[<span class="number">0</span>],
-            <span class="ident">location_bytes</span>[<span class="number">6</span>],
-            <span class="ident">index_bytes</span>[<span class="number">2</span>],
-            <span class="ident">index_bytes</span>[<span class="number">1</span>],
-            <span class="ident">location_bytes</span>[<span class="number">7</span>],
-            <span class="ident">index_bytes</span>[<span class="number">3</span>],
+        <span class="kw">let </span>middle = u64::from_le_bytes([
+            time_bytes[<span class="number">6</span>],
+            index_bytes[<span class="number">4</span>],
+            location_bytes[<span class="number">0</span>],
+            location_bytes[<span class="number">6</span>],
+            index_bytes[<span class="number">2</span>],
+            index_bytes[<span class="number">1</span>],
+            location_bytes[<span class="number">7</span>],
+            index_bytes[<span class="number">3</span>],
         ]);
-        <span class="kw">let</span> <span class="ident">upper</span> <span class="op">=</span> <span class="ident">u64::from_le_bytes</span>([
-            <span class="ident">location_bytes</span>[<span class="number">4</span>],
-            <span class="ident">location_bytes</span>[<span class="number">2</span>],
-            <span class="ident">time_bytes</span>[<span class="number">2</span>],
-            <span class="ident">index_bytes</span>[<span class="number">0</span>],
-            <span class="ident">time_bytes</span>[<span class="number">3</span>],
-            <span class="ident">time_bytes</span>[<span class="number">1</span>],
-            <span class="ident">index_bytes</span>[<span class="number">7</span>],
-            <span class="ident">index_bytes</span>[<span class="number">6</span>],
+        <span class="kw">let </span>upper = u64::from_le_bytes([
+            location_bytes[<span class="number">4</span>],
+            location_bytes[<span class="number">2</span>],
+            time_bytes[<span class="number">2</span>],
+            index_bytes[<span class="number">0</span>],
+            time_bytes[<span class="number">3</span>],
+            time_bytes[<span class="number">1</span>],
+            index_bytes[<span class="number">7</span>],
+            index_bytes[<span class="number">6</span>],
         ]);
 
-        <span class="self">self</span>.<span class="ident">species</span>.<span class="ident">insert</span>(
-            <span class="ident">parent</span>,
-            <span class="ident">SpeciesIdentity</span>(
-                <span class="ident">seahash_diffuse</span>(<span class="ident">lower</span>),
-                <span class="ident">seahash_diffuse</span>(<span class="ident">middle</span>),
-                <span class="ident">seahash_diffuse</span>(<span class="ident">upper</span>),
+        <span class="self">self</span>.species.insert(
+            parent,
+            SpeciesIdentity(
+                seahash_diffuse(lower),
+                seahash_diffuse(middle),
+                seahash_diffuse(upper),
             ),
         );
     }
 
-    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">store_individual_coalescence</span>(
-        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
-        <span class="ident">child</span>: <span class="kw-2">&amp;</span><span class="ident">GlobalLineageReference</span>,
-        <span class="ident">parent</span>: <span class="kw-2">&amp;</span><span class="ident">GlobalLineageReference</span>,
+    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn </span>store_individual_coalescence(
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        child: <span class="kw-2">&amp;</span>GlobalLineageReference,
+        parent: <span class="kw-2">&amp;</span>GlobalLineageReference,
     ) {
-        <span class="comment">// Resolve the actual child, irrespective of duplicate individuals</span>
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">child</span> <span class="op">=</span> <span class="ident">child</span>;
-        <span class="kw">while</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">child_parent</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">parents</span>.<span class="ident">get</span>(<span class="ident">child</span>) {
-            <span class="ident">child</span> <span class="op">=</span> <span class="ident">child_parent</span>;
+        <span class="comment">// Resolve the actual child, irrespective of duplicate individuals
+        </span><span class="kw">let </span><span class="kw-2">mut </span>child = child;
+        <span class="kw">while let </span><span class="prelude-val">Some</span>(child_parent) = <span class="self">self</span>.parents.get(child) {
+            child = child_parent;
         }
-        <span class="kw">let</span> <span class="ident">child</span> <span class="op">=</span> <span class="ident">child</span>.<span class="ident">clone</span>();
+        <span class="kw">let </span>child = child.clone();
 
-        <span class="comment">// Resolve the actual parent, irrespective of duplicate individuals</span>
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">parent</span> <span class="op">=</span> <span class="ident">parent</span>;
-        <span class="kw">while</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">parent_parent</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">parents</span>.<span class="ident">get</span>(<span class="ident">parent</span>) {
-            <span class="ident">parent</span> <span class="op">=</span> <span class="ident">parent_parent</span>;
+        <span class="comment">// Resolve the actual parent, irrespective of duplicate individuals
+        </span><span class="kw">let </span><span class="kw-2">mut </span>parent = parent;
+        <span class="kw">while let </span><span class="prelude-val">Some</span>(parent_parent) = <span class="self">self</span>.parents.get(parent) {
+            parent = parent_parent;
         }
-        <span class="kw">let</span> <span class="ident">parent</span> <span class="op">=</span> <span class="ident">parent</span>.<span class="ident">clone</span>();
+        <span class="kw">let </span>parent = parent.clone();
 
-        <span class="comment">// Prevent a lookup-loop, can occur after `Resume`</span>
-        <span class="kw">if</span> <span class="ident">child</span> <span class="op">!</span><span class="op">=</span> <span class="ident">parent</span> {
-            <span class="self">self</span>.<span class="ident">parents</span>.<span class="ident">insert</span>(<span class="ident">child</span>, <span class="ident">parent</span>);
+        <span class="comment">// Prevent a lookup-loop, can occur after `Resume`
+        </span><span class="kw">if </span>child != parent {
+            <span class="self">self</span>.parents.insert(child, parent);
         }
     }
 
-    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::too_many_lines</span>)]</span>
-    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">initialise_sqlite_connection</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="ident">rusqlite::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">connection</span>
-            .<span class="ident">pragma_update</span>(<span class="prelude-val">None</span>, <span class="string">&quot;cache_size&quot;</span>, <span class="self">self</span>.<span class="ident">cache</span>.<span class="ident">get</span>())<span class="question-mark">?</span>;
+    <span class="attribute">#[allow(clippy::too_many_lines)]
+    </span><span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn </span>initialise_sqlite_connection(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; rusqlite::Result&lt;()&gt; {
+        <span class="self">self</span>.connection
+            .pragma_update(<span class="prelude-val">None</span>, <span class="string">&quot;cache_size&quot;</span>, <span class="self">self</span>.cache.get())<span class="question-mark">?</span>;
 
-        <span class="comment">// Create the species locations table in `Create` mode</span>
-        <span class="kw">if</span> <span class="kw">let</span> <span class="ident">SpeciesLocationsMode::Create</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">mode</span> {
-            <span class="self">self</span>.<span class="ident">connection</span>
-                .<span class="ident">execute_batch</span>(<span class="kw-2">&amp;</span><span class="macro">format!</span>(
+        <span class="comment">// Create the species locations table in `Create` mode
+        </span><span class="kw">if let </span>SpeciesLocationsMode::Create = <span class="self">self</span>.mode {
+            <span class="self">self</span>.connection
+                .execute_batch(<span class="kw-2">&amp;</span><span class="macro">format!</span>(
                     <span class="string">&quot;CREATE TABLE {} (
                             id      INTEGER PRIMARY KEY NOT NULL,
                             x       INTEGER NOT NULL,
@@ -649,398 +649,398 @@
                             parent  INTEGER,
                             species TEXT
                         );
-                        CREATE TABLE {} (
+                        CREATE TABLE {METADATA_TABLE} (
                             key     TEXT PRIMARY KEY NOT NULL,
                             value   TEXT NOT NULL
                         );&quot;</span>,
-                    <span class="self">self</span>.<span class="ident">table</span>, <span class="ident">METADATA_TABLE</span>,
+                    <span class="self">self</span>.table,
                 ))
-                .<span class="ident">map</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> ())<span class="question-mark">?</span>;
+                .map(|<span class="kw">_</span>| ())<span class="question-mark">?</span>;
         }
 
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">schema</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Value</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Vec::new</span>();
+        <span class="kw">let </span><span class="kw-2">mut </span>schema: Vec&lt;Vec&lt;Value&gt;&gt; = Vec::new();
 
-        <span class="comment">// Collect the schema information for the species locations table</span>
-        <span class="self">self</span>.<span class="ident">connection</span>
-            .<span class="ident">pragma</span>(<span class="prelude-val">None</span>, <span class="string">&quot;table_info&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">table</span>, <span class="op">|</span><span class="ident">row</span><span class="op">|</span> {
-                <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">schema_row</span> <span class="op">=</span> <span class="ident">Vec::new</span>();
+        <span class="comment">// Collect the schema information for the species locations table
+        </span><span class="self">self</span>.connection
+            .pragma(<span class="prelude-val">None</span>, <span class="string">&quot;table_info&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.table, |row| {
+                <span class="kw">let </span><span class="kw-2">mut </span>schema_row = Vec::new();
 
-                <span class="kw">for</span> <span class="ident">col</span> <span class="kw">in</span> <span class="number">0</span>..<span class="ident">row</span>.<span class="ident">as_ref</span>().<span class="ident">column_count</span>() {
-                    <span class="ident">schema_row</span>.<span class="ident">push</span>(<span class="ident">Value::from</span>(<span class="ident">row</span>.<span class="ident">get_ref</span>(<span class="ident">col</span>)<span class="question-mark">?</span>));
+                <span class="kw">for </span>col <span class="kw">in </span><span class="number">0</span>..row.as_ref().column_count() {
+                    schema_row.push(Value::from(row.get_ref(col)<span class="question-mark">?</span>));
                 }
 
-                <span class="ident">schema</span>.<span class="ident">push</span>(<span class="ident">schema_row</span>);
+                schema.push(schema_row);
 
                 <span class="prelude-val">Ok</span>(())
             })<span class="question-mark">?</span>;
 
-        <span class="comment">// Check that the schema of the species locations table matches</span>
-        <span class="kw">if</span> <span class="ident">schema</span>
-            <span class="op">!</span><span class="op">=</span> <span class="macro">vec!</span>[
+        <span class="comment">// Check that the schema of the species locations table matches
+        </span><span class="kw">if </span>schema
+            != <span class="macro">vec!</span>[
                 <span class="macro">vec!</span>[
-                    <span class="ident">Value::Integer</span>(<span class="number">0</span>),
-                    <span class="ident">Value::Text</span>(<span class="ident">String::from</span>(<span class="string">&quot;id&quot;</span>)),
-                    <span class="ident">Value::Text</span>(<span class="ident">String::from</span>(<span class="string">&quot;INTEGER&quot;</span>)),
-                    <span class="ident">Value::Integer</span>(<span class="number">1</span>),
-                    <span class="ident">Value::Null</span>,
-                    <span class="ident">Value::Integer</span>(<span class="number">1</span>),
+                    Value::Integer(<span class="number">0</span>),
+                    Value::Text(String::from(<span class="string">&quot;id&quot;</span>)),
+                    Value::Text(String::from(<span class="string">&quot;INTEGER&quot;</span>)),
+                    Value::Integer(<span class="number">1</span>),
+                    Value::Null,
+                    Value::Integer(<span class="number">1</span>),
                 ],
                 <span class="macro">vec!</span>[
-                    <span class="ident">Value::Integer</span>(<span class="number">1</span>),
-                    <span class="ident">Value::Text</span>(<span class="ident">String::from</span>(<span class="string">&quot;x&quot;</span>)),
-                    <span class="ident">Value::Text</span>(<span class="ident">String::from</span>(<span class="string">&quot;INTEGER&quot;</span>)),
-                    <span class="ident">Value::Integer</span>(<span class="number">1</span>),
-                    <span class="ident">Value::Null</span>,
-                    <span class="ident">Value::Integer</span>(<span class="number">0</span>),
+                    Value::Integer(<span class="number">1</span>),
+                    Value::Text(String::from(<span class="string">&quot;x&quot;</span>)),
+                    Value::Text(String::from(<span class="string">&quot;INTEGER&quot;</span>)),
+                    Value::Integer(<span class="number">1</span>),
+                    Value::Null,
+                    Value::Integer(<span class="number">0</span>),
                 ],
                 <span class="macro">vec!</span>[
-                    <span class="ident">Value::Integer</span>(<span class="number">2</span>),
-                    <span class="ident">Value::Text</span>(<span class="ident">String::from</span>(<span class="string">&quot;y&quot;</span>)),
-                    <span class="ident">Value::Text</span>(<span class="ident">String::from</span>(<span class="string">&quot;INTEGER&quot;</span>)),
-                    <span class="ident">Value::Integer</span>(<span class="number">1</span>),
-                    <span class="ident">Value::Null</span>,
-                    <span class="ident">Value::Integer</span>(<span class="number">0</span>),
+                    Value::Integer(<span class="number">2</span>),
+                    Value::Text(String::from(<span class="string">&quot;y&quot;</span>)),
+                    Value::Text(String::from(<span class="string">&quot;INTEGER&quot;</span>)),
+                    Value::Integer(<span class="number">1</span>),
+                    Value::Null,
+                    Value::Integer(<span class="number">0</span>),
                 ],
                 <span class="macro">vec!</span>[
-                    <span class="ident">Value::Integer</span>(<span class="number">3</span>),
-                    <span class="ident">Value::Text</span>(<span class="ident">String::from</span>(<span class="string">&quot;i&quot;</span>)),
-                    <span class="ident">Value::Text</span>(<span class="ident">String::from</span>(<span class="string">&quot;INTEGER&quot;</span>)),
-                    <span class="ident">Value::Integer</span>(<span class="number">1</span>),
-                    <span class="ident">Value::Null</span>,
-                    <span class="ident">Value::Integer</span>(<span class="number">0</span>),
+                    Value::Integer(<span class="number">3</span>),
+                    Value::Text(String::from(<span class="string">&quot;i&quot;</span>)),
+                    Value::Text(String::from(<span class="string">&quot;INTEGER&quot;</span>)),
+                    Value::Integer(<span class="number">1</span>),
+                    Value::Null,
+                    Value::Integer(<span class="number">0</span>),
                 ],
                 <span class="macro">vec!</span>[
-                    <span class="ident">Value::Integer</span>(<span class="number">4</span>),
-                    <span class="ident">Value::Text</span>(<span class="ident">String::from</span>(<span class="string">&quot;parent&quot;</span>)),
-                    <span class="ident">Value::Text</span>(<span class="ident">String::from</span>(<span class="string">&quot;INTEGER&quot;</span>)),
-                    <span class="ident">Value::Integer</span>(<span class="number">0</span>),
-                    <span class="ident">Value::Null</span>,
-                    <span class="ident">Value::Integer</span>(<span class="number">0</span>),
+                    Value::Integer(<span class="number">4</span>),
+                    Value::Text(String::from(<span class="string">&quot;parent&quot;</span>)),
+                    Value::Text(String::from(<span class="string">&quot;INTEGER&quot;</span>)),
+                    Value::Integer(<span class="number">0</span>),
+                    Value::Null,
+                    Value::Integer(<span class="number">0</span>),
                 ],
                 <span class="macro">vec!</span>[
-                    <span class="ident">Value::Integer</span>(<span class="number">5</span>),
-                    <span class="ident">Value::Text</span>(<span class="ident">String::from</span>(<span class="string">&quot;species&quot;</span>)),
-                    <span class="ident">Value::Text</span>(<span class="ident">String::from</span>(<span class="string">&quot;TEXT&quot;</span>)),
-                    <span class="ident">Value::Integer</span>(<span class="number">0</span>),
-                    <span class="ident">Value::Null</span>,
-                    <span class="ident">Value::Integer</span>(<span class="number">0</span>),
+                    Value::Integer(<span class="number">5</span>),
+                    Value::Text(String::from(<span class="string">&quot;species&quot;</span>)),
+                    Value::Text(String::from(<span class="string">&quot;TEXT&quot;</span>)),
+                    Value::Integer(<span class="number">0</span>),
+                    Value::Null,
+                    Value::Integer(<span class="number">0</span>),
                 ],
             ]
         {
-            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">rusqlite::Error::SqliteFailure</span>(
-                <span class="ident">rusqlite::ffi::Error</span> {
-                    <span class="ident">code</span>: <span class="ident">rusqlite::ffi::ErrorCode::SchemaChanged</span>,
-                    <span class="ident">extended_code</span>: <span class="number">0</span>,
+            <span class="kw">return </span><span class="prelude-val">Err</span>(rusqlite::Error::SqliteFailure(
+                rusqlite::ffi::Error {
+                    code: rusqlite::ffi::ErrorCode::SchemaChanged,
+                    extended_code: <span class="number">0</span>,
                 },
                 <span class="prelude-val">Some</span>(<span class="macro">format!</span>(
                     <span class="string">&quot;Invalid schema for the species locations table {}&quot;</span>,
-                    <span class="self">self</span>.<span class="ident">table</span>
+                    <span class="self">self</span>.table
                 )),
             ));
         }
 
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">schema</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Value</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Vec::new</span>();
+        <span class="kw">let </span><span class="kw-2">mut </span>schema: Vec&lt;Vec&lt;Value&gt;&gt; = Vec::new();
 
-        <span class="comment">// Collect the schema information for the metadata table</span>
-        <span class="self">self</span>.<span class="ident">connection</span>
-            .<span class="ident">pragma</span>(<span class="prelude-val">None</span>, <span class="string">&quot;table_info&quot;</span>, <span class="ident">METADATA_TABLE</span>, <span class="op">|</span><span class="ident">row</span><span class="op">|</span> {
-                <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">schema_row</span> <span class="op">=</span> <span class="ident">Vec::new</span>();
+        <span class="comment">// Collect the schema information for the metadata table
+        </span><span class="self">self</span>.connection
+            .pragma(<span class="prelude-val">None</span>, <span class="string">&quot;table_info&quot;</span>, METADATA_TABLE, |row| {
+                <span class="kw">let </span><span class="kw-2">mut </span>schema_row = Vec::new();
 
-                <span class="kw">for</span> <span class="ident">col</span> <span class="kw">in</span> <span class="number">0</span>..<span class="ident">row</span>.<span class="ident">as_ref</span>().<span class="ident">column_count</span>() {
-                    <span class="ident">schema_row</span>.<span class="ident">push</span>(<span class="ident">Value::from</span>(<span class="ident">row</span>.<span class="ident">get_ref</span>(<span class="ident">col</span>)<span class="question-mark">?</span>));
+                <span class="kw">for </span>col <span class="kw">in </span><span class="number">0</span>..row.as_ref().column_count() {
+                    schema_row.push(Value::from(row.get_ref(col)<span class="question-mark">?</span>));
                 }
 
-                <span class="ident">schema</span>.<span class="ident">push</span>(<span class="ident">schema_row</span>);
+                schema.push(schema_row);
 
                 <span class="prelude-val">Ok</span>(())
             })<span class="question-mark">?</span>;
 
-        <span class="comment">// Check that the schema of the metadata table matches</span>
-        <span class="kw">if</span> <span class="ident">schema</span>
-            <span class="op">!</span><span class="op">=</span> <span class="macro">vec!</span>[
+        <span class="comment">// Check that the schema of the metadata table matches
+        </span><span class="kw">if </span>schema
+            != <span class="macro">vec!</span>[
                 <span class="macro">vec!</span>[
-                    <span class="ident">Value::Integer</span>(<span class="number">0</span>),
-                    <span class="ident">Value::Text</span>(<span class="ident">String::from</span>(<span class="string">&quot;key&quot;</span>)),
-                    <span class="ident">Value::Text</span>(<span class="ident">String::from</span>(<span class="string">&quot;TEXT&quot;</span>)),
-                    <span class="ident">Value::Integer</span>(<span class="number">1</span>),
-                    <span class="ident">Value::Null</span>,
-                    <span class="ident">Value::Integer</span>(<span class="number">1</span>),
+                    Value::Integer(<span class="number">0</span>),
+                    Value::Text(String::from(<span class="string">&quot;key&quot;</span>)),
+                    Value::Text(String::from(<span class="string">&quot;TEXT&quot;</span>)),
+                    Value::Integer(<span class="number">1</span>),
+                    Value::Null,
+                    Value::Integer(<span class="number">1</span>),
                 ],
                 <span class="macro">vec!</span>[
-                    <span class="ident">Value::Integer</span>(<span class="number">1</span>),
-                    <span class="ident">Value::Text</span>(<span class="ident">String::from</span>(<span class="string">&quot;value&quot;</span>)),
-                    <span class="ident">Value::Text</span>(<span class="ident">String::from</span>(<span class="string">&quot;TEXT&quot;</span>)),
-                    <span class="ident">Value::Integer</span>(<span class="number">1</span>),
-                    <span class="ident">Value::Null</span>,
-                    <span class="ident">Value::Integer</span>(<span class="number">0</span>),
+                    Value::Integer(<span class="number">1</span>),
+                    Value::Text(String::from(<span class="string">&quot;value&quot;</span>)),
+                    Value::Text(String::from(<span class="string">&quot;TEXT&quot;</span>)),
+                    Value::Integer(<span class="number">1</span>),
+                    Value::Null,
+                    Value::Integer(<span class="number">0</span>),
                 ],
             ]
         {
-            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">rusqlite::Error::SqliteFailure</span>(
-                <span class="ident">rusqlite::ffi::Error</span> {
-                    <span class="ident">code</span>: <span class="ident">rusqlite::ffi::ErrorCode::SchemaChanged</span>,
-                    <span class="ident">extended_code</span>: <span class="number">0</span>,
+            <span class="kw">return </span><span class="prelude-val">Err</span>(rusqlite::Error::SqliteFailure(
+                rusqlite::ffi::Error {
+                    code: rusqlite::ffi::ErrorCode::SchemaChanged,
+                    extended_code: <span class="number">0</span>,
                 },
-                <span class="prelude-val">Some</span>(<span class="ident">String::from</span>(
+                <span class="prelude-val">Some</span>(String::from(
                     <span class="string">&quot;Invalid schema for the internal metadata table&quot;</span>,
                 )),
             ));
         }
 
-        <span class="comment">// Early return for the `Create` mode</span>
-        <span class="kw">if</span> <span class="kw">let</span> <span class="ident">SpeciesLocationsMode::Create</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">mode</span> {
-            <span class="kw">return</span> <span class="prelude-val">Ok</span>(());
+        <span class="comment">// Early return for the `Create` mode
+        </span><span class="kw">if let </span>SpeciesLocationsMode::Create = <span class="self">self</span>.mode {
+            <span class="kw">return </span><span class="prelude-val">Ok</span>(());
         }
 
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">statement</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">connection</span>.<span class="ident">prepare</span>(<span class="kw-2">&amp;</span><span class="macro">format!</span>(
+        <span class="kw">let </span><span class="kw-2">mut </span>statement = <span class="self">self</span>.connection.prepare(<span class="kw-2">&amp;</span><span class="macro">format!</span>(
             <span class="string">&quot;SELECT id, x, y, i, parent, species FROM {}&quot;</span>,
-            <span class="self">self</span>.<span class="ident">table</span>
+            <span class="self">self</span>.table
         ))<span class="question-mark">?</span>;
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">query</span> <span class="op">=</span> <span class="ident">statement</span>.<span class="ident">query</span>([])<span class="question-mark">?</span>;
+        <span class="kw">let </span><span class="kw-2">mut </span>query = statement.query([])<span class="question-mark">?</span>;
 
-        <span class="comment">// Resume from the existing species locations in the table</span>
-        <span class="kw">while</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">row</span>) <span class="op">=</span> <span class="ident">query</span>.<span class="ident">next</span>()<span class="question-mark">?</span> {
-            <span class="kw">let</span> <span class="ident">id</span>: <span class="ident">i64</span> <span class="op">=</span> <span class="ident">row</span>.<span class="ident">get</span>(<span class="string">&quot;id&quot;</span>)<span class="question-mark">?</span>;
-            <span class="kw">let</span> <span class="ident">x</span>: <span class="ident">i32</span> <span class="op">=</span> <span class="ident">row</span>.<span class="ident">get</span>(<span class="string">&quot;x&quot;</span>)<span class="question-mark">?</span>;
-            <span class="kw">let</span> <span class="ident">y</span>: <span class="ident">i32</span> <span class="op">=</span> <span class="ident">row</span>.<span class="ident">get</span>(<span class="string">&quot;y&quot;</span>)<span class="question-mark">?</span>;
-            <span class="kw">let</span> <span class="ident">i</span>: <span class="ident">i32</span> <span class="op">=</span> <span class="ident">row</span>.<span class="ident">get</span>(<span class="string">&quot;i&quot;</span>)<span class="question-mark">?</span>;
+        <span class="comment">// Resume from the existing species locations in the table
+        </span><span class="kw">while let </span><span class="prelude-val">Some</span>(row) = query.next()<span class="question-mark">? </span>{
+            <span class="kw">let </span>id: i64 = row.get(<span class="string">&quot;id&quot;</span>)<span class="question-mark">?</span>;
+            <span class="kw">let </span>x: i32 = row.get(<span class="string">&quot;x&quot;</span>)<span class="question-mark">?</span>;
+            <span class="kw">let </span>y: i32 = row.get(<span class="string">&quot;y&quot;</span>)<span class="question-mark">?</span>;
+            <span class="kw">let </span>i: i32 = row.get(<span class="string">&quot;i&quot;</span>)<span class="question-mark">?</span>;
 
-            <span class="kw">let</span> <span class="ident">parent</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">i64</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">row</span>.<span class="ident">get</span>(<span class="string">&quot;parent&quot;</span>)<span class="question-mark">?</span>;
-            <span class="kw">let</span> <span class="ident">species</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">row</span>.<span class="ident">get</span>(<span class="string">&quot;species&quot;</span>)<span class="question-mark">?</span>;
+            <span class="kw">let </span>parent: <span class="prelude-ty">Option</span>&lt;i64&gt; = row.get(<span class="string">&quot;parent&quot;</span>)<span class="question-mark">?</span>;
+            <span class="kw">let </span>species: <span class="prelude-ty">Option</span>&lt;String&gt; = row.get(<span class="string">&quot;species&quot;</span>)<span class="question-mark">?</span>;
 
-            <span class="kw">let</span> <span class="ident">id</span> <span class="op">=</span> <span class="kw">unsafe</span> {
-                <span class="ident">GlobalLineageReference::from_inner</span>(<span class="ident">NonZeroOneU64::new_unchecked</span>(<span class="ident">from_i64</span>(<span class="ident">id</span>) <span class="op">+</span> <span class="number">2</span>))
+            <span class="kw">let </span>id = <span class="kw">unsafe </span>{
+                GlobalLineageReference::from_inner(NonZeroOneU64::new_unchecked(from_i64(id) + <span class="number">2</span>))
             };
 
-            <span class="comment">// Populate the individual `origins` lookup</span>
-            <span class="self">self</span>.<span class="ident">origins</span>.<span class="ident">insert</span>(
-                <span class="ident">id</span>.<span class="ident">clone</span>(),
-                <span class="ident">IndexedLocation::new</span>(<span class="ident">Location::new</span>(<span class="ident">from_i32</span>(<span class="ident">x</span>), <span class="ident">from_i32</span>(<span class="ident">y</span>)), <span class="ident">from_i32</span>(<span class="ident">i</span>)),
+            <span class="comment">// Populate the individual `origins` lookup
+            </span><span class="self">self</span>.origins.insert(
+                id.clone(),
+                IndexedLocation::new(Location::new(from_i32(x), from_i32(y)), from_i32(i)),
             );
 
-            <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">parent</span>) <span class="op">=</span> <span class="ident">parent</span> {
-                <span class="kw">let</span> <span class="ident">parent</span> <span class="op">=</span> <span class="kw">unsafe</span> {
-                    <span class="ident">GlobalLineageReference::from_inner</span>(<span class="ident">NonZeroOneU64::new_unchecked</span>(
-                        <span class="ident">from_i64</span>(<span class="ident">parent</span>) <span class="op">+</span> <span class="number">2</span>,
+            <span class="kw">if let </span><span class="prelude-val">Some</span>(parent) = parent {
+                <span class="kw">let </span>parent = <span class="kw">unsafe </span>{
+                    GlobalLineageReference::from_inner(NonZeroOneU64::new_unchecked(
+                        from_i64(parent) + <span class="number">2</span>,
                     ))
                 };
 
-                <span class="comment">// Populate the individual `parents` lookup</span>
-                <span class="self">self</span>.<span class="ident">parents</span>.<span class="ident">insert</span>(<span class="ident">id</span>.<span class="ident">clone</span>(), <span class="ident">parent</span>);
+                <span class="comment">// Populate the individual `parents` lookup
+                </span><span class="self">self</span>.parents.insert(id.clone(), parent);
             }
 
-            <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">species</span>) <span class="op">=</span> <span class="ident">species</span> {
-                <span class="comment">// Try to parse the species identity from its String form</span>
-                <span class="kw">let</span> <span class="ident">species</span> <span class="op">=</span> (<span class="op">|</span><span class="op">|</span> -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="kw">_</span>, <span class="kw">_</span><span class="op">&gt;</span> {
-                    <span class="kw">if</span> <span class="ident">species</span>.<span class="ident">len</span>() <span class="op">!</span><span class="op">=</span> <span class="number">48</span> <span class="op">|</span><span class="op">|</span> <span class="op">!</span><span class="ident">species</span>.<span class="ident">is_ascii</span>() {
-                        <span class="kw">return</span> <span class="prelude-val">Err</span>(());
+            <span class="kw">if let </span><span class="prelude-val">Some</span>(species) = species {
+                <span class="comment">// Try to parse the species identity from its String form
+                </span><span class="kw">let </span>species = (|| -&gt; <span class="prelude-ty">Result</span>&lt;<span class="kw">_</span>, <span class="kw">_</span>&gt; {
+                    <span class="kw">if </span>species.len() != <span class="number">48 </span>|| !species.is_ascii() {
+                        <span class="kw">return </span><span class="prelude-val">Err</span>(());
                     }
 
-                    <span class="prelude-val">Ok</span>(<span class="ident">SpeciesIdentity</span>(
-                        <span class="ident">u64::from_str_radix</span>(<span class="kw-2">&amp;</span><span class="ident">species</span>[<span class="number">0</span>..<span class="number">16</span>], <span class="number">16</span>).<span class="ident">map_err</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> ())<span class="question-mark">?</span>,
-                        <span class="ident">u64::from_str_radix</span>(<span class="kw-2">&amp;</span><span class="ident">species</span>[<span class="number">16</span>..<span class="number">32</span>], <span class="number">16</span>).<span class="ident">map_err</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> ())<span class="question-mark">?</span>,
-                        <span class="ident">u64::from_str_radix</span>(<span class="kw-2">&amp;</span><span class="ident">species</span>[<span class="number">32</span>..<span class="number">48</span>], <span class="number">16</span>).<span class="ident">map_err</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> ())<span class="question-mark">?</span>,
+                    <span class="prelude-val">Ok</span>(SpeciesIdentity(
+                        u64::from_str_radix(<span class="kw-2">&amp;</span>species[<span class="number">0</span>..<span class="number">16</span>], <span class="number">16</span>).map_err(|<span class="kw">_</span>| ())<span class="question-mark">?</span>,
+                        u64::from_str_radix(<span class="kw-2">&amp;</span>species[<span class="number">16</span>..<span class="number">32</span>], <span class="number">16</span>).map_err(|<span class="kw">_</span>| ())<span class="question-mark">?</span>,
+                        u64::from_str_radix(<span class="kw-2">&amp;</span>species[<span class="number">32</span>..<span class="number">48</span>], <span class="number">16</span>).map_err(|<span class="kw">_</span>| ())<span class="question-mark">?</span>,
                     ))
                 })()
-                .<span class="ident">map_err</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> {
-                    <span class="ident">rusqlite::Error::SqliteFailure</span>(
-                        <span class="ident">rusqlite::ffi::Error</span> {
-                            <span class="ident">code</span>: <span class="ident">rusqlite::ffi::ErrorCode::TypeMismatch</span>,
-                            <span class="ident">extended_code</span>: <span class="number">0</span>,
+                .map_err(|<span class="kw">_</span>| {
+                    rusqlite::Error::SqliteFailure(
+                        rusqlite::ffi::Error {
+                            code: rusqlite::ffi::ErrorCode::TypeMismatch,
+                            extended_code: <span class="number">0</span>,
                         },
                         <span class="prelude-val">Some</span>(<span class="macro">format!</span>(
                             <span class="string">&quot;Invalid species identity {:?} for individual #{}&quot;</span>,
-                            <span class="ident">species</span>, <span class="ident">id</span>,
+                            species, id,
                         )),
                     )
                 })<span class="question-mark">?</span>;
 
-                <span class="comment">// Populate the individual `species` lookup</span>
-                <span class="self">self</span>.<span class="ident">species</span>.<span class="ident">insert</span>(<span class="ident">id</span>, <span class="ident">species</span>);
+                <span class="comment">// Populate the individual `species` lookup
+                </span><span class="self">self</span>.species.insert(id, species);
             }
         }
 
-        <span class="kw">let</span> <span class="ident">last_event</span>: <span class="ident">String</span> <span class="op">=</span> <span class="self">self</span>
-            .<span class="ident">connection</span>
-            .<span class="ident">query_row</span>(
+        <span class="kw">let </span>last_event: String = <span class="self">self
+            </span>.connection
+            .query_row(
                 <span class="kw-2">&amp;</span><span class="macro">format!</span>(
                     <span class="string">&quot;SELECT value FROM {} WHERE key=&#39;last-event&#39;&quot;</span>,
-                    <span class="ident">METADATA_TABLE</span>
+                    METADATA_TABLE
                 ),
                 [],
-                <span class="op">|</span><span class="ident">row</span><span class="op">|</span> <span class="ident">row</span>.<span class="ident">get</span>(<span class="string">&quot;value&quot;</span>),
+                |row| row.get(<span class="string">&quot;value&quot;</span>),
             )
-            .<span class="ident">map_err</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> {
-                <span class="ident">rusqlite::Error::SqliteFailure</span>(
-                    <span class="ident">rusqlite::ffi::Error</span> {
-                        <span class="ident">code</span>: <span class="ident">rusqlite::ffi::ErrorCode::NotFound</span>,
-                        <span class="ident">extended_code</span>: <span class="number">0</span>,
+            .map_err(|<span class="kw">_</span>| {
+                rusqlite::Error::SqliteFailure(
+                    rusqlite::ffi::Error {
+                        code: rusqlite::ffi::ErrorCode::NotFound,
+                        extended_code: <span class="number">0</span>,
                     },
-                    <span class="prelude-val">Some</span>(<span class="ident">String::from</span>(<span class="string">&quot;Failed to fetch the reporter resume metadata&quot;</span>)),
+                    <span class="prelude-val">Some</span>(String::from(<span class="string">&quot;Failed to fetch the reporter resume metadata&quot;</span>)),
                 )
             })<span class="question-mark">?</span>;
 
-        <span class="kw">let</span> <span class="ident">LastEventState</span> {
-            <span class="ident">last_parent_prior_time</span>,
-            <span class="ident">last_speciation_event</span>,
-            <span class="ident">last_dispersal_event</span>,
-        } <span class="op">=</span> <span class="ident">LastEventState::from_string</span>(<span class="kw-2">&amp;</span><span class="ident">last_event</span>).<span class="ident">map_err</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> {
-            <span class="ident">rusqlite::Error::SqliteFailure</span>(
-                <span class="ident">rusqlite::ffi::Error</span> {
-                    <span class="ident">code</span>: <span class="ident">rusqlite::ffi::ErrorCode::TypeMismatch</span>,
-                    <span class="ident">extended_code</span>: <span class="number">0</span>,
+        <span class="kw">let </span>LastEventState {
+            last_parent_prior_time,
+            last_speciation_event,
+            last_dispersal_event,
+        } = LastEventState::from_string(<span class="kw-2">&amp;</span>last_event).map_err(|<span class="kw">_</span>| {
+            rusqlite::Error::SqliteFailure(
+                rusqlite::ffi::Error {
+                    code: rusqlite::ffi::ErrorCode::TypeMismatch,
+                    extended_code: <span class="number">0</span>,
                 },
-                <span class="prelude-val">Some</span>(<span class="ident">String::from</span>(
+                <span class="prelude-val">Some</span>(String::from(
                     <span class="string">&quot;Failed to decode the reporter resume metadata&quot;</span>,
                 )),
             )
         })<span class="question-mark">?</span>;
 
-        <span class="self">self</span>.<span class="ident">last_parent_prior_time</span> <span class="op">=</span> <span class="ident">last_parent_prior_time</span>;
-        <span class="self">self</span>.<span class="ident">last_speciation_event</span> <span class="op">=</span> <span class="ident">last_speciation_event</span>;
-        <span class="self">self</span>.<span class="ident">last_dispersal_event</span> <span class="op">=</span> <span class="ident">last_dispersal_event</span>;
+        <span class="self">self</span>.last_parent_prior_time = last_parent_prior_time;
+        <span class="self">self</span>.last_speciation_event = last_speciation_event;
+        <span class="self">self</span>.last_dispersal_event = last_dispersal_event;
 
         <span class="prelude-val">Ok</span>(())
     }
 
-    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">output_to_database</span>(<span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="ident">rusqlite::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">tx</span> <span class="op">=</span> <span class="self">self</span>
-            .<span class="ident">connection</span>
-            .<span class="ident">transaction_with_behavior</span>(<span class="ident">rusqlite::TransactionBehavior::Exclusive</span>)<span class="question-mark">?</span>;
+    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn </span>output_to_database(<span class="kw-2">mut </span><span class="self">self</span>) -&gt; rusqlite::Result&lt;()&gt; {
+        <span class="kw">let </span>tx = <span class="self">self
+            </span>.connection
+            .transaction_with_behavior(rusqlite::TransactionBehavior::Exclusive)<span class="question-mark">?</span>;
 
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">insertion</span> <span class="op">=</span> <span class="ident">tx</span>.<span class="ident">prepare</span>(<span class="kw-2">&amp;</span><span class="macro">format!</span>(
+        <span class="kw">let </span><span class="kw-2">mut </span>insertion = tx.prepare(<span class="kw-2">&amp;</span><span class="macro">format!</span>(
             <span class="string">&quot;INSERT OR REPLACE INTO {} VALUES (:id, :x, :y, :i, :parent, :species)&quot;</span>,
-            <span class="self">self</span>.<span class="ident">table</span>,
+            <span class="self">self</span>.table,
         ))<span class="question-mark">?</span>;
 
-        <span class="comment">// Lineage ancestor union-find with path compression</span>
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ancestors</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">parents</span>.<span class="ident">clone</span>();
+        <span class="comment">// Lineage ancestor union-find with path compression
+        </span><span class="kw">let </span><span class="kw-2">mut </span>ancestors = <span class="self">self</span>.parents.clone();
 
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">family</span> <span class="op">=</span> <span class="ident">Vec::new</span>();
+        <span class="kw">let </span><span class="kw-2">mut </span>family = Vec::new();
 
-        <span class="kw">for</span> (<span class="ident">lineage</span>, <span class="ident">origin</span>) <span class="kw">in</span> <span class="self">self</span>.<span class="ident">origins</span> {
-            <span class="comment">// Find the ancestor that originated the species</span>
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ancestor</span> <span class="op">=</span> <span class="ident">lineage</span>.<span class="ident">clone</span>();
-            <span class="kw">while</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">ancestor_parent</span>) <span class="op">=</span> <span class="ident">ancestors</span>.<span class="ident">get</span>(<span class="kw-2">&amp;</span><span class="ident">ancestor</span>) {
-                <span class="ident">family</span>.<span class="ident">push</span>(<span class="ident">ancestor</span>.<span class="ident">clone</span>());
-                <span class="ident">ancestor</span> <span class="op">=</span> <span class="ident">ancestor_parent</span>.<span class="ident">clone</span>();
+        <span class="kw">for </span>(lineage, origin) <span class="kw">in </span><span class="self">self</span>.origins {
+            <span class="comment">// Find the ancestor that originated the species
+            </span><span class="kw">let </span><span class="kw-2">mut </span>ancestor = lineage.clone();
+            <span class="kw">while let </span><span class="prelude-val">Some</span>(ancestor_parent) = ancestors.get(<span class="kw-2">&amp;</span>ancestor) {
+                family.push(ancestor.clone());
+                ancestor = ancestor_parent.clone();
             }
 
-            <span class="comment">// Compress the ancestry paths for all visited lineages</span>
-            <span class="kw">for</span> <span class="ident">child</span> <span class="kw">in</span> <span class="ident">family</span>.<span class="ident">drain</span>(..) {
-                <span class="ident">ancestors</span>.<span class="ident">insert</span>(<span class="ident">child</span>, <span class="ident">ancestor</span>.<span class="ident">clone</span>());
+            <span class="comment">// Compress the ancestry paths for all visited lineages
+            </span><span class="kw">for </span>child <span class="kw">in </span>family.drain(..) {
+                ancestors.insert(child, ancestor.clone());
             }
 
-            <span class="comment">// Positional parameters boost performance</span>
-            <span class="ident">insertion</span>.<span class="ident">execute</span>(<span class="macro">rusqlite::params!</span>[
-                <span class="comment">/* :id */</span> <span class="ident">to_i64</span>(<span class="kw">unsafe</span> { <span class="ident">lineage</span>.<span class="ident">clone</span>().<span class="ident">into_inner</span>().<span class="ident">get</span>() <span class="op">-</span> <span class="number">2</span> }),
-                <span class="comment">/* :x */</span> <span class="ident">to_i32</span>(<span class="ident">origin</span>.<span class="ident">location</span>().<span class="ident">x</span>()),
-                <span class="comment">/* :y */</span> <span class="ident">to_i32</span>(<span class="ident">origin</span>.<span class="ident">location</span>().<span class="ident">y</span>()),
-                <span class="comment">/* :i */</span> <span class="ident">to_i32</span>(<span class="ident">origin</span>.<span class="ident">index</span>()),
-                <span class="comment">/* :parent */</span>
-                <span class="self">self</span>.<span class="ident">parents</span>
-                    .<span class="ident">get</span>(<span class="kw-2">&amp;</span><span class="ident">lineage</span>)
-                    .<span class="ident">map</span>(<span class="op">|</span><span class="ident">parent</span><span class="op">|</span> <span class="ident">to_i64</span>(<span class="kw">unsafe</span> { <span class="ident">parent</span>.<span class="ident">clone</span>().<span class="ident">into_inner</span>().<span class="ident">get</span>() <span class="op">-</span> <span class="number">2</span> })),
-                <span class="comment">/* :species */</span>
-                <span class="self">self</span>.<span class="ident">species</span>.<span class="ident">get</span>(<span class="kw-2">&amp;</span><span class="ident">ancestor</span>).<span class="ident">map</span>(<span class="op">|</span><span class="ident">species</span><span class="op">|</span> {
-                    <span class="macro">format!</span>(<span class="string">&quot;{:016x}{:016x}{:016x}&quot;</span>, <span class="ident">species</span>.<span class="number">0</span>, <span class="ident">species</span>.<span class="number">1</span>, <span class="ident">species</span>.<span class="number">2</span>)
+            <span class="comment">// Positional parameters boost performance
+            </span>insertion.execute(<span class="macro">rusqlite::params!</span>[
+                <span class="comment">/* :id */ </span>to_i64(<span class="kw">unsafe </span>{ lineage.clone().into_inner().get() - <span class="number">2 </span>}),
+                <span class="comment">/* :x */ </span>to_i32(origin.location().x()),
+                <span class="comment">/* :y */ </span>to_i32(origin.location().y()),
+                <span class="comment">/* :i */ </span>to_i32(origin.index()),
+                <span class="comment">/* :parent */
+                </span><span class="self">self</span>.parents
+                    .get(<span class="kw-2">&amp;</span>lineage)
+                    .map(|parent| to_i64(<span class="kw">unsafe </span>{ parent.clone().into_inner().get() - <span class="number">2 </span>})),
+                <span class="comment">/* :species */
+                </span><span class="self">self</span>.species.get(<span class="kw-2">&amp;</span>ancestor).map(|species| {
+                    <span class="macro">format!</span>(<span class="string">&quot;{:016x}{:016x}{:016x}&quot;</span>, species.<span class="number">0</span>, species.<span class="number">1</span>, species.<span class="number">2</span>)
                 }),
             ])<span class="question-mark">?</span>;
         }
 
-        <span class="ident">insertion</span>.<span class="ident">finalize</span>()<span class="question-mark">?</span>;
+        insertion.finalize()<span class="question-mark">?</span>;
 
-        <span class="kw">let</span> <span class="ident">last_event_state</span> <span class="op">=</span> <span class="ident">LastEventState</span> {
-            <span class="ident">last_parent_prior_time</span>: <span class="self">self</span>.<span class="ident">last_parent_prior_time</span>,
-            <span class="ident">last_speciation_event</span>: <span class="self">self</span>.<span class="ident">last_speciation_event</span>,
-            <span class="ident">last_dispersal_event</span>: <span class="self">self</span>.<span class="ident">last_dispersal_event</span>,
+        <span class="kw">let </span>last_event_state = LastEventState {
+            last_parent_prior_time: <span class="self">self</span>.last_parent_prior_time,
+            last_speciation_event: <span class="self">self</span>.last_speciation_event,
+            last_dispersal_event: <span class="self">self</span>.last_dispersal_event,
         }
-        .<span class="ident">into_string</span>()
-        .<span class="ident">map_err</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> {
-            <span class="ident">rusqlite::Error::SqliteFailure</span>(
-                <span class="ident">rusqlite::ffi::Error</span> {
-                    <span class="ident">code</span>: <span class="ident">rusqlite::ffi::ErrorCode::TypeMismatch</span>,
-                    <span class="ident">extended_code</span>: <span class="number">0</span>,
+        .into_string()
+        .map_err(|<span class="kw">_</span>| {
+            rusqlite::Error::SqliteFailure(
+                rusqlite::ffi::Error {
+                    code: rusqlite::ffi::ErrorCode::TypeMismatch,
+                    extended_code: <span class="number">0</span>,
                 },
-                <span class="prelude-val">Some</span>(<span class="ident">String::from</span>(
+                <span class="prelude-val">Some</span>(String::from(
                     <span class="string">&quot;Failed to encode the reporter resume metadata&quot;</span>,
                 )),
             )
         })<span class="question-mark">?</span>;
 
-        <span class="ident">tx</span>.<span class="ident">execute</span>(
+        tx.execute(
             <span class="kw-2">&amp;</span><span class="macro">format!</span>(
                 <span class="string">&quot;INSERT OR REPLACE INTO {} VALUES (:key, :value)&quot;</span>,
-                <span class="ident">METADATA_TABLE</span>
+                METADATA_TABLE
             ),
-            <span class="macro">named_params!</span> { <span class="string">&quot;:key&quot;</span>: <span class="string">&quot;last-event&quot;</span>, <span class="string">&quot;:value&quot;</span>: <span class="ident">last_event_state</span> },
+            <span class="macro">named_params! </span>{ <span class="string">&quot;:key&quot;</span>: <span class="string">&quot;last-event&quot;</span>, <span class="string">&quot;:value&quot;</span>: last_event_state },
         )<span class="question-mark">?</span>;
 
-        <span class="ident">tx</span>.<span class="ident">commit</span>()<span class="question-mark">?</span>;
+        tx.commit()<span class="question-mark">?</span>;
 
-        <span class="self">self</span>.<span class="ident">connection</span>.<span class="ident">close</span>().<span class="ident">map_err</span>(<span class="op">|</span>(<span class="kw">_</span>, <span class="ident">err</span>)<span class="op">|</span> <span class="ident">err</span>)
+        <span class="self">self</span>.connection.close().map_err(|(<span class="kw">_</span>, err)| err)
     }
 }
 
-<span class="kw">const</span> <span class="kw">fn</span> <span class="ident">to_i32</span>(<span class="ident">x</span>: <span class="ident">u32</span>) -&gt; <span class="ident">i32</span> {
-    <span class="ident">i32::from_ne_bytes</span>(<span class="ident">x</span>.<span class="ident">to_ne_bytes</span>())
+<span class="kw">const fn </span>to_i32(x: u32) -&gt; i32 {
+    i32::from_ne_bytes(x.to_ne_bytes())
 }
 
-<span class="kw">const</span> <span class="kw">fn</span> <span class="ident">to_i64</span>(<span class="ident">x</span>: <span class="ident">u64</span>) -&gt; <span class="ident">i64</span> {
-    <span class="ident">i64::from_ne_bytes</span>(<span class="ident">x</span>.<span class="ident">to_ne_bytes</span>())
+<span class="kw">const fn </span>to_i64(x: u64) -&gt; i64 {
+    i64::from_ne_bytes(x.to_ne_bytes())
 }
 
-<span class="kw">const</span> <span class="kw">fn</span> <span class="ident">from_i32</span>(<span class="ident">x</span>: <span class="ident">i32</span>) -&gt; <span class="ident">u32</span> {
-    <span class="ident">u32::from_ne_bytes</span>(<span class="ident">x</span>.<span class="ident">to_ne_bytes</span>())
+<span class="kw">const fn </span>from_i32(x: i32) -&gt; u32 {
+    u32::from_ne_bytes(x.to_ne_bytes())
 }
 
-<span class="kw">const</span> <span class="kw">fn</span> <span class="ident">from_i64</span>(<span class="ident">x</span>: <span class="ident">i64</span>) -&gt; <span class="ident">u64</span> {
-    <span class="ident">u64::from_ne_bytes</span>(<span class="ident">x</span>.<span class="ident">to_ne_bytes</span>())
+<span class="kw">const fn </span>from_i64(x: i64) -&gt; u64 {
+    u64::from_ne_bytes(x.to_ne_bytes())
 }
 
-<span class="kw">const</span> <span class="kw">fn</span> <span class="ident">seahash_diffuse</span>(<span class="kw-2">mut</span> <span class="ident">x</span>: <span class="ident">u64</span>) -&gt; <span class="ident">u64</span> {
-    <span class="comment">// SeaHash diffusion function</span>
-    <span class="comment">// https://docs.rs/seahash/4.1.0/src/seahash/helper.rs.html#75-92</span>
+<span class="kw">const fn </span>seahash_diffuse(<span class="kw-2">mut </span>x: u64) -&gt; u64 {
+    <span class="comment">// SeaHash diffusion function
+    // https://docs.rs/seahash/4.1.0/src/seahash/helper.rs.html#75-92
 
-    <span class="comment">// These are derived from the PCG RNG&#39;s round. Thanks to @Veedrac for proposing</span>
-    <span class="comment">// this. The basic idea is that we use dynamic shifts, which are determined</span>
-    <span class="comment">// by the input itself. The shift is chosen by the higher bits, which means</span>
-    <span class="comment">// that changing those flips the lower bits, which scatters upwards because</span>
-    <span class="comment">// of the multiplication.</span>
+    // These are derived from the PCG RNG&#39;s round. Thanks to @Veedrac for proposing
+    // this. The basic idea is that we use dynamic shifts, which are determined
+    // by the input itself. The shift is chosen by the higher bits, which means
+    // that changing those flips the lower bits, which scatters upwards because
+    // of the multiplication.
 
-    <span class="ident">x</span> <span class="op">=</span> <span class="ident">x</span>.<span class="ident">wrapping_add</span>(<span class="number">0x9e37_79b9_7f4a_7c15</span>);
+    </span>x = x.wrapping_add(<span class="number">0x9e37_79b9_7f4a_7c15</span>);
 
-    <span class="ident">x</span> <span class="op">=</span> <span class="ident">x</span>.<span class="ident">wrapping_mul</span>(<span class="number">0x6eed_0e9d_a4d9_4a4f</span>);
+    x = x.wrapping_mul(<span class="number">0x6eed_0e9d_a4d9_4a4f</span>);
 
-    <span class="kw">let</span> <span class="ident">a</span> <span class="op">=</span> <span class="ident">x</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">32</span>;
-    <span class="kw">let</span> <span class="ident">b</span> <span class="op">=</span> <span class="ident">x</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">60</span>;
+    <span class="kw">let </span>a = x &gt;&gt; <span class="number">32</span>;
+    <span class="kw">let </span>b = x &gt;&gt; <span class="number">60</span>;
 
-    <span class="ident">x</span> <span class="op">^</span><span class="op">=</span> <span class="ident">a</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="ident">b</span>;
+    x ^= a &gt;&gt; b;
 
-    <span class="ident">x</span> <span class="op">=</span> <span class="ident">x</span>.<span class="ident">wrapping_mul</span>(<span class="number">0x6eed_0e9d_a4d9_4a4f</span>);
+    x = x.wrapping_mul(<span class="number">0x6eed_0e9d_a4d9_4a4f</span>);
 
-    <span class="ident">x</span>
+    x
 }
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
-<span class="kw">struct</span> <span class="ident">LastEventState</span> {
-    <span class="ident">last_parent_prior_time</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span>(<span class="ident">GlobalLineageReference</span>, <span class="ident">NonNegativeF64</span>)<span class="op">&gt;</span>,
-    <span class="ident">last_speciation_event</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">SpeciationEvent</span><span class="op">&gt;</span>,
-    <span class="ident">last_dispersal_event</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">DispersalEvent</span><span class="op">&gt;</span>,
+<span class="attribute">#[derive(Serialize, Deserialize)]
+</span><span class="kw">struct </span>LastEventState {
+    last_parent_prior_time: <span class="prelude-ty">Option</span>&lt;(GlobalLineageReference, NonNegativeF64)&gt;,
+    last_speciation_event: <span class="prelude-ty">Option</span>&lt;SpeciationEvent&gt;,
+    last_dispersal_event: <span class="prelude-ty">Option</span>&lt;DispersalEvent&gt;,
 }
 
-<span class="kw">impl</span> <span class="ident">LastEventState</span> {
-    <span class="kw">fn</span> <span class="ident">into_string</span>(<span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">String</span>, ()<span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">bytes</span> <span class="op">=</span> <span class="ident">bincode::options</span>().<span class="ident">serialize</span>(<span class="kw-2">&amp;</span><span class="self">self</span>).<span class="ident">map_err</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> ())<span class="question-mark">?</span>;
+<span class="kw">impl </span>LastEventState {
+    <span class="kw">fn </span>into_string(<span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;String, ()&gt; {
+        <span class="kw">let </span>bytes = bincode::options().serialize(<span class="kw-2">&amp;</span><span class="self">self</span>).map_err(|<span class="kw">_</span>| ())<span class="question-mark">?</span>;
 
-        <span class="prelude-val">Ok</span>(<span class="ident">base32::encode</span>(<span class="ident">base32::Alphabet::Crockford</span>, <span class="kw-2">&amp;</span><span class="ident">bytes</span>))
+        <span class="prelude-val">Ok</span>(base32::encode(base32::Alphabet::Crockford, <span class="kw-2">&amp;</span>bytes))
     }
 
-    <span class="kw">fn</span> <span class="ident">from_string</span>(<span class="ident">string</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">LastEventState</span>, ()<span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">bytes</span> <span class="op">=</span> <span class="ident">base32::decode</span>(<span class="ident">base32::Alphabet::Crockford</span>, <span class="ident">string</span>).<span class="ident">ok_or</span>(())<span class="question-mark">?</span>;
+    <span class="kw">fn </span>from_string(string: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Result</span>&lt;LastEventState, ()&gt; {
+        <span class="kw">let </span>bytes = base32::decode(base32::Alphabet::Crockford, string).ok_or(())<span class="question-mark">?</span>;
 
-        <span class="ident">bincode::options</span>().<span class="ident">deserialize</span>(<span class="kw-2">&amp;</span><span class="ident">bytes</span>).<span class="ident">map_err</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> ())
+        bincode::options().deserialize(<span class="kw-2">&amp;</span>bytes).map_err(|<span class="kw">_</span>| ())
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="necsim_plugins_species" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0-nightly (affe0d3a0 2022-08-05)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="necsim_plugins_species" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (5e9772042 2022-10-29)" ></div></body></html>

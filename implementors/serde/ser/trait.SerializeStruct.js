@@ -1,3 +1,3 @@
-(function() {var implementors = {};
-implementors["rustcoalescence"] = [{"text":"impl <a class=\"trait\" href=\"https://docs.rs/serde/1.0.145/serde/ser/trait.SerializeStruct.html\" title=\"trait serde::ser::SerializeStruct\">SerializeStruct</a> for <a class=\"struct\" href=\"rustcoalescence/args/utils/ser/impl/struct.BufferedStructSerializer.html\" title=\"struct rustcoalescence::args::utils::ser::impl::BufferedStructSerializer\">BufferedStructSerializer</a>","synthetic":false,"types":["rustcoalescence::args::utils::ser::impl::BufferedStructSerializer"]}];
-if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()
+(function() {var implementors = {
+"rustcoalescence":[["impl <a class=\"trait\" href=\"https://docs.rs/serde/1.0.147/serde/ser/trait.SerializeStruct.html\" title=\"trait serde::ser::SerializeStruct\">SerializeStruct</a> for <a class=\"struct\" href=\"rustcoalescence/args/utils/ser/impl/struct.BufferedStructSerializer.html\" title=\"struct rustcoalescence::args::utils::ser::impl::BufferedStructSerializer\">BufferedStructSerializer</a>"]]
+};if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

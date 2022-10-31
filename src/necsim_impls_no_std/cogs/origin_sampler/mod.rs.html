@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `necsim/impls/no-std/src/cogs/origin_sampler/mod.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>mod.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../storage.js"></script><script defer src="../../../../source-script.js"></script><script defer src="../../../../source-files.js"></script><script defer src="../../../../main.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../../necsim_impls_no_std/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../../necsim_impls_no_std/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../../necsim_impls_no_std/index.html"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `necsim/impls/no-std/src/cogs/origin_sampler/mod.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>mod.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../../normalize.css"><link rel="stylesheet" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../../ayu.css" disabled><link rel="stylesheet" href="../../../../dark.css" disabled><link rel="stylesheet" href="../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../storage.js"></script><script defer src="../../../../source-script.js"></script><script defer src="../../../../source-files.js"></script><script defer src="../../../../main.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../../../necsim_impls_no_std/index.html"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../wheel.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -43,50 +43,50 @@
 <span id="43">43</span>
 <span id="44">44</span>
 <span id="45">45</span>
-</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">necsim_core</span>::{
-    <span class="ident">cogs</span>::{<span class="ident">Habitat</span>, <span class="ident">MathsCore</span>},
-    <span class="ident">lineage::Lineage</span>,
+</pre><pre class="rust"><code><span class="kw">use </span>necsim_core::{
+    cogs::{Habitat, MathsCore},
+    lineage::Lineage,
 };
 
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">almost_infinite</span>;
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">decomposition</span>;
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">in_memory</span>;
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">non_spatial</span>;
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">pre_sampler</span>;
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">resuming</span>;
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">spatially_implicit</span>;
+<span class="kw">pub mod </span>almost_infinite;
+<span class="kw">pub mod </span>decomposition;
+<span class="kw">pub mod </span>in_memory;
+<span class="kw">pub mod </span>non_spatial;
+<span class="kw">pub mod </span>pre_sampler;
+<span class="kw">pub mod </span>resuming;
+<span class="kw">pub mod </span>spatially_implicit;
 
-<span class="kw">use</span> <span class="ident">pre_sampler::OriginPreSampler</span>;
+<span class="kw">use </span>pre_sampler::OriginPreSampler;
 
-<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::inline_always</span>, <span class="ident">clippy::inline_fn_without_body</span>)]</span>
-<span class="attribute">#[<span class="ident">contract_trait</span>]</span>
-<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::module_name_repetitions</span>)]</span>
-<span class="doccomment">/// `Lineage`s produced by the sampler&#39;s iterator must have</span>
-<span class="doccomment">/// * unique global references</span>
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">UntrustedOriginSampler</span><span class="op">&lt;</span><span class="lifetime">&#39;h</span>, <span class="ident">M</span>: <span class="ident">MathsCore</span><span class="op">&gt;</span>:
-    <span class="ident">core::fmt::Debug</span> <span class="op">+</span> <span class="ident">core::iter::Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">Lineage</span><span class="op">&gt;</span>
+<span class="attribute">#[allow(clippy::inline_always, clippy::inline_fn_without_body)]
+#[contract_trait]
+#[allow(clippy::module_name_repetitions)]
+</span><span class="doccomment">/// `Lineage`s produced by the sampler&#39;s iterator must have
+/// * unique global references
+</span><span class="kw">pub trait </span>UntrustedOriginSampler&lt;<span class="lifetime">&#39;h</span>, M: MathsCore&gt;:
+    core::fmt::Debug + core::iter::Iterator&lt;Item = Lineage&gt;
 {
-    <span class="kw">type</span> <span class="ident">Habitat</span>: <span class="lifetime">&#39;h</span> <span class="op">+</span> <span class="ident">Habitat</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span>;
-    <span class="kw">type</span> <span class="ident">PreSampler</span>: <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">u64</span><span class="op">&gt;</span>;
+    <span class="kw">type </span>Habitat: <span class="lifetime">&#39;h </span>+ Habitat&lt;M&gt;;
+    <span class="kw">type </span>PreSampler: Iterator&lt;Item = u64&gt;;
 
-    <span class="kw">fn</span> <span class="ident">habitat</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;h</span> <span class="ident"><span class="self">Self</span>::Habitat</span>;
+    <span class="kw">fn </span>habitat(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;h </span><span class="self">Self</span>::Habitat;
 
-    <span class="kw">fn</span> <span class="ident">into_pre_sampler</span>(<span class="self">self</span>) -&gt; <span class="ident">OriginPreSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident"><span class="self">Self</span>::PreSampler</span><span class="op">&gt;</span>
-    <span class="kw">where</span>
-        <span class="self">Self</span>: <span class="ident">Sized</span>;
+    <span class="kw">fn </span>into_pre_sampler(<span class="self">self</span>) -&gt; OriginPreSampler&lt;M, <span class="self">Self</span>::PreSampler&gt;
+    <span class="kw">where
+        </span><span class="self">Self</span>: Sized;
 
-    <span class="kw">fn</span> <span class="ident">full_upper_bound_size_hint</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">u64</span>;
+    <span class="kw">fn </span>full_upper_bound_size_hint(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; u64;
 }
 
-<span class="doccomment">/// # Safety</span>
-<span class="doccomment">/// `Lineage`s produced by the sampler&#39;s iterator must have</span>
-<span class="doccomment">/// * unique global references</span>
-<span class="doccomment">/// * unique indexed locations</span>
-<span class="doccomment">/// * valid indexed locations (i.e. inside habitable demes)</span>
-<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::module_name_repetitions</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">trait</span> <span class="ident">TrustedOriginSampler</span><span class="op">&lt;</span><span class="lifetime">&#39;h</span>, <span class="ident">M</span>: <span class="ident">MathsCore</span><span class="op">&gt;</span>:
-    <span class="ident">UntrustedOriginSampler</span><span class="op">&lt;</span><span class="lifetime">&#39;h</span>, <span class="ident">M</span><span class="op">&gt;</span>
+<span class="doccomment">/// # Safety
+/// `Lineage`s produced by the sampler&#39;s iterator must have
+/// * unique global references
+/// * unique indexed locations
+/// * valid indexed locations (i.e. inside habitable demes)
+</span><span class="attribute">#[allow(clippy::module_name_repetitions)]
+</span><span class="kw">pub unsafe trait </span>TrustedOriginSampler&lt;<span class="lifetime">&#39;h</span>, M: MathsCore&gt;:
+    UntrustedOriginSampler&lt;<span class="lifetime">&#39;h</span>, M&gt;
 {
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="necsim_impls_no_std" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0-nightly (affe0d3a0 2022-08-05)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="necsim_impls_no_std" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (5e9772042 2022-10-29)" ></div></body></html>

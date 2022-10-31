@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `rustcoalescence/algorithms/cuda/cpu-kernel/src/lib.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>lib.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../rustcoalescence_algorithms_cuda_cpu_kernel/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../rustcoalescence_algorithms_cuda_cpu_kernel/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../rustcoalescence_algorithms_cuda_cpu_kernel/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `rustcoalescence/algorithms/cuda/cpu-kernel/src/lib.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>lib.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../normalize.css"><link rel="stylesheet" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../ayu.css" disabled><link rel="stylesheet" href="../../dark.css" disabled><link rel="stylesheet" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../rustcoalescence_algorithms_cuda_cpu_kernel/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -192,199 +192,199 @@
 <span id="192">192</span>
 <span id="193">193</span>
 <span id="194">194</span>
-</pre><pre class="rust"><code><span class="attribute">#![<span class="ident">deny</span>(<span class="ident">clippy::pedantic</span>)]</span>
-<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_eval_limit</span>)]</span>
-<span class="attribute">#![<span class="ident">const_eval_limit</span> <span class="op">=</span> <span class="string">&quot;1000000000000&quot;</span>]</span>
-<span class="attribute">#![<span class="ident">allow</span>(<span class="ident">incomplete_features</span>)]</span>
-<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">specialization</span>)]</span>
+</pre><pre class="rust"><code><span class="attribute">#![deny(clippy::pedantic)]
+#![feature(const_eval_limit)]
+#![const_eval_limit = <span class="string">&quot;1000000000000&quot;</span>]
+#![allow(incomplete_features)]
+#![feature(specialization)]
 
-<span class="kw">use</span> <span class="ident">necsim_core</span>::{
-    <span class="ident">cogs</span>::{
-        <span class="ident">CoalescenceSampler</span>, <span class="ident">DispersalSampler</span>, <span class="ident">EmigrationExit</span>, <span class="ident">Habitat</span>, <span class="ident">ImmigrationEntry</span>,
-        <span class="ident">LineageStore</span>, <span class="ident">MathsCore</span>, <span class="ident">PrimeableRng</span>, <span class="ident">SpeciationProbability</span>, <span class="ident">TurnoverRate</span>,
+</span><span class="kw">use </span>necsim_core::{
+    cogs::{
+        CoalescenceSampler, DispersalSampler, EmigrationExit, Habitat, ImmigrationEntry,
+        LineageStore, MathsCore, PrimeableRng, SpeciationProbability, TurnoverRate,
     },
-    <span class="ident">reporter::boolean::Boolean</span>,
+    reporter::boolean::Boolean,
 };
 
-<span class="kw">use</span> <span class="ident">necsim_impls_no_std::cogs</span>::{
-    <span class="ident">active_lineage_sampler::singular::SingularActiveLineageSampler</span>,
-    <span class="ident">event_sampler::tracking::MinSpeciationTrackingEventSampler</span>,
+<span class="kw">use </span>necsim_impls_no_std::cogs::{
+    active_lineage_sampler::singular::SingularActiveLineageSampler,
+    event_sampler::tracking::MinSpeciationTrackingEventSampler,
 };
 
-<span class="kw">use</span> <span class="ident">rust_cuda</span>::{
-    <span class="ident">common::RustToCuda</span>,
-    <span class="ident">host</span>::{<span class="ident">CudaDropWrapper</span>, <span class="ident">LaunchConfig</span>, <span class="ident">LaunchPackage</span>, <span class="ident">Launcher</span>, <span class="ident">TypedKernel</span>},
-    <span class="ident">rustacuda</span>::{
-        <span class="ident">error::CudaResult</span>,
-        <span class="ident">function</span>::{<span class="ident">BlockSize</span>, <span class="ident">Function</span>, <span class="ident">GridSize</span>},
-        <span class="ident">stream::Stream</span>,
+<span class="kw">use </span>rust_cuda::{
+    common::RustToCuda,
+    host::{CudaDropWrapper, LaunchConfig, LaunchPackage, Launcher, TypedKernel},
+    rustacuda::{
+        error::CudaResult,
+        function::{BlockSize, Function, GridSize},
+        stream::Stream,
     },
 };
 
-<span class="kw">use</span> <span class="ident">rustcoalescence_algorithms_cuda_gpu_kernel::SimulatableKernel</span>;
+<span class="kw">use </span>rustcoalescence_algorithms_cuda_gpu_kernel::SimulatableKernel;
 
-<span class="kw">mod</span> <span class="ident">link</span>;
-<span class="kw">mod</span> <span class="ident">patch</span>;
+<span class="kw">mod </span>link;
+<span class="kw">mod </span>patch;
 
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">KernelCompilationCallback</span> <span class="op">=</span> <span class="kw">dyn</span> <span class="ident">FnMut</span>(<span class="kw-2">&amp;</span><span class="ident">Function</span>) -&gt; <span class="ident">CudaResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span>;
+<span class="kw">pub type </span>KernelCompilationCallback = <span class="kw">dyn </span>FnMut(<span class="kw-2">&amp;</span>Function) -&gt; CudaResult&lt;()&gt;;
 
-<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::module_name_repetitions</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">SimulationKernel</span><span class="op">&lt;</span>
-    <span class="ident">M</span>: <span class="ident">MathsCore</span>,
-    <span class="ident">H</span>: <span class="ident">Habitat</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">RustToCuda</span>,
-    <span class="ident">G</span>: <span class="ident">PrimeableRng</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">RustToCuda</span>,
-    <span class="ident">S</span>: <span class="ident">LineageStore</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">RustToCuda</span>,
-    <span class="ident">X</span>: <span class="ident">EmigrationExit</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span>, <span class="ident">S</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">RustToCuda</span>,
-    <span class="ident">D</span>: <span class="ident">DispersalSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">RustToCuda</span>,
-    <span class="ident">C</span>: <span class="ident">CoalescenceSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">S</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">RustToCuda</span>,
-    <span class="ident">T</span>: <span class="ident">TurnoverRate</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">RustToCuda</span>,
-    <span class="ident">N</span>: <span class="ident">SpeciationProbability</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">RustToCuda</span>,
-    <span class="ident">E</span>: <span class="ident">MinSpeciationTrackingEventSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span>, <span class="ident">S</span>, <span class="ident">X</span>, <span class="ident">D</span>, <span class="ident">C</span>, <span class="ident">T</span>, <span class="ident">N</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">RustToCuda</span>,
-    <span class="ident">I</span>: <span class="ident">ImmigrationEntry</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">RustToCuda</span>,
-    <span class="ident">A</span>: <span class="ident">SingularActiveLineageSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span>, <span class="ident">S</span>, <span class="ident">X</span>, <span class="ident">D</span>, <span class="ident">C</span>, <span class="ident">T</span>, <span class="ident">N</span>, <span class="ident">E</span>, <span class="ident">I</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">RustToCuda</span>,
-    <span class="ident">ReportSpeciation</span>: <span class="ident">Boolean</span>,
-    <span class="ident">ReportDispersal</span>: <span class="ident">Boolean</span>,
-<span class="op">&gt;</span> {
-    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::type_complexity</span>)]</span>
-    <span class="ident">kernel</span>: <span class="ident">TypedKernel</span><span class="op">&lt;</span>
-        <span class="kw">dyn</span> <span class="ident">SimulatableKernel</span><span class="op">&lt;</span>
-            <span class="ident">M</span>,
-            <span class="ident">H</span>,
-            <span class="ident">G</span>,
-            <span class="ident">S</span>,
-            <span class="ident">X</span>,
-            <span class="ident">D</span>,
-            <span class="ident">C</span>,
-            <span class="ident">T</span>,
-            <span class="ident">N</span>,
-            <span class="ident">E</span>,
-            <span class="ident">I</span>,
-            <span class="ident">A</span>,
-            <span class="ident">ReportSpeciation</span>,
-            <span class="ident">ReportDispersal</span>,
-        <span class="op">&gt;</span>,
-    <span class="op">&gt;</span>,
-    <span class="ident">stream</span>: <span class="ident">CudaDropWrapper</span><span class="op">&lt;</span><span class="ident">Stream</span><span class="op">&gt;</span>,
-    <span class="ident">grid</span>: <span class="ident">GridSize</span>,
-    <span class="ident">block</span>: <span class="ident">BlockSize</span>,
-    <span class="ident">ptx_jit</span>: <span class="ident">bool</span>,
-    <span class="ident">watcher</span>: <span class="ident">Box</span><span class="op">&lt;</span><span class="ident">KernelCompilationCallback</span><span class="op">&gt;</span>,
+<span class="attribute">#[allow(clippy::module_name_repetitions)]
+</span><span class="kw">pub struct </span>SimulationKernel&lt;
+    M: MathsCore,
+    H: Habitat&lt;M&gt; + RustToCuda,
+    G: PrimeableRng&lt;M&gt; + RustToCuda,
+    S: LineageStore&lt;M, H&gt; + RustToCuda,
+    X: EmigrationExit&lt;M, H, G, S&gt; + RustToCuda,
+    D: DispersalSampler&lt;M, H, G&gt; + RustToCuda,
+    C: CoalescenceSampler&lt;M, H, S&gt; + RustToCuda,
+    T: TurnoverRate&lt;M, H&gt; + RustToCuda,
+    N: SpeciationProbability&lt;M, H&gt; + RustToCuda,
+    E: MinSpeciationTrackingEventSampler&lt;M, H, G, S, X, D, C, T, N&gt; + RustToCuda,
+    I: ImmigrationEntry&lt;M&gt; + RustToCuda,
+    A: SingularActiveLineageSampler&lt;M, H, G, S, X, D, C, T, N, E, I&gt; + RustToCuda,
+    ReportSpeciation: Boolean,
+    ReportDispersal: Boolean,
+&gt; {
+    <span class="attribute">#[allow(clippy::type_complexity)]
+    </span>kernel: TypedKernel&lt;
+        <span class="kw">dyn </span>SimulatableKernel&lt;
+            M,
+            H,
+            G,
+            S,
+            X,
+            D,
+            C,
+            T,
+            N,
+            E,
+            I,
+            A,
+            ReportSpeciation,
+            ReportDispersal,
+        &gt;,
+    &gt;,
+    stream: CudaDropWrapper&lt;Stream&gt;,
+    grid: GridSize,
+    block: BlockSize,
+    ptx_jit: bool,
+    watcher: Box&lt;KernelCompilationCallback&gt;,
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span>
-        <span class="ident">M</span>: <span class="ident">MathsCore</span>,
-        <span class="ident">H</span>: <span class="ident">Habitat</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">RustToCuda</span>,
-        <span class="ident">G</span>: <span class="ident">PrimeableRng</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">RustToCuda</span>,
-        <span class="ident">S</span>: <span class="ident">LineageStore</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">RustToCuda</span>,
-        <span class="ident">X</span>: <span class="ident">EmigrationExit</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span>, <span class="ident">S</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">RustToCuda</span>,
-        <span class="ident">D</span>: <span class="ident">DispersalSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">RustToCuda</span>,
-        <span class="ident">C</span>: <span class="ident">CoalescenceSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">S</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">RustToCuda</span>,
-        <span class="ident">T</span>: <span class="ident">TurnoverRate</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">RustToCuda</span>,
-        <span class="ident">N</span>: <span class="ident">SpeciationProbability</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">RustToCuda</span>,
-        <span class="ident">E</span>: <span class="ident">MinSpeciationTrackingEventSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span>, <span class="ident">S</span>, <span class="ident">X</span>, <span class="ident">D</span>, <span class="ident">C</span>, <span class="ident">T</span>, <span class="ident">N</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">RustToCuda</span>,
-        <span class="ident">I</span>: <span class="ident">ImmigrationEntry</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">RustToCuda</span>,
-        <span class="ident">A</span>: <span class="ident">SingularActiveLineageSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span>, <span class="ident">S</span>, <span class="ident">X</span>, <span class="ident">D</span>, <span class="ident">C</span>, <span class="ident">T</span>, <span class="ident">N</span>, <span class="ident">E</span>, <span class="ident">I</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">RustToCuda</span>,
-        <span class="ident">ReportSpeciation</span>: <span class="ident">Boolean</span>,
-        <span class="ident">ReportDispersal</span>: <span class="ident">Boolean</span>,
-    <span class="op">&gt;</span> <span class="ident">SimulationKernel</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span>, <span class="ident">S</span>, <span class="ident">X</span>, <span class="ident">D</span>, <span class="ident">C</span>, <span class="ident">T</span>, <span class="ident">N</span>, <span class="ident">E</span>, <span class="ident">I</span>, <span class="ident">A</span>, <span class="ident">ReportSpeciation</span>, <span class="ident">ReportDispersal</span><span class="op">&gt;</span>
+<span class="kw">impl</span>&lt;
+        M: MathsCore,
+        H: Habitat&lt;M&gt; + RustToCuda,
+        G: PrimeableRng&lt;M&gt; + RustToCuda,
+        S: LineageStore&lt;M, H&gt; + RustToCuda,
+        X: EmigrationExit&lt;M, H, G, S&gt; + RustToCuda,
+        D: DispersalSampler&lt;M, H, G&gt; + RustToCuda,
+        C: CoalescenceSampler&lt;M, H, S&gt; + RustToCuda,
+        T: TurnoverRate&lt;M, H&gt; + RustToCuda,
+        N: SpeciationProbability&lt;M, H&gt; + RustToCuda,
+        E: MinSpeciationTrackingEventSampler&lt;M, H, G, S, X, D, C, T, N&gt; + RustToCuda,
+        I: ImmigrationEntry&lt;M&gt; + RustToCuda,
+        A: SingularActiveLineageSampler&lt;M, H, G, S, X, D, C, T, N, E, I&gt; + RustToCuda,
+        ReportSpeciation: Boolean,
+        ReportDispersal: Boolean,
+    &gt; SimulationKernel&lt;M, H, G, S, X, D, C, T, N, E, I, A, ReportSpeciation, ReportDispersal&gt;
 {
-    <span class="doccomment">/// # Errors</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Returns a `CudaError` if loading the CUDA kernel failed.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">try_new</span>(
-        <span class="ident">stream</span>: <span class="ident">Stream</span>,
-        <span class="ident">grid</span>: <span class="ident">GridSize</span>,
-        <span class="ident">block</span>: <span class="ident">BlockSize</span>,
-        <span class="ident">ptx_jit</span>: <span class="ident">bool</span>,
-        <span class="ident">on_compile</span>: <span class="ident">Box</span><span class="op">&lt;</span><span class="ident">KernelCompilationCallback</span><span class="op">&gt;</span>,
-    ) -&gt; <span class="ident">CudaResult</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>
-    <span class="kw">where</span>
-        <span class="self">Self</span>: <span class="ident">SimulatableKernel</span><span class="op">&lt;</span>
-            <span class="ident">M</span>,
-            <span class="ident">H</span>,
-            <span class="ident">G</span>,
-            <span class="ident">S</span>,
-            <span class="ident">X</span>,
-            <span class="ident">D</span>,
-            <span class="ident">C</span>,
-            <span class="ident">T</span>,
-            <span class="ident">N</span>,
-            <span class="ident">E</span>,
-            <span class="ident">I</span>,
-            <span class="ident">A</span>,
-            <span class="ident">ReportSpeciation</span>,
-            <span class="ident">ReportDispersal</span>,
-        <span class="op">&gt;</span>,
+    <span class="doccomment">/// # Errors
+    ///
+    /// Returns a `CudaError` if loading the CUDA kernel failed.
+    </span><span class="kw">pub fn </span>try_new(
+        stream: Stream,
+        grid: GridSize,
+        block: BlockSize,
+        ptx_jit: bool,
+        on_compile: Box&lt;KernelCompilationCallback&gt;,
+    ) -&gt; CudaResult&lt;<span class="self">Self</span>&gt;
+    <span class="kw">where
+        </span><span class="self">Self</span>: SimulatableKernel&lt;
+            M,
+            H,
+            G,
+            S,
+            X,
+            D,
+            C,
+            T,
+            N,
+            E,
+            I,
+            A,
+            ReportSpeciation,
+            ReportDispersal,
+        &gt;,
     {
-        <span class="kw">let</span> <span class="ident">stream</span> <span class="op">=</span> <span class="ident">CudaDropWrapper::from</span>(<span class="ident">stream</span>);
-        <span class="kw">let</span> <span class="ident">kernel</span> <span class="op">=</span> <span class="ident"><span class="self">Self</span>::new_kernel</span>()<span class="question-mark">?</span>;
+        <span class="kw">let </span>stream = CudaDropWrapper::from(stream);
+        <span class="kw">let </span>kernel = <span class="self">Self</span>::new_kernel()<span class="question-mark">?</span>;
 
-        <span class="prelude-val">Ok</span>(<span class="self">Self</span> {
-            <span class="ident">kernel</span>,
-            <span class="ident">stream</span>,
-            <span class="ident">grid</span>,
-            <span class="ident">block</span>,
-            <span class="ident">ptx_jit</span>,
-            <span class="ident">watcher</span>: <span class="ident">on_compile</span>,
+        <span class="prelude-val">Ok</span>(<span class="self">Self </span>{
+            kernel,
+            stream,
+            grid,
+            block,
+            ptx_jit,
+            watcher: on_compile,
         })
     }
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span>
-        <span class="ident">M</span>: <span class="ident">MathsCore</span>,
-        <span class="ident">H</span>: <span class="ident">Habitat</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">RustToCuda</span>,
-        <span class="ident">G</span>: <span class="ident">PrimeableRng</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">RustToCuda</span>,
-        <span class="ident">S</span>: <span class="ident">LineageStore</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">RustToCuda</span>,
-        <span class="ident">X</span>: <span class="ident">EmigrationExit</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span>, <span class="ident">S</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">RustToCuda</span>,
-        <span class="ident">D</span>: <span class="ident">DispersalSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">RustToCuda</span>,
-        <span class="ident">C</span>: <span class="ident">CoalescenceSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">S</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">RustToCuda</span>,
-        <span class="ident">T</span>: <span class="ident">TurnoverRate</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">RustToCuda</span>,
-        <span class="ident">N</span>: <span class="ident">SpeciationProbability</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">RustToCuda</span>,
-        <span class="ident">E</span>: <span class="ident">MinSpeciationTrackingEventSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span>, <span class="ident">S</span>, <span class="ident">X</span>, <span class="ident">D</span>, <span class="ident">C</span>, <span class="ident">T</span>, <span class="ident">N</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">RustToCuda</span>,
-        <span class="ident">I</span>: <span class="ident">ImmigrationEntry</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">RustToCuda</span>,
-        <span class="ident">A</span>: <span class="ident">SingularActiveLineageSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span>, <span class="ident">S</span>, <span class="ident">X</span>, <span class="ident">D</span>, <span class="ident">C</span>, <span class="ident">T</span>, <span class="ident">N</span>, <span class="ident">E</span>, <span class="ident">I</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">RustToCuda</span>,
-        <span class="ident">ReportSpeciation</span>: <span class="ident">Boolean</span>,
-        <span class="ident">ReportDispersal</span>: <span class="ident">Boolean</span>,
-    <span class="op">&gt;</span> <span class="ident">Launcher</span>
-    <span class="kw">for</span> <span class="ident">SimulationKernel</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span>, <span class="ident">S</span>, <span class="ident">X</span>, <span class="ident">D</span>, <span class="ident">C</span>, <span class="ident">T</span>, <span class="ident">N</span>, <span class="ident">E</span>, <span class="ident">I</span>, <span class="ident">A</span>, <span class="ident">ReportSpeciation</span>, <span class="ident">ReportDispersal</span><span class="op">&gt;</span>
+<span class="kw">impl</span>&lt;
+        M: MathsCore,
+        H: Habitat&lt;M&gt; + RustToCuda,
+        G: PrimeableRng&lt;M&gt; + RustToCuda,
+        S: LineageStore&lt;M, H&gt; + RustToCuda,
+        X: EmigrationExit&lt;M, H, G, S&gt; + RustToCuda,
+        D: DispersalSampler&lt;M, H, G&gt; + RustToCuda,
+        C: CoalescenceSampler&lt;M, H, S&gt; + RustToCuda,
+        T: TurnoverRate&lt;M, H&gt; + RustToCuda,
+        N: SpeciationProbability&lt;M, H&gt; + RustToCuda,
+        E: MinSpeciationTrackingEventSampler&lt;M, H, G, S, X, D, C, T, N&gt; + RustToCuda,
+        I: ImmigrationEntry&lt;M&gt; + RustToCuda,
+        A: SingularActiveLineageSampler&lt;M, H, G, S, X, D, C, T, N, E, I&gt; + RustToCuda,
+        ReportSpeciation: Boolean,
+        ReportDispersal: Boolean,
+    &gt; Launcher
+    <span class="kw">for </span>SimulationKernel&lt;M, H, G, S, X, D, C, T, N, E, I, A, ReportSpeciation, ReportDispersal&gt;
 {
-    <span class="kw">type</span> <span class="ident">CompilationWatcher</span> <span class="op">=</span> <span class="ident">Box</span><span class="op">&lt;</span><span class="ident">KernelCompilationCallback</span><span class="op">&gt;</span>;
-    <span class="kw">type</span> <span class="ident">KernelTraitObject</span> <span class="op">=</span> <span class="kw">dyn</span> <span class="ident">SimulatableKernel</span><span class="op">&lt;</span>
-        <span class="ident">M</span>,
-        <span class="ident">H</span>,
-        <span class="ident">G</span>,
-        <span class="ident">S</span>,
-        <span class="ident">X</span>,
-        <span class="ident">D</span>,
-        <span class="ident">C</span>,
-        <span class="ident">T</span>,
-        <span class="ident">N</span>,
-        <span class="ident">E</span>,
-        <span class="ident">I</span>,
-        <span class="ident">A</span>,
-        <span class="ident">ReportSpeciation</span>,
-        <span class="ident">ReportDispersal</span>,
-    <span class="op">&gt;</span>;
+    <span class="kw">type </span>CompilationWatcher = Box&lt;KernelCompilationCallback&gt;;
+    <span class="kw">type </span>KernelTraitObject = <span class="kw">dyn </span>SimulatableKernel&lt;
+        M,
+        H,
+        G,
+        S,
+        X,
+        D,
+        C,
+        T,
+        N,
+        E,
+        I,
+        A,
+        ReportSpeciation,
+        ReportDispersal,
+    &gt;;
 
-    <span class="kw">fn</span> <span class="ident">get_launch_package</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="ident">LaunchPackage</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
-        <span class="ident">LaunchPackage</span> {
-            <span class="ident">config</span>: <span class="ident">LaunchConfig</span> {
-                <span class="ident">grid</span>: <span class="self">self</span>.<span class="ident">grid</span>.<span class="ident">clone</span>(),
-                <span class="ident">block</span>: <span class="self">self</span>.<span class="ident">block</span>.<span class="ident">clone</span>(),
-                <span class="ident">shared_memory_size</span>: <span class="number">0_u32</span>,
-                <span class="ident">ptx_jit</span>: <span class="self">self</span>.<span class="ident">ptx_jit</span>,
+    <span class="kw">fn </span>get_launch_package(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; LaunchPackage&lt;<span class="self">Self</span>&gt; {
+        LaunchPackage {
+            config: LaunchConfig {
+                grid: <span class="self">self</span>.grid.clone(),
+                block: <span class="self">self</span>.block.clone(),
+                shared_memory_size: <span class="number">0_u32</span>,
+                ptx_jit: <span class="self">self</span>.ptx_jit,
             },
 
-            <span class="ident">kernel</span>: <span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">kernel</span>,
-            <span class="ident">stream</span>: <span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">stream</span>,
+            kernel: <span class="kw-2">&amp;mut </span><span class="self">self</span>.kernel,
+            stream: <span class="kw-2">&amp;mut </span><span class="self">self</span>.stream,
 
-            <span class="ident">watcher</span>: <span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">watcher</span>,
+            watcher: <span class="kw-2">&amp;mut </span><span class="self">self</span>.watcher,
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">on_compile</span>(<span class="ident">kernel</span>: <span class="kw-2">&amp;</span><span class="ident">Function</span>, <span class="ident">watcher</span>: <span class="kw-2">&amp;mut</span> <span class="ident"><span class="self">Self</span>::CompilationWatcher</span>) -&gt; <span class="ident">CudaResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
-        (<span class="ident">watcher</span>)(<span class="ident">kernel</span>)
+    <span class="kw">fn </span>on_compile(kernel: <span class="kw-2">&amp;</span>Function, watcher: <span class="kw-2">&amp;mut </span><span class="self">Self</span>::CompilationWatcher) -&gt; CudaResult&lt;()&gt; {
+        (watcher)(kernel)
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="rustcoalescence_algorithms_cuda_cpu_kernel" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0-nightly (affe0d3a0 2022-08-05)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="rustcoalescence_algorithms_cuda_cpu_kernel" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (5e9772042 2022-10-29)" ></div></body></html>

@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `necsim/plugins/core/src/import/combinator.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>combinator.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../necsim_plugins_core/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../necsim_plugins_core/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../necsim_plugins_core/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `necsim/plugins/core/src/import/combinator.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>combinator.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../normalize.css"><link rel="stylesheet" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../ayu.css" disabled><link rel="stylesheet" href="../../../dark.css" disabled><link rel="stylesheet" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../../necsim_plugins_core/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -314,321 +314,321 @@
 <span id="314">314</span>
 <span id="315">315</span>
 <span id="316">316</span>
-</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">std</span>::{
-    <span class="ident">fmt</span>,
-    <span class="ident">iter</span>::{<span class="ident">FromIterator</span>, <span class="ident">IntoIterator</span>},
-    <span class="ident">marker::PhantomData</span>,
-    <span class="ident">path::Path</span>,
-    <span class="ident">rc::Rc</span>,
+</pre><pre class="rust"><code><span class="kw">use </span>std::{
+    fmt,
+    iter::{FromIterator, IntoIterator},
+    marker::PhantomData,
+    path::Path,
+    rc::Rc,
 };
 
-<span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Deserializer</span>, <span class="ident">Serialize</span>, <span class="ident">Serializer</span>};
+<span class="kw">use </span>serde::{Deserialize, Deserializer, Serialize, Serializer};
 
-<span class="kw">use</span> <span class="ident">necsim_core</span>::{
-    <span class="ident">impl_finalise</span>, <span class="ident">impl_report</span>,
-    <span class="ident">reporter</span>::{
-        <span class="ident">boolean</span>::{<span class="ident">Boolean</span>, <span class="ident">False</span>, <span class="ident">True</span>},
-        <span class="ident">Reporter</span>,
+<span class="kw">use </span>necsim_core::{
+    impl_finalise, impl_report,
+    reporter::{
+        boolean::{Boolean, False, True},
+        Reporter,
     },
 };
 
-<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">export::Reporters</span>, <span class="ident">import::ReporterPlugin</span>};
+<span class="kw">use crate</span>::{export::Reporters, import::ReporterPlugin};
 
-<span class="kw">use</span> <span class="ident"><span class="kw">super</span>::ReporterPluginLibrary</span>;
+<span class="kw">use </span><span class="kw">super</span>::ReporterPluginLibrary;
 
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ReporterPluginVec</span><span class="op">&lt;</span>
-    <span class="ident">ReportSpeciation</span>: <span class="ident">Boolean</span>,
-    <span class="ident">ReportDispersal</span>: <span class="ident">Boolean</span>,
-    <span class="ident">ReportProgress</span>: <span class="ident">Boolean</span>,
-<span class="op">&gt;</span> {
-    <span class="ident">plugins</span>: <span class="ident">Box</span><span class="op">&lt;</span>[<span class="ident">ReporterPlugin</span>]<span class="op">&gt;</span>,
-    <span class="ident">marker</span>: <span class="ident">PhantomData</span><span class="op">&lt;</span>(<span class="ident">ReportSpeciation</span>, <span class="ident">ReportDispersal</span>, <span class="ident">ReportProgress</span>)<span class="op">&gt;</span>,
+<span class="kw">pub struct </span>ReporterPluginVec&lt;
+    ReportSpeciation: Boolean,
+    ReportDispersal: Boolean,
+    ReportProgress: Boolean,
+&gt; {
+    plugins: Box&lt;[ReporterPlugin]&gt;,
+    marker: PhantomData&lt;(ReportSpeciation, ReportDispersal, ReportProgress)&gt;,
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">ReportSpeciation</span>: <span class="ident">Boolean</span>, <span class="ident">ReportDispersal</span>: <span class="ident">Boolean</span>, <span class="ident">ReportProgress</span>: <span class="ident">Boolean</span><span class="op">&gt;</span> <span class="ident">fmt::Debug</span>
-    <span class="kw">for</span> <span class="ident">ReporterPluginVec</span><span class="op">&lt;</span><span class="ident">ReportSpeciation</span>, <span class="ident">ReportDispersal</span>, <span class="ident">ReportProgress</span><span class="op">&gt;</span>
+<span class="kw">impl</span>&lt;ReportSpeciation: Boolean, ReportDispersal: Boolean, ReportProgress: Boolean&gt; fmt::Debug
+    <span class="kw">for </span>ReporterPluginVec&lt;ReportSpeciation, ReportDispersal, ReportProgress&gt;
 {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">fmt</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span>) -&gt; <span class="ident">fmt::Result</span> {
-        <span class="ident">fmt</span>.<span class="ident">debug_struct</span>(<span class="macro">stringify!</span>(<span class="ident">ReporterPluginVec</span>))
-            .<span class="ident">field</span>(<span class="string">&quot;plugins&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">plugins</span>)
-            .<span class="ident">finish</span>()
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, fmt: <span class="kw-2">&amp;mut </span>fmt::Formatter) -&gt; fmt::Result {
+        fmt.debug_struct(<span class="macro">stringify!</span>(ReporterPluginVec))
+            .field(<span class="string">&quot;plugins&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.plugins)
+            .finish()
     }
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">ReportSpeciation</span>: <span class="ident">Boolean</span>, <span class="ident">ReportDispersal</span>: <span class="ident">Boolean</span>, <span class="ident">ReportProgress</span>: <span class="ident">Boolean</span><span class="op">&gt;</span>
-    <span class="ident">ReporterPluginVec</span><span class="op">&lt;</span><span class="ident">ReportSpeciation</span>, <span class="ident">ReportDispersal</span>, <span class="ident">ReportProgress</span><span class="op">&gt;</span>
+<span class="kw">impl</span>&lt;ReportSpeciation: Boolean, ReportDispersal: Boolean, ReportProgress: Boolean&gt;
+    ReporterPluginVec&lt;ReportSpeciation, ReportDispersal, ReportProgress&gt;
 {
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">internal_filter</span><span class="op">&lt;</span>
-        <span class="ident">KeepSpeciation</span>: <span class="ident">Boolean</span>,
-        <span class="ident">KeepDispersal</span>: <span class="ident">Boolean</span>,
-        <span class="ident">KeepProgress</span>: <span class="ident">Boolean</span>,
-    <span class="op">&gt;</span>(
+    <span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>internal_filter&lt;
+        KeepSpeciation: Boolean,
+        KeepDispersal: Boolean,
+        KeepProgress: Boolean,
+    &gt;(
         <span class="self">self</span>,
-    ) -&gt; <span class="self">Self</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">plugins</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">ReporterPlugin</span><span class="op">&gt;</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">plugins</span>.<span class="ident">into_vec</span>();
+    ) -&gt; <span class="self">Self </span>{
+        <span class="kw">let </span><span class="kw-2">mut </span>plugins: Vec&lt;ReporterPlugin&gt; = <span class="self">self</span>.plugins.into_vec();
 
-        <span class="ident">plugins</span>.<span class="ident">retain</span>(<span class="op">|</span><span class="ident">plugin</span><span class="op">|</span> {
-            (<span class="ident">plugin</span>.<span class="ident">filter</span>.<span class="ident">report_speciation</span> <span class="op">&amp;&amp;</span> <span class="ident">KeepSpeciation::VALUE</span>)
-                <span class="op">|</span><span class="op">|</span> (<span class="ident">plugin</span>.<span class="ident">filter</span>.<span class="ident">report_dispersal</span> <span class="op">&amp;&amp;</span> <span class="ident">KeepDispersal::VALUE</span>)
-                <span class="op">|</span><span class="op">|</span> (<span class="ident">plugin</span>.<span class="ident">filter</span>.<span class="ident">report_progress</span> <span class="op">&amp;&amp;</span> <span class="ident">KeepProgress::VALUE</span>)
+        plugins.retain(|plugin| {
+            (plugin.filter.report_speciation &amp;&amp; KeepSpeciation::VALUE)
+                || (plugin.filter.report_dispersal &amp;&amp; KeepDispersal::VALUE)
+                || (plugin.filter.report_progress &amp;&amp; KeepProgress::VALUE)
         });
 
-        <span class="self">Self</span> {
-            <span class="ident">plugins</span>: <span class="ident">plugins</span>.<span class="ident">into_boxed_slice</span>(),
-            <span class="ident">marker</span>: <span class="self">self</span>.<span class="ident">marker</span>,
+        <span class="self">Self </span>{
+            plugins: plugins.into_boxed_slice(),
+            marker: <span class="self">self</span>.marker,
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_lifetime</span><span class="op">&lt;</span><span class="ident">Q</span>, <span class="ident">F</span>: <span class="ident">FnOnce</span>(<span class="self">Self</span>) -&gt; <span class="ident">Q</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">inner</span>: <span class="ident">F</span>) -&gt; <span class="ident">Q</span> {
-        <span class="kw">let</span> <span class="ident">libraries</span> <span class="op">=</span> <span class="self">self</span>
-            .<span class="ident">plugins</span>
-            .<span class="ident">iter</span>()
-            .<span class="ident">map</span>(<span class="op">|</span><span class="ident">plugin</span><span class="op">|</span> <span class="ident">Rc::clone</span>(<span class="kw-2">&amp;</span><span class="ident">plugin</span>.<span class="ident">library</span>))
-            .<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="op">&gt;</span>();
+    <span class="kw">pub fn </span>with_lifetime&lt;Q, F: FnOnce(<span class="self">Self</span>) -&gt; Q&gt;(<span class="self">self</span>, inner: F) -&gt; Q {
+        <span class="kw">let </span>libraries = <span class="self">self
+            </span>.plugins
+            .iter()
+            .map(|plugin| Rc::clone(<span class="kw-2">&amp;</span>plugin.library))
+            .collect::&lt;Vec&lt;<span class="kw">_</span>&gt;&gt;();
 
-        <span class="kw">let</span> <span class="ident">result</span> <span class="op">=</span> <span class="ident">inner</span>(<span class="self">self</span>);
+        <span class="kw">let </span>result = inner(<span class="self">self</span>);
 
-        <span class="ident">std::mem::drop</span>(<span class="ident">libraries</span>);
+        std::mem::drop(libraries);
 
-        <span class="ident">result</span>
+        result
     }
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">ReportSpeciation</span>: <span class="ident">Boolean</span>, <span class="ident">ReportDispersal</span>: <span class="ident">Boolean</span>, <span class="ident">ReportProgress</span>: <span class="ident">Boolean</span><span class="op">&gt;</span> <span class="ident">Reporter</span>
-    <span class="kw">for</span> <span class="ident">ReporterPluginVec</span><span class="op">&lt;</span><span class="ident">ReportSpeciation</span>, <span class="ident">ReportDispersal</span>, <span class="ident">ReportProgress</span><span class="op">&gt;</span>
+<span class="kw">impl</span>&lt;ReportSpeciation: Boolean, ReportDispersal: Boolean, ReportProgress: Boolean&gt; Reporter
+    <span class="kw">for </span>ReporterPluginVec&lt;ReportSpeciation, ReportDispersal, ReportProgress&gt;
 {
-    <span class="macro">impl_report!</span>(<span class="ident">speciation</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">speciation</span>: <span class="ident">MaybeUsed</span><span class="op">&lt;</span><span class="ident">ReportSpeciation</span><span class="op">&gt;</span>) {
-        <span class="kw">for</span> <span class="ident">plugin</span> <span class="kw">in</span> <span class="self">self</span>.<span class="ident">plugins</span>.<span class="ident">iter_mut</span>() {
-            <span class="kw">if</span> <span class="ident">plugin</span>.<span class="ident">filter</span>.<span class="ident">report_speciation</span> {
-                <span class="ident">plugin</span>.<span class="ident">reporter</span>.<span class="ident">report_speciation</span>(<span class="ident">speciation</span>.<span class="ident">into</span>());
+    <span class="macro">impl_report!</span>(speciation(<span class="kw-2">&amp;mut </span><span class="self">self</span>, speciation: MaybeUsed&lt;ReportSpeciation&gt;) {
+        <span class="kw">for </span>plugin <span class="kw">in </span><span class="self">self</span>.plugins.iter_mut() {
+            <span class="kw">if </span>plugin.filter.report_speciation {
+                plugin.reporter.report_speciation(speciation.into());
             }
         }
     });
 
-    <span class="macro">impl_report!</span>(<span class="ident">dispersal</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">dispersal</span>: <span class="ident">MaybeUsed</span><span class="op">&lt;</span><span class="ident">ReportDispersal</span><span class="op">&gt;</span>) {
-        <span class="kw">for</span> <span class="ident">plugin</span> <span class="kw">in</span> <span class="self">self</span>.<span class="ident">plugins</span>.<span class="ident">iter_mut</span>() {
-            <span class="kw">if</span> <span class="ident">plugin</span>.<span class="ident">filter</span>.<span class="ident">report_dispersal</span> {
-                <span class="ident">plugin</span>.<span class="ident">reporter</span>.<span class="ident">report_dispersal</span>(<span class="ident">dispersal</span>.<span class="ident">into</span>());
+    <span class="macro">impl_report!</span>(dispersal(<span class="kw-2">&amp;mut </span><span class="self">self</span>, dispersal: MaybeUsed&lt;ReportDispersal&gt;) {
+        <span class="kw">for </span>plugin <span class="kw">in </span><span class="self">self</span>.plugins.iter_mut() {
+            <span class="kw">if </span>plugin.filter.report_dispersal {
+                plugin.reporter.report_dispersal(dispersal.into());
             }
         }
     });
 
-    <span class="macro">impl_report!</span>(<span class="ident">progress</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">progress</span>: <span class="ident">MaybeUsed</span><span class="op">&lt;</span><span class="ident">ReportProgress</span><span class="op">&gt;</span>) {
-        <span class="kw">for</span> <span class="ident">plugin</span> <span class="kw">in</span> <span class="self">self</span>.<span class="ident">plugins</span>.<span class="ident">iter_mut</span>() {
-            <span class="kw">if</span> <span class="ident">plugin</span>.<span class="ident">filter</span>.<span class="ident">report_progress</span> {
-                <span class="ident">plugin</span>.<span class="ident">reporter</span>.<span class="ident">report_progress</span>(<span class="ident">progress</span>.<span class="ident">into</span>());
+    <span class="macro">impl_report!</span>(progress(<span class="kw-2">&amp;mut </span><span class="self">self</span>, progress: MaybeUsed&lt;ReportProgress&gt;) {
+        <span class="kw">for </span>plugin <span class="kw">in </span><span class="self">self</span>.plugins.iter_mut() {
+            <span class="kw">if </span>plugin.filter.report_progress {
+                plugin.reporter.report_progress(progress.into());
             }
         }
     });
 
     <span class="macro">impl_finalise!</span>((<span class="self">self</span>) {
-        <span class="kw">for</span> <span class="ident">plugin</span> <span class="kw">in</span> <span class="self">self</span>.<span class="ident">plugins</span>.<span class="ident">into_vec</span>() {
-            <span class="ident">plugin</span>.<span class="ident">finalise</span>();
+        <span class="kw">for </span>plugin <span class="kw">in </span><span class="self">self</span>.plugins.into_vec() {
+            plugin.finalise();
         }
     });
 
-    <span class="kw">fn</span> <span class="ident">initialise</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">String</span><span class="op">&gt;</span> {
-        <span class="kw">for</span> <span class="ident">plugin</span> <span class="kw">in</span> <span class="self">self</span>.<span class="ident">plugins</span>.<span class="ident">iter_mut</span>() {
-            <span class="ident">plugin</span>.<span class="ident">reporter</span>.<span class="ident">initialise</span>()<span class="question-mark">?</span>;
+    <span class="kw">fn </span>initialise(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;(), String&gt; {
+        <span class="kw">for </span>plugin <span class="kw">in </span><span class="self">self</span>.plugins.iter_mut() {
+            plugin.reporter.initialise()<span class="question-mark">?</span>;
         }
 
         <span class="prelude-val">Ok</span>(())
     }
 }
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
-<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">AnyReporterPluginVec</span> {
-    <span class="ident">IgnoreSpeciationIgnoreDispersalIgnoreProgress</span>(<span class="ident">ReporterPluginVec</span><span class="op">&lt;</span><span class="ident">False</span>, <span class="ident">False</span>, <span class="ident">False</span><span class="op">&gt;</span>),
-    <span class="ident">IgnoreSpeciationIgnoreDispersalReportProgress</span>(<span class="ident">ReporterPluginVec</span><span class="op">&lt;</span><span class="ident">False</span>, <span class="ident">False</span>, <span class="ident">True</span><span class="op">&gt;</span>),
-    <span class="ident">IgnoreSpeciationReportDispersalIgnoreProgress</span>(<span class="ident">ReporterPluginVec</span><span class="op">&lt;</span><span class="ident">False</span>, <span class="ident">True</span>, <span class="ident">False</span><span class="op">&gt;</span>),
-    <span class="ident">IgnoreSpeciationReportDispersalReportProgress</span>(<span class="ident">ReporterPluginVec</span><span class="op">&lt;</span><span class="ident">False</span>, <span class="ident">True</span>, <span class="ident">True</span><span class="op">&gt;</span>),
-    <span class="ident">ReportSpeciationIgnoreDispersalIgnoreProgress</span>(<span class="ident">ReporterPluginVec</span><span class="op">&lt;</span><span class="ident">True</span>, <span class="ident">False</span>, <span class="ident">False</span><span class="op">&gt;</span>),
-    <span class="ident">ReportSpeciationIgnoreDispersalReportProgress</span>(<span class="ident">ReporterPluginVec</span><span class="op">&lt;</span><span class="ident">True</span>, <span class="ident">False</span>, <span class="ident">True</span><span class="op">&gt;</span>),
-    <span class="ident">ReportSpeciationReportDispersalIgnoreProgress</span>(<span class="ident">ReporterPluginVec</span><span class="op">&lt;</span><span class="ident">True</span>, <span class="ident">True</span>, <span class="ident">False</span><span class="op">&gt;</span>),
-    <span class="ident">ReportSpeciationReportDispersalReportProgress</span>(<span class="ident">ReporterPluginVec</span><span class="op">&lt;</span><span class="ident">True</span>, <span class="ident">True</span>, <span class="ident">True</span><span class="op">&gt;</span>),
+<span class="attribute">#[derive(Debug)]
+</span><span class="kw">pub enum </span>AnyReporterPluginVec {
+    IgnoreSpeciationIgnoreDispersalIgnoreProgress(ReporterPluginVec&lt;False, False, False&gt;),
+    IgnoreSpeciationIgnoreDispersalReportProgress(ReporterPluginVec&lt;False, False, True&gt;),
+    IgnoreSpeciationReportDispersalIgnoreProgress(ReporterPluginVec&lt;False, True, False&gt;),
+    IgnoreSpeciationReportDispersalReportProgress(ReporterPluginVec&lt;False, True, True&gt;),
+    ReportSpeciationIgnoreDispersalIgnoreProgress(ReporterPluginVec&lt;True, False, False&gt;),
+    ReportSpeciationIgnoreDispersalReportProgress(ReporterPluginVec&lt;True, False, True&gt;),
+    ReportSpeciationReportDispersalIgnoreProgress(ReporterPluginVec&lt;True, True, False&gt;),
+    ReportSpeciationReportDispersalReportProgress(ReporterPluginVec&lt;True, True, True&gt;),
 }
 
-<span class="kw">impl</span> <span class="ident">FromIterator</span><span class="op">&lt;</span><span class="ident">ReporterPlugin</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">AnyReporterPluginVec</span> {
-    <span class="kw">fn</span> <span class="ident">from_iter</span><span class="op">&lt;</span><span class="ident">I</span>: <span class="ident">IntoIterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">ReporterPlugin</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="ident">iter</span>: <span class="ident">I</span>) -&gt; <span class="self">Self</span> {
-        <span class="kw">let</span> <span class="ident">plugins</span> <span class="op">=</span> <span class="ident">iter</span>
-            .<span class="ident">into_iter</span>()
-            .<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">ReporterPlugin</span><span class="op">&gt;</span><span class="op">&gt;</span>()
-            .<span class="ident">into_boxed_slice</span>();
+<span class="kw">impl </span>FromIterator&lt;ReporterPlugin&gt; <span class="kw">for </span>AnyReporterPluginVec {
+    <span class="kw">fn </span>from_iter&lt;I: IntoIterator&lt;Item = ReporterPlugin&gt;&gt;(iter: I) -&gt; <span class="self">Self </span>{
+        <span class="kw">let </span>plugins = iter
+            .into_iter()
+            .collect::&lt;Vec&lt;ReporterPlugin&gt;&gt;()
+            .into_boxed_slice();
 
-        <span class="kw">let</span> <span class="ident">report_speciation</span> <span class="op">=</span> <span class="ident">plugins</span>
-            .<span class="ident">iter</span>()
-            .<span class="ident">any</span>(<span class="op">|</span><span class="ident">reporter</span><span class="op">|</span> <span class="ident">reporter</span>.<span class="ident">filter</span>.<span class="ident">report_speciation</span>);
-        <span class="kw">let</span> <span class="ident">report_dispersal</span> <span class="op">=</span> <span class="ident">plugins</span>
-            .<span class="ident">iter</span>()
-            .<span class="ident">any</span>(<span class="op">|</span><span class="ident">reporter</span><span class="op">|</span> <span class="ident">reporter</span>.<span class="ident">filter</span>.<span class="ident">report_dispersal</span>);
-        <span class="kw">let</span> <span class="ident">report_progress</span> <span class="op">=</span> <span class="ident">plugins</span>
-            .<span class="ident">iter</span>()
-            .<span class="ident">any</span>(<span class="op">|</span><span class="ident">reporter</span><span class="op">|</span> <span class="ident">reporter</span>.<span class="ident">filter</span>.<span class="ident">report_progress</span>);
+        <span class="kw">let </span>report_speciation = plugins
+            .iter()
+            .any(|reporter| reporter.filter.report_speciation);
+        <span class="kw">let </span>report_dispersal = plugins
+            .iter()
+            .any(|reporter| reporter.filter.report_dispersal);
+        <span class="kw">let </span>report_progress = plugins
+            .iter()
+            .any(|reporter| reporter.filter.report_progress);
 
-        <span class="kw">match</span> (<span class="ident">report_speciation</span>, <span class="ident">report_dispersal</span>, <span class="ident">report_progress</span>) {
+        <span class="kw">match </span>(report_speciation, report_dispersal, report_progress) {
             (<span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>) =&gt; {
-                <span class="ident"><span class="self">Self</span>::IgnoreSpeciationIgnoreDispersalIgnoreProgress</span>(<span class="ident">ReporterPluginVec</span> {
-                    <span class="ident">plugins</span>,
-                    <span class="ident">marker</span>: <span class="ident">PhantomData</span>::<span class="op">&lt;</span>(<span class="ident">False</span>, <span class="ident">False</span>, <span class="ident">False</span>)<span class="op">&gt;</span>,
+                <span class="self">Self</span>::IgnoreSpeciationIgnoreDispersalIgnoreProgress(ReporterPluginVec {
+                    plugins,
+                    marker: PhantomData::&lt;(False, False, False)&gt;,
                 })
             },
             (<span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">true</span>) =&gt; {
-                <span class="ident"><span class="self">Self</span>::IgnoreSpeciationIgnoreDispersalReportProgress</span>(<span class="ident">ReporterPluginVec</span> {
-                    <span class="ident">plugins</span>,
-                    <span class="ident">marker</span>: <span class="ident">PhantomData</span>::<span class="op">&lt;</span>(<span class="ident">False</span>, <span class="ident">False</span>, <span class="ident">True</span>)<span class="op">&gt;</span>,
+                <span class="self">Self</span>::IgnoreSpeciationIgnoreDispersalReportProgress(ReporterPluginVec {
+                    plugins,
+                    marker: PhantomData::&lt;(False, False, True)&gt;,
                 })
             },
             (<span class="bool-val">false</span>, <span class="bool-val">true</span>, <span class="bool-val">false</span>) =&gt; {
-                <span class="ident"><span class="self">Self</span>::IgnoreSpeciationReportDispersalIgnoreProgress</span>(<span class="ident">ReporterPluginVec</span> {
-                    <span class="ident">plugins</span>,
-                    <span class="ident">marker</span>: <span class="ident">PhantomData</span>::<span class="op">&lt;</span>(<span class="ident">False</span>, <span class="ident">True</span>, <span class="ident">False</span>)<span class="op">&gt;</span>,
+                <span class="self">Self</span>::IgnoreSpeciationReportDispersalIgnoreProgress(ReporterPluginVec {
+                    plugins,
+                    marker: PhantomData::&lt;(False, True, False)&gt;,
                 })
             },
             (<span class="bool-val">false</span>, <span class="bool-val">true</span>, <span class="bool-val">true</span>) =&gt; {
-                <span class="ident"><span class="self">Self</span>::IgnoreSpeciationReportDispersalReportProgress</span>(<span class="ident">ReporterPluginVec</span> {
-                    <span class="ident">plugins</span>,
-                    <span class="ident">marker</span>: <span class="ident">PhantomData</span>::<span class="op">&lt;</span>(<span class="ident">False</span>, <span class="ident">True</span>, <span class="ident">True</span>)<span class="op">&gt;</span>,
+                <span class="self">Self</span>::IgnoreSpeciationReportDispersalReportProgress(ReporterPluginVec {
+                    plugins,
+                    marker: PhantomData::&lt;(False, True, True)&gt;,
                 })
             },
             (<span class="bool-val">true</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>) =&gt; {
-                <span class="ident"><span class="self">Self</span>::ReportSpeciationIgnoreDispersalIgnoreProgress</span>(<span class="ident">ReporterPluginVec</span> {
-                    <span class="ident">plugins</span>,
-                    <span class="ident">marker</span>: <span class="ident">PhantomData</span>::<span class="op">&lt;</span>(<span class="ident">True</span>, <span class="ident">False</span>, <span class="ident">False</span>)<span class="op">&gt;</span>,
+                <span class="self">Self</span>::ReportSpeciationIgnoreDispersalIgnoreProgress(ReporterPluginVec {
+                    plugins,
+                    marker: PhantomData::&lt;(True, False, False)&gt;,
                 })
             },
             (<span class="bool-val">true</span>, <span class="bool-val">false</span>, <span class="bool-val">true</span>) =&gt; {
-                <span class="ident"><span class="self">Self</span>::ReportSpeciationIgnoreDispersalReportProgress</span>(<span class="ident">ReporterPluginVec</span> {
-                    <span class="ident">plugins</span>,
-                    <span class="ident">marker</span>: <span class="ident">PhantomData</span>::<span class="op">&lt;</span>(<span class="ident">True</span>, <span class="ident">False</span>, <span class="ident">True</span>)<span class="op">&gt;</span>,
+                <span class="self">Self</span>::ReportSpeciationIgnoreDispersalReportProgress(ReporterPluginVec {
+                    plugins,
+                    marker: PhantomData::&lt;(True, False, True)&gt;,
                 })
             },
             (<span class="bool-val">true</span>, <span class="bool-val">true</span>, <span class="bool-val">false</span>) =&gt; {
-                <span class="ident"><span class="self">Self</span>::ReportSpeciationReportDispersalIgnoreProgress</span>(<span class="ident">ReporterPluginVec</span> {
-                    <span class="ident">plugins</span>,
-                    <span class="ident">marker</span>: <span class="ident">PhantomData</span>::<span class="op">&lt;</span>(<span class="ident">True</span>, <span class="ident">True</span>, <span class="ident">False</span>)<span class="op">&gt;</span>,
+                <span class="self">Self</span>::ReportSpeciationReportDispersalIgnoreProgress(ReporterPluginVec {
+                    plugins,
+                    marker: PhantomData::&lt;(True, True, False)&gt;,
                 })
             },
             (<span class="bool-val">true</span>, <span class="bool-val">true</span>, <span class="bool-val">true</span>) =&gt; {
-                <span class="ident"><span class="self">Self</span>::ReportSpeciationReportDispersalReportProgress</span>(<span class="ident">ReporterPluginVec</span> {
-                    <span class="ident">plugins</span>,
-                    <span class="ident">marker</span>: <span class="ident">PhantomData</span>::<span class="op">&lt;</span>(<span class="ident">True</span>, <span class="ident">True</span>, <span class="ident">True</span>)<span class="op">&gt;</span>,
+                <span class="self">Self</span>::ReportSpeciationReportDispersalReportProgress(ReporterPluginVec {
+                    plugins,
+                    marker: PhantomData::&lt;(True, True, True)&gt;,
                 })
             },
         }
     }
 }
 
-<span class="attribute">#[<span class="ident">macro_export</span>]</span>
-<span class="macro">macro_rules!</span> <span class="ident">match_any_reporter_plugin_vec</span> {
-    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">any</span>:<span class="ident">expr</span> =&gt; <span class="op">|</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">inner</span>:<span class="ident">ident</span> <span class="op">|</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span>:<span class="ident">block</span>) =&gt; {{
-        <span class="kw">use</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::import::AnyReporterPluginVec</span>::<span class="kw-2">*</span>;
+<span class="attribute">#[macro_export]
+</span><span class="macro">macro_rules! </span>match_any_reporter_plugin_vec {
+    (<span class="macro-nonterminal">$any</span>:expr =&gt; | <span class="macro-nonterminal">$inner</span>:ident | <span class="macro-nonterminal">$code</span>:block) =&gt; {{
+        <span class="kw">use </span><span class="macro-nonterminal">$crate::import::AnyReporterPluginVec</span>::<span class="kw-2">*</span>;
 
-        <span class="kw">match</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">any</span> {
-            <span class="ident">IgnoreSpeciationIgnoreDispersalIgnoreProgress</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">inner</span>) =&gt; <span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span>,
-            <span class="ident">IgnoreSpeciationIgnoreDispersalReportProgress</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">inner</span>) =&gt; <span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span>,
-            <span class="ident">IgnoreSpeciationReportDispersalIgnoreProgress</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">inner</span>) =&gt; <span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span>,
-            <span class="ident">IgnoreSpeciationReportDispersalReportProgress</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">inner</span>) =&gt; <span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span>,
-            <span class="ident">ReportSpeciationIgnoreDispersalIgnoreProgress</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">inner</span>) =&gt; <span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span>,
-            <span class="ident">ReportSpeciationIgnoreDispersalReportProgress</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">inner</span>) =&gt; <span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span>,
-            <span class="ident">ReportSpeciationReportDispersalIgnoreProgress</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">inner</span>) =&gt; <span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span>,
-            <span class="ident">ReportSpeciationReportDispersalReportProgress</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">inner</span>) =&gt; <span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span>,
+        <span class="kw">match </span><span class="macro-nonterminal">$any </span>{
+            IgnoreSpeciationIgnoreDispersalIgnoreProgress(<span class="macro-nonterminal">$inner</span>) =&gt; <span class="macro-nonterminal">$code</span>,
+            IgnoreSpeciationIgnoreDispersalReportProgress(<span class="macro-nonterminal">$inner</span>) =&gt; <span class="macro-nonterminal">$code</span>,
+            IgnoreSpeciationReportDispersalIgnoreProgress(<span class="macro-nonterminal">$inner</span>) =&gt; <span class="macro-nonterminal">$code</span>,
+            IgnoreSpeciationReportDispersalReportProgress(<span class="macro-nonterminal">$inner</span>) =&gt; <span class="macro-nonterminal">$code</span>,
+            ReportSpeciationIgnoreDispersalIgnoreProgress(<span class="macro-nonterminal">$inner</span>) =&gt; <span class="macro-nonterminal">$code</span>,
+            ReportSpeciationIgnoreDispersalReportProgress(<span class="macro-nonterminal">$inner</span>) =&gt; <span class="macro-nonterminal">$code</span>,
+            ReportSpeciationReportDispersalIgnoreProgress(<span class="macro-nonterminal">$inner</span>) =&gt; <span class="macro-nonterminal">$code</span>,
+            ReportSpeciationReportDispersalReportProgress(<span class="macro-nonterminal">$inner</span>) =&gt; <span class="macro-nonterminal">$code</span>,
         }
     }};
-    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">any</span>:<span class="ident">expr</span> =&gt; <span class="op">|</span> <span class="kw-2">mut</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">inner</span>:<span class="ident">ident</span> <span class="op">|</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span>:<span class="ident">block</span>) =&gt; {{
-        <span class="kw">use</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::import::AnyReporterPluginVec</span>::<span class="kw-2">*</span>;
+    (<span class="macro-nonterminal">$any</span>:expr =&gt; | <span class="kw-2">mut </span><span class="macro-nonterminal">$inner</span>:ident | <span class="macro-nonterminal">$code</span>:block) =&gt; {{
+        <span class="kw">use </span><span class="macro-nonterminal">$crate::import::AnyReporterPluginVec</span>::<span class="kw-2">*</span>;
 
-        <span class="kw">match</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">any</span> {
-            <span class="ident">IgnoreSpeciationIgnoreDispersalIgnoreProgress</span>(<span class="kw-2">mut</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">inner</span>) =&gt; <span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span>,
-            <span class="ident">IgnoreSpeciationIgnoreDispersalReportProgress</span>(<span class="kw-2">mut</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">inner</span>) =&gt; <span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span>,
-            <span class="ident">IgnoreSpeciationReportDispersalIgnoreProgress</span>(<span class="kw-2">mut</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">inner</span>) =&gt; <span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span>,
-            <span class="ident">IgnoreSpeciationReportDispersalReportProgress</span>(<span class="kw-2">mut</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">inner</span>) =&gt; <span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span>,
-            <span class="ident">ReportSpeciationIgnoreDispersalIgnoreProgress</span>(<span class="kw-2">mut</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">inner</span>) =&gt; <span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span>,
-            <span class="ident">ReportSpeciationIgnoreDispersalReportProgress</span>(<span class="kw-2">mut</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">inner</span>) =&gt; <span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span>,
-            <span class="ident">ReportSpeciationReportDispersalIgnoreProgress</span>(<span class="kw-2">mut</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">inner</span>) =&gt; <span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span>,
-            <span class="ident">ReportSpeciationReportDispersalReportProgress</span>(<span class="kw-2">mut</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">inner</span>) =&gt; <span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span>,
+        <span class="kw">match </span><span class="macro-nonterminal">$any </span>{
+            IgnoreSpeciationIgnoreDispersalIgnoreProgress(<span class="kw-2">mut </span><span class="macro-nonterminal">$inner</span>) =&gt; <span class="macro-nonterminal">$code</span>,
+            IgnoreSpeciationIgnoreDispersalReportProgress(<span class="kw-2">mut </span><span class="macro-nonterminal">$inner</span>) =&gt; <span class="macro-nonterminal">$code</span>,
+            IgnoreSpeciationReportDispersalIgnoreProgress(<span class="kw-2">mut </span><span class="macro-nonterminal">$inner</span>) =&gt; <span class="macro-nonterminal">$code</span>,
+            IgnoreSpeciationReportDispersalReportProgress(<span class="kw-2">mut </span><span class="macro-nonterminal">$inner</span>) =&gt; <span class="macro-nonterminal">$code</span>,
+            ReportSpeciationIgnoreDispersalIgnoreProgress(<span class="kw-2">mut </span><span class="macro-nonterminal">$inner</span>) =&gt; <span class="macro-nonterminal">$code</span>,
+            ReportSpeciationIgnoreDispersalReportProgress(<span class="kw-2">mut </span><span class="macro-nonterminal">$inner</span>) =&gt; <span class="macro-nonterminal">$code</span>,
+            ReportSpeciationReportDispersalIgnoreProgress(<span class="kw-2">mut </span><span class="macro-nonterminal">$inner</span>) =&gt; <span class="macro-nonterminal">$code</span>,
+            ReportSpeciationReportDispersalReportProgress(<span class="kw-2">mut </span><span class="macro-nonterminal">$inner</span>) =&gt; <span class="macro-nonterminal">$code</span>,
         }
     }};
 }
 
-<span class="kw">impl</span> <span class="ident">AnyReporterPluginVec</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_lifetime</span><span class="op">&lt;</span><span class="ident">Q</span>, <span class="ident">F</span>: <span class="ident">FnOnce</span>(<span class="self">Self</span>) -&gt; <span class="ident">Q</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">inner</span>: <span class="ident">F</span>) -&gt; <span class="ident">Q</span> {
-        <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident"><span class="self">Self</span>::IgnoreSpeciationIgnoreDispersalIgnoreProgress</span>(<span class="ident">vec</span>) =&gt; <span class="ident">vec</span>.<span class="ident">with_lifetime</span>(<span class="op">|</span><span class="ident">vec</span><span class="op">|</span> {
-                <span class="ident">inner</span>(<span class="ident"><span class="self">Self</span>::IgnoreSpeciationIgnoreDispersalIgnoreProgress</span>(<span class="ident">vec</span>))
+<span class="kw">impl </span>AnyReporterPluginVec {
+    <span class="kw">pub fn </span>with_lifetime&lt;Q, F: FnOnce(<span class="self">Self</span>) -&gt; Q&gt;(<span class="self">self</span>, inner: F) -&gt; Q {
+        <span class="kw">match </span><span class="self">self </span>{
+            <span class="self">Self</span>::IgnoreSpeciationIgnoreDispersalIgnoreProgress(vec) =&gt; vec.with_lifetime(|vec| {
+                inner(<span class="self">Self</span>::IgnoreSpeciationIgnoreDispersalIgnoreProgress(vec))
             }),
-            <span class="ident"><span class="self">Self</span>::IgnoreSpeciationIgnoreDispersalReportProgress</span>(<span class="ident">vec</span>) =&gt; <span class="ident">vec</span>.<span class="ident">with_lifetime</span>(<span class="op">|</span><span class="ident">vec</span><span class="op">|</span> {
-                <span class="ident">inner</span>(<span class="ident"><span class="self">Self</span>::IgnoreSpeciationIgnoreDispersalReportProgress</span>(<span class="ident">vec</span>))
+            <span class="self">Self</span>::IgnoreSpeciationIgnoreDispersalReportProgress(vec) =&gt; vec.with_lifetime(|vec| {
+                inner(<span class="self">Self</span>::IgnoreSpeciationIgnoreDispersalReportProgress(vec))
             }),
-            <span class="ident"><span class="self">Self</span>::IgnoreSpeciationReportDispersalIgnoreProgress</span>(<span class="ident">vec</span>) =&gt; <span class="ident">vec</span>.<span class="ident">with_lifetime</span>(<span class="op">|</span><span class="ident">vec</span><span class="op">|</span> {
-                <span class="ident">inner</span>(<span class="ident"><span class="self">Self</span>::IgnoreSpeciationReportDispersalIgnoreProgress</span>(<span class="ident">vec</span>))
+            <span class="self">Self</span>::IgnoreSpeciationReportDispersalIgnoreProgress(vec) =&gt; vec.with_lifetime(|vec| {
+                inner(<span class="self">Self</span>::IgnoreSpeciationReportDispersalIgnoreProgress(vec))
             }),
-            <span class="ident"><span class="self">Self</span>::IgnoreSpeciationReportDispersalReportProgress</span>(<span class="ident">vec</span>) =&gt; <span class="ident">vec</span>.<span class="ident">with_lifetime</span>(<span class="op">|</span><span class="ident">vec</span><span class="op">|</span> {
-                <span class="ident">inner</span>(<span class="ident"><span class="self">Self</span>::IgnoreSpeciationReportDispersalReportProgress</span>(<span class="ident">vec</span>))
+            <span class="self">Self</span>::IgnoreSpeciationReportDispersalReportProgress(vec) =&gt; vec.with_lifetime(|vec| {
+                inner(<span class="self">Self</span>::IgnoreSpeciationReportDispersalReportProgress(vec))
             }),
-            <span class="ident"><span class="self">Self</span>::ReportSpeciationIgnoreDispersalIgnoreProgress</span>(<span class="ident">vec</span>) =&gt; <span class="ident">vec</span>.<span class="ident">with_lifetime</span>(<span class="op">|</span><span class="ident">vec</span><span class="op">|</span> {
-                <span class="ident">inner</span>(<span class="ident"><span class="self">Self</span>::ReportSpeciationIgnoreDispersalIgnoreProgress</span>(<span class="ident">vec</span>))
+            <span class="self">Self</span>::ReportSpeciationIgnoreDispersalIgnoreProgress(vec) =&gt; vec.with_lifetime(|vec| {
+                inner(<span class="self">Self</span>::ReportSpeciationIgnoreDispersalIgnoreProgress(vec))
             }),
-            <span class="ident"><span class="self">Self</span>::ReportSpeciationIgnoreDispersalReportProgress</span>(<span class="ident">vec</span>) =&gt; <span class="ident">vec</span>.<span class="ident">with_lifetime</span>(<span class="op">|</span><span class="ident">vec</span><span class="op">|</span> {
-                <span class="ident">inner</span>(<span class="ident"><span class="self">Self</span>::ReportSpeciationIgnoreDispersalReportProgress</span>(<span class="ident">vec</span>))
+            <span class="self">Self</span>::ReportSpeciationIgnoreDispersalReportProgress(vec) =&gt; vec.with_lifetime(|vec| {
+                inner(<span class="self">Self</span>::ReportSpeciationIgnoreDispersalReportProgress(vec))
             }),
-            <span class="ident"><span class="self">Self</span>::ReportSpeciationReportDispersalIgnoreProgress</span>(<span class="ident">vec</span>) =&gt; <span class="ident">vec</span>.<span class="ident">with_lifetime</span>(<span class="op">|</span><span class="ident">vec</span><span class="op">|</span> {
-                <span class="ident">inner</span>(<span class="ident"><span class="self">Self</span>::ReportSpeciationReportDispersalIgnoreProgress</span>(<span class="ident">vec</span>))
+            <span class="self">Self</span>::ReportSpeciationReportDispersalIgnoreProgress(vec) =&gt; vec.with_lifetime(|vec| {
+                inner(<span class="self">Self</span>::ReportSpeciationReportDispersalIgnoreProgress(vec))
             }),
-            <span class="ident"><span class="self">Self</span>::ReportSpeciationReportDispersalReportProgress</span>(<span class="ident">vec</span>) =&gt; <span class="ident">vec</span>.<span class="ident">with_lifetime</span>(<span class="op">|</span><span class="ident">vec</span><span class="op">|</span> {
-                <span class="ident">inner</span>(<span class="ident"><span class="self">Self</span>::ReportSpeciationReportDispersalReportProgress</span>(<span class="ident">vec</span>))
+            <span class="self">Self</span>::ReportSpeciationReportDispersalReportProgress(vec) =&gt; vec.with_lifetime(|vec| {
+                inner(<span class="self">Self</span>::ReportSpeciationReportDispersalReportProgress(vec))
             }),
         }
     }
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;de</span><span class="op">&gt;</span> <span class="ident">Deserialize</span><span class="op">&lt;</span><span class="lifetime">&#39;de</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">AnyReporterPluginVec</span> {
-    <span class="kw">fn</span> <span class="ident">deserialize</span><span class="op">&lt;</span><span class="ident">D</span>: <span class="ident">Deserializer</span><span class="op">&lt;</span><span class="lifetime">&#39;de</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="ident">deserializer</span>: <span class="ident">D</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">D::Error</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">plugins</span> <span class="op">=</span> <span class="ident">Vec</span>::<span class="op">&lt;</span><span class="ident">ReporterPluginLibrary</span><span class="op">&gt;</span><span class="ident">::deserialize</span>(<span class="ident">deserializer</span>)<span class="question-mark">?</span>;
+<span class="kw">impl</span>&lt;<span class="lifetime">&#39;de</span>&gt; Deserialize&lt;<span class="lifetime">&#39;de</span>&gt; <span class="kw">for </span>AnyReporterPluginVec {
+    <span class="kw">fn </span>deserialize&lt;D: Deserializer&lt;<span class="lifetime">&#39;de</span>&gt;&gt;(deserializer: D) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, D::Error&gt; {
+        <span class="kw">let </span>plugins = Vec::&lt;ReporterPluginLibrary&gt;::deserialize(deserializer)<span class="question-mark">?</span>;
 
-        <span class="prelude-val">Ok</span>(<span class="ident">plugins</span>.<span class="ident">into_iter</span>().<span class="ident">flatten</span>().<span class="ident">collect</span>())
+        <span class="prelude-val">Ok</span>(plugins.into_iter().flatten().collect())
     }
 }
 
-<span class="kw">impl</span> <span class="ident">Serialize</span> <span class="kw">for</span> <span class="ident">AnyReporterPluginVec</span> {
-    <span class="kw">fn</span> <span class="ident">serialize</span><span class="op">&lt;</span><span class="ident">S</span>: <span class="ident">Serializer</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">serializer</span>: <span class="ident">S</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">S::Ok</span>, <span class="ident">S::Error</span><span class="op">&gt;</span> {
-        <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Serialize</span>)]</span>
-        <span class="kw">struct</span> <span class="ident">Plugin</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span> {
-            <span class="ident">library</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;r</span> <span class="ident">Path</span>,
-            <span class="ident">reporters</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Reporters</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+<span class="kw">impl </span>Serialize <span class="kw">for </span>AnyReporterPluginVec {
+    <span class="kw">fn </span>serialize&lt;S: Serializer&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, serializer: S) -&gt; <span class="prelude-ty">Result</span>&lt;S::Ok, S::Error&gt; {
+        <span class="attribute">#[derive(Serialize)]
+        </span><span class="kw">struct </span>Plugin&lt;<span class="lifetime">&#39;r</span>&gt; {
+            library: <span class="kw-2">&amp;</span><span class="lifetime">&#39;r </span>Path,
+            reporters: Vec&lt;Reporters&lt;<span class="lifetime">&#39;r</span>&gt;&gt;,
         }
 
-        <span class="kw">let</span> <span class="ident">plugins</span> <span class="op">=</span> <span class="macro">match_any_reporter_plugin_vec!</span> { <span class="self">self</span> =&gt; <span class="op">|</span><span class="ident">vec</span><span class="op">|</span> { <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="ident">vec</span>.<span class="ident">plugins</span> } };
+        <span class="kw">let </span>plugins = <span class="macro">match_any_reporter_plugin_vec! </span>{ <span class="self">self </span>=&gt; |vec| { <span class="kw-2">&amp;*</span>vec.plugins } };
 
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">previous_library</span> <span class="op">=</span> <span class="prelude-val">None</span>;
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">previous_reporters</span> <span class="op">=</span> <span class="ident">Vec::new</span>();
+        <span class="kw">let </span><span class="kw-2">mut </span>previous_library = <span class="prelude-val">None</span>;
+        <span class="kw">let </span><span class="kw-2">mut </span>previous_reporters = Vec::new();
 
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">plugin_libraries</span> <span class="op">=</span> <span class="ident">Vec::new</span>();
+        <span class="kw">let </span><span class="kw-2">mut </span>plugin_libraries = Vec::new();
 
-        <span class="kw">for</span> <span class="ident">reporter_plugin</span> <span class="kw">in</span> <span class="ident">plugins</span>.<span class="ident">iter</span>() {
-            <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">previous_library</span>) <span class="op">=</span> <span class="ident">previous_library</span> {
-                <span class="kw">if</span> <span class="ident">previous_library</span> <span class="op">!</span><span class="op">=</span> <span class="ident">reporter_plugin</span>.<span class="ident">library</span>.<span class="ident">path</span> {
-                    <span class="ident">plugin_libraries</span>.<span class="ident">push</span>(<span class="ident">Plugin</span> {
-                        <span class="ident">library</span>: <span class="ident">previous_library</span>,
-                        <span class="ident">reporters</span>: <span class="ident">std::mem::take</span>(<span class="kw-2">&amp;mut</span> <span class="ident">previous_reporters</span>),
+        <span class="kw">for </span>reporter_plugin <span class="kw">in </span>plugins.iter() {
+            <span class="kw">if let </span><span class="prelude-val">Some</span>(previous_library) = previous_library {
+                <span class="kw">if </span>previous_library != reporter_plugin.library.path {
+                    plugin_libraries.push(Plugin {
+                        library: previous_library,
+                        reporters: std::mem::take(<span class="kw-2">&amp;mut </span>previous_reporters),
                     });
                 }
             }
 
-            <span class="ident">previous_library</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span><span class="ident">reporter_plugin</span>.<span class="ident">library</span>.<span class="ident">path</span>);
+            previous_library = <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span>reporter_plugin.library.path);
 
-            <span class="ident">previous_reporters</span>.<span class="ident">push</span>(<span class="ident">Reporters::DynReporter</span>(<span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="kw-2">*</span><span class="ident">reporter_plugin</span>.<span class="ident">reporter</span>));
+            previous_reporters.push(Reporters::DynReporter(<span class="kw-2">&amp;**</span>reporter_plugin.reporter));
         }
 
-        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">previous_library</span>) <span class="op">=</span> <span class="ident">previous_library</span> {
-            <span class="ident">plugin_libraries</span>.<span class="ident">push</span>(<span class="ident">Plugin</span> {
-                <span class="ident">library</span>: <span class="ident">previous_library</span>,
-                <span class="ident">reporters</span>: <span class="ident">previous_reporters</span>,
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(previous_library) = previous_library {
+            plugin_libraries.push(Plugin {
+                library: previous_library,
+                reporters: previous_reporters,
             });
         }
 
-        <span class="ident">plugin_libraries</span>.<span class="ident">serialize</span>(<span class="ident">serializer</span>)
+        plugin_libraries.serialize(serializer)
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="necsim_plugins_core" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0-nightly (affe0d3a0 2022-08-05)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="necsim_plugins_core" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (5e9772042 2022-10-29)" ></div></body></html>

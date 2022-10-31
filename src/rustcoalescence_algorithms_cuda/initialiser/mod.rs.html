@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `rustcoalescence/algorithms/cuda/src/initialiser/mod.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>mod.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../rustcoalescence_algorithms_cuda/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../rustcoalescence_algorithms_cuda/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../rustcoalescence_algorithms_cuda/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `rustcoalescence/algorithms/cuda/src/initialiser/mod.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>mod.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../normalize.css"><link rel="stylesheet" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../ayu.css" disabled><link rel="stylesheet" href="../../../dark.css" disabled><link rel="stylesheet" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../../rustcoalescence_algorithms_cuda/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -80,87 +80,87 @@
 <span id="80">80</span>
 <span id="81">81</span>
 <span id="82">82</span>
-</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">necsim_core</span>::{
-    <span class="ident">cogs</span>::{<span class="ident">DispersalSampler</span>, <span class="ident">EmigrationExit</span>, <span class="ident">MathsCore</span>, <span class="ident">PrimeableRng</span>},
-    <span class="ident">lineage::Lineage</span>,
+</pre><pre class="rust"><code><span class="kw">use </span>necsim_core::{
+    cogs::{DispersalSampler, EmigrationExit, MathsCore, PrimeableRng},
+    lineage::Lineage,
 };
 
-<span class="kw">use</span> <span class="ident">necsim_impls_no_std::cogs</span>::{
-    <span class="ident">active_lineage_sampler</span>::{
-        <span class="ident">independent::event_time_sampler::EventTimeSampler</span>, <span class="ident">singular::SingularActiveLineageSampler</span>,
+<span class="kw">use </span>necsim_impls_no_std::cogs::{
+    active_lineage_sampler::{
+        independent::event_time_sampler::EventTimeSampler, singular::SingularActiveLineageSampler,
     },
-    <span class="ident">coalescence_sampler::independent::IndependentCoalescenceSampler</span>,
-    <span class="ident">dispersal_sampler::in_memory::packed_alias::InMemoryPackedAliasDispersalSampler</span>,
-    <span class="ident">event_sampler::independent::IndependentEventSampler</span>,
-    <span class="ident">immigration_entry::never::NeverImmigrationEntry</span>,
-    <span class="ident">lineage_store::independent::IndependentLineageStore</span>,
-    <span class="ident">origin_sampler::TrustedOriginSampler</span>,
+    coalescence_sampler::independent::IndependentCoalescenceSampler,
+    dispersal_sampler::in_memory::packed_alias::InMemoryPackedAliasDispersalSampler,
+    event_sampler::independent::IndependentEventSampler,
+    immigration_entry::never::NeverImmigrationEntry,
+    lineage_store::independent::IndependentLineageStore,
+    origin_sampler::TrustedOriginSampler,
 };
 
-<span class="kw">use</span> <span class="ident">rustcoalescence_scenarios::Scenario</span>;
+<span class="kw">use </span>rustcoalescence_scenarios::Scenario;
 
-<span class="kw">use</span> <span class="ident">rust_cuda::common::RustToCuda</span>;
+<span class="kw">use </span>rust_cuda::common::RustToCuda;
 
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::CudaError</span>;
+<span class="kw">use </span><span class="kw">crate</span>::CudaError;
 
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">fixup</span>;
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">genesis</span>;
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">resume</span>;
+<span class="kw">pub mod </span>fixup;
+<span class="kw">pub mod </span>genesis;
+<span class="kw">pub mod </span>resume;
 
-<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::module_name_repetitions</span>)]</span>
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">CudaLineageStoreSampleInitialiser</span><span class="op">&lt;</span>
-    <span class="ident">M</span>: <span class="ident">MathsCore</span>,
-    <span class="ident">G</span>: <span class="ident">PrimeableRng</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">RustToCuda</span>,
-    <span class="ident">O</span>: <span class="ident">Scenario</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">G</span><span class="op">&gt;</span>,
-    <span class="ident">Error</span>: <span class="ident">From</span><span class="op">&lt;</span><span class="ident">CudaError</span><span class="op">&gt;</span>,
-<span class="op">&gt;</span> <span class="kw">where</span>
-    <span class="ident">O::Habitat</span>: <span class="ident">RustToCuda</span>,
-    <span class="ident">O::DispersalSampler</span><span class="op">&lt;</span><span class="ident">InMemoryPackedAliasDispersalSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">O::Habitat</span>, <span class="ident">G</span><span class="op">&gt;</span><span class="op">&gt;</span>: <span class="ident">RustToCuda</span>,
-    <span class="ident">O::TurnoverRate</span>: <span class="ident">RustToCuda</span>,
-    <span class="ident">O::SpeciationProbability</span>: <span class="ident">RustToCuda</span>,
+<span class="attribute">#[allow(clippy::module_name_repetitions)]
+</span><span class="kw">pub trait </span>CudaLineageStoreSampleInitialiser&lt;
+    M: MathsCore,
+    G: PrimeableRng&lt;M&gt; + RustToCuda,
+    O: Scenario&lt;M, G&gt;,
+    Error: From&lt;CudaError&gt;,
+&gt; <span class="kw">where
+    </span>O::Habitat: RustToCuda,
+    O::DispersalSampler&lt;InMemoryPackedAliasDispersalSampler&lt;M, O::Habitat, G&gt;&gt;: RustToCuda,
+    O::TurnoverRate: RustToCuda,
+    O::SpeciationProbability: RustToCuda,
 {
-    <span class="kw">type</span> <span class="ident">DispersalSampler</span>: <span class="ident">DispersalSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">O::Habitat</span>, <span class="ident">G</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">RustToCuda</span>;
-    <span class="kw">type</span> <span class="ident">ActiveLineageSampler</span><span class="op">&lt;</span>
-        <span class="ident">X</span>: <span class="ident">EmigrationExit</span><span class="op">&lt;</span>
-            <span class="ident">M</span>,
-            <span class="ident">O::Habitat</span>,
-            <span class="ident">G</span>,
-            <span class="ident">IndependentLineageStore</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">O::Habitat</span><span class="op">&gt;</span>,
-        <span class="op">&gt;</span> <span class="op">+</span> <span class="ident">RustToCuda</span>,
-        <span class="ident">J</span>: <span class="ident">EventTimeSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">O::Habitat</span>, <span class="ident">G</span>, <span class="ident">O::TurnoverRate</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">RustToCuda</span>,
-    <span class="op">&gt;</span>: <span class="ident">SingularActiveLineageSampler</span><span class="op">&lt;</span>
-        <span class="ident">M</span>, <span class="ident">O::Habitat</span>, <span class="ident">G</span>, <span class="ident">IndependentLineageStore</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">O::Habitat</span><span class="op">&gt;</span>,
-        <span class="ident">X</span>, <span class="ident"><span class="self">Self</span>::DispersalSampler</span>, <span class="ident">IndependentCoalescenceSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">O::Habitat</span><span class="op">&gt;</span>, <span class="ident">O::TurnoverRate</span>,
-        <span class="ident">O::SpeciationProbability</span>, <span class="ident">IndependentEventSampler</span><span class="op">&lt;</span>
-            <span class="ident">M</span>, <span class="ident">O::Habitat</span>, <span class="ident">G</span>, <span class="ident">X</span>, <span class="ident"><span class="self">Self</span>::DispersalSampler</span>, <span class="ident">O::TurnoverRate</span>, <span class="ident">O::SpeciationProbability</span>
-        <span class="op">&gt;</span>, <span class="ident">NeverImmigrationEntry</span>,
-    <span class="op">&gt;</span> <span class="op">+</span> <span class="ident">RustToCuda</span>;
+    <span class="kw">type </span>DispersalSampler: DispersalSampler&lt;M, O::Habitat, G&gt; + RustToCuda;
+    <span class="kw">type </span>ActiveLineageSampler&lt;
+        X: EmigrationExit&lt;
+            M,
+            O::Habitat,
+            G,
+            IndependentLineageStore&lt;M, O::Habitat&gt;,
+        &gt; + RustToCuda,
+        J: EventTimeSampler&lt;M, O::Habitat, G, O::TurnoverRate&gt; + RustToCuda,
+    &gt;: SingularActiveLineageSampler&lt;
+        M, O::Habitat, G, IndependentLineageStore&lt;M, O::Habitat&gt;,
+        X, <span class="self">Self</span>::DispersalSampler, IndependentCoalescenceSampler&lt;M, O::Habitat&gt;, O::TurnoverRate,
+        O::SpeciationProbability, IndependentEventSampler&lt;
+            M, O::Habitat, G, X, <span class="self">Self</span>::DispersalSampler, O::TurnoverRate, O::SpeciationProbability
+        &gt;, NeverImmigrationEntry,
+    &gt; + RustToCuda;
 
-    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::type_complexity</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">init</span><span class="op">&lt;</span>
+    <span class="attribute">#[allow(clippy::type_complexity)]
+    </span><span class="kw">fn </span>init&lt;
         <span class="lifetime">&#39;h</span>,
-        <span class="ident">T</span>: <span class="ident">TrustedOriginSampler</span><span class="op">&lt;</span><span class="lifetime">&#39;h</span>, <span class="ident">M</span>, <span class="ident">Habitat</span> <span class="op">=</span> <span class="ident">O::Habitat</span><span class="op">&gt;</span>,
-        <span class="ident">J</span>: <span class="ident">EventTimeSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">O::Habitat</span>, <span class="ident">G</span>, <span class="ident">O::TurnoverRate</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">RustToCuda</span>,
-        <span class="ident">X</span>: <span class="ident">EmigrationExit</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">O::Habitat</span>, <span class="ident">G</span>, <span class="ident">IndependentLineageStore</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">O::Habitat</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">RustToCuda</span>,
-    <span class="op">&gt;</span>(
+        T: TrustedOriginSampler&lt;<span class="lifetime">&#39;h</span>, M, Habitat = O::Habitat&gt;,
+        J: EventTimeSampler&lt;M, O::Habitat, G, O::TurnoverRate&gt; + RustToCuda,
+        X: EmigrationExit&lt;M, O::Habitat, G, IndependentLineageStore&lt;M, O::Habitat&gt;&gt; + RustToCuda,
+    &gt;(
         <span class="self">self</span>,
-        <span class="ident">origin_sampler</span>: <span class="ident">T</span>,
-        <span class="ident">dispersal_sampler</span>: <span class="ident">O::DispersalSampler</span><span class="op">&lt;</span>
-            <span class="ident">InMemoryPackedAliasDispersalSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">O::Habitat</span>, <span class="ident">G</span><span class="op">&gt;</span>,
-        <span class="op">&gt;</span>,
-        <span class="ident">event_time_sampler</span>: <span class="ident">J</span>,
-    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>
+        origin_sampler: T,
+        dispersal_sampler: O::DispersalSampler&lt;
+            InMemoryPackedAliasDispersalSampler&lt;M, O::Habitat, G&gt;,
+        &gt;,
+        event_time_sampler: J,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;
         (
-            <span class="ident">IndependentLineageStore</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">O::Habitat</span><span class="op">&gt;</span>,
-            <span class="ident"><span class="self">Self</span>::DispersalSampler</span>,
-            <span class="ident"><span class="self">Self</span>::ActiveLineageSampler</span><span class="op">&lt;</span><span class="ident">X</span>, <span class="ident">J</span><span class="op">&gt;</span>,
-            <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Lineage</span><span class="op">&gt;</span>,
-            <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Lineage</span><span class="op">&gt;</span>,
+            IndependentLineageStore&lt;M, O::Habitat&gt;,
+            <span class="self">Self</span>::DispersalSampler,
+            <span class="self">Self</span>::ActiveLineageSampler&lt;X, J&gt;,
+            Vec&lt;Lineage&gt;,
+            Vec&lt;Lineage&gt;,
         ),
-        <span class="ident">Error</span>,
-    <span class="op">&gt;</span>
-    <span class="kw">where</span>
-        <span class="ident">O::Habitat</span>: <span class="lifetime">&#39;h</span>;
+        Error,
+    &gt;
+    <span class="kw">where
+        </span>O::Habitat: <span class="lifetime">&#39;h</span>;
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="rustcoalescence_algorithms_cuda" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0-nightly (affe0d3a0 2022-08-05)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="rustcoalescence_algorithms_cuda" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (5e9772042 2022-10-29)" ></div></body></html>

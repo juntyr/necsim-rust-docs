@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `rustcoalescence/algorithms/cuda/gpu-kernel/src/lib.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>lib.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../rustcoalescence_algorithms_cuda_gpu_kernel/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../rustcoalescence_algorithms_cuda_gpu_kernel/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../rustcoalescence_algorithms_cuda_gpu_kernel/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `rustcoalescence/algorithms/cuda/gpu-kernel/src/lib.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>lib.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../normalize.css"><link rel="stylesheet" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../ayu.css" disabled><link rel="stylesheet" href="../../dark.css" disabled><link rel="stylesheet" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../rustcoalescence_algorithms_cuda_gpu_kernel/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -167,174 +167,174 @@
 <span id="167">167</span>
 <span id="168">168</span>
 <span id="169">169</span>
-</pre><pre class="rust"><code><span class="attribute">#![<span class="ident">deny</span>(<span class="ident">clippy::pedantic</span>)]</span>
-<span class="attribute">#![<span class="ident">no_std</span>]</span>
-<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_eval_limit</span>)]</span>
-<span class="attribute">#![<span class="ident">const_eval_limit</span> <span class="op">=</span> <span class="string">&quot;1000000000000&quot;</span>]</span>
-<span class="attribute">#![<span class="ident">cfg_attr</span>(<span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;cuda&quot;</span>, <span class="ident">feature</span>(<span class="ident">abi_ptx</span>))]</span>
-<span class="attribute">#![<span class="ident">cfg_attr</span>(<span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;cuda&quot;</span>, <span class="ident">feature</span>(<span class="ident">alloc_error_handler</span>))]</span>
-<span class="attribute">#![<span class="ident">cfg_attr</span>(<span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;cuda&quot;</span>, <span class="ident">feature</span>(<span class="ident">panic_info_message</span>))]</span>
-<span class="attribute">#![<span class="ident">cfg_attr</span>(<span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;cuda&quot;</span>, <span class="ident">feature</span>(<span class="ident">atomic_from_mut</span>))]</span>
-<span class="attribute">#![<span class="ident">cfg_attr</span>(<span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;cuda&quot;</span>, <span class="ident">feature</span>(<span class="ident">asm_experimental_arch</span>))]</span>
-<span class="attribute">#![<span class="ident">cfg_attr</span>(<span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;cuda&quot;</span>, <span class="ident">feature</span>(<span class="ident">stdsimd</span>))]</span>
-<span class="attribute">#![<span class="ident">cfg_attr</span>(<span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;cuda&quot;</span>, <span class="ident">feature</span>(<span class="ident">control_flow_enum</span>))]</span>
+</pre><pre class="rust"><code><span class="attribute">#![deny(clippy::pedantic)]
+#![no_std]
+#![feature(const_eval_limit)]
+#![const_eval_limit = <span class="string">&quot;1000000000000&quot;</span>]
+#![cfg_attr(target_os = <span class="string">&quot;cuda&quot;</span>, feature(abi_ptx))]
+#![cfg_attr(target_os = <span class="string">&quot;cuda&quot;</span>, feature(alloc_error_handler))]
+#![cfg_attr(target_os = <span class="string">&quot;cuda&quot;</span>, feature(panic_info_message))]
+#![cfg_attr(target_os = <span class="string">&quot;cuda&quot;</span>, feature(atomic_from_mut))]
+#![cfg_attr(target_os = <span class="string">&quot;cuda&quot;</span>, feature(asm_experimental_arch))]
+#![cfg_attr(target_os = <span class="string">&quot;cuda&quot;</span>, feature(stdsimd))]
+#![cfg_attr(target_os = <span class="string">&quot;cuda&quot;</span>, feature(control_flow_enum))]
 
-<span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">alloc</span>;
+</span><span class="kw">extern crate </span>alloc;
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;cuda&quot;</span>)]</span>
-<span class="kw">use</span> <span class="ident">core::ops::ControlFlow</span>;
+<span class="attribute">#[cfg(target_os = <span class="string">&quot;cuda&quot;</span>)]
+</span><span class="kw">use </span>core::ops::ControlFlow;
 
-<span class="kw">use</span> <span class="ident">necsim_core</span>::{
-    <span class="ident">cogs</span>::{
-        <span class="ident">CoalescenceSampler</span>, <span class="ident">DispersalSampler</span>, <span class="ident">EmigrationExit</span>, <span class="ident">Habitat</span>, <span class="ident">ImmigrationEntry</span>,
-        <span class="ident">LineageStore</span>, <span class="ident">MathsCore</span>, <span class="ident">PrimeableRng</span>, <span class="ident">SpeciationProbability</span>, <span class="ident">TurnoverRate</span>,
+<span class="kw">use </span>necsim_core::{
+    cogs::{
+        CoalescenceSampler, DispersalSampler, EmigrationExit, Habitat, ImmigrationEntry,
+        LineageStore, MathsCore, PrimeableRng, SpeciationProbability, TurnoverRate,
     },
-    <span class="ident">reporter::boolean::Boolean</span>,
+    reporter::boolean::Boolean,
 };
 
-<span class="kw">use</span> <span class="ident">necsim_impls_no_std::cogs</span>::{
-    <span class="ident">active_lineage_sampler::singular::SingularActiveLineageSampler</span>,
-    <span class="ident">event_sampler::tracking</span>::{<span class="ident">MinSpeciationTrackingEventSampler</span>, <span class="ident">SpeciationSample</span>},
+<span class="kw">use </span>necsim_impls_no_std::cogs::{
+    active_lineage_sampler::singular::SingularActiveLineageSampler,
+    event_sampler::tracking::{MinSpeciationTrackingEventSampler, SpeciationSample},
 };
 
-<span class="kw">use</span> <span class="ident">rust_cuda::common::RustToCuda</span>;
+<span class="kw">use </span>rust_cuda::common::RustToCuda;
 
-<span class="attribute">#[<span class="ident">rust_cuda::common::kernel</span>(
-    <span class="kw">pub</span> <span class="kw">use</span> <span class="macro">link_kernel!</span> <span class="kw">as</span> <span class="kw">impl</span> <span class="ident">SimulatableKernel</span><span class="op">&lt;</span><span class="ident">SimulationKernelArgs</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">SimulationKernel</span>
-)]</span>
-<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::too_many_arguments</span>)]</span>
-<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::type_complexity</span>)]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">simulate</span><span class="op">&lt;</span>
-    <span class="ident">M</span>: <span class="ident">MathsCore</span>,
-    <span class="ident">H</span>: <span class="ident">Habitat</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">RustToCuda</span>,
-    <span class="ident">G</span>: <span class="ident">PrimeableRng</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">RustToCuda</span>,
-    <span class="ident">S</span>: <span class="ident">LineageStore</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">RustToCuda</span>,
-    <span class="ident">X</span>: <span class="ident">EmigrationExit</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span>, <span class="ident">S</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">RustToCuda</span>,
-    <span class="ident">D</span>: <span class="ident">DispersalSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">RustToCuda</span>,
-    <span class="ident">C</span>: <span class="ident">CoalescenceSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">S</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">RustToCuda</span>,
-    <span class="ident">T</span>: <span class="ident">TurnoverRate</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">RustToCuda</span>,
-    <span class="ident">N</span>: <span class="ident">SpeciationProbability</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">RustToCuda</span>,
-    <span class="ident">E</span>: <span class="ident">MinSpeciationTrackingEventSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span>, <span class="ident">S</span>, <span class="ident">X</span>, <span class="ident">D</span>, <span class="ident">C</span>, <span class="ident">T</span>, <span class="ident">N</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">RustToCuda</span>,
-    <span class="ident">I</span>: <span class="ident">ImmigrationEntry</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">RustToCuda</span>,
-    <span class="ident">A</span>: <span class="ident">SingularActiveLineageSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span>, <span class="ident">S</span>, <span class="ident">X</span>, <span class="ident">D</span>, <span class="ident">C</span>, <span class="ident">T</span>, <span class="ident">N</span>, <span class="ident">E</span>, <span class="ident">I</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">RustToCuda</span>,
-    <span class="ident">ReportSpeciation</span>: <span class="ident">Boolean</span>,
-    <span class="ident">ReportDispersal</span>: <span class="ident">Boolean</span>,
-<span class="op">&gt;</span>(
-    <span class="attribute">#[<span class="ident">rustfmt::skip</span>]</span>
-    <span class="attribute">#[<span class="ident">kernel</span>(<span class="ident">pass</span> <span class="op">=</span> <span class="ident">LendRustToCuda</span>, <span class="ident">jit</span>)]</span>
-    <span class="ident">simulation</span>: <span class="kw-2">&amp;mut</span> <span class="ident">ShallowCopy</span><span class="op">&lt;</span>
-        <span class="ident">necsim_core::simulation::Simulation</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span>, <span class="ident">S</span>, <span class="ident">X</span>, <span class="ident">D</span>, <span class="ident">C</span>, <span class="ident">T</span>, <span class="ident">N</span>, <span class="ident">E</span>, <span class="ident">I</span>, <span class="ident">A</span><span class="op">&gt;</span>,
-    <span class="op">&gt;</span>,
-    <span class="attribute">#[<span class="ident">rustfmt::skip</span>]</span>
-    <span class="attribute">#[<span class="ident">kernel</span>(<span class="ident">pass</span> <span class="op">=</span> <span class="ident">LendRustToCuda</span>, <span class="ident">jit</span>)]</span>
-    <span class="ident">task_list</span>: <span class="kw-2">&amp;mut</span> <span class="ident">ShallowCopy</span><span class="op">&lt;</span>
-        <span class="ident">necsim_impls_cuda::value_buffer::ValueBuffer</span><span class="op">&lt;</span><span class="ident">necsim_core::lineage::Lineage</span>, <span class="bool-val">true</span>, <span class="bool-val">true</span><span class="op">&gt;</span>,
-    <span class="op">&gt;</span>,
-    <span class="attribute">#[<span class="ident">rustfmt::skip</span>]</span>
-    <span class="attribute">#[<span class="ident">kernel</span>(<span class="ident">pass</span> <span class="op">=</span> <span class="ident">LendRustToCuda</span>, <span class="ident">jit</span>)]</span>
-    <span class="ident">event_buffer_reporter</span>: <span class="kw-2">&amp;mut</span> <span class="ident">ShallowCopy</span><span class="op">&lt;</span>
-        <span class="ident">necsim_impls_cuda::event_buffer::EventBuffer</span><span class="op">&lt;</span><span class="ident">ReportSpeciation</span>, <span class="ident">ReportDispersal</span><span class="op">&gt;</span>,
-    <span class="op">&gt;</span>,
-    <span class="attribute">#[<span class="ident">rustfmt::skip</span>]</span>
-    <span class="attribute">#[<span class="ident">kernel</span>(<span class="ident">pass</span> <span class="op">=</span> <span class="ident">LendRustToCuda</span>, <span class="ident">jit</span>)]</span>
-    <span class="ident">min_spec_sample_buffer</span>: <span class="kw-2">&amp;mut</span> <span class="ident">ShallowCopy</span><span class="op">&lt;</span>
-        <span class="ident">necsim_impls_cuda::value_buffer::ValueBuffer</span><span class="op">&lt;</span><span class="ident">SpeciationSample</span>, <span class="bool-val">false</span>, <span class="bool-val">true</span><span class="op">&gt;</span>,
-    <span class="op">&gt;</span>,
-    <span class="attribute">#[<span class="ident">rustfmt::skip</span>]</span>
-    <span class="attribute">#[<span class="ident">kernel</span>(<span class="ident">pass</span> <span class="op">=</span> <span class="ident">LendRustToCuda</span>, <span class="ident">jit</span>)]</span>
-    <span class="ident">next_event_time_buffer</span>: <span class="kw-2">&amp;mut</span> <span class="ident">ShallowCopy</span><span class="op">&lt;</span>
-        <span class="ident">necsim_impls_cuda::value_buffer::ValueBuffer</span><span class="op">&lt;</span><span class="ident">necsim_core_bond::PositiveF64</span>, <span class="bool-val">false</span>, <span class="bool-val">true</span><span class="op">&gt;</span>,
-    <span class="op">&gt;</span>,
-    <span class="attribute">#[<span class="ident">rustfmt::skip</span>]</span>
-    <span class="attribute">#[<span class="ident">kernel</span>(<span class="ident">pass</span> <span class="op">=</span> <span class="ident">SafeDeviceCopy</span>)]</span>
-    <span class="ident">total_time_max</span>: <span class="kw-2">&amp;</span><span class="ident">core::sync::atomic::AtomicU64</span>,
-    <span class="attribute">#[<span class="ident">rustfmt::skip</span>]</span>
-    <span class="attribute">#[<span class="ident">kernel</span>(<span class="ident">pass</span> <span class="op">=</span> <span class="ident">SafeDeviceCopy</span>)]</span>
-    <span class="ident">total_steps_sum</span>: <span class="kw-2">&amp;</span><span class="ident">core::sync::atomic::AtomicU64</span>,
-    <span class="attribute">#[<span class="ident">rustfmt::skip</span>]</span>
-    <span class="attribute">#[<span class="ident">kernel</span>(<span class="ident">pass</span> <span class="op">=</span> <span class="ident">SafeDeviceCopy</span>)]</span>
-    <span class="ident">max_steps</span>: <span class="ident">u64</span>,
-    <span class="attribute">#[<span class="ident">rustfmt::skip</span>]</span>
-    <span class="attribute">#[<span class="ident">kernel</span>(<span class="ident">pass</span> <span class="op">=</span> <span class="ident">SafeDeviceCopy</span>)]</span>
-    <span class="ident">max_next_event_time</span>: <span class="ident">necsim_core_bond::NonNegativeF64</span>,
+<span class="attribute">#[rust_cuda::common::kernel(
+    <span class="kw">pub use </span><span class="macro">link_kernel! </span><span class="kw">as impl </span>SimulatableKernel&lt;SimulationKernelArgs&gt; <span class="kw">for </span>SimulationKernel
+)]
+#[allow(clippy::too_many_arguments)]
+#[allow(clippy::type_complexity)]
+</span><span class="kw">pub fn </span>simulate&lt;
+    M: MathsCore,
+    H: Habitat&lt;M&gt; + RustToCuda,
+    G: PrimeableRng&lt;M&gt; + RustToCuda,
+    S: LineageStore&lt;M, H&gt; + RustToCuda,
+    X: EmigrationExit&lt;M, H, G, S&gt; + RustToCuda,
+    D: DispersalSampler&lt;M, H, G&gt; + RustToCuda,
+    C: CoalescenceSampler&lt;M, H, S&gt; + RustToCuda,
+    T: TurnoverRate&lt;M, H&gt; + RustToCuda,
+    N: SpeciationProbability&lt;M, H&gt; + RustToCuda,
+    E: MinSpeciationTrackingEventSampler&lt;M, H, G, S, X, D, C, T, N&gt; + RustToCuda,
+    I: ImmigrationEntry&lt;M&gt; + RustToCuda,
+    A: SingularActiveLineageSampler&lt;M, H, G, S, X, D, C, T, N, E, I&gt; + RustToCuda,
+    ReportSpeciation: Boolean,
+    ReportDispersal: Boolean,
+&gt;(
+    <span class="attribute">#[rustfmt::skip]
+    #[kernel(pass = LendRustToCuda, jit)]
+    </span>simulation: <span class="kw-2">&amp;mut </span>ShallowCopy&lt;
+        necsim_core::simulation::Simulation&lt;M, H, G, S, X, D, C, T, N, E, I, A&gt;,
+    &gt;,
+    <span class="attribute">#[rustfmt::skip]
+    #[kernel(pass = LendRustToCuda, jit)]
+    </span>task_list: <span class="kw-2">&amp;mut </span>ShallowCopy&lt;
+        necsim_impls_cuda::value_buffer::ValueBuffer&lt;necsim_core::lineage::Lineage, <span class="bool-val">true</span>, <span class="bool-val">true</span>&gt;,
+    &gt;,
+    <span class="attribute">#[rustfmt::skip]
+    #[kernel(pass = LendRustToCuda, jit)]
+    </span>event_buffer_reporter: <span class="kw-2">&amp;mut </span>ShallowCopy&lt;
+        necsim_impls_cuda::event_buffer::EventBuffer&lt;ReportSpeciation, ReportDispersal&gt;,
+    &gt;,
+    <span class="attribute">#[rustfmt::skip]
+    #[kernel(pass = LendRustToCuda, jit)]
+    </span>min_spec_sample_buffer: <span class="kw-2">&amp;mut </span>ShallowCopy&lt;
+        necsim_impls_cuda::value_buffer::ValueBuffer&lt;SpeciationSample, <span class="bool-val">false</span>, <span class="bool-val">true</span>&gt;,
+    &gt;,
+    <span class="attribute">#[rustfmt::skip]
+    #[kernel(pass = LendRustToCuda, jit)]
+    </span>next_event_time_buffer: <span class="kw-2">&amp;mut </span>ShallowCopy&lt;
+        necsim_impls_cuda::value_buffer::ValueBuffer&lt;necsim_core_bond::PositiveF64, <span class="bool-val">false</span>, <span class="bool-val">true</span>&gt;,
+    &gt;,
+    <span class="attribute">#[rustfmt::skip]
+    #[kernel(pass = SafeDeviceCopy)]
+    </span>total_time_max: <span class="kw-2">&amp;</span>core::sync::atomic::AtomicU64,
+    <span class="attribute">#[rustfmt::skip]
+    #[kernel(pass = SafeDeviceCopy)]
+    </span>total_steps_sum: <span class="kw-2">&amp;</span>core::sync::atomic::AtomicU64,
+    <span class="attribute">#[rustfmt::skip]
+    #[kernel(pass = SafeDeviceCopy)]
+    </span>max_steps: u64,
+    <span class="attribute">#[rustfmt::skip]
+    #[kernel(pass = SafeDeviceCopy)]
+    </span>max_next_event_time: necsim_core_bond::NonNegativeF64,
 ) {
-    <span class="ident">task_list</span>.<span class="ident">with_value_for_core</span>(<span class="op">|</span><span class="ident">task</span><span class="op">|</span> {
-        <span class="comment">// Discard the prior task (the simulation is just a temporary local copy)</span>
-        <span class="ident">core::mem::drop</span>(
-            <span class="ident">simulation</span>
-                .<span class="ident">active_lineage_sampler_mut</span>()
-                .<span class="ident">replace_active_lineage</span>(<span class="ident">task</span>),
+    task_list.with_value_for_core(|task| {
+        <span class="comment">// Discard the prior task (the simulation is just a temporary local copy)
+        </span>core::mem::drop(
+            simulation
+                .active_lineage_sampler_mut()
+                .replace_active_lineage(task),
         );
 
-        <span class="comment">// Discard the prior sample (the simulation is just a temporary local copy)</span>
-        <span class="ident">simulation</span>.<span class="ident">event_sampler_mut</span>().<span class="ident">replace_min_speciation</span>(<span class="prelude-val">None</span>);
+        <span class="comment">// Discard the prior sample (the simulation is just a temporary local copy)
+        </span>simulation.event_sampler_mut().replace_min_speciation(<span class="prelude-val">None</span>);
 
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">final_next_event_time</span> <span class="op">=</span> <span class="prelude-val">None</span>;
+        <span class="kw">let </span><span class="kw-2">mut </span>final_next_event_time = <span class="prelude-val">None</span>;
 
-        <span class="kw">let</span> (<span class="ident">time</span>, <span class="ident">steps</span>) <span class="op">=</span> <span class="ident">simulation</span>.<span class="ident">simulate_incremental_early_stop</span>(
-            <span class="op">|</span><span class="kw">_</span>, <span class="ident">steps</span>, <span class="ident">next_event_time</span><span class="op">|</span> {
-                <span class="ident">final_next_event_time</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">next_event_time</span>);
+        <span class="kw">let </span>(time, steps) = simulation.simulate_incremental_early_stop(
+            |<span class="kw">_</span>, steps, next_event_time| {
+                final_next_event_time = <span class="prelude-val">Some</span>(next_event_time);
 
-                <span class="kw">if</span> <span class="ident">steps</span> <span class="op">&gt;</span><span class="op">=</span> <span class="ident">max_steps</span> <span class="op">|</span><span class="op">|</span> <span class="ident">next_event_time</span> <span class="op">&gt;</span><span class="op">=</span> <span class="ident">max_next_event_time</span> {
-                    <span class="ident">ControlFlow::BREAK</span>
-                } <span class="kw">else</span> {
-                    <span class="ident">ControlFlow::CONTINUE</span>
+                <span class="kw">if </span>steps &gt;= max_steps || next_event_time &gt;= max_next_event_time {
+                    ControlFlow::BREAK
+                } <span class="kw">else </span>{
+                    ControlFlow::CONTINUE
                 }
             },
-            <span class="ident">event_buffer_reporter</span>,
+            event_buffer_reporter,
         );
 
-        <span class="ident">next_event_time_buffer</span>.<span class="ident">put_value_for_core</span>(<span class="ident">final_next_event_time</span>);
+        next_event_time_buffer.put_value_for_core(final_next_event_time);
 
-        <span class="kw">if</span> <span class="ident">steps</span> <span class="op">&gt;</span> <span class="number">0</span> {
-            <span class="ident">total_time_max</span>.<span class="ident">fetch_max</span>(<span class="ident">time</span>.<span class="ident">get</span>().<span class="ident">to_bits</span>(), <span class="ident">core::sync::atomic::Ordering::Relaxed</span>);
-            <span class="ident">total_steps_sum</span>.<span class="ident">fetch_add</span>(<span class="ident">steps</span>, <span class="ident">core::sync::atomic::Ordering::Relaxed</span>);
+        <span class="kw">if </span>steps &gt; <span class="number">0 </span>{
+            total_time_max.fetch_max(time.get().to_bits(), core::sync::atomic::Ordering::Relaxed);
+            total_steps_sum.fetch_add(steps, core::sync::atomic::Ordering::Relaxed);
         }
 
-        <span class="ident">min_spec_sample_buffer</span>
-            .<span class="ident">put_value_for_core</span>(<span class="ident">simulation</span>.<span class="ident">event_sampler_mut</span>().<span class="ident">replace_min_speciation</span>(<span class="prelude-val">None</span>));
+        min_spec_sample_buffer
+            .put_value_for_core(simulation.event_sampler_mut().replace_min_speciation(<span class="prelude-val">None</span>));
 
-        <span class="ident">simulation</span>
-            .<span class="ident">active_lineage_sampler_mut</span>()
-            .<span class="ident">replace_active_lineage</span>(<span class="prelude-val">None</span>)
+        simulation
+            .active_lineage_sampler_mut()
+            .replace_active_lineage(<span class="prelude-val">None</span>)
     });
 }
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;cuda&quot;</span>)]</span>
-<span class="kw">mod</span> <span class="ident">cuda_prelude</span> {
-    <span class="kw">use</span> <span class="ident">core::arch::nvptx</span>;
+<span class="attribute">#[cfg(target_os = <span class="string">&quot;cuda&quot;</span>)]
+</span><span class="kw">mod </span>cuda_prelude {
+    <span class="kw">use </span>core::arch::nvptx;
 
-    <span class="kw">use</span> <span class="ident">rust_cuda::device::utils</span>;
+    <span class="kw">use </span>rust_cuda::device::utils;
 
-    <span class="attribute">#[<span class="ident">global_allocator</span>]</span>
-    <span class="kw">static</span> <span class="ident">_GLOBAL_ALLOCATOR</span>: <span class="ident">utils::PTXAllocator</span> <span class="op">=</span> <span class="ident">utils::PTXAllocator</span>;
+    <span class="attribute">#[global_allocator]
+    </span><span class="kw">static </span>_GLOBAL_ALLOCATOR: utils::PTXAllocator = utils::PTXAllocator;
 
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">debug_assertions</span>))]</span>
-    <span class="attribute">#[<span class="ident">panic_handler</span>]</span>
-    <span class="kw">fn</span> <span class="ident">panic</span>(<span class="ident">_panic_info</span>: <span class="kw-2">&amp;</span><span class="ident">::core::panic::PanicInfo</span>) -&gt; <span class="op">!</span> {
-        <span class="kw">unsafe</span> { <span class="ident">nvptx::trap</span>() }
+    <span class="attribute">#[cfg(not(debug_assertions))]
+    #[panic_handler]
+    </span><span class="kw">fn </span>panic(_panic_info: <span class="kw-2">&amp;</span>::core::panic::PanicInfo) -&gt; ! {
+        <span class="kw">unsafe </span>{ nvptx::trap() }
     }
 
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">debug_assertions</span>)]</span>
-    <span class="attribute">#[<span class="ident">panic_handler</span>]</span>
-    <span class="kw">fn</span> <span class="ident">panic</span>(<span class="ident">panic_info</span>: <span class="kw-2">&amp;</span><span class="ident">::core::panic::PanicInfo</span>) -&gt; <span class="op">!</span> {
-        <span class="kw">use</span> <span class="ident">rust_cuda::println</span>;
+    <span class="attribute">#[cfg(debug_assertions)]
+    #[panic_handler]
+    </span><span class="kw">fn </span>panic(panic_info: <span class="kw-2">&amp;</span>::core::panic::PanicInfo) -&gt; ! {
+        <span class="kw">use </span>rust_cuda::println;
 
         <span class="macro">println!</span>(
             <span class="string">&quot;Panic occurred at {:?}: {:?}!&quot;</span>,
-            <span class="ident">panic_info</span>.<span class="ident">location</span>(),
-            <span class="ident">panic_info</span>
-                .<span class="ident">message</span>()
-                .<span class="ident">unwrap_or</span>(<span class="kw-2">&amp;</span><span class="macro">format_args!</span>(<span class="string">&quot;unknown reason&quot;</span>))
+            panic_info.location(),
+            panic_info
+                .message()
+                .unwrap_or(<span class="kw-2">&amp;</span><span class="macro">format_args!</span>(<span class="string">&quot;unknown reason&quot;</span>))
         );
 
-        <span class="kw">unsafe</span> { <span class="ident">nvptx::trap</span>() }
+        <span class="kw">unsafe </span>{ nvptx::trap() }
     }
 
-    <span class="attribute">#[<span class="ident">alloc_error_handler</span>]</span>
-    <span class="kw">fn</span> <span class="ident">alloc_error_handler</span>(<span class="kw">_</span>: <span class="ident">core::alloc::Layout</span>) -&gt; <span class="op">!</span> {
-        <span class="kw">unsafe</span> { <span class="ident">nvptx::trap</span>() }
+    <span class="attribute">#[alloc_error_handler]
+    </span><span class="kw">fn </span>alloc_error_handler(<span class="kw">_</span>: core::alloc::Layout) -&gt; ! {
+        <span class="kw">unsafe </span>{ nvptx::trap() }
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="rustcoalescence_algorithms_cuda_gpu_kernel" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0-nightly (affe0d3a0 2022-08-05)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="rustcoalescence_algorithms_cuda_gpu_kernel" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (5e9772042 2022-10-29)" ></div></body></html>

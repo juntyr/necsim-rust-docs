@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `necsim/impls/no-std/src/parallelisation/independent/landscape.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>landscape.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../storage.js"></script><script defer src="../../../../source-script.js"></script><script defer src="../../../../source-files.js"></script><script defer src="../../../../main.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../../necsim_impls_no_std/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../../necsim_impls_no_std/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../../necsim_impls_no_std/index.html"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `necsim/impls/no-std/src/parallelisation/independent/landscape.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>landscape.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../../normalize.css"><link rel="stylesheet" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../../ayu.css" disabled><link rel="stylesheet" href="../../../../dark.css" disabled><link rel="stylesheet" href="../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../storage.js"></script><script defer src="../../../../source-script.js"></script><script defer src="../../../../source-files.js"></script><script defer src="../../../../main.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../../../necsim_impls_no_std/index.html"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../wheel.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -221,228 +221,228 @@
 <span id="221">221</span>
 <span id="222">222</span>
 <span id="223">223</span>
-</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">alloc</span>::{<span class="ident">collections::VecDeque</span>, <span class="ident">vec::Vec</span>};
-<span class="kw">use</span> <span class="ident">core</span>::{
-    <span class="ident">iter::FromIterator</span>,
-    <span class="ident">num</span>::{<span class="ident">NonZeroU64</span>, <span class="ident">Wrapping</span>},
-    <span class="ident">ops::ControlFlow</span>,
+</pre><pre class="rust"><code><span class="kw">use </span>alloc::{collections::VecDeque, vec::Vec};
+<span class="kw">use </span>core::{
+    iter::FromIterator,
+    num::{NonZeroU64, Wrapping},
+    ops::ControlFlow,
 };
 
-<span class="kw">use</span> <span class="ident">necsim_core_bond::NonNegativeF64</span>;
+<span class="kw">use </span>necsim_core_bond::NonNegativeF64;
 
-<span class="kw">use</span> <span class="ident">necsim_core</span>::{
-    <span class="ident">cogs</span>::{
-        <span class="ident">DispersalSampler</span>, <span class="ident">Habitat</span>, <span class="ident">MathsCore</span>, <span class="ident">PrimeableRng</span>, <span class="ident">SpeciationProbability</span>, <span class="ident">TurnoverRate</span>,
+<span class="kw">use </span>necsim_core::{
+    cogs::{
+        DispersalSampler, Habitat, MathsCore, PrimeableRng, SpeciationProbability, TurnoverRate,
     },
-    <span class="ident">event::DispersalEvent</span>,
-    <span class="ident">landscape::IndexedLocation</span>,
-    <span class="ident">lineage</span>::{<span class="ident">Lineage</span>, <span class="ident">LineageInteraction</span>, <span class="ident">MigratingLineage</span>},
-    <span class="ident">reporter::Reporter</span>,
-    <span class="ident">simulation::Simulation</span>,
+    event::DispersalEvent,
+    landscape::IndexedLocation,
+    lineage::{Lineage, LineageInteraction, MigratingLineage},
+    reporter::Reporter,
+    simulation::Simulation,
 };
 
-<span class="kw">use</span> <span class="ident">necsim_partitioning_core</span>::{<span class="ident">LocalPartition</span>, <span class="ident">MigrationMode</span>};
+<span class="kw">use </span>necsim_partitioning_core::{LocalPartition, MigrationMode};
 
-<span class="kw">use</span> <span class="kw">crate</span>::{
-    <span class="ident">cogs</span>::{
-        <span class="ident">active_lineage_sampler::singular::SingularActiveLineageSampler</span>,
-        <span class="ident">coalescence_sampler::independent::IndependentCoalescenceSampler</span>,
-        <span class="ident">emigration_exit::independent</span>::{<span class="ident">choice::EmigrationChoice</span>, <span class="ident">IndependentEmigrationExit</span>},
-        <span class="ident">event_sampler</span>::{
-            <span class="ident">independent::IndependentEventSampler</span>, <span class="ident">tracking::MinSpeciationTrackingEventSampler</span>,
+<span class="kw">use crate</span>::{
+    cogs::{
+        active_lineage_sampler::singular::SingularActiveLineageSampler,
+        coalescence_sampler::independent::IndependentCoalescenceSampler,
+        emigration_exit::independent::{choice::EmigrationChoice, IndependentEmigrationExit},
+        event_sampler::{
+            independent::IndependentEventSampler, tracking::MinSpeciationTrackingEventSampler,
         },
-        <span class="ident">immigration_entry::never::NeverImmigrationEntry</span>,
-        <span class="ident">lineage_store::independent::IndependentLineageStore</span>,
+        immigration_entry::never::NeverImmigrationEntry,
+        lineage_store::independent::IndependentLineageStore,
     },
-    <span class="ident">decomposition::Decomposition</span>,
-    <span class="ident">parallelisation::Status</span>,
+    decomposition::Decomposition,
+    parallelisation::Status,
 };
 
-<span class="kw">use</span> <span class="kw">super</span>::{<span class="ident">reporter::IgnoreProgressReporterProxy</span>, <span class="ident">DedupCache</span>};
+<span class="kw">use super</span>::{reporter::IgnoreProgressReporterProxy, DedupCache};
 
-<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::type_complexity</span>)]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">simulate</span><span class="op">&lt;</span>
+<span class="attribute">#[allow(clippy::type_complexity)]
+</span><span class="kw">pub fn </span>simulate&lt;
     <span class="lifetime">&#39;p</span>,
-    <span class="ident">M</span>: <span class="ident">MathsCore</span>,
-    <span class="ident">H</span>: <span class="ident">Habitat</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span>,
-    <span class="ident">C</span>: <span class="ident">Decomposition</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span><span class="op">&gt;</span>,
-    <span class="ident">E</span>: <span class="ident">EmigrationChoice</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span><span class="op">&gt;</span>,
-    <span class="ident">G</span>: <span class="ident">PrimeableRng</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span>,
-    <span class="ident">D</span>: <span class="ident">DispersalSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span><span class="op">&gt;</span>,
-    <span class="ident">T</span>: <span class="ident">TurnoverRate</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span><span class="op">&gt;</span>,
-    <span class="ident">N</span>: <span class="ident">SpeciationProbability</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span><span class="op">&gt;</span>,
-    <span class="ident">A</span>: <span class="ident">SingularActiveLineageSampler</span><span class="op">&lt;</span>
-        <span class="ident">M</span>,
-        <span class="ident">H</span>,
-        <span class="ident">G</span>,
-        <span class="ident">IndependentLineageStore</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span><span class="op">&gt;</span>,
-        <span class="ident">IndependentEmigrationExit</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">C</span>, <span class="ident">E</span><span class="op">&gt;</span>,
-        <span class="ident">D</span>,
-        <span class="ident">IndependentCoalescenceSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span><span class="op">&gt;</span>,
-        <span class="ident">T</span>,
-        <span class="ident">N</span>,
-        <span class="ident">IndependentEventSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span>, <span class="ident">IndependentEmigrationExit</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">C</span>, <span class="ident">E</span><span class="op">&gt;</span>, <span class="ident">D</span>, <span class="ident">T</span>, <span class="ident">N</span><span class="op">&gt;</span>,
-        <span class="ident">NeverImmigrationEntry</span>,
-    <span class="op">&gt;</span>,
-    <span class="ident">R</span>: <span class="ident">Reporter</span>,
-    <span class="ident">P</span>: <span class="ident">LocalPartition</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span>, <span class="ident">R</span><span class="op">&gt;</span>,
-    <span class="ident">L</span>: <span class="ident">IntoIterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">Lineage</span><span class="op">&gt;</span>,
-<span class="op">&gt;</span>(
-    <span class="ident">simulation</span>: <span class="kw-2">&amp;mut</span> <span class="ident">Simulation</span><span class="op">&lt;</span>
-        <span class="ident">M</span>,
-        <span class="ident">H</span>,
-        <span class="ident">G</span>,
-        <span class="ident">IndependentLineageStore</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span><span class="op">&gt;</span>,
-        <span class="ident">IndependentEmigrationExit</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">C</span>, <span class="ident">E</span><span class="op">&gt;</span>,
-        <span class="ident">D</span>,
-        <span class="ident">IndependentCoalescenceSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span><span class="op">&gt;</span>,
-        <span class="ident">T</span>,
-        <span class="ident">N</span>,
-        <span class="ident">IndependentEventSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span>, <span class="ident">IndependentEmigrationExit</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">C</span>, <span class="ident">E</span><span class="op">&gt;</span>, <span class="ident">D</span>, <span class="ident">T</span>, <span class="ident">N</span><span class="op">&gt;</span>,
-        <span class="ident">NeverImmigrationEntry</span>,
-        <span class="ident">A</span>,
-    <span class="op">&gt;</span>,
-    <span class="ident">lineages</span>: <span class="ident">L</span>,
-    <span class="ident">dedup_cache</span>: <span class="ident">DedupCache</span>,
-    <span class="ident">step_slice</span>: <span class="ident">NonZeroU64</span>,
-    <span class="ident">local_partition</span>: <span class="kw-2">&amp;mut</span> <span class="ident">P</span>,
+    M: MathsCore,
+    H: Habitat&lt;M&gt;,
+    C: Decomposition&lt;M, H&gt;,
+    E: EmigrationChoice&lt;M, H&gt;,
+    G: PrimeableRng&lt;M&gt;,
+    D: DispersalSampler&lt;M, H, G&gt;,
+    T: TurnoverRate&lt;M, H&gt;,
+    N: SpeciationProbability&lt;M, H&gt;,
+    A: SingularActiveLineageSampler&lt;
+        M,
+        H,
+        G,
+        IndependentLineageStore&lt;M, H&gt;,
+        IndependentEmigrationExit&lt;M, H, C, E&gt;,
+        D,
+        IndependentCoalescenceSampler&lt;M, H&gt;,
+        T,
+        N,
+        IndependentEventSampler&lt;M, H, G, IndependentEmigrationExit&lt;M, H, C, E&gt;, D, T, N&gt;,
+        NeverImmigrationEntry,
+    &gt;,
+    R: Reporter,
+    P: LocalPartition&lt;<span class="lifetime">&#39;p</span>, R&gt;,
+    L: IntoIterator&lt;Item = Lineage&gt;,
+&gt;(
+    simulation: <span class="kw-2">&amp;mut </span>Simulation&lt;
+        M,
+        H,
+        G,
+        IndependentLineageStore&lt;M, H&gt;,
+        IndependentEmigrationExit&lt;M, H, C, E&gt;,
+        D,
+        IndependentCoalescenceSampler&lt;M, H&gt;,
+        T,
+        N,
+        IndependentEventSampler&lt;M, H, G, IndependentEmigrationExit&lt;M, H, C, E&gt;, D, T, N&gt;,
+        NeverImmigrationEntry,
+        A,
+    &gt;,
+    lineages: L,
+    dedup_cache: DedupCache,
+    step_slice: NonZeroU64,
+    local_partition: <span class="kw-2">&amp;mut </span>P,
 ) -&gt; (
-    <span class="ident">Status</span>,
-    <span class="ident">NonNegativeF64</span>,
-    <span class="ident">u64</span>,
-    <span class="kw">impl</span> <span class="ident">IntoIterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">Lineage</span><span class="op">&gt;</span>,
+    Status,
+    NonNegativeF64,
+    u64,
+    <span class="kw">impl </span>IntoIterator&lt;Item = Lineage&gt;,
 ) {
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">lineages</span> <span class="op">=</span> <span class="ident">VecDeque::from_iter</span>(<span class="ident">lineages</span>);
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">proxy</span> <span class="op">=</span> <span class="ident">IgnoreProgressReporterProxy::from</span>(<span class="ident">local_partition</span>);
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">min_spec_samples</span> <span class="op">=</span> <span class="ident">dedup_cache</span>.<span class="ident">construct</span>(<span class="ident">lineages</span>.<span class="ident">len</span>());
+    <span class="kw">let </span><span class="kw-2">mut </span>lineages = VecDeque::from_iter(lineages);
+    <span class="kw">let </span><span class="kw-2">mut </span>proxy = IgnoreProgressReporterProxy::from(local_partition);
+    <span class="kw">let </span><span class="kw-2">mut </span>min_spec_samples = dedup_cache.construct(lineages.len());
 
-    <span class="comment">// Ensure that the progress bar starts with the expected target</span>
-    <span class="ident">proxy</span>.<span class="ident">local_partition</span>().<span class="ident">report_progress_sync</span>(
-        (<span class="ident">Wrapping</span>(<span class="ident">lineages</span>.<span class="ident">len</span>() <span class="kw">as</span> <span class="ident">u64</span>) <span class="op">+</span> <span class="ident">simulation</span>.<span class="ident">get_balanced_remaining_work</span>()).<span class="number">0</span>,
+    <span class="comment">// Ensure that the progress bar starts with the expected target
+    </span>proxy.local_partition().report_progress_sync(
+        (Wrapping(lineages.len() <span class="kw">as </span>u64) + simulation.get_balanced_remaining_work()).<span class="number">0</span>,
     );
 
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">immigration_events</span> <span class="op">=</span> <span class="ident">Vec::new</span>();
+    <span class="kw">let </span><span class="kw-2">mut </span>immigration_events = Vec::new();
 
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">total_steps</span> <span class="op">=</span> <span class="number">0_u64</span>;
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">max_time</span> <span class="op">=</span> <span class="ident">NonNegativeF64::zero</span>();
+    <span class="kw">let </span><span class="kw-2">mut </span>total_steps = <span class="number">0_u64</span>;
+    <span class="kw">let </span><span class="kw-2">mut </span>max_time = NonNegativeF64::zero();
 
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">local_immigration_count</span> <span class="op">=</span> <span class="ident">Wrapping</span>(<span class="number">0_u64</span>);
+    <span class="kw">let </span><span class="kw-2">mut </span>local_immigration_count = Wrapping(<span class="number">0_u64</span>);
 
-    <span class="kw">while</span> <span class="op">!</span><span class="ident">lineages</span>.<span class="ident">is_empty</span>()
-        <span class="op">|</span><span class="op">|</span> <span class="ident">simulation</span>.<span class="ident">active_lineage_sampler</span>().<span class="ident">number_active_lineages</span>() <span class="op">&gt;</span> <span class="number">0</span>
-        <span class="op">|</span><span class="op">|</span> <span class="op">!</span><span class="ident">simulation</span>.<span class="ident">emigration_exit</span>().<span class="ident">is_empty</span>()
-        <span class="op">|</span><span class="op">|</span> <span class="ident">proxy</span>.<span class="ident">local_partition</span>().<span class="ident">wait_for_termination</span>()
+    <span class="kw">while </span>!lineages.is_empty()
+        || simulation.active_lineage_sampler().number_active_lineages() &gt; <span class="number">0
+        </span>|| !simulation.emigration_exit().is_empty()
+        || proxy.local_partition().wait_for_termination()
     {
-        <span class="ident">proxy</span>.<span class="ident">report_total_progress</span>(
-            (<span class="ident">Wrapping</span>(<span class="ident">lineages</span>.<span class="ident">len</span>() <span class="kw">as</span> <span class="ident">u64</span>) <span class="op">+</span> <span class="ident">simulation</span>.<span class="ident">get_balanced_remaining_work</span>()
-                <span class="op">-</span> <span class="ident">local_immigration_count</span>)
+        proxy.report_total_progress(
+            (Wrapping(lineages.len() <span class="kw">as </span>u64) + simulation.get_balanced_remaining_work()
+                - local_immigration_count)
                 .<span class="number">0</span>,
         );
 
-        <span class="kw">let</span> <span class="ident">previous_task</span> <span class="op">=</span> <span class="ident">simulation</span>
-            .<span class="ident">active_lineage_sampler_mut</span>()
-            .<span class="ident">replace_active_lineage</span>(<span class="ident">lineages</span>.<span class="ident">pop_front</span>());
+        <span class="kw">let </span>previous_task = simulation
+            .active_lineage_sampler_mut()
+            .replace_active_lineage(lineages.pop_front());
 
-        <span class="kw">let</span> <span class="ident">previous_speciation_sample</span> <span class="op">=</span>
-            <span class="ident">simulation</span>.<span class="ident">event_sampler_mut</span>().<span class="ident">replace_min_speciation</span>(<span class="prelude-val">None</span>);
+        <span class="kw">let </span>previous_speciation_sample =
+            simulation.event_sampler_mut().replace_min_speciation(<span class="prelude-val">None</span>);
 
-        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">previous_speciation_sample</span>) <span class="op">=</span> <span class="ident">previous_speciation_sample</span> {
-            <span class="kw">if</span> <span class="ident">min_spec_samples</span>.<span class="ident">insert</span>(<span class="ident">previous_speciation_sample</span>) {
-                <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">previous_task</span>) <span class="op">=</span> <span class="ident">previous_task</span> {
-                    <span class="ident">lineages</span>.<span class="ident">push_back</span>(<span class="ident">previous_task</span>);
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(previous_speciation_sample) = previous_speciation_sample {
+            <span class="kw">if </span>min_spec_samples.insert(previous_speciation_sample) {
+                <span class="kw">if let </span><span class="prelude-val">Some</span>(previous_task) = previous_task {
+                    lineages.push_back(previous_task);
                 }
             }
         }
 
-        <span class="kw">let</span> (<span class="ident">new_time</span>, <span class="ident">new_steps</span>) <span class="op">=</span> <span class="ident">simulation</span>.<span class="ident">simulate_incremental_early_stop</span>(
-            <span class="op">|</span><span class="kw">_</span>, <span class="ident">steps</span>, <span class="kw">_</span><span class="op">|</span> {
-                <span class="kw">if</span> <span class="ident">steps</span> <span class="op">&gt;</span><span class="op">=</span> <span class="ident">step_slice</span>.<span class="ident">get</span>() {
-                    <span class="ident">ControlFlow::BREAK</span>
-                } <span class="kw">else</span> {
-                    <span class="ident">ControlFlow::CONTINUE</span>
+        <span class="kw">let </span>(new_time, new_steps) = simulation.simulate_incremental_early_stop(
+            |<span class="kw">_</span>, steps, <span class="kw">_</span>| {
+                <span class="kw">if </span>steps &gt;= step_slice.get() {
+                    ControlFlow::BREAK
+                } <span class="kw">else </span>{
+                    ControlFlow::CONTINUE
                 }
             },
-            <span class="kw-2">&amp;mut</span> <span class="ident">proxy</span>,
+            <span class="kw-2">&amp;mut </span>proxy,
         );
 
-        <span class="ident">total_steps</span> <span class="op">+</span><span class="op">=</span> <span class="ident">new_steps</span>;
-        <span class="ident">max_time</span> <span class="op">=</span> <span class="ident">max_time</span>.<span class="ident">max</span>(<span class="ident">new_time</span>);
+        total_steps += new_steps;
+        max_time = max_time.max(new_time);
 
-        <span class="comment">// Force migration when no local tasks remain</span>
-        <span class="kw">let</span> <span class="ident">migration_mode</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">lineages</span>.<span class="ident">is_empty</span>() {
-            <span class="ident">MigrationMode::Force</span>
-        } <span class="kw">else</span> {
-            <span class="ident">MigrationMode::Default</span>
+        <span class="comment">// Force migration when no local tasks remain
+        </span><span class="kw">let </span>migration_mode = <span class="kw">if </span>lineages.is_empty() {
+            MigrationMode::Force
+        } <span class="kw">else </span>{
+            MigrationMode::Default
         };
 
-        <span class="comment">// Send off the possible emigrant and recieve immigrants</span>
-        <span class="kw">let</span> <span class="ident">immigrants</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">simulation</span>.<span class="ident">emigration_exit_mut</span>().<span class="ident">take</span>() {
-            <span class="prelude-val">Some</span>(<span class="ident">emigrant</span>) =&gt; <span class="ident">proxy</span>.<span class="ident">local_partition</span>().<span class="ident">migrate_individuals</span>(
-                <span class="kw-2">&amp;mut</span> <span class="ident">core::iter::once</span>(<span class="ident">emigrant</span>),
-                <span class="ident">migration_mode</span>,
-                <span class="ident">migration_mode</span>,
+        <span class="comment">// Send off the possible emigrant and recieve immigrants
+        </span><span class="kw">let </span>immigrants = <span class="kw">match </span>simulation.emigration_exit_mut().take() {
+            <span class="prelude-val">Some</span>(emigrant) =&gt; proxy.local_partition().migrate_individuals(
+                <span class="kw-2">&amp;mut </span>core::iter::once(emigrant),
+                migration_mode,
+                migration_mode,
             ),
-            <span class="prelude-val">None</span> =&gt; <span class="ident">proxy</span>.<span class="ident">local_partition</span>().<span class="ident">migrate_individuals</span>(
-                <span class="kw-2">&amp;mut</span> <span class="ident">core::iter::empty</span>(),
-                <span class="ident">migration_mode</span>,
-                <span class="ident">migration_mode</span>,
+            <span class="prelude-val">None </span>=&gt; proxy.local_partition().migrate_individuals(
+                <span class="kw-2">&amp;mut </span>core::iter::empty(),
+                migration_mode,
+                migration_mode,
             ),
         };
 
-        <span class="comment">// Create local Lineages from the MigrantLineags</span>
-        <span class="kw">for</span> <span class="ident">immigrant</span> <span class="kw">in</span> <span class="ident">immigrants</span> {
-            <span class="kw">let</span> <span class="ident">MigratingLineage</span> {
-                <span class="ident">global_reference</span>,
-                <span class="ident">dispersal_origin</span>,
-                <span class="ident">dispersal_target</span>,
-                <span class="ident">prior_time</span>,
-                <span class="ident">event_time</span>,
-                <span class="ident">coalescence_rng_sample</span>,
-            } <span class="op">=</span> <span class="ident">immigrant</span>;
+        <span class="comment">// Create local Lineages from the MigrantLineags
+        </span><span class="kw">for </span>immigrant <span class="kw">in </span>immigrants {
+            <span class="kw">let </span>MigratingLineage {
+                global_reference,
+                dispersal_origin,
+                dispersal_target,
+                prior_time,
+                event_time,
+                coalescence_rng_sample,
+            } = immigrant;
 
-            <span class="comment">// Finish sampling the dispersal of the immigrating individual</span>
-            <span class="kw">let</span> <span class="ident">target_index</span> <span class="op">=</span> <span class="ident">coalescence_rng_sample</span>.<span class="ident">sample_coalescence_index</span>::<span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span>(
-                <span class="ident">simulation</span>
-                    .<span class="ident">habitat</span>()
-                    .<span class="ident">get_habitat_at_location</span>(<span class="kw-2">&amp;</span><span class="ident">dispersal_target</span>),
+            <span class="comment">// Finish sampling the dispersal of the immigrating individual
+            </span><span class="kw">let </span>target_index = coalescence_rng_sample.sample_coalescence_index::&lt;M&gt;(
+                simulation
+                    .habitat()
+                    .get_habitat_at_location(<span class="kw-2">&amp;</span>dispersal_target),
             );
-            <span class="kw">let</span> <span class="ident">dispersal_target</span> <span class="op">=</span> <span class="ident">IndexedLocation::new</span>(<span class="ident">dispersal_target</span>, <span class="ident">target_index</span>);
+            <span class="kw">let </span>dispersal_target = IndexedLocation::new(dispersal_target, target_index);
 
-            <span class="comment">// Cache the immigration event</span>
-            <span class="ident">immigration_events</span>.<span class="ident">push</span>(<span class="ident">DispersalEvent</span> {
-                <span class="ident">origin</span>: <span class="ident">dispersal_origin</span>,
-                <span class="ident">prior_time</span>,
-                <span class="ident">event_time</span>,
-                <span class="ident">global_lineage_reference</span>: <span class="ident">global_reference</span>.<span class="ident">clone</span>(),
-                <span class="ident">target</span>: <span class="ident">dispersal_target</span>.<span class="ident">clone</span>(),
-                <span class="ident">interaction</span>: <span class="ident">LineageInteraction::Maybe</span>,
+            <span class="comment">// Cache the immigration event
+            </span>immigration_events.push(DispersalEvent {
+                origin: dispersal_origin,
+                prior_time,
+                event_time,
+                global_lineage_reference: global_reference.clone(),
+                target: dispersal_target.clone(),
+                interaction: LineageInteraction::Maybe,
             });
 
-            <span class="comment">// Since the simulation has no internal immigration,</span>
-            <span class="comment">//  we have to manually keep score of the immigrations</span>
-            <span class="ident">local_immigration_count</span> <span class="op">+</span><span class="op">=</span> <span class="ident">Wrapping</span>(<span class="number">1_u64</span>);
+            <span class="comment">// Since the simulation has no internal immigration,
+            //  we have to manually keep score of the immigrations
+            </span>local_immigration_count += Wrapping(<span class="number">1_u64</span>);
 
-            <span class="comment">// Append the new Lineage to the local task list</span>
-            <span class="ident">lineages</span>.<span class="ident">push_back</span>(<span class="ident">Lineage</span> {
-                <span class="ident">global_reference</span>,
-                <span class="ident">indexed_location</span>: <span class="ident">dispersal_target</span>,
-                <span class="ident">last_event_time</span>: <span class="ident">event_time</span>.<span class="ident">into</span>(),
+            <span class="comment">// Append the new Lineage to the local task list
+            </span>lineages.push_back(Lineage {
+                global_reference,
+                indexed_location: dispersal_target,
+                last_event_time: event_time.into(),
             });
         }
 
-        <span class="comment">// Report any immigration events</span>
-        <span class="kw">while</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">immigration_event</span>) <span class="op">=</span> <span class="ident">immigration_events</span>.<span class="ident">pop</span>() {
-            <span class="ident">proxy</span>.<span class="ident">report_dispersal</span>(<span class="kw-2">&amp;</span><span class="ident">immigration_event</span>.<span class="ident">into</span>());
+        <span class="comment">// Report any immigration events
+        </span><span class="kw">while let </span><span class="prelude-val">Some</span>(immigration_event) = immigration_events.pop() {
+            proxy.report_dispersal(<span class="kw-2">&amp;</span>immigration_event.into());
         }
     }
 
-    <span class="ident">proxy</span>.<span class="ident">local_partition</span>().<span class="ident">report_progress_sync</span>(<span class="number">0_u64</span>);
+    proxy.local_partition().report_progress_sync(<span class="number">0_u64</span>);
 
-    <span class="kw">let</span> (<span class="ident">global_time</span>, <span class="ident">global_steps</span>) <span class="op">=</span> <span class="ident">proxy</span>
-        .<span class="ident">local_partition</span>()
-        .<span class="ident">reduce_global_time_steps</span>(<span class="ident">max_time</span>, <span class="ident">total_steps</span>);
+    <span class="kw">let </span>(global_time, global_steps) = proxy
+        .local_partition()
+        .reduce_global_time_steps(max_time, total_steps);
 
-    (<span class="ident">Status::Done</span>, <span class="ident">global_time</span>, <span class="ident">global_steps</span>, <span class="ident">lineages</span>)
+    (Status::Done, global_time, global_steps, lineages)
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="necsim_impls_no_std" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0-nightly (affe0d3a0 2022-08-05)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="necsim_impls_no_std" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (5e9772042 2022-10-29)" ></div></body></html>

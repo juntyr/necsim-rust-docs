@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `necsim/plugins/core/src/import/serde.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>serde.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../necsim_plugins_core/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../necsim_plugins_core/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../necsim_plugins_core/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `necsim/plugins/core/src/import/serde.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>serde.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../normalize.css"><link rel="stylesheet" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../ayu.css" disabled><link rel="stylesheet" href="../../../dark.css" disabled><link rel="stylesheet" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../../necsim_plugins_core/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -229,236 +229,236 @@
 <span id="229">229</span>
 <span id="230">230</span>
 <span id="231">231</span>
-</pre><pre class="rust"><code><span class="doccomment">/// Inspired by the &lt;https://adventures.michaelfbryan.com/posts/plugins-in-rust/&gt; blog post</span>
-<span class="kw">use</span> <span class="ident">std</span>::{
-    <span class="ident">convert::TryFrom</span>, <span class="ident">fmt</span>, <span class="ident">io</span>, <span class="ident">iter::IntoIterator</span>, <span class="ident">mem::ManuallyDrop</span>, <span class="ident">path::PathBuf</span>, <span class="ident">rc::Rc</span>,
+</pre><pre class="rust"><code><span class="doccomment">/// Inspired by the &lt;https://adventures.michaelfbryan.com/posts/plugins-in-rust/&gt; blog post
+</span><span class="kw">use </span>std::{
+    convert::TryFrom, fmt, io, iter::IntoIterator, mem::ManuallyDrop, path::PathBuf, rc::Rc,
 };
 
-<span class="kw">use</span> <span class="ident">libloading::Library</span>;
-<span class="kw">use</span> <span class="ident">serde::de</span>::{<span class="self">self</span>, <span class="ident">Deserialize</span>, <span class="ident">Deserializer</span>, <span class="ident">MapAccess</span>, <span class="ident">SeqAccess</span>, <span class="ident">Visitor</span>};
+<span class="kw">use </span>libloading::Library;
+<span class="kw">use </span>serde::de::{<span class="self">self</span>, Deserialize, Deserializer, MapAccess, SeqAccess, Visitor};
 
-<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">export::ReporterPluginDeclaration</span>, <span class="ident">import::ReporterPlugin</span>};
+<span class="kw">use crate</span>::{export::ReporterPluginDeclaration, import::ReporterPlugin};
 
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ReporterPluginLibrary</span> {
-    <span class="ident">_library</span>: <span class="ident">Rc</span><span class="op">&lt;</span><span class="ident">PluginLibrary</span><span class="op">&gt;</span>,
-    <span class="ident">reporters</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">ReporterPlugin</span><span class="op">&gt;</span>,
+<span class="kw">pub struct </span>ReporterPluginLibrary {
+    _library: Rc&lt;PluginLibrary&gt;,
+    reporters: Vec&lt;ReporterPlugin&gt;,
 }
 
-<span class="kw">impl</span> <span class="ident">IntoIterator</span> <span class="kw">for</span> <span class="ident">ReporterPluginLibrary</span> {
-    <span class="kw">type</span> <span class="ident">IntoIter</span> <span class="op">=</span> <span class="ident">std::vec::IntoIter</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Item</span><span class="op">&gt;</span>;
-    <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="ident">ReporterPlugin</span>;
+<span class="kw">impl </span>IntoIterator <span class="kw">for </span>ReporterPluginLibrary {
+    <span class="kw">type </span>IntoIter = std::vec::IntoIter&lt;<span class="self">Self</span>::Item&gt;;
+    <span class="kw">type </span>Item = ReporterPlugin;
 
-    <span class="kw">fn</span> <span class="ident">into_iter</span>(<span class="self">self</span>) -&gt; <span class="ident"><span class="self">Self</span>::IntoIter</span> {
-        <span class="self">self</span>.<span class="ident">reporters</span>.<span class="ident">into_iter</span>()
+    <span class="kw">fn </span>into_iter(<span class="self">self</span>) -&gt; <span class="self">Self</span>::IntoIter {
+        <span class="self">self</span>.reporters.into_iter()
     }
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;de</span><span class="op">&gt;</span> <span class="ident">Deserialize</span><span class="op">&lt;</span><span class="lifetime">&#39;de</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">ReporterPluginLibrary</span> {
-    <span class="kw">fn</span> <span class="ident">deserialize</span><span class="op">&lt;</span><span class="ident">D</span><span class="op">&gt;</span>(<span class="ident">deserializer</span>: <span class="ident">D</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">D::Error</span><span class="op">&gt;</span>
-    <span class="kw">where</span>
-        <span class="ident">D</span>: <span class="ident">Deserializer</span><span class="op">&lt;</span><span class="lifetime">&#39;de</span><span class="op">&gt;</span>,
+<span class="kw">impl</span>&lt;<span class="lifetime">&#39;de</span>&gt; Deserialize&lt;<span class="lifetime">&#39;de</span>&gt; <span class="kw">for </span>ReporterPluginLibrary {
+    <span class="kw">fn </span>deserialize&lt;D&gt;(deserializer: D) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, D::Error&gt;
+    <span class="kw">where
+        </span>D: Deserializer&lt;<span class="lifetime">&#39;de</span>&gt;,
     {
-        <span class="kw">const</span> <span class="ident">FIELDS</span>: <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span><span class="ident">str</span>] <span class="op">=</span> <span class="kw-2">&amp;</span>[<span class="string">&quot;library&quot;</span>, <span class="string">&quot;reporters&quot;</span>];
-        <span class="ident">deserializer</span>.<span class="ident">deserialize_struct</span>(<span class="string">&quot;Plugin&quot;</span>, <span class="ident">FIELDS</span>, <span class="ident">ReporterPluginLibraryVisitor</span>)
+        <span class="kw">const </span>FIELDS: <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span>str] = <span class="kw-2">&amp;</span>[<span class="string">&quot;library&quot;</span>, <span class="string">&quot;reporters&quot;</span>];
+        deserializer.deserialize_struct(<span class="string">&quot;Plugin&quot;</span>, FIELDS, ReporterPluginLibraryVisitor)
     }
 }
 
-<span class="comment">// Helper struct to load the library from its path</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">serde::Deserialize</span>)]</span>
-<span class="attribute">#[<span class="ident">serde</span>(<span class="ident">try_from</span> <span class="op">=</span> <span class="string">&quot;PathBuf&quot;</span>)]</span>
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">struct</span> <span class="ident">PluginLibrary</span> {
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">path</span>: <span class="ident">PathBuf</span>,
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">_library</span>: <span class="ident">Library</span>,
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">declaration</span>: <span class="ident">ReporterPluginDeclaration</span>,
+<span class="comment">// Helper struct to load the library from its path
+</span><span class="attribute">#[derive(serde::Deserialize)]
+#[serde(try_from = <span class="string">&quot;PathBuf&quot;</span>)]
+</span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">struct </span>PluginLibrary {
+    <span class="kw">pub</span>(<span class="kw">crate</span>) path: PathBuf,
+    <span class="kw">pub</span>(<span class="kw">crate</span>) _library: Library,
+    <span class="kw">pub</span>(<span class="kw">crate</span>) declaration: ReporterPluginDeclaration,
 }
 
-<span class="kw">impl</span> <span class="ident">TryFrom</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">PluginLibrary</span> {
-    <span class="kw">type</span> <span class="ident">Error</span> <span class="op">=</span> <span class="ident">io::Error</span>;
+<span class="kw">impl </span>TryFrom&lt;PathBuf&gt; <span class="kw">for </span>PluginLibrary {
+    <span class="kw">type </span>Error = io::Error;
 
-    <span class="kw">fn</span> <span class="ident">try_from</span>(<span class="ident">library_path</span>: <span class="ident">PathBuf</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident"><span class="self">Self</span>::Error</span><span class="op">&gt;</span> {
-        <span class="comment">// Load the plugin library into memory</span>
-        <span class="kw">let</span> <span class="ident">library</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">Library::new</span>(<span class="ident">library_path</span>.<span class="ident">clone</span>()) }
-            .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">err</span><span class="op">|</span> <span class="ident">io::Error::new</span>(<span class="ident">io::ErrorKind::Other</span>, <span class="ident">err</span>))<span class="question-mark">?</span>;
+    <span class="kw">fn </span>try_from(library_path: PathBuf) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, <span class="self">Self</span>::Error&gt; {
+        <span class="comment">// Load the plugin library into memory
+        </span><span class="kw">let </span>library = <span class="kw">unsafe </span>{ Library::new(library_path.clone()) }
+            .map_err(|err| io::Error::new(io::ErrorKind::Other, err))<span class="question-mark">?</span>;
 
-        <span class="comment">// Load the plugin declaration symbol</span>
-        <span class="kw">let</span> <span class="ident">declaration</span> <span class="op">=</span> <span class="kw">unsafe</span> {
-            <span class="ident">library</span>
-                .<span class="ident">get</span>::<span class="op">&lt;</span><span class="kw-2">*const</span> <span class="ident">ReporterPluginDeclaration</span><span class="op">&gt;</span>(<span class="string">b&quot;NECSIM_REPORTER_PLUGIN_DECLARATION&quot;</span>)
-                .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">err</span><span class="op">|</span> <span class="ident">io::Error::new</span>(<span class="ident">io::ErrorKind::Other</span>, <span class="ident">err</span>))<span class="question-mark">?</span>
-                .<span class="ident">read</span>()
+        <span class="comment">// Load the plugin declaration symbol
+        </span><span class="kw">let </span>declaration = <span class="kw">unsafe </span>{
+            library
+                .get::&lt;<span class="kw-2">*const </span>ReporterPluginDeclaration&gt;(<span class="string">b&quot;NECSIM_REPORTER_PLUGIN_DECLARATION&quot;</span>)
+                .map_err(|err| io::Error::new(io::ErrorKind::Other, err))<span class="question-mark">?
+                </span>.read()
         };
 
-        <span class="comment">// Check for rustc version incompatibilities</span>
-        <span class="kw">if</span> <span class="ident">declaration</span>.<span class="ident">rustc_version</span> <span class="op">!</span><span class="op">=</span> <span class="ident"><span class="kw">crate</span>::RUSTC_VERSION</span> {
-            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">io::Error::new</span>(
-                <span class="ident">io::ErrorKind::Other</span>,
+        <span class="comment">// Check for rustc version incompatibilities
+        </span><span class="kw">if </span>declaration.rustc_version != <span class="kw">crate</span>::RUSTC_VERSION {
+            <span class="kw">return </span><span class="prelude-val">Err</span>(io::Error::new(
+                io::ErrorKind::Other,
                 <span class="macro">format!</span>(
                     <span class="string">&quot;Plugin rustc version {} does not match system rustc version {}.&quot;</span>,
-                    <span class="ident">declaration</span>.<span class="ident">rustc_version</span>,
-                    <span class="ident"><span class="kw">crate</span>::RUSTC_VERSION</span>
+                    declaration.rustc_version,
+                    <span class="kw">crate</span>::RUSTC_VERSION
                 ),
             ));
         }
 
-        <span class="comment">// Check for plugin system version incompatibilities</span>
-        <span class="kw">if</span> <span class="ident">declaration</span>.<span class="ident">core_version</span> <span class="op">!</span><span class="op">=</span> <span class="ident"><span class="kw">crate</span>::CORE_VERSION</span> {
-            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">io::Error::new</span>(
-                <span class="ident">io::ErrorKind::Other</span>,
+        <span class="comment">// Check for plugin system version incompatibilities
+        </span><span class="kw">if </span>declaration.core_version != <span class="kw">crate</span>::CORE_VERSION {
+            <span class="kw">return </span><span class="prelude-val">Err</span>(io::Error::new(
+                io::ErrorKind::Other,
                 <span class="macro">format!</span>(
                     <span class="string">&quot;Plugin system version {} does not match system version {}.&quot;</span>,
-                    <span class="ident">declaration</span>.<span class="ident">core_version</span>,
-                    <span class="ident"><span class="kw">crate</span>::CORE_VERSION</span>
+                    declaration.core_version,
+                    <span class="kw">crate</span>::CORE_VERSION
                 ),
             ));
         }
 
-        <span class="kw">unsafe</span> {
-            (<span class="ident">declaration</span>.<span class="ident">init</span>)(<span class="ident">log::logger</span>(), <span class="ident">log::max_level</span>());
+        <span class="kw">unsafe </span>{
+            (declaration.init)(log::logger(), log::max_level());
         }
 
-        <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="kw">unsafe</span> { (<span class="ident">declaration</span>.<span class="ident">library_path</span>)() }.<span class="ident">unwrap_or</span>(<span class="ident">library_path</span>);
+        <span class="kw">let </span>path = <span class="kw">unsafe </span>{ (declaration.library_path)() }.unwrap_or(library_path);
 
-        <span class="prelude-val">Ok</span>(<span class="self">Self</span> {
-            <span class="ident">path</span>,
-            <span class="ident">_library</span>: <span class="ident">library</span>,
-            <span class="ident">declaration</span>,
+        <span class="prelude-val">Ok</span>(<span class="self">Self </span>{
+            path,
+            _library: library,
+            declaration,
         })
     }
 }
 
-<span class="kw">struct</span> <span class="ident">RcPluginLibrary</span>(<span class="ident">Rc</span><span class="op">&lt;</span><span class="ident">PluginLibrary</span><span class="op">&gt;</span>);
+<span class="kw">struct </span>RcPluginLibrary(Rc&lt;PluginLibrary&gt;);
 
-<span class="comment">// Deserialise a list of ReporterPlugins using the open library</span>
-<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;de</span><span class="op">&gt;</span> <span class="ident">serde::de::DeserializeSeed</span><span class="op">&lt;</span><span class="lifetime">&#39;de</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">RcPluginLibrary</span> {
-    <span class="kw">type</span> <span class="ident">Value</span> <span class="op">=</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">ReporterPlugin</span><span class="op">&gt;</span>;
+<span class="comment">// Deserialise a list of ReporterPlugins using the open library
+</span><span class="kw">impl</span>&lt;<span class="lifetime">&#39;de</span>&gt; serde::de::DeserializeSeed&lt;<span class="lifetime">&#39;de</span>&gt; <span class="kw">for </span>RcPluginLibrary {
+    <span class="kw">type </span>Value = Vec&lt;ReporterPlugin&gt;;
 
-    <span class="kw">fn</span> <span class="ident">deserialize</span><span class="op">&lt;</span><span class="ident">D</span>: <span class="ident">Deserializer</span><span class="op">&lt;</span><span class="lifetime">&#39;de</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">deserializer</span>: <span class="ident">D</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Value</span>, <span class="ident">D::Error</span><span class="op">&gt;</span> {
-        <span class="comment">// Helper struct to deserialise a single ReporterPlugin</span>
-        <span class="kw">struct</span> <span class="ident">PluginReporter</span> {
-            <span class="ident">library</span>: <span class="ident">Rc</span><span class="op">&lt;</span><span class="ident">PluginLibrary</span><span class="op">&gt;</span>,
+    <span class="kw">fn </span>deserialize&lt;D: Deserializer&lt;<span class="lifetime">&#39;de</span>&gt;&gt;(<span class="self">self</span>, deserializer: D) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>::Value, D::Error&gt; {
+        <span class="comment">// Helper struct to deserialise a single ReporterPlugin
+        </span><span class="kw">struct </span>PluginReporter {
+            library: Rc&lt;PluginLibrary&gt;,
         }
 
-        <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;de</span><span class="op">&gt;</span> <span class="ident">serde::de::DeserializeSeed</span><span class="op">&lt;</span><span class="lifetime">&#39;de</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">PluginReporter</span> {
-            <span class="kw">type</span> <span class="ident">Value</span> <span class="op">=</span> <span class="ident">ReporterPlugin</span>;
+        <span class="kw">impl</span>&lt;<span class="lifetime">&#39;de</span>&gt; serde::de::DeserializeSeed&lt;<span class="lifetime">&#39;de</span>&gt; <span class="kw">for </span>PluginReporter {
+            <span class="kw">type </span>Value = ReporterPlugin;
 
-            <span class="kw">fn</span> <span class="ident">deserialize</span><span class="op">&lt;</span><span class="ident">D</span>: <span class="ident">Deserializer</span><span class="op">&lt;</span><span class="lifetime">&#39;de</span><span class="op">&gt;</span><span class="op">&gt;</span>(
+            <span class="kw">fn </span>deserialize&lt;D: Deserializer&lt;<span class="lifetime">&#39;de</span>&gt;&gt;(
                 <span class="self">self</span>,
-                <span class="ident">deserializer</span>: <span class="ident">D</span>,
-            ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Value</span>, <span class="ident">D::Error</span><span class="op">&gt;</span> {
-                <span class="kw">match</span> <span class="kw">unsafe</span> {
-                    (<span class="self">self</span>.<span class="ident">library</span>.<span class="ident">declaration</span>.<span class="ident">deserialise</span>)(
-                        <span class="kw-2">&amp;mut</span> <span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">erased_serde::Deserializer</span><span class="op">&gt;</span><span class="ident">::erase</span>(<span class="ident">deserializer</span>),
+                deserializer: D,
+            ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>::Value, D::Error&gt; {
+                <span class="kw">match unsafe </span>{
+                    (<span class="self">self</span>.library.declaration.deserialise)(
+                        <span class="kw-2">&amp;mut </span>&lt;<span class="kw">dyn </span>erased_serde::Deserializer&gt;::erase(deserializer),
                     )
                 } {
-                    <span class="prelude-val">Ok</span>(<span class="ident">reporter</span>) =&gt; <span class="prelude-val">Ok</span>(<span class="ident">ReporterPlugin</span> {
-                        <span class="ident">library</span>: <span class="self">self</span>.<span class="ident">library</span>,
-                        <span class="ident">filter</span>: <span class="ident">reporter</span>.<span class="ident">filter</span>,
-                        <span class="ident">reporter</span>: <span class="ident">ManuallyDrop::new</span>(<span class="ident">ManuallyDrop::into_inner</span>(<span class="ident">reporter</span>).<span class="ident">reporter</span>),
-                        <span class="ident">finalised</span>: <span class="bool-val">false</span>,
+                    <span class="prelude-val">Ok</span>(reporter) =&gt; <span class="prelude-val">Ok</span>(ReporterPlugin {
+                        library: <span class="self">self</span>.library,
+                        filter: reporter.filter,
+                        reporter: ManuallyDrop::new(ManuallyDrop::into_inner(reporter).reporter),
+                        finalised: <span class="bool-val">false</span>,
                     }),
-                    <span class="prelude-val">Err</span>(<span class="ident">err</span>) =&gt; <span class="prelude-val">Err</span>(<span class="ident">de::Error::custom</span>(<span class="ident">err</span>)),
+                    <span class="prelude-val">Err</span>(err) =&gt; <span class="prelude-val">Err</span>(de::Error::custom(err)),
                 }
             }
         }
 
-        <span class="comment">// Helper struct to deserialise a list of ReporterPlugins</span>
-        <span class="kw">struct</span> <span class="ident">ReporterVecVisitor</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
-            <span class="ident">library</span>: <span class="ident">Rc</span><span class="op">&lt;</span><span class="ident">PluginLibrary</span><span class="op">&gt;</span>,
-            <span class="ident">vec</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">ReporterPlugin</span><span class="op">&gt;</span>,
+        <span class="comment">// Helper struct to deserialise a list of ReporterPlugins
+        </span><span class="kw">struct </span>ReporterVecVisitor&lt;<span class="lifetime">&#39;a</span>&gt; {
+            library: Rc&lt;PluginLibrary&gt;,
+            vec: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw-2">mut </span>Vec&lt;ReporterPlugin&gt;,
         }
 
-        <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;de</span>, <span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">Visitor</span><span class="op">&lt;</span><span class="lifetime">&#39;de</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">ReporterVecVisitor</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
-            <span class="kw">type</span> <span class="ident">Value</span> <span class="op">=</span> ();
+        <span class="kw">impl</span>&lt;<span class="lifetime">&#39;de</span>, <span class="lifetime">&#39;a</span>&gt; Visitor&lt;<span class="lifetime">&#39;de</span>&gt; <span class="kw">for </span>ReporterVecVisitor&lt;<span class="lifetime">&#39;a</span>&gt; {
+            <span class="kw">type </span>Value = ();
 
-            <span class="kw">fn</span> <span class="ident">expecting</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">formatter</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span>) -&gt; <span class="ident">fmt::Result</span> {
-                <span class="macro">write!</span>(<span class="ident">formatter</span>, <span class="string">&quot;an array of reporters&quot;</span>)
+            <span class="kw">fn </span>expecting(<span class="kw-2">&amp;</span><span class="self">self</span>, formatter: <span class="kw-2">&amp;mut </span>fmt::Formatter) -&gt; fmt::Result {
+                <span class="macro">write!</span>(formatter, <span class="string">&quot;an array of reporters&quot;</span>)
             }
 
-            <span class="kw">fn</span> <span class="ident">visit_seq</span><span class="op">&lt;</span><span class="ident">A</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="kw-2">mut</span> <span class="ident">seq</span>: <span class="ident">A</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">A::Error</span><span class="op">&gt;</span>
-            <span class="kw">where</span>
-                <span class="ident">A</span>: <span class="ident">SeqAccess</span><span class="op">&lt;</span><span class="lifetime">&#39;de</span><span class="op">&gt;</span>,
+            <span class="kw">fn </span>visit_seq&lt;A&gt;(<span class="self">self</span>, <span class="kw-2">mut </span>seq: A) -&gt; <span class="prelude-ty">Result</span>&lt;(), A::Error&gt;
+            <span class="kw">where
+                </span>A: SeqAccess&lt;<span class="lifetime">&#39;de</span>&gt;,
             {
-                <span class="kw">while</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">elem</span>) <span class="op">=</span> <span class="ident">seq</span>.<span class="ident">next_element_seed</span>(<span class="ident">PluginReporter</span> {
-                    <span class="ident">library</span>: <span class="self">self</span>.<span class="ident">library</span>.<span class="ident">clone</span>(),
-                })<span class="question-mark">?</span> {
-                    <span class="self">self</span>.<span class="ident">vec</span>.<span class="ident">push</span>(<span class="ident">elem</span>);
+                <span class="kw">while let </span><span class="prelude-val">Some</span>(elem) = seq.next_element_seed(PluginReporter {
+                    library: <span class="self">self</span>.library.clone(),
+                })<span class="question-mark">? </span>{
+                    <span class="self">self</span>.vec.push(elem);
                 }
 
                 <span class="prelude-val">Ok</span>(())
             }
         }
 
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">reporters</span> <span class="op">=</span> <span class="ident">Vec::new</span>();
+        <span class="kw">let </span><span class="kw-2">mut </span>reporters = Vec::new();
 
-        <span class="ident">deserializer</span>.<span class="ident">deserialize_seq</span>(<span class="ident">ReporterVecVisitor</span> {
-            <span class="ident">library</span>: <span class="self">self</span>.<span class="number">0</span>,
-            <span class="ident">vec</span>: <span class="kw-2">&amp;mut</span> <span class="ident">reporters</span>,
+        deserializer.deserialize_seq(ReporterVecVisitor {
+            library: <span class="self">self</span>.<span class="number">0</span>,
+            vec: <span class="kw-2">&amp;mut </span>reporters,
         })<span class="question-mark">?</span>;
 
-        <span class="prelude-val">Ok</span>(<span class="ident">reporters</span>)
+        <span class="prelude-val">Ok</span>(reporters)
     }
 }
 
-<span class="comment">// Helper enum to deserialise field names</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">serde::Deserialize</span>)]</span>
-<span class="attribute">#[<span class="ident">serde</span>(<span class="ident">field_identifier</span>, <span class="ident">rename_all</span> <span class="op">=</span> <span class="string">&quot;lowercase&quot;</span>)]</span>
-<span class="kw">enum</span> <span class="ident">ReporterPluginLibraryField</span> {
-    <span class="ident">Library</span>,
-    <span class="ident">Reporters</span>,
+<span class="comment">// Helper enum to deserialise field names
+</span><span class="attribute">#[derive(serde::Deserialize)]
+#[serde(field_identifier, rename_all = <span class="string">&quot;lowercase&quot;</span>)]
+</span><span class="kw">enum </span>ReporterPluginLibraryField {
+    Library,
+    Reporters,
 }
 
-<span class="comment">// Helper struct to sequentially load the library, then the plugins</span>
-<span class="kw">struct</span> <span class="ident">ReporterPluginLibraryVisitor</span>;
+<span class="comment">// Helper struct to sequentially load the library, then the plugins
+</span><span class="kw">struct </span>ReporterPluginLibraryVisitor;
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;de</span><span class="op">&gt;</span> <span class="ident">Visitor</span><span class="op">&lt;</span><span class="lifetime">&#39;de</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">ReporterPluginLibraryVisitor</span> {
-    <span class="kw">type</span> <span class="ident">Value</span> <span class="op">=</span> <span class="ident">ReporterPluginLibrary</span>;
+<span class="kw">impl</span>&lt;<span class="lifetime">&#39;de</span>&gt; Visitor&lt;<span class="lifetime">&#39;de</span>&gt; <span class="kw">for </span>ReporterPluginLibraryVisitor {
+    <span class="kw">type </span>Value = ReporterPluginLibrary;
 
-    <span class="kw">fn</span> <span class="ident">expecting</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">formatter</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span>) -&gt; <span class="ident">fmt::Result</span> {
-        <span class="ident">formatter</span>.<span class="ident">write_str</span>(<span class="string">&quot;struct Plugin&quot;</span>)
+    <span class="kw">fn </span>expecting(<span class="kw-2">&amp;</span><span class="self">self</span>, formatter: <span class="kw-2">&amp;mut </span>fmt::Formatter) -&gt; fmt::Result {
+        formatter.write_str(<span class="string">&quot;struct Plugin&quot;</span>)
     }
 
-    <span class="kw">fn</span> <span class="ident">visit_seq</span><span class="op">&lt;</span><span class="ident">V</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="kw-2">mut</span> <span class="ident">seq</span>: <span class="ident">V</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">ReporterPluginLibrary</span>, <span class="ident">V::Error</span><span class="op">&gt;</span>
-    <span class="kw">where</span>
-        <span class="ident">V</span>: <span class="ident">SeqAccess</span><span class="op">&lt;</span><span class="lifetime">&#39;de</span><span class="op">&gt;</span>,
+    <span class="kw">fn </span>visit_seq&lt;V&gt;(<span class="self">self</span>, <span class="kw-2">mut </span>seq: V) -&gt; <span class="prelude-ty">Result</span>&lt;ReporterPluginLibrary, V::Error&gt;
+    <span class="kw">where
+        </span>V: SeqAccess&lt;<span class="lifetime">&#39;de</span>&gt;,
     {
-        <span class="kw">let</span> <span class="ident">library</span>: <span class="ident">Rc</span><span class="op">&lt;</span><span class="ident">PluginLibrary</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Rc::new</span>(
-            <span class="ident">seq</span>.<span class="ident">next_element</span>()<span class="question-mark">?</span>
-                .<span class="ident">ok_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">de::Error::invalid_length</span>(<span class="number">0</span>, <span class="kw-2">&amp;</span><span class="self">self</span>))<span class="question-mark">?</span>,
+        <span class="kw">let </span>library: Rc&lt;PluginLibrary&gt; = Rc::new(
+            seq.next_element()<span class="question-mark">?
+                </span>.ok_or_else(|| de::Error::invalid_length(<span class="number">0</span>, <span class="kw-2">&amp;</span><span class="self">self</span>))<span class="question-mark">?</span>,
         );
 
-        <span class="kw">let</span> <span class="ident">reporters</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">ReporterPlugin</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">seq</span>
-            .<span class="ident">next_element_seed</span>(<span class="ident">RcPluginLibrary</span>(<span class="ident">library</span>.<span class="ident">clone</span>()))<span class="question-mark">?</span>
-            .<span class="ident">ok_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">de::Error::invalid_length</span>(<span class="number">1</span>, <span class="kw-2">&amp;</span><span class="self">self</span>))<span class="question-mark">?</span>;
+        <span class="kw">let </span>reporters: Vec&lt;ReporterPlugin&gt; = seq
+            .next_element_seed(RcPluginLibrary(library.clone()))<span class="question-mark">?
+            </span>.ok_or_else(|| de::Error::invalid_length(<span class="number">1</span>, <span class="kw-2">&amp;</span><span class="self">self</span>))<span class="question-mark">?</span>;
 
-        <span class="prelude-val">Ok</span>(<span class="ident">ReporterPluginLibrary</span> {
-            <span class="ident">_library</span>: <span class="ident">library</span>,
-            <span class="ident">reporters</span>,
+        <span class="prelude-val">Ok</span>(ReporterPluginLibrary {
+            _library: library,
+            reporters,
         })
     }
 
-    <span class="kw">fn</span> <span class="ident">visit_map</span><span class="op">&lt;</span><span class="ident">V</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="kw-2">mut</span> <span class="ident">map</span>: <span class="ident">V</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">ReporterPluginLibrary</span>, <span class="ident">V::Error</span><span class="op">&gt;</span>
-    <span class="kw">where</span>
-        <span class="ident">V</span>: <span class="ident">MapAccess</span><span class="op">&lt;</span><span class="lifetime">&#39;de</span><span class="op">&gt;</span>,
+    <span class="kw">fn </span>visit_map&lt;V&gt;(<span class="self">self</span>, <span class="kw-2">mut </span>map: V) -&gt; <span class="prelude-ty">Result</span>&lt;ReporterPluginLibrary, V::Error&gt;
+    <span class="kw">where
+        </span>V: MapAccess&lt;<span class="lifetime">&#39;de</span>&gt;,
     {
-        <span class="kw">let</span> <span class="ident">library</span>: <span class="ident">Rc</span><span class="op">&lt;</span><span class="ident">PluginLibrary</span><span class="op">&gt;</span> <span class="op">=</span>
-            <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">ReporterPluginLibraryField::Library</span>) <span class="op">=</span> <span class="ident">map</span>.<span class="ident">next_key</span>()<span class="question-mark">?</span> {
-                <span class="ident">Rc::new</span>(<span class="ident">map</span>.<span class="ident">next_value</span>()<span class="question-mark">?</span>)
-            } <span class="kw">else</span> {
-                <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">de::Error::missing_field</span>(<span class="string">&quot;library&quot;</span>));
+        <span class="kw">let </span>library: Rc&lt;PluginLibrary&gt; =
+            <span class="kw">if let </span><span class="prelude-val">Some</span>(ReporterPluginLibraryField::Library) = map.next_key()<span class="question-mark">? </span>{
+                Rc::new(map.next_value()<span class="question-mark">?</span>)
+            } <span class="kw">else </span>{
+                <span class="kw">return </span><span class="prelude-val">Err</span>(de::Error::missing_field(<span class="string">&quot;library&quot;</span>));
             };
 
-        <span class="kw">let</span> <span class="ident">reporters</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">ReporterPlugin</span><span class="op">&gt;</span> <span class="op">=</span>
-            <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">ReporterPluginLibraryField::Reporters</span>) <span class="op">=</span> <span class="ident">map</span>.<span class="ident">next_key</span>()<span class="question-mark">?</span> {
-                <span class="ident">map</span>.<span class="ident">next_value_seed</span>(<span class="ident">RcPluginLibrary</span>(<span class="ident">library</span>.<span class="ident">clone</span>()))<span class="question-mark">?</span>
-            } <span class="kw">else</span> {
-                <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">de::Error::missing_field</span>(<span class="string">&quot;reporters&quot;</span>));
+        <span class="kw">let </span>reporters: Vec&lt;ReporterPlugin&gt; =
+            <span class="kw">if let </span><span class="prelude-val">Some</span>(ReporterPluginLibraryField::Reporters) = map.next_key()<span class="question-mark">? </span>{
+                map.next_value_seed(RcPluginLibrary(library.clone()))<span class="question-mark">?
+            </span>} <span class="kw">else </span>{
+                <span class="kw">return </span><span class="prelude-val">Err</span>(de::Error::missing_field(<span class="string">&quot;reporters&quot;</span>));
             };
 
-        <span class="prelude-val">Ok</span>(<span class="ident">ReporterPluginLibrary</span> {
-            <span class="ident">_library</span>: <span class="ident">library</span>,
-            <span class="ident">reporters</span>,
+        <span class="prelude-val">Ok</span>(ReporterPluginLibrary {
+            _library: library,
+            reporters,
         })
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="necsim_plugins_core" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0-nightly (affe0d3a0 2022-08-05)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="necsim_plugins_core" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (5e9772042 2022-10-29)" ></div></body></html>

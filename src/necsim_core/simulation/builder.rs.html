@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `necsim/core/src/simulation/builder.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>builder.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../necsim_core/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../necsim_core/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../necsim_core/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `necsim/core/src/simulation/builder.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>builder.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../normalize.css"><link rel="stylesheet" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../ayu.css" disabled><link rel="stylesheet" href="../../../dark.css" disabled><link rel="stylesheet" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../../necsim_core/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -289,318 +289,296 @@
 <span id="289">289</span>
 <span id="290">290</span>
 <span id="291">291</span>
-<span id="292">292</span>
-<span id="293">293</span>
-<span id="294">294</span>
-<span id="295">295</span>
-<span id="296">296</span>
-<span id="297">297</span>
-<span id="298">298</span>
-<span id="299">299</span>
-<span id="300">300</span>
-<span id="301">301</span>
-<span id="302">302</span>
-</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">core</span>::{<span class="ident">marker::PhantomData</span>, <span class="ident">num::Wrapping</span>};
+</pre><pre class="rust"><code><span class="kw">use </span>core::{marker::PhantomData, num::Wrapping};
 
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::cogs</span>::{
-    <span class="ident">ActiveLineageSampler</span>, <span class="ident">CoalescenceSampler</span>, <span class="ident">DispersalSampler</span>, <span class="ident">EmigrationExit</span>, <span class="ident">EventSampler</span>,
-    <span class="ident">Habitat</span>, <span class="ident">ImmigrationEntry</span>, <span class="ident">LineageStore</span>, <span class="ident">MathsCore</span>, <span class="ident">RngCore</span>, <span class="ident">SpeciationProbability</span>,
-    <span class="ident">TurnoverRate</span>,
+<span class="kw">use </span><span class="kw">crate</span>::cogs::{
+    ActiveLineageSampler, CoalescenceSampler, DispersalSampler, EmigrationExit, EventSampler,
+    Habitat, ImmigrationEntry, LineageStore, MathsCore, RngCore, SpeciationProbability,
+    TurnoverRate,
 };
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
-<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::module_name_repetitions</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">SimulationBuilder</span><span class="op">&lt;</span>
-    <span class="ident">M</span>: <span class="ident">MathsCore</span>,
-    <span class="ident">H</span>: <span class="ident">Habitat</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span>,
-    <span class="ident">G</span>: <span class="ident">RngCore</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span>,
-    <span class="ident">S</span>: <span class="ident">LineageStore</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span><span class="op">&gt;</span>,
-    <span class="ident">X</span>: <span class="ident">EmigrationExit</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span>, <span class="ident">S</span><span class="op">&gt;</span>,
-    <span class="ident">D</span>: <span class="ident">DispersalSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span><span class="op">&gt;</span>,
-    <span class="ident">C</span>: <span class="ident">CoalescenceSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">S</span><span class="op">&gt;</span>,
-    <span class="ident">T</span>: <span class="ident">TurnoverRate</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span><span class="op">&gt;</span>,
-    <span class="ident">N</span>: <span class="ident">SpeciationProbability</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span><span class="op">&gt;</span>,
-    <span class="ident">E</span>: <span class="ident">EventSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span>, <span class="ident">S</span>, <span class="ident">X</span>, <span class="ident">D</span>, <span class="ident">C</span>, <span class="ident">T</span>, <span class="ident">N</span><span class="op">&gt;</span>,
-    <span class="ident">I</span>: <span class="ident">ImmigrationEntry</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span>,
-    <span class="ident">A</span>: <span class="ident">ActiveLineageSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span>, <span class="ident">S</span>, <span class="ident">X</span>, <span class="ident">D</span>, <span class="ident">C</span>, <span class="ident">T</span>, <span class="ident">N</span>, <span class="ident">E</span>, <span class="ident">I</span><span class="op">&gt;</span>,
-<span class="op">&gt;</span> {
-    <span class="kw">pub</span> <span class="ident">maths</span>: <span class="ident">PhantomData</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span>,
-    <span class="kw">pub</span> <span class="ident">habitat</span>: <span class="ident">H</span>,
-    <span class="kw">pub</span> <span class="ident">lineage_store</span>: <span class="ident">S</span>,
-    <span class="kw">pub</span> <span class="ident">dispersal_sampler</span>: <span class="ident">D</span>,
-    <span class="kw">pub</span> <span class="ident">coalescence_sampler</span>: <span class="ident">C</span>,
-    <span class="kw">pub</span> <span class="ident">turnover_rate</span>: <span class="ident">T</span>,
-    <span class="kw">pub</span> <span class="ident">speciation_probability</span>: <span class="ident">N</span>,
-    <span class="kw">pub</span> <span class="ident">emigration_exit</span>: <span class="ident">X</span>,
-    <span class="kw">pub</span> <span class="ident">event_sampler</span>: <span class="ident">E</span>,
-    <span class="kw">pub</span> <span class="ident">active_lineage_sampler</span>: <span class="ident">A</span>,
-    <span class="kw">pub</span> <span class="ident">rng</span>: <span class="ident">G</span>,
-    <span class="kw">pub</span> <span class="ident">immigration_entry</span>: <span class="ident">I</span>,
+<span class="attribute">#[derive(Debug)]
+#[allow(clippy::module_name_repetitions)]
+</span><span class="kw">pub struct </span>SimulationBuilder&lt;
+    M: MathsCore,
+    H: Habitat&lt;M&gt;,
+    G: RngCore&lt;M&gt;,
+    S: LineageStore&lt;M, H&gt;,
+    X: EmigrationExit&lt;M, H, G, S&gt;,
+    D: DispersalSampler&lt;M, H, G&gt;,
+    C: CoalescenceSampler&lt;M, H, S&gt;,
+    T: TurnoverRate&lt;M, H&gt;,
+    N: SpeciationProbability&lt;M, H&gt;,
+    E: EventSampler&lt;M, H, G, S, X, D, C, T, N&gt;,
+    I: ImmigrationEntry&lt;M&gt;,
+    A: ActiveLineageSampler&lt;M, H, G, S, X, D, C, T, N, E, I&gt;,
+&gt; {
+    <span class="kw">pub </span>maths: PhantomData&lt;M&gt;,
+    <span class="kw">pub </span>habitat: H,
+    <span class="kw">pub </span>lineage_store: S,
+    <span class="kw">pub </span>dispersal_sampler: D,
+    <span class="kw">pub </span>coalescence_sampler: C,
+    <span class="kw">pub </span>turnover_rate: T,
+    <span class="kw">pub </span>speciation_probability: N,
+    <span class="kw">pub </span>emigration_exit: X,
+    <span class="kw">pub </span>event_sampler: E,
+    <span class="kw">pub </span>active_lineage_sampler: A,
+    <span class="kw">pub </span>rng: G,
+    <span class="kw">pub </span>immigration_entry: I,
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span>
-        <span class="ident">M</span>: <span class="ident">MathsCore</span>,
-        <span class="ident">H</span>: <span class="ident">Habitat</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span>,
-        <span class="ident">G</span>: <span class="ident">RngCore</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span>,
-        <span class="ident">S</span>: <span class="ident">LineageStore</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span><span class="op">&gt;</span>,
-        <span class="ident">X</span>: <span class="ident">EmigrationExit</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span>, <span class="ident">S</span><span class="op">&gt;</span>,
-        <span class="ident">D</span>: <span class="ident">DispersalSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span><span class="op">&gt;</span>,
-        <span class="ident">C</span>: <span class="ident">CoalescenceSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">S</span><span class="op">&gt;</span>,
-        <span class="ident">T</span>: <span class="ident">TurnoverRate</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span><span class="op">&gt;</span>,
-        <span class="ident">N</span>: <span class="ident">SpeciationProbability</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span><span class="op">&gt;</span>,
-        <span class="ident">E</span>: <span class="ident">EventSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span>, <span class="ident">S</span>, <span class="ident">X</span>, <span class="ident">D</span>, <span class="ident">C</span>, <span class="ident">T</span>, <span class="ident">N</span><span class="op">&gt;</span>,
-        <span class="ident">I</span>: <span class="ident">ImmigrationEntry</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span>,
-        <span class="ident">A</span>: <span class="ident">ActiveLineageSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span>, <span class="ident">S</span>, <span class="ident">X</span>, <span class="ident">D</span>, <span class="ident">C</span>, <span class="ident">T</span>, <span class="ident">N</span>, <span class="ident">E</span>, <span class="ident">I</span><span class="op">&gt;</span>,
-    <span class="op">&gt;</span> <span class="ident">SimulationBuilder</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span>, <span class="ident">S</span>, <span class="ident">X</span>, <span class="ident">D</span>, <span class="ident">C</span>, <span class="ident">T</span>, <span class="ident">N</span>, <span class="ident">E</span>, <span class="ident">I</span>, <span class="ident">A</span><span class="op">&gt;</span>
+<span class="kw">impl</span>&lt;
+        M: MathsCore,
+        H: Habitat&lt;M&gt;,
+        G: RngCore&lt;M&gt;,
+        S: LineageStore&lt;M, H&gt;,
+        X: EmigrationExit&lt;M, H, G, S&gt;,
+        D: DispersalSampler&lt;M, H, G&gt;,
+        C: CoalescenceSampler&lt;M, H, S&gt;,
+        T: TurnoverRate&lt;M, H&gt;,
+        N: SpeciationProbability&lt;M, H&gt;,
+        E: EventSampler&lt;M, H, G, S, X, D, C, T, N&gt;,
+        I: ImmigrationEntry&lt;M&gt;,
+        A: ActiveLineageSampler&lt;M, H, G, S, X, D, C, T, N, E, I&gt;,
+    &gt; SimulationBuilder&lt;M, H, G, S, X, D, C, T, N, E, I, A&gt;
 {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">build</span>(<span class="self">self</span>) -&gt; <span class="ident">Simulation</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span>, <span class="ident">S</span>, <span class="ident">X</span>, <span class="ident">D</span>, <span class="ident">C</span>, <span class="ident">T</span>, <span class="ident">N</span>, <span class="ident">E</span>, <span class="ident">I</span>, <span class="ident">A</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">SimulationBuilder</span> {
-            <span class="ident">maths</span>,
-            <span class="ident">habitat</span>,
-            <span class="ident">lineage_store</span>,
-            <span class="ident">dispersal_sampler</span>,
-            <span class="ident">coalescence_sampler</span>,
-            <span class="ident">turnover_rate</span>,
-            <span class="ident">speciation_probability</span>,
-            <span class="ident">emigration_exit</span>,
-            <span class="ident">event_sampler</span>,
-            <span class="ident">active_lineage_sampler</span>,
-            <span class="ident">rng</span>,
-            <span class="ident">immigration_entry</span>,
-        } <span class="op">=</span> <span class="self">self</span>;
+    <span class="kw">pub fn </span>build(<span class="self">self</span>) -&gt; Simulation&lt;M, H, G, S, X, D, C, T, N, E, I, A&gt; {
+        <span class="kw">let </span>SimulationBuilder {
+            maths,
+            habitat,
+            lineage_store,
+            dispersal_sampler,
+            coalescence_sampler,
+            turnover_rate,
+            speciation_probability,
+            emigration_exit,
+            event_sampler,
+            active_lineage_sampler,
+            rng,
+            immigration_entry,
+        } = <span class="self">self</span>;
 
-        <span class="ident">Simulation</span> {
-            <span class="ident">maths</span>,
-            <span class="ident">habitat</span>,
-            <span class="ident">lineage_store</span>,
-            <span class="ident">dispersal_sampler</span>,
-            <span class="ident">coalescence_sampler</span>,
-            <span class="ident">turnover_rate</span>,
-            <span class="ident">speciation_probability</span>,
-            <span class="ident">emigration_exit</span>,
-            <span class="ident">event_sampler</span>,
-            <span class="ident">active_lineage_sampler</span>,
-            <span class="ident">rng</span>,
-            <span class="ident">immigration_entry</span>,
-            <span class="ident">migration_balance</span>: <span class="ident">Wrapping</span>(<span class="number">0_u64</span>),
+        Simulation {
+            maths,
+            habitat,
+            lineage_store,
+            dispersal_sampler,
+            coalescence_sampler,
+            turnover_rate,
+            speciation_probability,
+            emigration_exit,
+            event_sampler,
+            active_lineage_sampler,
+            rng,
+            immigration_entry,
+            migration_balance: Wrapping(<span class="number">0_u64</span>),
         }
     }
 }
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">TypeLayout</span>)]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;cuda&quot;</span>, <span class="ident">derive</span>(<span class="ident">rust_cuda::common::LendRustToCuda</span>))]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;cuda&quot;</span>, <span class="ident">r2cBound</span>(<span class="ident">H</span>: <span class="ident">rust_cuda::common::RustToCuda</span>))]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;cuda&quot;</span>, <span class="ident">r2cBound</span>(<span class="ident">G</span>: <span class="ident">rust_cuda::common::RustToCuda</span>))]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;cuda&quot;</span>, <span class="ident">r2cBound</span>(<span class="ident">D</span>: <span class="ident">rust_cuda::common::RustToCuda</span>))]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;cuda&quot;</span>, <span class="ident">r2cBound</span>(<span class="ident">S</span>: <span class="ident">rust_cuda::common::RustToCuda</span>))]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;cuda&quot;</span>, <span class="ident">r2cBound</span>(<span class="ident">X</span>: <span class="ident">rust_cuda::common::RustToCuda</span>))]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;cuda&quot;</span>, <span class="ident">r2cBound</span>(<span class="ident">C</span>: <span class="ident">rust_cuda::common::RustToCuda</span>))]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;cuda&quot;</span>, <span class="ident">r2cBound</span>(<span class="ident">T</span>: <span class="ident">rust_cuda::common::RustToCuda</span>))]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;cuda&quot;</span>, <span class="ident">r2cBound</span>(<span class="ident">N</span>: <span class="ident">rust_cuda::common::RustToCuda</span>))]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;cuda&quot;</span>, <span class="ident">r2cBound</span>(<span class="ident">E</span>: <span class="ident">rust_cuda::common::RustToCuda</span>))]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;cuda&quot;</span>, <span class="ident">r2cBound</span>(<span class="ident">I</span>: <span class="ident">rust_cuda::common::RustToCuda</span>))]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;cuda&quot;</span>, <span class="ident">r2cBound</span>(<span class="ident">A</span>: <span class="ident">rust_cuda::common::RustToCuda</span>))]</span>
-<span class="attribute">#[<span class="ident">repr</span>(<span class="ident">C</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Simulation</span><span class="op">&lt;</span>
-    <span class="ident">M</span>: <span class="ident">MathsCore</span>,
-    <span class="ident">H</span>: <span class="ident">Habitat</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span>,
-    <span class="ident">G</span>: <span class="ident">RngCore</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span>,
-    <span class="ident">S</span>: <span class="ident">LineageStore</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span><span class="op">&gt;</span>,
-    <span class="ident">X</span>: <span class="ident">EmigrationExit</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span>, <span class="ident">S</span><span class="op">&gt;</span>,
-    <span class="ident">D</span>: <span class="ident">DispersalSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span><span class="op">&gt;</span>,
-    <span class="ident">C</span>: <span class="ident">CoalescenceSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">S</span><span class="op">&gt;</span>,
-    <span class="ident">T</span>: <span class="ident">TurnoverRate</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span><span class="op">&gt;</span>,
-    <span class="ident">N</span>: <span class="ident">SpeciationProbability</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span><span class="op">&gt;</span>,
-    <span class="ident">E</span>: <span class="ident">EventSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span>, <span class="ident">S</span>, <span class="ident">X</span>, <span class="ident">D</span>, <span class="ident">C</span>, <span class="ident">T</span>, <span class="ident">N</span><span class="op">&gt;</span>,
-    <span class="ident">I</span>: <span class="ident">ImmigrationEntry</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span>,
-    <span class="ident">A</span>: <span class="ident">ActiveLineageSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span>, <span class="ident">S</span>, <span class="ident">X</span>, <span class="ident">D</span>, <span class="ident">C</span>, <span class="ident">T</span>, <span class="ident">N</span>, <span class="ident">E</span>, <span class="ident">I</span><span class="op">&gt;</span>,
-<span class="op">&gt;</span> {
-    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="ident">maths</span>: <span class="ident">PhantomData</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span>,
-    <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;cuda&quot;</span>, <span class="ident">r2cEmbed</span>)]</span>
-    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="ident">habitat</span>: <span class="ident">H</span>,
-    <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;cuda&quot;</span>, <span class="ident">r2cEmbed</span>)]</span>
-    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="ident">lineage_store</span>: <span class="ident">S</span>,
-    <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;cuda&quot;</span>, <span class="ident">r2cEmbed</span>)]</span>
-    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="ident">dispersal_sampler</span>: <span class="ident">D</span>,
-    <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;cuda&quot;</span>, <span class="ident">r2cEmbed</span>)]</span>
-    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="ident">coalescence_sampler</span>: <span class="ident">C</span>,
-    <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;cuda&quot;</span>, <span class="ident">r2cEmbed</span>)]</span>
-    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="ident">turnover_rate</span>: <span class="ident">T</span>,
-    <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;cuda&quot;</span>, <span class="ident">r2cEmbed</span>)]</span>
-    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="ident">speciation_probability</span>: <span class="ident">N</span>,
-    <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;cuda&quot;</span>, <span class="ident">r2cEmbed</span>)]</span>
-    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="ident">emigration_exit</span>: <span class="ident">X</span>,
-    <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;cuda&quot;</span>, <span class="ident">r2cEmbed</span>)]</span>
-    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="ident">event_sampler</span>: <span class="ident">E</span>,
-    <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;cuda&quot;</span>, <span class="ident">r2cEmbed</span>)]</span>
-    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="ident">active_lineage_sampler</span>: <span class="ident">A</span>,
-    <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;cuda&quot;</span>, <span class="ident">r2cEmbed</span>)]</span>
-    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="ident">rng</span>: <span class="ident">G</span>,
-    <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;cuda&quot;</span>, <span class="ident">r2cEmbed</span>)]</span>
-    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="ident">immigration_entry</span>: <span class="ident">I</span>,
-    <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;cuda&quot;</span>, <span class="ident">r2cIgnore</span>)]</span>
-    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="ident">migration_balance</span>: <span class="ident">Wrapping</span><span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span>,
+<span class="attribute">#[derive(Debug, TypeLayout)]
+#[cfg_attr(feature = <span class="string">&quot;cuda&quot;</span>, derive(rust_cuda::common::LendRustToCuda))]
+#[cfg_attr(feature = <span class="string">&quot;cuda&quot;</span>, cuda(free = <span class="string">&quot;M&quot;</span>))]
+#[repr(C)]
+</span><span class="kw">pub struct </span>Simulation&lt;
+    M: MathsCore,
+    H: Habitat&lt;M&gt;,
+    G: RngCore&lt;M&gt;,
+    S: LineageStore&lt;M, H&gt;,
+    X: EmigrationExit&lt;M, H, G, S&gt;,
+    D: DispersalSampler&lt;M, H, G&gt;,
+    C: CoalescenceSampler&lt;M, H, S&gt;,
+    T: TurnoverRate&lt;M, H&gt;,
+    N: SpeciationProbability&lt;M, H&gt;,
+    E: EventSampler&lt;M, H, G, S, X, D, C, T, N&gt;,
+    I: ImmigrationEntry&lt;M&gt;,
+    A: ActiveLineageSampler&lt;M, H, G, S, X, D, C, T, N, E, I&gt;,
+&gt; {
+    <span class="kw">pub</span>(<span class="kw">super</span>) maths: PhantomData&lt;M&gt;,
+    <span class="attribute">#[cfg_attr(feature = <span class="string">&quot;cuda&quot;</span>, cuda(embed))]
+    </span><span class="kw">pub</span>(<span class="kw">super</span>) habitat: H,
+    <span class="attribute">#[cfg_attr(feature = <span class="string">&quot;cuda&quot;</span>, cuda(embed))]
+    </span><span class="kw">pub</span>(<span class="kw">super</span>) lineage_store: S,
+    <span class="attribute">#[cfg_attr(feature = <span class="string">&quot;cuda&quot;</span>, cuda(embed))]
+    </span><span class="kw">pub</span>(<span class="kw">super</span>) dispersal_sampler: D,
+    <span class="attribute">#[cfg_attr(feature = <span class="string">&quot;cuda&quot;</span>, cuda(embed))]
+    </span><span class="kw">pub</span>(<span class="kw">super</span>) coalescence_sampler: C,
+    <span class="attribute">#[cfg_attr(feature = <span class="string">&quot;cuda&quot;</span>, cuda(embed))]
+    </span><span class="kw">pub</span>(<span class="kw">super</span>) turnover_rate: T,
+    <span class="attribute">#[cfg_attr(feature = <span class="string">&quot;cuda&quot;</span>, cuda(embed))]
+    </span><span class="kw">pub</span>(<span class="kw">super</span>) speciation_probability: N,
+    <span class="attribute">#[cfg_attr(feature = <span class="string">&quot;cuda&quot;</span>, cuda(embed))]
+    </span><span class="kw">pub</span>(<span class="kw">super</span>) emigration_exit: X,
+    <span class="attribute">#[cfg_attr(feature = <span class="string">&quot;cuda&quot;</span>, cuda(embed))]
+    </span><span class="kw">pub</span>(<span class="kw">super</span>) event_sampler: E,
+    <span class="attribute">#[cfg_attr(feature = <span class="string">&quot;cuda&quot;</span>, cuda(embed))]
+    </span><span class="kw">pub</span>(<span class="kw">super</span>) active_lineage_sampler: A,
+    <span class="attribute">#[cfg_attr(feature = <span class="string">&quot;cuda&quot;</span>, cuda(embed))]
+    </span><span class="kw">pub</span>(<span class="kw">super</span>) rng: G,
+    <span class="attribute">#[cfg_attr(feature = <span class="string">&quot;cuda&quot;</span>, cuda(embed))]
+    </span><span class="kw">pub</span>(<span class="kw">super</span>) immigration_entry: I,
+    <span class="kw">pub</span>(<span class="kw">super</span>) migration_balance: Wrapping&lt;u64&gt;,
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span>
-        <span class="ident">M</span>: <span class="ident">MathsCore</span>,
-        <span class="ident">H</span>: <span class="ident">Habitat</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span>,
-        <span class="ident">G</span>: <span class="ident">RngCore</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span>,
-        <span class="ident">S</span>: <span class="ident">LineageStore</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span><span class="op">&gt;</span>,
-        <span class="ident">X</span>: <span class="ident">EmigrationExit</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span>, <span class="ident">S</span><span class="op">&gt;</span>,
-        <span class="ident">D</span>: <span class="ident">DispersalSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span><span class="op">&gt;</span>,
-        <span class="ident">C</span>: <span class="ident">CoalescenceSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">S</span><span class="op">&gt;</span>,
-        <span class="ident">T</span>: <span class="ident">TurnoverRate</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span><span class="op">&gt;</span>,
-        <span class="ident">N</span>: <span class="ident">SpeciationProbability</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span><span class="op">&gt;</span>,
-        <span class="ident">E</span>: <span class="ident">EventSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span>, <span class="ident">S</span>, <span class="ident">X</span>, <span class="ident">D</span>, <span class="ident">C</span>, <span class="ident">T</span>, <span class="ident">N</span><span class="op">&gt;</span>,
-        <span class="ident">I</span>: <span class="ident">ImmigrationEntry</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span>,
-        <span class="ident">A</span>: <span class="ident">ActiveLineageSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span>, <span class="ident">S</span>, <span class="ident">X</span>, <span class="ident">D</span>, <span class="ident">C</span>, <span class="ident">T</span>, <span class="ident">N</span>, <span class="ident">E</span>, <span class="ident">I</span><span class="op">&gt;</span>,
-    <span class="op">&gt;</span> <span class="ident">Simulation</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span>, <span class="ident">S</span>, <span class="ident">X</span>, <span class="ident">D</span>, <span class="ident">C</span>, <span class="ident">T</span>, <span class="ident">N</span>, <span class="ident">E</span>, <span class="ident">I</span>, <span class="ident">A</span><span class="op">&gt;</span>
+<span class="kw">impl</span>&lt;
+        M: MathsCore,
+        H: Habitat&lt;M&gt;,
+        G: RngCore&lt;M&gt;,
+        S: LineageStore&lt;M, H&gt;,
+        X: EmigrationExit&lt;M, H, G, S&gt;,
+        D: DispersalSampler&lt;M, H, G&gt;,
+        C: CoalescenceSampler&lt;M, H, S&gt;,
+        T: TurnoverRate&lt;M, H&gt;,
+        N: SpeciationProbability&lt;M, H&gt;,
+        E: EventSampler&lt;M, H, G, S, X, D, C, T, N&gt;,
+        I: ImmigrationEntry&lt;M&gt;,
+        A: ActiveLineageSampler&lt;M, H, G, S, X, D, C, T, N, E, I&gt;,
+    &gt; Simulation&lt;M, H, G, S, X, D, C, T, N, E, I, A&gt;
 {
-    <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_mut_split_active_lineage_sampler_and_rng_and_migration_balance</span><span class="op">&lt;</span>
-        <span class="ident">Q</span>,
-        <span class="ident">F</span>: <span class="ident">FnOnce</span>(
-            <span class="kw-2">&amp;mut</span> <span class="ident">A</span>,
-            <span class="kw-2">&amp;mut</span> <span class="ident"><span class="kw">super</span>::partial::active_lineage_sampler::PartialSimulation</span><span class="op">&lt;</span>
-                <span class="ident">M</span>,
-                <span class="ident">H</span>,
-                <span class="ident">G</span>,
-                <span class="ident">S</span>,
-                <span class="ident">X</span>,
-                <span class="ident">D</span>,
-                <span class="ident">C</span>,
-                <span class="ident">T</span>,
-                <span class="ident">N</span>,
-                <span class="ident">E</span>,
-            <span class="op">&gt;</span>,
-            <span class="kw-2">&amp;mut</span> <span class="ident">G</span>,
-            <span class="kw-2">&amp;mut</span> <span class="ident">Wrapping</span><span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span>,
-        ) -&gt; <span class="ident">Q</span>,
-    <span class="op">&gt;</span>(
-        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
-        <span class="ident">func</span>: <span class="ident">F</span>,
-    ) -&gt; <span class="ident">Q</span> {
-        <span class="comment">// Cast &amp;self to a &amp;PartialSimulation without the active lineage sampler,</span>
-        <span class="comment">//  rng, and migration balance</span>
-        <span class="comment">// This is only safe as PartialSimulation&#39;s type and layout is a prefix</span>
-        <span class="comment">//  subsequence of Self&#39;s type and layout</span>
-        <span class="kw">let</span> <span class="ident">partial_simulation</span> <span class="op">=</span> <span class="kw">unsafe</span> {
-            <span class="kw-2">&amp;mut</span> <span class="kw-2">*</span>(<span class="self">self</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="self">Self</span>)
-                .<span class="ident">cast</span>::<span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::partial::active_lineage_sampler::PartialSimulation</span><span class="op">&lt;</span>
-                    <span class="ident">M</span>,
-                    <span class="ident">H</span>,
-                    <span class="ident">G</span>,
-                    <span class="ident">S</span>,
-                    <span class="ident">X</span>,
-                    <span class="ident">D</span>,
-                    <span class="ident">C</span>,
-                    <span class="ident">T</span>,
-                    <span class="ident">N</span>,
-                    <span class="ident">E</span>,
-                <span class="op">&gt;</span><span class="op">&gt;</span>()
+    <span class="attribute">#[inline]
+    </span><span class="kw">pub fn </span>with_mut_split_active_lineage_sampler_and_rng_and_migration_balance&lt;
+        Q,
+        F: FnOnce(
+            <span class="kw-2">&amp;mut </span>A,
+            <span class="kw-2">&amp;mut </span><span class="kw">super</span>::partial::active_lineage_sampler::PartialSimulation&lt;
+                M,
+                H,
+                G,
+                S,
+                X,
+                D,
+                C,
+                T,
+                N,
+                E,
+            &gt;,
+            <span class="kw-2">&amp;mut </span>G,
+            <span class="kw-2">&amp;mut </span>Wrapping&lt;u64&gt;,
+        ) -&gt; Q,
+    &gt;(
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        func: F,
+    ) -&gt; Q {
+        <span class="comment">// Cast &amp;self to a &amp;PartialSimulation without the active lineage sampler,
+        //  rng, and migration balance
+        // This is only safe as PartialSimulation&#39;s type and layout is a prefix
+        //  subsequence of Self&#39;s type and layout
+        </span><span class="kw">let </span>partial_simulation = <span class="kw">unsafe </span>{
+            <span class="kw-2">&amp;mut *</span>(<span class="self">self </span><span class="kw">as </span><span class="kw-2">*mut </span><span class="self">Self</span>)
+                .cast::&lt;<span class="kw">super</span>::partial::active_lineage_sampler::PartialSimulation&lt;
+                    M,
+                    H,
+                    G,
+                    S,
+                    X,
+                    D,
+                    C,
+                    T,
+                    N,
+                    E,
+                &gt;&gt;()
         };
 
-        <span class="ident">func</span>(
-            <span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">active_lineage_sampler</span>,
-            <span class="ident">partial_simulation</span>,
-            <span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">rng</span>,
-            <span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">migration_balance</span>,
+        func(
+            <span class="kw-2">&amp;mut </span><span class="self">self</span>.active_lineage_sampler,
+            partial_simulation,
+            <span class="kw-2">&amp;mut </span><span class="self">self</span>.rng,
+            <span class="kw-2">&amp;mut </span><span class="self">self</span>.migration_balance,
         )
     }
 
-    <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_mut_split_event_sampler_and_rng</span><span class="op">&lt;</span>
-        <span class="ident">Q</span>,
-        <span class="ident">F</span>: <span class="ident">FnOnce</span>(
-            <span class="kw-2">&amp;mut</span> <span class="ident">E</span>,
-            <span class="kw-2">&amp;</span><span class="ident"><span class="kw">super</span>::partial::event_sampler::PartialSimulation</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span>, <span class="ident">S</span>, <span class="ident">X</span>, <span class="ident">D</span>, <span class="ident">C</span>, <span class="ident">T</span>, <span class="ident">N</span><span class="op">&gt;</span>,
-            <span class="kw-2">&amp;mut</span> <span class="ident">G</span>,
-        ) -&gt; <span class="ident">Q</span>,
-    <span class="op">&gt;</span>(
-        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
-        <span class="ident">func</span>: <span class="ident">F</span>,
-    ) -&gt; <span class="ident">Q</span> {
-        <span class="comment">// Cast &amp;self to a &amp;PartialSimulation without the event sampler and rng</span>
-        <span class="comment">//  (the active lineage sampler is also removed implicitly)</span>
-        <span class="comment">// This is only safe as PartialSimulation&#39;s type and layout is a prefix</span>
-        <span class="comment">//  subsequence of Self&#39;s type and layout</span>
-        <span class="kw">let</span> <span class="ident">partial_simulation</span> <span class="op">=</span> <span class="kw">unsafe</span> {
-            <span class="kw-2">&amp;mut</span> <span class="kw-2">*</span>(<span class="self">self</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="self">Self</span>).<span class="ident">cast</span>::<span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::partial::event_sampler::PartialSimulation</span><span class="op">&lt;</span>
-                <span class="ident">M</span>,
-                <span class="ident">H</span>,
-                <span class="ident">G</span>,
-                <span class="ident">S</span>,
-                <span class="ident">X</span>,
-                <span class="ident">D</span>,
-                <span class="ident">C</span>,
-                <span class="ident">T</span>,
-                <span class="ident">N</span>,
-            <span class="op">&gt;</span><span class="op">&gt;</span>()
+    <span class="attribute">#[inline]
+    </span><span class="kw">pub fn </span>with_mut_split_event_sampler_and_rng&lt;
+        Q,
+        F: FnOnce(
+            <span class="kw-2">&amp;mut </span>E,
+            <span class="kw-2">&amp;</span><span class="kw">super</span>::partial::event_sampler::PartialSimulation&lt;M, H, G, S, X, D, C, T, N&gt;,
+            <span class="kw-2">&amp;mut </span>G,
+        ) -&gt; Q,
+    &gt;(
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        func: F,
+    ) -&gt; Q {
+        <span class="comment">// Cast &amp;self to a &amp;PartialSimulation without the event sampler and rng
+        //  (the active lineage sampler is also removed implicitly)
+        // This is only safe as PartialSimulation&#39;s type and layout is a prefix
+        //  subsequence of Self&#39;s type and layout
+        </span><span class="kw">let </span>partial_simulation = <span class="kw">unsafe </span>{
+            <span class="kw-2">&amp;mut *</span>(<span class="self">self </span><span class="kw">as </span><span class="kw-2">*mut </span><span class="self">Self</span>).cast::&lt;<span class="kw">super</span>::partial::event_sampler::PartialSimulation&lt;
+                M,
+                H,
+                G,
+                S,
+                X,
+                D,
+                C,
+                T,
+                N,
+            &gt;&gt;()
         };
 
-        <span class="ident">func</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">event_sampler</span>, <span class="ident">partial_simulation</span>, <span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">rng</span>)
+        func(<span class="kw-2">&amp;mut </span><span class="self">self</span>.event_sampler, partial_simulation, <span class="kw-2">&amp;mut </span><span class="self">self</span>.rng)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">rng_mut</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="ident">G</span> {
-        <span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">rng</span>
+    <span class="kw">pub fn </span>rng_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span>G {
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>.rng
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">active_lineage_sampler</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">A</span> {
-        <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">active_lineage_sampler</span>
+    <span class="kw">pub fn </span>active_lineage_sampler(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>A {
+        <span class="kw-2">&amp;</span><span class="self">self</span>.active_lineage_sampler
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">active_lineage_sampler_mut</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="ident">A</span> {
-        <span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">active_lineage_sampler</span>
+    <span class="kw">pub fn </span>active_lineage_sampler_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span>A {
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>.active_lineage_sampler
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">lineage_store</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">S</span> {
-        <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">lineage_store</span>
+    <span class="kw">pub fn </span>lineage_store(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>S {
+        <span class="kw-2">&amp;</span><span class="self">self</span>.lineage_store
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">lineage_store_mut</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="ident">S</span> {
-        <span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">lineage_store</span>
+    <span class="kw">pub fn </span>lineage_store_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span>S {
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>.lineage_store
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">event_sampler</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">E</span> {
-        <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">event_sampler</span>
+    <span class="kw">pub fn </span>event_sampler(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>E {
+        <span class="kw-2">&amp;</span><span class="self">self</span>.event_sampler
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">event_sampler_mut</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="ident">E</span> {
-        <span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">event_sampler</span>
+    <span class="kw">pub fn </span>event_sampler_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span>E {
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>.event_sampler
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">speciation_probability</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">N</span> {
-        <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">speciation_probability</span>
+    <span class="kw">pub fn </span>speciation_probability(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>N {
+        <span class="kw-2">&amp;</span><span class="self">self</span>.speciation_probability
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">turnover_rate</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">T</span> {
-        <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">turnover_rate</span>
+    <span class="kw">pub fn </span>turnover_rate(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>T {
+        <span class="kw-2">&amp;</span><span class="self">self</span>.turnover_rate
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">habitat</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">H</span> {
-        <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">habitat</span>
+    <span class="kw">pub fn </span>habitat(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>H {
+        <span class="kw-2">&amp;</span><span class="self">self</span>.habitat
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">dispersal_sampler</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">D</span> {
-        <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">dispersal_sampler</span>
+    <span class="kw">pub fn </span>dispersal_sampler(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>D {
+        <span class="kw-2">&amp;</span><span class="self">self</span>.dispersal_sampler
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">coalescence_sampler</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">C</span> {
-        <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">coalescence_sampler</span>
+    <span class="kw">pub fn </span>coalescence_sampler(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>C {
+        <span class="kw-2">&amp;</span><span class="self">self</span>.coalescence_sampler
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">emigration_exit</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">X</span> {
-        <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">emigration_exit</span>
+    <span class="kw">pub fn </span>emigration_exit(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>X {
+        <span class="kw-2">&amp;</span><span class="self">self</span>.emigration_exit
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">emigration_exit_mut</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="ident">X</span> {
-        <span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">emigration_exit</span>
+    <span class="kw">pub fn </span>emigration_exit_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span>X {
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>.emigration_exit
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">immigration_entry_mut</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="ident">I</span> {
-        <span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">immigration_entry</span>
+    <span class="kw">pub fn </span>immigration_entry_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span>I {
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>.immigration_entry
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="necsim_core" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0-nightly (affe0d3a0 2022-08-05)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="necsim_core" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (5e9772042 2022-10-29)" ></div></body></html>

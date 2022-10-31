@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `necsim/impls/no-std/src/cogs/lineage_store/coherent/locally/classical/store.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>store.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../../../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../../../../storage.js"></script><script defer src="../../../../../../../source-script.js"></script><script defer src="../../../../../../../source-files.js"></script><script defer src="../../../../../../../main.js"></script><noscript><link rel="stylesheet" href="../../../../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../../../../../necsim_impls_no_std/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../../../../../necsim_impls_no_std/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../../../../../necsim_impls_no_std/index.html"><img class="rust-logo" src="../../../../../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `necsim/impls/no-std/src/cogs/lineage_store/coherent/locally/classical/store.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>store.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../../../../../normalize.css"><link rel="stylesheet" href="../../../../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../../../../../ayu.css" disabled><link rel="stylesheet" href="../../../../../../../dark.css" disabled><link rel="stylesheet" href="../../../../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../../../../storage.js"></script><script defer src="../../../../../../../source-script.js"></script><script defer src="../../../../../../../source-files.js"></script><script defer src="../../../../../../../main.js"></script><noscript><link rel="stylesheet" href="../../../../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../../../../../../necsim_impls_no_std/index.html"><img class="rust-logo" src="../../../../../../../rust-logo.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../../../../wheel.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -84,91 +84,91 @@
 <span id="84">84</span>
 <span id="85">85</span>
 <span id="86">86</span>
-</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">core::marker::PhantomData</span>;
+</pre><pre class="rust"><code><span class="kw">use </span>core::marker::PhantomData;
 
-<span class="kw">use</span> <span class="ident">fnv::FnvBuildHasher</span>;
-<span class="kw">use</span> <span class="ident">hashbrown::HashMap</span>;
-<span class="kw">use</span> <span class="ident">slab::Slab</span>;
+<span class="kw">use </span>fnv::FnvBuildHasher;
+<span class="kw">use </span>hashbrown::HashMap;
+<span class="kw">use </span>slab::Slab;
 
-<span class="kw">use</span> <span class="ident">necsim_core</span>::{
-    <span class="ident">cogs</span>::{<span class="ident">Habitat</span>, <span class="ident">LineageStore</span>, <span class="ident">LocallyCoherentLineageStore</span>, <span class="ident">MathsCore</span>},
-    <span class="ident">landscape::IndexedLocation</span>,
-    <span class="ident">lineage</span>::{<span class="ident">GlobalLineageReference</span>, <span class="ident">Lineage</span>},
+<span class="kw">use </span>necsim_core::{
+    cogs::{Habitat, LineageStore, LocallyCoherentLineageStore, MathsCore},
+    landscape::IndexedLocation,
+    lineage::{GlobalLineageReference, Lineage},
 };
 
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::cogs::lineage_reference::in_memory::InMemoryLineageReference</span>;
+<span class="kw">use </span><span class="kw">crate</span>::cogs::lineage_reference::in_memory::InMemoryLineageReference;
 
-<span class="kw">use</span> <span class="ident"><span class="kw">super</span>::ClassicalLineageStore</span>;
+<span class="kw">use </span><span class="kw">super</span>::ClassicalLineageStore;
 
-<span class="attribute">#[<span class="ident">contract_trait</span>]</span>
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">M</span>: <span class="ident">MathsCore</span>, <span class="ident">H</span>: <span class="ident">Habitat</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="ident">LineageStore</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">ClassicalLineageStore</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span><span class="op">&gt;</span> {
-    <span class="kw">type</span> <span class="ident">LocalLineageReference</span> <span class="op">=</span> <span class="ident">InMemoryLineageReference</span>;
+<span class="attribute">#[contract_trait]
+</span><span class="kw">impl</span>&lt;M: MathsCore, H: Habitat&lt;M&gt;&gt; LineageStore&lt;M, H&gt; <span class="kw">for </span>ClassicalLineageStore&lt;M, H&gt; {
+    <span class="kw">type </span>LocalLineageReference = InMemoryLineageReference;
 
-    <span class="kw">fn</span> <span class="ident">with_capacity</span>(<span class="ident">_habitat</span>: <span class="kw-2">&amp;</span><span class="ident">H</span>, <span class="ident">capacity</span>: <span class="ident">usize</span>) -&gt; <span class="self">Self</span> {
-        <span class="self">Self</span> {
-            <span class="ident">lineages_store</span>: <span class="ident">Slab::with_capacity</span>(<span class="ident">capacity</span>),
-            <span class="ident">indexed_location_to_lineage_reference</span>: <span class="ident">HashMap::with_capacity_and_hasher</span>(
-                <span class="ident">capacity</span>,
-                <span class="ident">FnvBuildHasher::default</span>(),
+    <span class="kw">fn </span>with_capacity(_habitat: <span class="kw-2">&amp;</span>H, capacity: usize) -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{
+            lineages_store: Slab::with_capacity(capacity),
+            indexed_location_to_lineage_reference: HashMap::with_capacity_and_hasher(
+                capacity,
+                FnvBuildHasher::default(),
             ),
-            <span class="ident">_marker</span>: <span class="ident">PhantomData</span>::<span class="op">&lt;</span>(<span class="ident">M</span>, <span class="ident">H</span>)<span class="op">&gt;</span>,
+            _marker: PhantomData::&lt;(M, H)&gt;,
         }
     }
 
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">fn</span> <span class="ident">get_lineage_for_local_reference</span>(
+    <span class="attribute">#[must_use]
+    </span><span class="kw">fn </span>get_lineage_for_local_reference(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">reference</span>: <span class="ident">InMemoryLineageReference</span>,
-    ) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Lineage</span><span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">lineages_store</span>.<span class="ident">get</span>(<span class="ident">usize::from</span>(<span class="ident">reference</span>))
+        reference: InMemoryLineageReference,
+    ) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>Lineage&gt; {
+        <span class="self">self</span>.lineages_store.get(usize::from(reference))
     }
 }
 
-<span class="attribute">#[<span class="ident">contract_trait</span>]</span>
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">M</span>: <span class="ident">MathsCore</span>, <span class="ident">H</span>: <span class="ident">Habitat</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="ident">LocallyCoherentLineageStore</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span><span class="op">&gt;</span>
-    <span class="kw">for</span> <span class="ident">ClassicalLineageStore</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span><span class="op">&gt;</span>
+<span class="attribute">#[contract_trait]
+</span><span class="kw">impl</span>&lt;M: MathsCore, H: Habitat&lt;M&gt;&gt; LocallyCoherentLineageStore&lt;M, H&gt;
+    <span class="kw">for </span>ClassicalLineageStore&lt;M, H&gt;
 {
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">fn</span> <span class="ident">get_global_lineage_reference_at_indexed_location</span>(
+    <span class="attribute">#[must_use]
+    </span><span class="kw">fn </span>get_global_lineage_reference_at_indexed_location(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">indexed_location</span>: <span class="kw-2">&amp;</span><span class="ident">IndexedLocation</span>,
-        <span class="ident">_habitat</span>: <span class="kw-2">&amp;</span><span class="ident">H</span>,
-    ) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">GlobalLineageReference</span><span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">indexed_location_to_lineage_reference</span>
-            .<span class="ident">get</span>(<span class="ident">indexed_location</span>)
-            .<span class="ident">map</span>(<span class="op">|</span><span class="ident">local_reference</span><span class="op">|</span> <span class="kw-2">&amp;</span><span class="self">self</span>[<span class="kw-2">*</span><span class="ident">local_reference</span>].<span class="ident">global_reference</span>)
+        indexed_location: <span class="kw-2">&amp;</span>IndexedLocation,
+        _habitat: <span class="kw-2">&amp;</span>H,
+    ) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>GlobalLineageReference&gt; {
+        <span class="self">self</span>.indexed_location_to_lineage_reference
+            .get(indexed_location)
+            .map(|local_reference| <span class="kw-2">&amp;</span><span class="self">self</span>[<span class="kw-2">*</span>local_reference].global_reference)
     }
 
-    <span class="kw">fn</span> <span class="ident">insert_lineage_locally_coherent</span>(
-        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
-        <span class="ident">lineage</span>: <span class="ident">Lineage</span>,
-        <span class="ident">_habitat</span>: <span class="kw-2">&amp;</span><span class="ident">H</span>,
-    ) -&gt; <span class="ident">InMemoryLineageReference</span> {
-        <span class="kw">let</span> <span class="ident">indexed_location</span> <span class="op">=</span> <span class="ident">lineage</span>.<span class="ident">indexed_location</span>.<span class="ident">clone</span>();
+    <span class="kw">fn </span>insert_lineage_locally_coherent(
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        lineage: Lineage,
+        _habitat: <span class="kw-2">&amp;</span>H,
+    ) -&gt; InMemoryLineageReference {
+        <span class="kw">let </span>indexed_location = lineage.indexed_location.clone();
 
-        <span class="kw">let</span> <span class="ident">local_lineage_reference</span> <span class="op">=</span>
-            <span class="ident">InMemoryLineageReference::from</span>(<span class="self">self</span>.<span class="ident">lineages_store</span>.<span class="ident">insert</span>(<span class="ident">lineage</span>));
+        <span class="kw">let </span>local_lineage_reference =
+            InMemoryLineageReference::from(<span class="self">self</span>.lineages_store.insert(lineage));
 
-        <span class="self">self</span>.<span class="ident">indexed_location_to_lineage_reference</span>
-            .<span class="ident">insert</span>(<span class="ident">indexed_location</span>, <span class="ident">local_lineage_reference</span>);
+        <span class="self">self</span>.indexed_location_to_lineage_reference
+            .insert(indexed_location, local_lineage_reference);
 
-        <span class="ident">local_lineage_reference</span>
+        local_lineage_reference
     }
 
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">fn</span> <span class="ident">extract_lineage_locally_coherent</span>(
-        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
-        <span class="ident">reference</span>: <span class="ident">InMemoryLineageReference</span>,
-        <span class="ident">_habitat</span>: <span class="kw-2">&amp;</span><span class="ident">H</span>,
-    ) -&gt; <span class="ident">Lineage</span> {
-        <span class="comment">// We know from the trait preconditions that the lineage exists</span>
-        <span class="kw">let</span> <span class="ident">lineage</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">lineages_store</span>.<span class="ident">remove</span>(<span class="ident">usize::from</span>(<span class="ident">reference</span>));
+    <span class="attribute">#[must_use]
+    </span><span class="kw">fn </span>extract_lineage_locally_coherent(
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        reference: InMemoryLineageReference,
+        _habitat: <span class="kw-2">&amp;</span>H,
+    ) -&gt; Lineage {
+        <span class="comment">// We know from the trait preconditions that the lineage exists
+        </span><span class="kw">let </span>lineage = <span class="self">self</span>.lineages_store.remove(usize::from(reference));
 
-        <span class="self">self</span>.<span class="ident">indexed_location_to_lineage_reference</span>
-            .<span class="ident">remove</span>(<span class="kw-2">&amp;</span><span class="ident">lineage</span>.<span class="ident">indexed_location</span>);
+        <span class="self">self</span>.indexed_location_to_lineage_reference
+            .remove(<span class="kw-2">&amp;</span>lineage.indexed_location);
 
-        <span class="ident">lineage</span>
+        lineage
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../../../../../" data-current-crate="necsim_impls_no_std" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0-nightly (affe0d3a0 2022-08-05)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../../../../../" data-current-crate="necsim_impls_no_std" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (5e9772042 2022-10-29)" ></div></body></html>

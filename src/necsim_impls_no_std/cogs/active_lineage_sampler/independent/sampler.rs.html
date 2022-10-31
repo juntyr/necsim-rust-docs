@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `necsim/impls/no-std/src/cogs/active_lineage_sampler/independent/sampler.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>sampler.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../../storage.js"></script><script defer src="../../../../../source-script.js"></script><script defer src="../../../../../source-files.js"></script><script defer src="../../../../../main.js"></script><noscript><link rel="stylesheet" href="../../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../../../necsim_impls_no_std/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../../../necsim_impls_no_std/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../../../necsim_impls_no_std/index.html"><img class="rust-logo" src="../../../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `necsim/impls/no-std/src/cogs/active_lineage_sampler/independent/sampler.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>sampler.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../../../normalize.css"><link rel="stylesheet" href="../../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../../../ayu.css" disabled><link rel="stylesheet" href="../../../../../dark.css" disabled><link rel="stylesheet" href="../../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../../storage.js"></script><script defer src="../../../../../source-script.js"></script><script defer src="../../../../../source-files.js"></script><script defer src="../../../../../main.js"></script><noscript><link rel="stylesheet" href="../../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../../../../necsim_impls_no_std/index.html"><img class="rust-logo" src="../../../../../rust-logo.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../../wheel.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -142,149 +142,149 @@
 <span id="142">142</span>
 <span id="143">143</span>
 <span id="144">144</span>
-</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">core::ops::ControlFlow</span>;
+</pre><pre class="rust"><code><span class="kw">use </span>core::ops::ControlFlow;
 
-<span class="kw">use</span> <span class="ident">necsim_core</span>::{
-    <span class="ident">cogs</span>::{
-        <span class="ident">ActiveLineageSampler</span>, <span class="ident">DispersalSampler</span>, <span class="ident">EmigrationExit</span>, <span class="ident">Habitat</span>, <span class="ident">MathsCore</span>, <span class="ident">PrimeableRng</span>,
-        <span class="ident">SpeciationProbability</span>, <span class="ident">TurnoverRate</span>,
+<span class="kw">use </span>necsim_core::{
+    cogs::{
+        ActiveLineageSampler, DispersalSampler, EmigrationExit, Habitat, MathsCore, PrimeableRng,
+        SpeciationProbability, TurnoverRate,
     },
-    <span class="ident">lineage::Lineage</span>,
-    <span class="ident">simulation::partial::active_lineage_sampler::PartialSimulation</span>,
+    lineage::Lineage,
+    simulation::partial::active_lineage_sampler::PartialSimulation,
 };
-<span class="kw">use</span> <span class="ident">necsim_core_bond</span>::{<span class="ident">NonNegativeF64</span>, <span class="ident">PositiveF64</span>};
+<span class="kw">use </span>necsim_core_bond::{NonNegativeF64, PositiveF64};
 
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::cogs</span>::{
-    <span class="ident">coalescence_sampler::independent::IndependentCoalescenceSampler</span>,
-    <span class="ident">event_sampler::independent::IndependentEventSampler</span>,
-    <span class="ident">immigration_entry::never::NeverImmigrationEntry</span>,
-    <span class="ident">lineage_store::independent::IndependentLineageStore</span>,
+<span class="kw">use </span><span class="kw">crate</span>::cogs::{
+    coalescence_sampler::independent::IndependentCoalescenceSampler,
+    event_sampler::independent::IndependentEventSampler,
+    immigration_entry::never::NeverImmigrationEntry,
+    lineage_store::independent::IndependentLineageStore,
 };
 
-<span class="kw">use</span> <span class="kw">super</span>::{<span class="ident">EventTimeSampler</span>, <span class="ident">IndependentActiveLineageSampler</span>};
+<span class="kw">use super</span>::{EventTimeSampler, IndependentActiveLineageSampler};
 
-<span class="attribute">#[<span class="ident">contract_trait</span>]</span>
-<span class="kw">impl</span><span class="op">&lt;</span>
-        <span class="ident">M</span>: <span class="ident">MathsCore</span>,
-        <span class="ident">H</span>: <span class="ident">Habitat</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span>,
-        <span class="ident">G</span>: <span class="ident">PrimeableRng</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span>,
-        <span class="ident">X</span>: <span class="ident">EmigrationExit</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span>, <span class="ident">IndependentLineageStore</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-        <span class="ident">D</span>: <span class="ident">DispersalSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span><span class="op">&gt;</span>,
-        <span class="ident">T</span>: <span class="ident">TurnoverRate</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span><span class="op">&gt;</span>,
-        <span class="ident">N</span>: <span class="ident">SpeciationProbability</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span><span class="op">&gt;</span>,
-        <span class="ident">J</span>: <span class="ident">EventTimeSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span>, <span class="ident">T</span><span class="op">&gt;</span>,
-    <span class="op">&gt;</span>
-    <span class="ident">ActiveLineageSampler</span><span class="op">&lt;</span>
-        <span class="ident">M</span>,
-        <span class="ident">H</span>,
-        <span class="ident">G</span>,
-        <span class="ident">IndependentLineageStore</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span><span class="op">&gt;</span>,
-        <span class="ident">X</span>,
-        <span class="ident">D</span>,
-        <span class="ident">IndependentCoalescenceSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span><span class="op">&gt;</span>,
-        <span class="ident">T</span>,
-        <span class="ident">N</span>,
-        <span class="ident">IndependentEventSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span>, <span class="ident">X</span>, <span class="ident">D</span>, <span class="ident">T</span>, <span class="ident">N</span><span class="op">&gt;</span>,
-        <span class="ident">NeverImmigrationEntry</span>,
-    <span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">IndependentActiveLineageSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span>, <span class="ident">X</span>, <span class="ident">D</span>, <span class="ident">T</span>, <span class="ident">N</span>, <span class="ident">J</span><span class="op">&gt;</span>
+<span class="attribute">#[contract_trait]
+</span><span class="kw">impl</span>&lt;
+        M: MathsCore,
+        H: Habitat&lt;M&gt;,
+        G: PrimeableRng&lt;M&gt;,
+        X: EmigrationExit&lt;M, H, G, IndependentLineageStore&lt;M, H&gt;&gt;,
+        D: DispersalSampler&lt;M, H, G&gt;,
+        T: TurnoverRate&lt;M, H&gt;,
+        N: SpeciationProbability&lt;M, H&gt;,
+        J: EventTimeSampler&lt;M, H, G, T&gt;,
+    &gt;
+    ActiveLineageSampler&lt;
+        M,
+        H,
+        G,
+        IndependentLineageStore&lt;M, H&gt;,
+        X,
+        D,
+        IndependentCoalescenceSampler&lt;M, H&gt;,
+        T,
+        N,
+        IndependentEventSampler&lt;M, H, G, X, D, T, N&gt;,
+        NeverImmigrationEntry,
+    &gt; <span class="kw">for </span>IndependentActiveLineageSampler&lt;M, H, G, X, D, T, N, J&gt;
 {
-    <span class="kw">type</span> <span class="ident">LineageIterator</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="op">=</span> <span class="kw">impl</span> <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">Lineage</span><span class="op">&gt;</span> <span class="kw">where</span> <span class="ident">H</span>: <span class="lifetime">&#39;a</span>, <span class="ident">G</span>: <span class="lifetime">&#39;a</span>, <span class="ident">X</span>: <span class="lifetime">&#39;a</span>, <span class="ident">D</span>: <span class="lifetime">&#39;a</span>, <span class="ident">T</span>: <span class="lifetime">&#39;a</span>, <span class="ident">N</span>: <span class="lifetime">&#39;a</span>, <span class="ident">J</span>: <span class="lifetime">&#39;a</span>;
+    <span class="kw">type </span>LineageIterator&lt;<span class="lifetime">&#39;a</span>&gt; = <span class="kw">impl </span>Iterator&lt;Item = <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>Lineage&gt; <span class="kw">where </span>H: <span class="lifetime">&#39;a</span>, G: <span class="lifetime">&#39;a</span>, X: <span class="lifetime">&#39;a</span>, D: <span class="lifetime">&#39;a</span>, T: <span class="lifetime">&#39;a</span>, N: <span class="lifetime">&#39;a</span>, J: <span class="lifetime">&#39;a</span>;
 
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">fn</span> <span class="ident">number_active_lineages</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">usize</span> {
-        <span class="ident">usize::from</span>(<span class="self">self</span>.<span class="ident">active_lineage</span>.<span class="ident">is_some</span>())
+    <span class="attribute">#[must_use]
+    </span><span class="kw">fn </span>number_active_lineages(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; usize {
+        usize::from(<span class="self">self</span>.active_lineage.is_some())
     }
 
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">fn</span> <span class="ident">iter_active_lineages_ordered</span>(
+    <span class="attribute">#[must_use]
+    </span><span class="kw">fn </span>iter_active_lineages_ordered(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">_habitat</span>: <span class="kw-2">&amp;</span><span class="ident">H</span>,
-        <span class="ident">_lineage_store</span>: <span class="kw-2">&amp;</span><span class="ident">IndependentLineageStore</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span><span class="op">&gt;</span>,
-    ) -&gt; <span class="ident"><span class="self">Self</span>::LineageIterator</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">active_lineage</span>.<span class="ident">iter</span>()
+        _habitat: <span class="kw-2">&amp;</span>H,
+        _lineage_store: <span class="kw-2">&amp;</span>IndependentLineageStore&lt;M, H&gt;,
+    ) -&gt; <span class="self">Self</span>::LineageIterator&lt;<span class="lifetime">&#39;_</span>&gt; {
+        <span class="self">self</span>.active_lineage.iter()
     }
 
-    <span class="kw">fn</span> <span class="ident">get_last_event_time</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">NonNegativeF64</span> {
-        <span class="self">self</span>.<span class="ident">last_event_time</span>.<span class="ident">max</span>(<span class="self">self</span>.<span class="ident">min_event_time</span>)
+    <span class="kw">fn </span>get_last_event_time(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; NonNegativeF64 {
+        <span class="self">self</span>.last_event_time.max(<span class="self">self</span>.min_event_time)
     }
 
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">pop_active_lineage_and_event_time</span><span class="op">&lt;</span><span class="ident">F</span>: <span class="ident">FnOnce</span>(<span class="ident">PositiveF64</span>) -&gt; <span class="ident">ControlFlow</span><span class="op">&lt;</span>(), ()<span class="op">&gt;</span><span class="op">&gt;</span>(
-        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
-        <span class="ident">simulation</span>: <span class="kw-2">&amp;mut</span> <span class="ident">PartialSimulation</span><span class="op">&lt;</span>
-            <span class="ident">M</span>,
-            <span class="ident">H</span>,
-            <span class="ident">G</span>,
-            <span class="ident">IndependentLineageStore</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span><span class="op">&gt;</span>,
-            <span class="ident">X</span>,
-            <span class="ident">D</span>,
-            <span class="ident">IndependentCoalescenceSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span><span class="op">&gt;</span>,
-            <span class="ident">T</span>,
-            <span class="ident">N</span>,
-            <span class="ident">IndependentEventSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span>, <span class="ident">X</span>, <span class="ident">D</span>, <span class="ident">T</span>, <span class="ident">N</span><span class="op">&gt;</span>,
-        <span class="op">&gt;</span>,
-        <span class="ident">rng</span>: <span class="kw-2">&amp;mut</span> <span class="ident">G</span>,
-        <span class="ident">early_peek_stop</span>: <span class="ident">F</span>,
-    ) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span>(<span class="ident">Lineage</span>, <span class="ident">PositiveF64</span>)<span class="op">&gt;</span> {
-        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">active_lineage</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">active_lineage</span> {
-            <span class="kw">let</span> <span class="ident">before_next_event</span> <span class="op">=</span> <span class="ident">active_lineage</span>.<span class="ident">last_event_time</span>.<span class="ident">max</span>(<span class="self">self</span>.<span class="ident">min_event_time</span>);
+    <span class="attribute">#[must_use]
+    #[inline]
+    </span><span class="kw">fn </span>pop_active_lineage_and_event_time&lt;F: FnOnce(PositiveF64) -&gt; ControlFlow&lt;(), ()&gt;&gt;(
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        simulation: <span class="kw-2">&amp;mut </span>PartialSimulation&lt;
+            M,
+            H,
+            G,
+            IndependentLineageStore&lt;M, H&gt;,
+            X,
+            D,
+            IndependentCoalescenceSampler&lt;M, H&gt;,
+            T,
+            N,
+            IndependentEventSampler&lt;M, H, G, X, D, T, N&gt;,
+        &gt;,
+        rng: <span class="kw-2">&amp;mut </span>G,
+        early_peek_stop: F,
+    ) -&gt; <span class="prelude-ty">Option</span>&lt;(Lineage, PositiveF64)&gt; {
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(active_lineage) = <span class="kw-2">&amp;</span><span class="self">self</span>.active_lineage {
+            <span class="kw">let </span>before_next_event = active_lineage.last_event_time.max(<span class="self">self</span>.min_event_time);
 
-            <span class="comment">// Check for extraneously simulated (inactive) lineages</span>
-            <span class="kw">let</span> <span class="ident">event_time</span> <span class="op">=</span> <span class="self">self</span>
-                .<span class="ident">event_time_sampler</span>
-                .<span class="ident">next_event_time_at_indexed_location_weakly_after</span>(
-                    <span class="kw-2">&amp;</span><span class="ident">active_lineage</span>.<span class="ident">indexed_location</span>,
-                    <span class="ident">before_next_event</span>,
-                    <span class="kw-2">&amp;</span><span class="ident">simulation</span>.<span class="ident">habitat</span>,
-                    <span class="ident">rng</span>,
-                    <span class="kw-2">&amp;</span><span class="ident">simulation</span>.<span class="ident">turnover_rate</span>,
+            <span class="comment">// Check for extraneously simulated (inactive) lineages
+            </span><span class="kw">let </span>event_time = <span class="self">self
+                </span>.event_time_sampler
+                .next_event_time_at_indexed_location_weakly_after(
+                    <span class="kw-2">&amp;</span>active_lineage.indexed_location,
+                    before_next_event,
+                    <span class="kw-2">&amp;</span>simulation.habitat,
+                    rng,
+                    <span class="kw-2">&amp;</span>simulation.turnover_rate,
                 );
 
-            <span class="kw">let</span> <span class="ident">next_event_time</span> <span class="op">=</span> <span class="ident">PositiveF64::max_after</span>(<span class="ident">before_next_event</span>, <span class="ident">event_time</span>);
+            <span class="kw">let </span>next_event_time = PositiveF64::max_after(before_next_event, event_time);
 
-            <span class="kw">if</span> <span class="ident">early_peek_stop</span>(<span class="ident">next_event_time</span>).<span class="ident">is_break</span>() {
-                <span class="kw">return</span> <span class="prelude-val">None</span>;
+            <span class="kw">if </span>early_peek_stop(next_event_time).is_break() {
+                <span class="kw">return </span><span class="prelude-val">None</span>;
             }
 
-            <span class="self">self</span>.<span class="ident">last_event_time</span> <span class="op">=</span> <span class="ident">next_event_time</span>.<span class="ident">into</span>();
+            <span class="self">self</span>.last_event_time = next_event_time.into();
 
-            <span class="comment">// Note: Option::take would be better but uses local memory</span>
-            <span class="kw">let</span> <span class="ident">chosen_lineage</span> <span class="op">=</span> <span class="ident">active_lineage</span>.<span class="ident">clone</span>();
-            <span class="self">self</span>.<span class="ident">active_lineage</span> <span class="op">=</span> <span class="prelude-val">None</span>;
+            <span class="comment">// Note: Option::take would be better but uses local memory
+            </span><span class="kw">let </span>chosen_lineage = active_lineage.clone();
+            <span class="self">self</span>.active_lineage = <span class="prelude-val">None</span>;
 
-            <span class="prelude-val">Some</span>((<span class="ident">chosen_lineage</span>, <span class="ident">next_event_time</span>))
-        } <span class="kw">else</span> {
-            <span class="prelude-val">None</span>
-        }
+            <span class="prelude-val">Some</span>((chosen_lineage, next_event_time))
+        } <span class="kw">else </span>{
+            <span class="prelude-val">None
+        </span>}
     }
 
-    <span class="attribute">#[<span class="ident">debug_requires</span>(
-        <span class="self">self</span>.<span class="ident">number_active_lineages</span>() <span class="op">==</span> <span class="number">0</span>,
-        <span class="string">&quot;does not overwrite the independent lineage&quot;</span>
-    )]</span>
-    <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">push_active_lineage</span>(
-        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
-        <span class="ident">lineage</span>: <span class="ident">Lineage</span>,
-        <span class="ident">_simulation</span>: <span class="kw-2">&amp;mut</span> <span class="ident">PartialSimulation</span><span class="op">&lt;</span>
-            <span class="ident">M</span>,
-            <span class="ident">H</span>,
-            <span class="ident">G</span>,
-            <span class="ident">IndependentLineageStore</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span><span class="op">&gt;</span>,
-            <span class="ident">X</span>,
-            <span class="ident">D</span>,
-            <span class="ident">IndependentCoalescenceSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span><span class="op">&gt;</span>,
-            <span class="ident">T</span>,
-            <span class="ident">N</span>,
-            <span class="ident">IndependentEventSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span>, <span class="ident">X</span>, <span class="ident">D</span>, <span class="ident">T</span>, <span class="ident">N</span><span class="op">&gt;</span>,
-        <span class="op">&gt;</span>,
-        <span class="ident">_rng</span>: <span class="kw-2">&amp;mut</span> <span class="ident">G</span>,
+    <span class="attribute">#[debug_requires(
+        <span class="self">self</span>.number_active_lineages() == <span class="number">0</span>,
+        <span class="string">&quot;does not overwrite the independent lineage&quot;
+    </span>)]
+    #[inline]
+    </span><span class="kw">fn </span>push_active_lineage(
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        lineage: Lineage,
+        _simulation: <span class="kw-2">&amp;mut </span>PartialSimulation&lt;
+            M,
+            H,
+            G,
+            IndependentLineageStore&lt;M, H&gt;,
+            X,
+            D,
+            IndependentCoalescenceSampler&lt;M, H&gt;,
+            T,
+            N,
+            IndependentEventSampler&lt;M, H, G, X, D, T, N&gt;,
+        &gt;,
+        _rng: <span class="kw-2">&amp;mut </span>G,
     ) {
-        <span class="self">self</span>.<span class="ident">last_event_time</span> <span class="op">=</span> <span class="ident">lineage</span>.<span class="ident">last_event_time</span>;
+        <span class="self">self</span>.last_event_time = lineage.last_event_time;
 
-        <span class="self">self</span>.<span class="ident">active_lineage</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">lineage</span>);
+        <span class="self">self</span>.active_lineage = <span class="prelude-val">Some</span>(lineage);
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../../../" data-current-crate="necsim_impls_no_std" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0-nightly (affe0d3a0 2022-08-05)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../../../" data-current-crate="necsim_impls_no_std" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (5e9772042 2022-10-29)" ></div></body></html>

@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `rustcoalescence/algorithms/src/result.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>result.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../rustcoalescence_algorithms/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../rustcoalescence_algorithms/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../rustcoalescence_algorithms/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `rustcoalescence/algorithms/src/result.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>result.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../normalize.css"><link rel="stylesheet" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../ayu.css" disabled><link rel="stylesheet" href="../../dark.css" disabled><link rel="stylesheet" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../rustcoalescence_algorithms/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -96,103 +96,103 @@
 <span id="96">96</span>
 <span id="97">97</span>
 <span id="98">98</span>
-</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">error::Error</span> <span class="kw">as</span> <span class="ident">StdError</span>, <span class="ident">fmt</span>, <span class="ident">marker::PhantomData</span>};
+</pre><pre class="rust"><code><span class="kw">use </span>std::{error::Error <span class="kw">as </span>StdError, fmt, marker::PhantomData};
 
-<span class="kw">use</span> <span class="ident">necsim_core</span>::{
-    <span class="ident">cogs</span>::{<span class="ident">MathsCore</span>, <span class="ident">RngCore</span>},
-    <span class="ident">lineage::Lineage</span>,
+<span class="kw">use </span>necsim_core::{
+    cogs::{MathsCore, RngCore},
+    lineage::Lineage,
 };
-<span class="kw">use</span> <span class="ident">necsim_core_bond::NonNegativeF64</span>;
+<span class="kw">use </span>necsim_core_bond::NonNegativeF64;
 
-<span class="kw">use</span> <span class="ident">necsim_impls_no_std::cogs::active_lineage_sampler::resuming::lineage::ExceptionalLineage</span>;
+<span class="kw">use </span>necsim_impls_no_std::cogs::active_lineage_sampler::resuming::lineage::ExceptionalLineage;
 
-<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">SimulationOutcome</span><span class="op">&lt;</span><span class="ident">M</span>: <span class="ident">MathsCore</span>, <span class="ident">G</span>: <span class="ident">RngCore</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-    <span class="ident">Done</span> {
-        <span class="ident">time</span>: <span class="ident">NonNegativeF64</span>,
-        <span class="ident">steps</span>: <span class="ident">u64</span>,
+<span class="kw">pub enum </span>SimulationOutcome&lt;M: MathsCore, G: RngCore&lt;M&gt;&gt; {
+    Done {
+        time: NonNegativeF64,
+        steps: u64,
     },
-    <span class="ident">Paused</span> {
-        <span class="ident">time</span>: <span class="ident">NonNegativeF64</span>,
-        <span class="ident">steps</span>: <span class="ident">u64</span>,
-        <span class="ident">lineages</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Lineage</span><span class="op">&gt;</span>,
-        <span class="ident">rng</span>: <span class="ident">G</span>,
-        <span class="ident">marker</span>: <span class="ident">PhantomData</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span>,
+    Paused {
+        time: NonNegativeF64,
+        steps: u64,
+        lineages: Vec&lt;Lineage&gt;,
+        rng: G,
+        marker: PhantomData&lt;M&gt;,
     },
 }
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
-<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">ResumeError</span><span class="op">&lt;</span><span class="ident">E</span>: <span class="ident">StdError</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span> {
-    <span class="ident">Sample</span>(<span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">ExceptionalLineage</span><span class="op">&gt;</span>),
-    <span class="ident">Simulate</span>(<span class="ident">E</span>),
+<span class="attribute">#[derive(Debug)]
+</span><span class="kw">pub enum </span>ResumeError&lt;E: StdError + Send + Sync + <span class="lifetime">&#39;static</span>&gt; {
+    Sample(Vec&lt;ExceptionalLineage&gt;),
+    Simulate(E),
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">E</span>: <span class="ident">StdError</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span> <span class="ident">std::error::Error</span> <span class="kw">for</span> <span class="ident">ResumeError</span><span class="op">&lt;</span><span class="ident">E</span><span class="op">&gt;</span> {}
+<span class="kw">impl</span>&lt;E: StdError + Send + Sync + <span class="lifetime">&#39;static</span>&gt; std::error::Error <span class="kw">for </span>ResumeError&lt;E&gt; {}
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">E</span>: <span class="ident">StdError</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">E</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">ResumeError</span><span class="op">&lt;</span><span class="ident">E</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">err</span>: <span class="ident">E</span>) -&gt; <span class="self">Self</span> {
-        <span class="ident"><span class="self">Self</span>::Simulate</span>(<span class="ident">err</span>)
+<span class="kw">impl</span>&lt;E: StdError + Send + Sync + <span class="lifetime">&#39;static</span>&gt; From&lt;E&gt; <span class="kw">for </span>ResumeError&lt;E&gt; {
+    <span class="kw">fn </span>from(err: E) -&gt; <span class="self">Self </span>{
+        <span class="self">Self</span>::Simulate(err)
     }
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">E</span>: <span class="ident">StdError</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span> <span class="ident">fmt::Display</span> <span class="kw">for</span> <span class="ident">ResumeError</span><span class="op">&lt;</span><span class="ident">E</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">fmt</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span>) -&gt; <span class="ident">fmt::Result</span> {
-        <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident"><span class="self">Self</span>::Sample</span>(<span class="ident">exceptional_lineages</span>) =&gt; {
+<span class="kw">impl</span>&lt;E: StdError + Send + Sync + <span class="lifetime">&#39;static</span>&gt; fmt::Display <span class="kw">for </span>ResumeError&lt;E&gt; {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, fmt: <span class="kw-2">&amp;mut </span>fmt::Formatter) -&gt; fmt::Result {
+        <span class="kw">match </span><span class="self">self </span>{
+            <span class="self">Self</span>::Sample(exceptional_lineages) =&gt; {
                 <span class="macro">writeln!</span>(
-                    <span class="ident">fmt</span>,
+                    fmt,
                     <span class="string">&quot;{} lineage(s) are incompatible with the scenario, e.g.&quot;</span>,
-                    <span class="ident">exceptional_lineages</span>.<span class="ident">len</span>()
+                    exceptional_lineages.len()
                 )<span class="question-mark">?</span>;
 
-                <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>((<span class="ident">child</span>, <span class="ident">parent</span>)) <span class="op">=</span> <span class="ident">exceptional_lineages</span>.<span class="ident">iter</span>().<span class="ident">find_map</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="kw">match</span> <span class="ident">e</span> {
-                    <span class="ident">ExceptionalLineage::Coalescence</span> { <span class="ident">child</span>, <span class="ident">parent</span> } =&gt; <span class="prelude-val">Some</span>((<span class="ident">child</span>, <span class="ident">parent</span>)),
-                    <span class="kw">_</span> =&gt; <span class="prelude-val">None</span>,
+                <span class="kw">if let </span><span class="prelude-val">Some</span>((child, parent)) = exceptional_lineages.iter().find_map(|e| <span class="kw">match </span>e {
+                    ExceptionalLineage::Coalescence { child, parent } =&gt; <span class="prelude-val">Some</span>((child, parent)),
+                    <span class="kw">_ </span>=&gt; <span class="prelude-val">None</span>,
                 }) {
                     <span class="macro">writeln!</span>(
-                        <span class="ident">fmt</span>,
+                        fmt,
                         <span class="string">&quot;- Lineage #{} at ({}, {}, {}) is at the same indexed location as Lineage \
                          #{}&quot;</span>,
-                        <span class="ident">child</span>.<span class="ident">global_reference</span>,
-                        <span class="ident">child</span>.<span class="ident">indexed_location</span>.<span class="ident">location</span>().<span class="ident">x</span>(),
-                        <span class="ident">child</span>.<span class="ident">indexed_location</span>.<span class="ident">location</span>().<span class="ident">y</span>(),
-                        <span class="ident">child</span>.<span class="ident">indexed_location</span>.<span class="ident">index</span>(),
-                        <span class="ident">parent</span>,
+                        child.global_reference,
+                        child.indexed_location.location().x(),
+                        child.indexed_location.location().y(),
+                        child.indexed_location.index(),
+                        parent,
                     )<span class="question-mark">?</span>;
                 }
 
-                <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">lineage</span>) <span class="op">=</span> <span class="ident">exceptional_lineages</span>.<span class="ident">iter</span>().<span class="ident">find_map</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="kw">match</span> <span class="ident">e</span> {
-                    <span class="ident">ExceptionalLineage::OutOfDeme</span>(<span class="ident">lineage</span>) =&gt; <span class="prelude-val">Some</span>(<span class="ident">lineage</span>),
-                    <span class="kw">_</span> =&gt; <span class="prelude-val">None</span>,
+                <span class="kw">if let </span><span class="prelude-val">Some</span>(lineage) = exceptional_lineages.iter().find_map(|e| <span class="kw">match </span>e {
+                    ExceptionalLineage::OutOfDeme(lineage) =&gt; <span class="prelude-val">Some</span>(lineage),
+                    <span class="kw">_ </span>=&gt; <span class="prelude-val">None</span>,
                 }) {
                     <span class="macro">writeln!</span>(
-                        <span class="ident">fmt</span>,
+                        fmt,
                         <span class="string">&quot;- Lineage #{} at ({}, {}, {}) is outside the deme at its location&quot;</span>,
-                        <span class="ident">lineage</span>.<span class="ident">global_reference</span>,
-                        <span class="ident">lineage</span>.<span class="ident">indexed_location</span>.<span class="ident">location</span>().<span class="ident">x</span>(),
-                        <span class="ident">lineage</span>.<span class="ident">indexed_location</span>.<span class="ident">location</span>().<span class="ident">y</span>(),
-                        <span class="ident">lineage</span>.<span class="ident">indexed_location</span>.<span class="ident">index</span>(),
+                        lineage.global_reference,
+                        lineage.indexed_location.location().x(),
+                        lineage.indexed_location.location().y(),
+                        lineage.indexed_location.index(),
                     )<span class="question-mark">?</span>;
                 }
 
-                <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">lineage</span>) <span class="op">=</span> <span class="ident">exceptional_lineages</span>.<span class="ident">iter</span>().<span class="ident">find_map</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="kw">match</span> <span class="ident">e</span> {
-                    <span class="ident">ExceptionalLineage::OutOfHabitat</span>(<span class="ident">lineage</span>) =&gt; <span class="prelude-val">Some</span>(<span class="ident">lineage</span>),
-                    <span class="kw">_</span> =&gt; <span class="prelude-val">None</span>,
+                <span class="kw">if let </span><span class="prelude-val">Some</span>(lineage) = exceptional_lineages.iter().find_map(|e| <span class="kw">match </span>e {
+                    ExceptionalLineage::OutOfHabitat(lineage) =&gt; <span class="prelude-val">Some</span>(lineage),
+                    <span class="kw">_ </span>=&gt; <span class="prelude-val">None</span>,
                 }) {
                     <span class="macro">writeln!</span>(
-                        <span class="ident">fmt</span>,
+                        fmt,
                         <span class="string">&quot;- Lineage #{} at ({}, {}, {}) is outside the habitable area&quot;</span>,
-                        <span class="ident">lineage</span>.<span class="ident">global_reference</span>,
-                        <span class="ident">lineage</span>.<span class="ident">indexed_location</span>.<span class="ident">location</span>().<span class="ident">x</span>(),
-                        <span class="ident">lineage</span>.<span class="ident">indexed_location</span>.<span class="ident">location</span>().<span class="ident">y</span>(),
-                        <span class="ident">lineage</span>.<span class="ident">indexed_location</span>.<span class="ident">index</span>(),
+                        lineage.global_reference,
+                        lineage.indexed_location.location().x(),
+                        lineage.indexed_location.location().y(),
+                        lineage.indexed_location.index(),
                     )<span class="question-mark">?</span>;
                 }
 
                 <span class="prelude-val">Ok</span>(())
             },
-            <span class="ident"><span class="self">Self</span>::Simulate</span>(<span class="ident">err</span>) =&gt; <span class="ident">fmt::Display::fmt</span>(<span class="ident">err</span>, <span class="ident">fmt</span>),
+            <span class="self">Self</span>::Simulate(err) =&gt; fmt::Display::fmt(err, fmt),
         }
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="rustcoalescence_algorithms" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0-nightly (affe0d3a0 2022-08-05)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="rustcoalescence_algorithms" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (5e9772042 2022-10-29)" ></div></body></html>

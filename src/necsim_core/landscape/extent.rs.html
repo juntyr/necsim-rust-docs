@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `necsim/core/src/landscape/extent.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>extent.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../necsim_core/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../necsim_core/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../necsim_core/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `necsim/core/src/landscape/extent.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>extent.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../normalize.css"><link rel="stylesheet" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../ayu.css" disabled><link rel="stylesheet" href="../../../dark.css" disabled><link rel="stylesheet" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../../necsim_core/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -292,299 +292,299 @@
 <span id="292">292</span>
 <span id="293">293</span>
 <span id="294">294</span>
-</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">necsim_core_bond::OffByOneU32</span>;
+</pre><pre class="rust"><code><span class="kw">use </span>necsim_core_bond::OffByOneU32;
 
-<span class="kw">use</span> <span class="ident"><span class="kw">super</span>::Location</span>;
+<span class="kw">use </span><span class="kw">super</span>::Location;
 
-<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::module_name_repetitions</span>)]</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">TypeLayout</span>)]</span>
-<span class="attribute">#[<span class="ident">repr</span>(<span class="ident">C</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">LandscapeExtent</span> {
-    <span class="ident">x</span>: <span class="ident">u32</span>,
-    <span class="ident">y</span>: <span class="ident">u32</span>,
-    <span class="ident">width</span>: <span class="ident">OffByOneU32</span>,
-    <span class="ident">height</span>: <span class="ident">OffByOneU32</span>,
+<span class="attribute">#[allow(clippy::module_name_repetitions)]
+#[derive(PartialEq, Eq, Clone, Debug, TypeLayout)]
+#[repr(C)]
+</span><span class="kw">pub struct </span>LandscapeExtent {
+    x: u32,
+    y: u32,
+    width: OffByOneU32,
+    height: OffByOneU32,
 }
 
-<span class="kw">impl</span> <span class="ident">LandscapeExtent</span> {
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="attribute">#[<span class="ident">debug_ensures</span>(<span class="ident">ret</span>.<span class="ident">x</span>() <span class="op">==</span> <span class="ident">x</span>, <span class="string">&quot;stores x&quot;</span>)]</span>
-    <span class="attribute">#[<span class="ident">debug_ensures</span>(<span class="ident">ret</span>.<span class="ident">y</span>() <span class="op">==</span> <span class="ident">y</span>, <span class="string">&quot;stores y&quot;</span>)]</span>
-    <span class="attribute">#[<span class="ident">debug_ensures</span>(<span class="ident">ret</span>.<span class="ident">width</span>() <span class="op">==</span> <span class="ident">width</span>, <span class="string">&quot;stores width&quot;</span>)]</span>
-    <span class="attribute">#[<span class="ident">debug_ensures</span>(<span class="ident">ret</span>.<span class="ident">height</span>() <span class="op">==</span> <span class="ident">height</span>, <span class="string">&quot;stores height&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">x</span>: <span class="ident">u32</span>, <span class="ident">y</span>: <span class="ident">u32</span>, <span class="ident">width</span>: <span class="ident">OffByOneU32</span>, <span class="ident">height</span>: <span class="ident">OffByOneU32</span>) -&gt; <span class="self">Self</span> {
-        <span class="self">Self</span> {
-            <span class="ident">x</span>,
-            <span class="ident">y</span>,
-            <span class="ident">width</span>,
-            <span class="ident">height</span>,
+<span class="kw">impl </span>LandscapeExtent {
+    <span class="attribute">#[must_use]
+    #[debug_ensures(ret.x() == x, <span class="string">&quot;stores x&quot;</span>)]
+    #[debug_ensures(ret.y() == y, <span class="string">&quot;stores y&quot;</span>)]
+    #[debug_ensures(ret.width() == width, <span class="string">&quot;stores width&quot;</span>)]
+    #[debug_ensures(ret.height() == height, <span class="string">&quot;stores height&quot;</span>)]
+    </span><span class="kw">pub fn </span>new(x: u32, y: u32, width: OffByOneU32, height: OffByOneU32) -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{
+            x,
+            y,
+            width,
+            height,
         }
     }
 
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">x</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">u32</span> {
-        <span class="self">self</span>.<span class="ident">x</span>
+    <span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>x(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; u32 {
+        <span class="self">self</span>.x
     }
 
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">y</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">u32</span> {
-        <span class="self">self</span>.<span class="ident">y</span>
+    <span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>y(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; u32 {
+        <span class="self">self</span>.y
     }
 
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">width</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">OffByOneU32</span> {
-        <span class="self">self</span>.<span class="ident">width</span>
+    <span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>width(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; OffByOneU32 {
+        <span class="self">self</span>.width
     }
 
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">height</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">OffByOneU32</span> {
-        <span class="self">self</span>.<span class="ident">height</span>
+    <span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>height(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; OffByOneU32 {
+        <span class="self">self</span>.height
     }
 
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">contains</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">location</span>: <span class="kw-2">&amp;</span><span class="ident">Location</span>) -&gt; <span class="ident">bool</span> {
-        <span class="ident">location</span>.<span class="ident">x</span>() <span class="op">&gt;</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">x</span>
-            <span class="op">&amp;&amp;</span> <span class="ident">location</span>.<span class="ident">x</span>() <span class="op">&lt;</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">width</span>.<span class="ident">add_incl</span>(<span class="self">self</span>.<span class="ident">x</span>)
-            <span class="op">&amp;&amp;</span> <span class="ident">location</span>.<span class="ident">y</span>() <span class="op">&gt;</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">y</span>
-            <span class="op">&amp;&amp;</span> <span class="ident">location</span>.<span class="ident">y</span>() <span class="op">&lt;</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">height</span>.<span class="ident">add_incl</span>(<span class="self">self</span>.<span class="ident">y</span>)
+    <span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>contains(<span class="kw-2">&amp;</span><span class="self">self</span>, location: <span class="kw-2">&amp;</span>Location) -&gt; bool {
+        location.x() &gt;= <span class="self">self</span>.x
+            &amp;&amp; location.x() &lt;= <span class="self">self</span>.width.add_incl(<span class="self">self</span>.x)
+            &amp;&amp; location.y() &gt;= <span class="self">self</span>.y
+            &amp;&amp; location.y() &lt;= <span class="self">self</span>.height.add_incl(<span class="self">self</span>.y)
     }
 
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">iter</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">LocationIterator</span> {
-        <span class="ident">LocationIterator</span> {
-            <span class="ident">x</span>: <span class="self">self</span>.<span class="ident">x</span>,
-            <span class="ident">y</span>: <span class="self">self</span>.<span class="ident">y</span>,
-            <span class="ident">extent</span>: <span class="self">self</span>.<span class="ident">clone</span>(),
-            <span class="ident">first_y</span>: <span class="bool-val">true</span>,
+    <span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>iter(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; LocationIterator {
+        LocationIterator {
+            x: <span class="self">self</span>.x,
+            y: <span class="self">self</span>.y,
+            extent: <span class="self">self</span>.clone(),
+            first_y: <span class="bool-val">true</span>,
         }
     }
 }
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">LocationIterator</span> {
-    <span class="ident">x</span>: <span class="ident">u32</span>,
-    <span class="ident">y</span>: <span class="ident">u32</span>,
-    <span class="ident">extent</span>: <span class="ident">LandscapeExtent</span>,
-    <span class="ident">first_y</span>: <span class="ident">bool</span>,
+<span class="attribute">#[derive(Debug, PartialEq, Eq)]
+</span><span class="kw">pub struct </span>LocationIterator {
+    x: u32,
+    y: u32,
+    extent: LandscapeExtent,
+    first_y: bool,
 }
 
-<span class="kw">impl</span> <span class="ident">Iterator</span> <span class="kw">for</span> <span class="ident">LocationIterator</span> {
-    <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="ident">Location</span>;
+<span class="kw">impl </span>Iterator <span class="kw">for </span>LocationIterator {
+    <span class="kw">type </span>Item = Location;
 
-    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Item</span><span class="op">&gt;</span> {
-        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">y</span> <span class="op">!</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">extent</span>.<span class="ident">height</span>().<span class="ident">add_excl</span>(<span class="self">self</span>.<span class="ident">extent</span>.<span class="ident">y</span>()) <span class="op">|</span><span class="op">|</span> <span class="self">self</span>.<span class="ident">first_y</span> {
-            <span class="kw">let</span> <span class="ident">next</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">Location::new</span>(<span class="self">self</span>.<span class="ident">x</span>, <span class="self">self</span>.<span class="ident">y</span>));
+    <span class="kw">fn </span>next(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>::Item&gt; {
+        <span class="kw">if </span><span class="self">self</span>.y != <span class="self">self</span>.extent.height().add_excl(<span class="self">self</span>.extent.y()) || <span class="self">self</span>.first_y {
+            <span class="kw">let </span>next = <span class="prelude-val">Some</span>(Location::new(<span class="self">self</span>.x, <span class="self">self</span>.y));
 
-            <span class="self">self</span>.<span class="ident">x</span> <span class="op">=</span> <span class="kw">if</span> <span class="self">self</span>.<span class="ident">x</span> <span class="op">==</span> <span class="self">self</span>.<span class="ident">extent</span>.<span class="ident">width</span>().<span class="ident">add_incl</span>(<span class="self">self</span>.<span class="ident">extent</span>.<span class="ident">x</span>()) {
-                <span class="self">self</span>.<span class="ident">y</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">y</span>.<span class="ident">wrapping_add</span>(<span class="number">1</span>);
-                <span class="self">self</span>.<span class="ident">first_y</span> <span class="op">=</span> <span class="bool-val">false</span>;
-                <span class="self">self</span>.<span class="ident">extent</span>.<span class="ident">x</span>()
-            } <span class="kw">else</span> {
-                <span class="self">self</span>.<span class="ident">x</span>.<span class="ident">wrapping_add</span>(<span class="number">1</span>)
+            <span class="self">self</span>.x = <span class="kw">if </span><span class="self">self</span>.x == <span class="self">self</span>.extent.width().add_incl(<span class="self">self</span>.extent.x()) {
+                <span class="self">self</span>.y = <span class="self">self</span>.y.wrapping_add(<span class="number">1</span>);
+                <span class="self">self</span>.first_y = <span class="bool-val">false</span>;
+                <span class="self">self</span>.extent.x()
+            } <span class="kw">else </span>{
+                <span class="self">self</span>.x.wrapping_add(<span class="number">1</span>)
             };
 
-            <span class="ident">next</span>
-        } <span class="kw">else</span> {
-            <span class="prelude-val">None</span>
-        }
+            next
+        } <span class="kw">else </span>{
+            <span class="prelude-val">None
+        </span>}
     }
 }
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
-<span class="kw">mod</span> <span class="ident">tests</span> {
-    <span class="kw">use</span> <span class="ident">alloc</span>::{<span class="ident">vec</span>, <span class="ident">vec::Vec</span>};
+<span class="attribute">#[cfg(test)]
+</span><span class="kw">mod </span>tests {
+    <span class="kw">use </span>alloc::{vec, vec::Vec};
 
-    <span class="kw">use</span> <span class="kw">super</span>::{<span class="ident">LandscapeExtent</span>, <span class="ident">Location</span>, <span class="ident">LocationIterator</span>, <span class="ident">OffByOneU32</span>};
+    <span class="kw">use super</span>::{LandscapeExtent, Location, LocationIterator, OffByOneU32};
 
-    <span class="kw">const</span> <span class="ident">M1</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0_u32</span>.<span class="ident">wrapping_sub</span>(<span class="number">1</span>);
-    <span class="kw">const</span> <span class="ident">M2</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0_u32</span>.<span class="ident">wrapping_sub</span>(<span class="number">2</span>);
+    <span class="kw">const </span>M1: u32 = <span class="number">0_u32</span>.wrapping_sub(<span class="number">1</span>);
+    <span class="kw">const </span>M2: u32 = <span class="number">0_u32</span>.wrapping_sub(<span class="number">2</span>);
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">test_single_location</span>() {
-        <span class="kw">let</span> <span class="ident">extent</span> <span class="op">=</span> <span class="ident">LandscapeExtent::new</span>(
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>test_single_location() {
+        <span class="kw">let </span>extent = LandscapeExtent::new(
             <span class="number">0</span>,
             <span class="number">0</span>,
-            <span class="ident">OffByOneU32::new</span>(<span class="number">1</span>).<span class="ident">unwrap</span>(),
-            <span class="ident">OffByOneU32::new</span>(<span class="number">1</span>).<span class="ident">unwrap</span>(),
+            OffByOneU32::new(<span class="number">1</span>).unwrap(),
+            OffByOneU32::new(<span class="number">1</span>).unwrap(),
         );
-        <span class="kw">let</span> <span class="ident">locations</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Location</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">extent</span>.<span class="ident">iter</span>().<span class="ident">collect</span>();
-        <span class="macro">assert_eq!</span>(<span class="ident">locations</span>, <span class="macro">vec!</span>[<span class="ident">Location::new</span>(<span class="number">0</span>, <span class="number">0</span>)]);
+        <span class="kw">let </span>locations: Vec&lt;Location&gt; = extent.iter().collect();
+        <span class="macro">assert_eq!</span>(locations, <span class="macro">vec!</span>[Location::new(<span class="number">0</span>, <span class="number">0</span>)]);
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">test_simple_extent</span>() {
-        <span class="kw">let</span> <span class="ident">extent</span> <span class="op">=</span> <span class="ident">LandscapeExtent::new</span>(
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>test_simple_extent() {
+        <span class="kw">let </span>extent = LandscapeExtent::new(
             <span class="number">42</span>,
             <span class="number">24</span>,
-            <span class="ident">OffByOneU32::new</span>(<span class="number">4</span>).<span class="ident">unwrap</span>(),
-            <span class="ident">OffByOneU32::new</span>(<span class="number">2</span>).<span class="ident">unwrap</span>(),
+            OffByOneU32::new(<span class="number">4</span>).unwrap(),
+            OffByOneU32::new(<span class="number">2</span>).unwrap(),
         );
-        <span class="kw">let</span> <span class="ident">locations</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Location</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">extent</span>.<span class="ident">iter</span>().<span class="ident">collect</span>();
+        <span class="kw">let </span>locations: Vec&lt;Location&gt; = extent.iter().collect();
         <span class="macro">assert_eq!</span>(
-            <span class="ident">locations</span>,
+            locations,
             <span class="macro">vec!</span>[
-                <span class="ident">Location::new</span>(<span class="number">42</span>, <span class="number">24</span>),
-                <span class="ident">Location::new</span>(<span class="number">43</span>, <span class="number">24</span>),
-                <span class="ident">Location::new</span>(<span class="number">44</span>, <span class="number">24</span>),
-                <span class="ident">Location::new</span>(<span class="number">45</span>, <span class="number">24</span>),
-                <span class="ident">Location::new</span>(<span class="number">42</span>, <span class="number">25</span>),
-                <span class="ident">Location::new</span>(<span class="number">43</span>, <span class="number">25</span>),
-                <span class="ident">Location::new</span>(<span class="number">44</span>, <span class="number">25</span>),
-                <span class="ident">Location::new</span>(<span class="number">45</span>, <span class="number">25</span>)
+                Location::new(<span class="number">42</span>, <span class="number">24</span>),
+                Location::new(<span class="number">43</span>, <span class="number">24</span>),
+                Location::new(<span class="number">44</span>, <span class="number">24</span>),
+                Location::new(<span class="number">45</span>, <span class="number">24</span>),
+                Location::new(<span class="number">42</span>, <span class="number">25</span>),
+                Location::new(<span class="number">43</span>, <span class="number">25</span>),
+                Location::new(<span class="number">44</span>, <span class="number">25</span>),
+                Location::new(<span class="number">45</span>, <span class="number">25</span>)
             ]
         );
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">test_wrapping_extent</span>() {
-        <span class="kw">let</span> <span class="ident">extent</span> <span class="op">=</span> <span class="ident">LandscapeExtent::new</span>(
-            <span class="ident">M2</span>,
-            <span class="ident">M1</span>,
-            <span class="ident">OffByOneU32::new</span>(<span class="number">4</span>).<span class="ident">unwrap</span>(),
-            <span class="ident">OffByOneU32::new</span>(<span class="number">2</span>).<span class="ident">unwrap</span>(),
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>test_wrapping_extent() {
+        <span class="kw">let </span>extent = LandscapeExtent::new(
+            M2,
+            M1,
+            OffByOneU32::new(<span class="number">4</span>).unwrap(),
+            OffByOneU32::new(<span class="number">2</span>).unwrap(),
         );
-        <span class="kw">let</span> <span class="ident">locations</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Location</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">extent</span>.<span class="ident">iter</span>().<span class="ident">collect</span>();
+        <span class="kw">let </span>locations: Vec&lt;Location&gt; = extent.iter().collect();
         <span class="macro">assert_eq!</span>(
-            <span class="ident">locations</span>,
+            locations,
             <span class="macro">vec!</span>[
-                <span class="ident">Location::new</span>(<span class="ident">M2</span>, <span class="ident">M1</span>),
-                <span class="ident">Location::new</span>(<span class="ident">M1</span>, <span class="ident">M1</span>),
-                <span class="ident">Location::new</span>(<span class="number">0</span>, <span class="ident">M1</span>),
-                <span class="ident">Location::new</span>(<span class="number">1</span>, <span class="ident">M1</span>),
-                <span class="ident">Location::new</span>(<span class="ident">M2</span>, <span class="number">0</span>),
-                <span class="ident">Location::new</span>(<span class="ident">M1</span>, <span class="number">0</span>),
-                <span class="ident">Location::new</span>(<span class="number">0</span>, <span class="number">0</span>),
-                <span class="ident">Location::new</span>(<span class="number">1</span>, <span class="number">0</span>)
+                Location::new(M2, M1),
+                Location::new(M1, M1),
+                Location::new(<span class="number">0</span>, M1),
+                Location::new(<span class="number">1</span>, M1),
+                Location::new(M2, <span class="number">0</span>),
+                Location::new(M1, <span class="number">0</span>),
+                Location::new(<span class="number">0</span>, <span class="number">0</span>),
+                Location::new(<span class="number">1</span>, <span class="number">0</span>)
             ]
         );
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">test_full_extent</span>() {
-        <span class="kw">let</span> <span class="ident">extent</span> <span class="op">=</span> <span class="ident">LandscapeExtent::new</span>(
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>test_full_extent() {
+        <span class="kw">let </span>extent = LandscapeExtent::new(
             <span class="number">0</span>,
             <span class="number">0</span>,
-            <span class="ident">OffByOneU32::new</span>(<span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">32</span>).<span class="ident">unwrap</span>(),
-            <span class="ident">OffByOneU32::new</span>(<span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">32</span>).<span class="ident">unwrap</span>(),
+            OffByOneU32::new(<span class="number">1 </span>&lt;&lt; <span class="number">32</span>).unwrap(),
+            OffByOneU32::new(<span class="number">1 </span>&lt;&lt; <span class="number">32</span>).unwrap(),
         );
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">iter</span> <span class="op">=</span> <span class="ident">extent</span>.<span class="ident">iter</span>();
+        <span class="kw">let </span><span class="kw-2">mut </span>iter = extent.iter();
         <span class="macro">assert_eq!</span>(
-            <span class="ident">iter</span>,
-            <span class="ident">LocationIterator</span> {
-                <span class="ident">x</span>: <span class="number">0</span>,
-                <span class="ident">y</span>: <span class="number">0</span>,
-                <span class="ident">extent</span>: <span class="ident">extent</span>.<span class="ident">clone</span>(),
-                <span class="ident">first_y</span>: <span class="bool-val">true</span>,
+            iter,
+            LocationIterator {
+                x: <span class="number">0</span>,
+                y: <span class="number">0</span>,
+                extent: extent.clone(),
+                first_y: <span class="bool-val">true</span>,
             }
         );
-        <span class="macro">assert_eq!</span>(<span class="ident">iter</span>.<span class="ident">next</span>(), <span class="prelude-val">Some</span>(<span class="ident">Location::new</span>(<span class="number">0</span>, <span class="number">0</span>)));
+        <span class="macro">assert_eq!</span>(iter.next(), <span class="prelude-val">Some</span>(Location::new(<span class="number">0</span>, <span class="number">0</span>)));
 
-        <span class="ident">iter</span>.<span class="ident">x</span> <span class="op">=</span> <span class="ident">M1</span>;
-        <span class="ident">iter</span>.<span class="ident">y</span> <span class="op">=</span> <span class="ident">M1</span>;
-        <span class="macro">assert_eq!</span>(<span class="ident">iter</span>.<span class="ident">next</span>(), <span class="prelude-val">Some</span>(<span class="ident">Location::new</span>(<span class="ident">M1</span>, <span class="ident">M1</span>)));
+        iter.x = M1;
+        iter.y = M1;
+        <span class="macro">assert_eq!</span>(iter.next(), <span class="prelude-val">Some</span>(Location::new(M1, M1)));
         <span class="macro">assert_eq!</span>(
-            <span class="ident">iter</span>,
-            <span class="ident">LocationIterator</span> {
-                <span class="ident">x</span>: <span class="number">0</span>,
-                <span class="ident">y</span>: <span class="number">0</span>,
-                <span class="ident">extent</span>: <span class="ident">extent</span>.<span class="ident">clone</span>(),
-                <span class="ident">first_y</span>: <span class="bool-val">false</span>,
+            iter,
+            LocationIterator {
+                x: <span class="number">0</span>,
+                y: <span class="number">0</span>,
+                extent: extent.clone(),
+                first_y: <span class="bool-val">false</span>,
             }
         );
-        <span class="macro">assert_eq!</span>(<span class="ident">iter</span>.<span class="ident">next</span>(), <span class="prelude-val">None</span>);
+        <span class="macro">assert_eq!</span>(iter.next(), <span class="prelude-val">None</span>);
         <span class="macro">assert_eq!</span>(
-            <span class="ident">iter</span>,
-            <span class="ident">LocationIterator</span> {
-                <span class="ident">x</span>: <span class="number">0</span>,
-                <span class="ident">y</span>: <span class="number">0</span>,
-                <span class="ident">extent</span>,
-                <span class="ident">first_y</span>: <span class="bool-val">false</span>,
+            iter,
+            LocationIterator {
+                x: <span class="number">0</span>,
+                y: <span class="number">0</span>,
+                extent,
+                first_y: <span class="bool-val">false</span>,
             }
         );
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">test_full_wrapping_extent</span>() {
-        <span class="kw">let</span> <span class="ident">extent</span> <span class="op">=</span> <span class="ident">LandscapeExtent::new</span>(
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>test_full_wrapping_extent() {
+        <span class="kw">let </span>extent = LandscapeExtent::new(
             <span class="number">1386</span>,
             <span class="number">6812</span>,
-            <span class="ident">OffByOneU32::new</span>(<span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">32</span>).<span class="ident">unwrap</span>(),
-            <span class="ident">OffByOneU32::new</span>(<span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">32</span>).<span class="ident">unwrap</span>(),
+            OffByOneU32::new(<span class="number">1 </span>&lt;&lt; <span class="number">32</span>).unwrap(),
+            OffByOneU32::new(<span class="number">1 </span>&lt;&lt; <span class="number">32</span>).unwrap(),
         );
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">iter</span> <span class="op">=</span> <span class="ident">extent</span>.<span class="ident">iter</span>();
+        <span class="kw">let </span><span class="kw-2">mut </span>iter = extent.iter();
         <span class="macro">assert_eq!</span>(
-            <span class="ident">iter</span>,
-            <span class="ident">LocationIterator</span> {
-                <span class="ident">x</span>: <span class="number">1386</span>,
-                <span class="ident">y</span>: <span class="number">6812</span>,
-                <span class="ident">extent</span>: <span class="ident">extent</span>.<span class="ident">clone</span>(),
-                <span class="ident">first_y</span>: <span class="bool-val">true</span>,
+            iter,
+            LocationIterator {
+                x: <span class="number">1386</span>,
+                y: <span class="number">6812</span>,
+                extent: extent.clone(),
+                first_y: <span class="bool-val">true</span>,
             }
         );
 
-        <span class="ident">iter</span>.<span class="ident">x</span> <span class="op">=</span> <span class="ident">M1</span>;
-        <span class="macro">assert_eq!</span>(<span class="ident">iter</span>.<span class="ident">next</span>(), <span class="prelude-val">Some</span>(<span class="ident">Location::new</span>(<span class="ident">M1</span>, <span class="number">6812</span>)));
+        iter.x = M1;
+        <span class="macro">assert_eq!</span>(iter.next(), <span class="prelude-val">Some</span>(Location::new(M1, <span class="number">6812</span>)));
         <span class="macro">assert_eq!</span>(
-            <span class="ident">iter</span>,
-            <span class="ident">LocationIterator</span> {
-                <span class="ident">x</span>: <span class="number">0</span>,
-                <span class="ident">y</span>: <span class="number">6812</span>,
-                <span class="ident">extent</span>: <span class="ident">extent</span>.<span class="ident">clone</span>(),
-                <span class="ident">first_y</span>: <span class="bool-val">true</span>,
+            iter,
+            LocationIterator {
+                x: <span class="number">0</span>,
+                y: <span class="number">6812</span>,
+                extent: extent.clone(),
+                first_y: <span class="bool-val">true</span>,
             }
         );
-        <span class="macro">assert_eq!</span>(<span class="ident">iter</span>.<span class="ident">next</span>(), <span class="prelude-val">Some</span>(<span class="ident">Location::new</span>(<span class="number">0</span>, <span class="number">6812</span>)));
+        <span class="macro">assert_eq!</span>(iter.next(), <span class="prelude-val">Some</span>(Location::new(<span class="number">0</span>, <span class="number">6812</span>)));
 
-        <span class="ident">iter</span>.<span class="ident">x</span> <span class="op">=</span> <span class="number">1385</span>;
-        <span class="macro">assert_eq!</span>(<span class="ident">iter</span>.<span class="ident">next</span>(), <span class="prelude-val">Some</span>(<span class="ident">Location::new</span>(<span class="number">1385</span>, <span class="number">6812</span>)));
+        iter.x = <span class="number">1385</span>;
+        <span class="macro">assert_eq!</span>(iter.next(), <span class="prelude-val">Some</span>(Location::new(<span class="number">1385</span>, <span class="number">6812</span>)));
         <span class="macro">assert_eq!</span>(
-            <span class="ident">iter</span>,
-            <span class="ident">LocationIterator</span> {
-                <span class="ident">x</span>: <span class="number">1386</span>,
-                <span class="ident">y</span>: <span class="number">6813</span>,
-                <span class="ident">extent</span>: <span class="ident">extent</span>.<span class="ident">clone</span>(),
-                <span class="ident">first_y</span>: <span class="bool-val">false</span>,
+            iter,
+            LocationIterator {
+                x: <span class="number">1386</span>,
+                y: <span class="number">6813</span>,
+                extent: extent.clone(),
+                first_y: <span class="bool-val">false</span>,
             }
         );
-        <span class="macro">assert_eq!</span>(<span class="ident">iter</span>.<span class="ident">next</span>(), <span class="prelude-val">Some</span>(<span class="ident">Location::new</span>(<span class="number">1386</span>, <span class="number">6813</span>)));
+        <span class="macro">assert_eq!</span>(iter.next(), <span class="prelude-val">Some</span>(Location::new(<span class="number">1386</span>, <span class="number">6813</span>)));
 
-        <span class="ident">iter</span>.<span class="ident">x</span> <span class="op">=</span> <span class="number">1385</span>;
-        <span class="ident">iter</span>.<span class="ident">y</span> <span class="op">=</span> <span class="ident">M1</span>;
-        <span class="macro">assert_eq!</span>(<span class="ident">iter</span>.<span class="ident">next</span>(), <span class="prelude-val">Some</span>(<span class="ident">Location::new</span>(<span class="number">1385</span>, <span class="ident">M1</span>)));
+        iter.x = <span class="number">1385</span>;
+        iter.y = M1;
+        <span class="macro">assert_eq!</span>(iter.next(), <span class="prelude-val">Some</span>(Location::new(<span class="number">1385</span>, M1)));
         <span class="macro">assert_eq!</span>(
-            <span class="ident">iter</span>,
-            <span class="ident">LocationIterator</span> {
-                <span class="ident">x</span>: <span class="number">1386</span>,
-                <span class="ident">y</span>: <span class="number">0</span>,
-                <span class="ident">extent</span>: <span class="ident">extent</span>.<span class="ident">clone</span>(),
-                <span class="ident">first_y</span>: <span class="bool-val">false</span>,
+            iter,
+            LocationIterator {
+                x: <span class="number">1386</span>,
+                y: <span class="number">0</span>,
+                extent: extent.clone(),
+                first_y: <span class="bool-val">false</span>,
             }
         );
-        <span class="macro">assert_eq!</span>(<span class="ident">iter</span>.<span class="ident">next</span>(), <span class="prelude-val">Some</span>(<span class="ident">Location::new</span>(<span class="number">1386</span>, <span class="number">0</span>)));
+        <span class="macro">assert_eq!</span>(iter.next(), <span class="prelude-val">Some</span>(Location::new(<span class="number">1386</span>, <span class="number">0</span>)));
 
-        <span class="ident">iter</span>.<span class="ident">x</span> <span class="op">=</span> <span class="number">1385</span>;
-        <span class="ident">iter</span>.<span class="ident">y</span> <span class="op">=</span> <span class="number">6811</span>;
-        <span class="macro">assert_eq!</span>(<span class="ident">iter</span>.<span class="ident">next</span>(), <span class="prelude-val">Some</span>(<span class="ident">Location::new</span>(<span class="number">1385</span>, <span class="number">6811</span>)));
+        iter.x = <span class="number">1385</span>;
+        iter.y = <span class="number">6811</span>;
+        <span class="macro">assert_eq!</span>(iter.next(), <span class="prelude-val">Some</span>(Location::new(<span class="number">1385</span>, <span class="number">6811</span>)));
         <span class="macro">assert_eq!</span>(
-            <span class="ident">iter</span>,
-            <span class="ident">LocationIterator</span> {
-                <span class="ident">x</span>: <span class="number">1386</span>,
-                <span class="ident">y</span>: <span class="number">6812</span>,
-                <span class="ident">extent</span>: <span class="ident">extent</span>.<span class="ident">clone</span>(),
-                <span class="ident">first_y</span>: <span class="bool-val">false</span>,
+            iter,
+            LocationIterator {
+                x: <span class="number">1386</span>,
+                y: <span class="number">6812</span>,
+                extent: extent.clone(),
+                first_y: <span class="bool-val">false</span>,
             }
         );
-        <span class="macro">assert_eq!</span>(<span class="ident">iter</span>.<span class="ident">next</span>(), <span class="prelude-val">None</span>);
+        <span class="macro">assert_eq!</span>(iter.next(), <span class="prelude-val">None</span>);
         <span class="macro">assert_eq!</span>(
-            <span class="ident">iter</span>,
-            <span class="ident">LocationIterator</span> {
-                <span class="ident">x</span>: <span class="number">1386</span>,
-                <span class="ident">y</span>: <span class="number">6812</span>,
-                <span class="ident">extent</span>,
-                <span class="ident">first_y</span>: <span class="bool-val">false</span>,
+            iter,
+            LocationIterator {
+                x: <span class="number">1386</span>,
+                y: <span class="number">6812</span>,
+                extent,
+                first_y: <span class="bool-val">false</span>,
             }
         );
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="necsim_core" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0-nightly (affe0d3a0 2022-08-05)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="necsim_core" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (5e9772042 2022-10-29)" ></div></body></html>

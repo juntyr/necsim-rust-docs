@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `rustcoalescence/src/args/config/pause.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>pause.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../storage.js"></script><script defer src="../../../../source-script.js"></script><script defer src="../../../../source-files.js"></script><script defer src="../../../../main.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../../rustcoalescence/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../../rustcoalescence/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../../rustcoalescence/index.html"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `rustcoalescence/src/args/config/pause.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>pause.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../../normalize.css"><link rel="stylesheet" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../../ayu.css" disabled><link rel="stylesheet" href="../../../../dark.css" disabled><link rel="stylesheet" href="../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../storage.js"></script><script defer src="../../../../source-script.js"></script><script defer src="../../../../source-files.js"></script><script defer src="../../../../main.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../../../rustcoalescence/index.html"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../wheel.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -142,149 +142,149 @@
 <span id="142">142</span>
 <span id="143">143</span>
 <span id="144">144</span>
-</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">std</span>::{
-    <span class="ident">convert::TryFrom</span>,
-    <span class="ident">fmt</span>,
-    <span class="ident">fs</span>::{<span class="self">self</span>, <span class="ident">File</span>, <span class="ident">OpenOptions</span>},
-    <span class="ident">path::PathBuf</span>,
+</pre><pre class="rust"><code><span class="kw">use </span>std::{
+    convert::TryFrom,
+    fmt,
+    fs::{<span class="self">self</span>, File, OpenOptions},
+    path::PathBuf,
 };
 
-<span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Deserializer</span>, <span class="ident">Serialize</span>, <span class="ident">Serializer</span>};
-<span class="kw">use</span> <span class="ident">serde_state::DeserializeState</span>;
+<span class="kw">use </span>serde::{Deserialize, Deserializer, Serialize, Serializer};
+<span class="kw">use </span>serde_state::DeserializeState;
 
-<span class="kw">use</span> <span class="ident">necsim_core_bond::NonNegativeF64</span>;
-<span class="kw">use</span> <span class="ident">necsim_impls_std::lineage_file::saver::LineageFileSaver</span>;
-<span class="kw">use</span> <span class="ident">necsim_partitioning_core::partition::Partition</span>;
+<span class="kw">use </span>necsim_core_bond::NonNegativeF64;
+<span class="kw">use </span>necsim_impls_std::lineage_file::saver::LineageFileSaver;
+<span class="kw">use </span>necsim_partitioning_core::partition::Partition;
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Serialize</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Pause</span> {
-    <span class="kw">pub</span> <span class="ident">before</span>: <span class="ident">NonNegativeF64</span>,
-    <span class="kw">pub</span> <span class="ident">config</span>: <span class="ident">ResumeConfig</span>,
-    <span class="kw">pub</span> <span class="ident">destiny</span>: <span class="ident">SampleDestiny</span>,
-    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">default</span>)]</span>
-    <span class="kw">pub</span> <span class="ident">mode</span>: <span class="ident">PauseMode</span>,
+<span class="attribute">#[derive(Debug, Serialize)]
+</span><span class="kw">pub struct </span>Pause {
+    <span class="kw">pub </span>before: NonNegativeF64,
+    <span class="kw">pub </span>config: ResumeConfig,
+    <span class="kw">pub </span>destiny: SampleDestiny,
+    <span class="attribute">#[serde(default)]
+    </span><span class="kw">pub </span>mode: PauseMode,
 }
 
-<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::module_name_repetitions</span>)]</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
-<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">PauseMode</span> {
-    <span class="ident">Resume</span>,
-    <span class="ident">FixUp</span>,
-    <span class="ident">Restart</span>,
+<span class="attribute">#[allow(clippy::module_name_repetitions)]
+#[derive(Debug, Serialize, Deserialize)]
+</span><span class="kw">pub enum </span>PauseMode {
+    Resume,
+    FixUp,
+    Restart,
 }
 
-<span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">PauseMode</span> {
-    <span class="kw">fn</span> <span class="ident">default</span>() -&gt; <span class="self">Self</span> {
-        <span class="ident"><span class="self">Self</span>::Resume</span>
+<span class="kw">impl </span>Default <span class="kw">for </span>PauseMode {
+    <span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{
+        <span class="self">Self</span>::Resume
     }
 }
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
-<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">SampleDestiny</span> {
-    <span class="ident">List</span>,
-    <span class="ident">Bincode</span>(<span class="ident">LineageFileSaver</span>),
+<span class="attribute">#[derive(Debug, Serialize, Deserialize)]
+</span><span class="kw">pub enum </span>SampleDestiny {
+    List,
+    Bincode(LineageFileSaver),
 }
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Deserialize</span>)]</span>
-<span class="attribute">#[<span class="ident">serde</span>(<span class="ident">try_from</span> <span class="op">=</span> <span class="string">&quot;PathBuf&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ResumeConfig</span> {
-    <span class="ident">file</span>: <span class="ident">File</span>,
-    <span class="ident">path</span>: <span class="ident">PathBuf</span>,
-    <span class="ident">temp</span>: <span class="ident">bool</span>,
+<span class="attribute">#[derive(Deserialize)]
+#[serde(try_from = <span class="string">&quot;PathBuf&quot;</span>)]
+</span><span class="kw">pub struct </span>ResumeConfig {
+    file: File,
+    path: PathBuf,
+    temp: bool,
 }
 
-<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::module_name_repetitions</span>)]</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Serialize</span>)]</span>
-<span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;Pause&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">FuturePause</span> {
-    <span class="kw">pub</span> <span class="ident">before</span>: <span class="ident">NonNegativeF64</span>,
-    <span class="kw">pub</span> <span class="ident">mode</span>: <span class="ident">PauseMode</span>,
+<span class="attribute">#[allow(clippy::module_name_repetitions)]
+#[derive(Debug, Serialize)]
+#[serde(rename = <span class="string">&quot;Pause&quot;</span>)]
+</span><span class="kw">pub struct </span>FuturePause {
+    <span class="kw">pub </span>before: NonNegativeF64,
+    <span class="kw">pub </span>mode: PauseMode,
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;de</span><span class="op">&gt;</span> <span class="ident">DeserializeState</span><span class="op">&lt;</span><span class="lifetime">&#39;de</span>, <span class="ident">Partition</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Pause</span> {
-    <span class="kw">fn</span> <span class="ident">deserialize_state</span><span class="op">&lt;</span><span class="ident">D</span>: <span class="ident">Deserializer</span><span class="op">&lt;</span><span class="lifetime">&#39;de</span><span class="op">&gt;</span><span class="op">&gt;</span>(
-        <span class="ident">partition</span>: <span class="kw-2">&amp;mut</span> <span class="ident">Partition</span>,
-        <span class="ident">deserializer</span>: <span class="ident">D</span>,
-    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">D::Error</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">raw</span> <span class="op">=</span> <span class="ident">PauseRaw::deserialize</span>(<span class="ident">deserializer</span>)<span class="question-mark">?</span>;
+<span class="kw">impl</span>&lt;<span class="lifetime">&#39;de</span>&gt; DeserializeState&lt;<span class="lifetime">&#39;de</span>, Partition&gt; <span class="kw">for </span>Pause {
+    <span class="kw">fn </span>deserialize_state&lt;D: Deserializer&lt;<span class="lifetime">&#39;de</span>&gt;&gt;(
+        partition: <span class="kw-2">&amp;mut </span>Partition,
+        deserializer: D,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, D::Error&gt; {
+        <span class="kw">let </span>raw = PauseRaw::deserialize(deserializer)<span class="question-mark">?</span>;
 
-        <span class="kw">if</span> <span class="ident">partition</span>.<span class="ident">size</span>().<span class="ident">get</span>() <span class="op">&gt;</span> <span class="number">1</span> {
-            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">serde::de::Error::custom</span>(
+        <span class="kw">if </span>partition.size().get() &gt; <span class="number">1 </span>{
+            <span class="kw">return </span><span class="prelude-val">Err</span>(serde::de::Error::custom(
                 <span class="string">&quot;Parallel pausing is not yet supported.&quot;</span>,
             ));
         }
 
-        <span class="kw">if</span> <span class="macro">matches!</span>(<span class="ident">raw</span>.<span class="ident">mode</span>, <span class="ident">PauseMode::FixUp</span>) <span class="op">&amp;&amp;</span> <span class="ident">raw</span>.<span class="ident">before</span> <span class="op">==</span> <span class="ident">NonNegativeF64::zero</span>() {
-            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">serde::de::Error::custom</span>(
+        <span class="kw">if </span><span class="macro">matches!</span>(raw.mode, PauseMode::FixUp) &amp;&amp; raw.before == NonNegativeF64::zero() {
+            <span class="kw">return </span><span class="prelude-val">Err</span>(serde::de::Error::custom(
                 <span class="string">&quot;pause mode `FixUp` requires a positive non-zero pause time&quot;</span>,
             ));
         }
 
-        <span class="prelude-val">Ok</span>(<span class="ident">Pause</span> {
-            <span class="ident">before</span>: <span class="ident">raw</span>.<span class="ident">before</span>,
-            <span class="ident">config</span>: <span class="ident">raw</span>.<span class="ident">config</span>,
-            <span class="ident">destiny</span>: <span class="ident">raw</span>.<span class="ident">destiny</span>,
-            <span class="ident">mode</span>: <span class="ident">raw</span>.<span class="ident">mode</span>,
+        <span class="prelude-val">Ok</span>(Pause {
+            before: raw.before,
+            config: raw.config,
+            destiny: raw.destiny,
+            mode: raw.mode,
         })
     }
 }
 
-<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::module_name_repetitions</span>)]</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Deserialize</span>)]</span>
-<span class="attribute">#[<span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>)]</span>
-<span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;Pause&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">PauseRaw</span> {
-    <span class="kw">pub</span> <span class="ident">before</span>: <span class="ident">NonNegativeF64</span>,
-    <span class="kw">pub</span> <span class="ident">config</span>: <span class="ident">ResumeConfig</span>,
-    <span class="kw">pub</span> <span class="ident">destiny</span>: <span class="ident">SampleDestiny</span>,
-    <span class="kw">pub</span> <span class="ident">mode</span>: <span class="ident">PauseMode</span>,
+<span class="attribute">#[allow(clippy::module_name_repetitions)]
+#[derive(Debug, Deserialize)]
+#[serde(deny_unknown_fields)]
+#[serde(rename = <span class="string">&quot;Pause&quot;</span>)]
+</span><span class="kw">pub struct </span>PauseRaw {
+    <span class="kw">pub </span>before: NonNegativeF64,
+    <span class="kw">pub </span>config: ResumeConfig,
+    <span class="kw">pub </span>destiny: SampleDestiny,
+    <span class="kw">pub </span>mode: PauseMode,
 }
 
-<span class="kw">impl</span> <span class="ident">Drop</span> <span class="kw">for</span> <span class="ident">ResumeConfig</span> {
-    <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
-        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">temp</span> {
-            <span class="ident">std::mem::drop</span>(<span class="ident">fs::remove_file</span>(<span class="self">self</span>.<span class="ident">path</span>.<span class="ident">clone</span>()));
+<span class="kw">impl </span>Drop <span class="kw">for </span>ResumeConfig {
+    <span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+        <span class="kw">if </span><span class="self">self</span>.temp {
+            std::mem::drop(fs::remove_file(<span class="self">self</span>.path.clone()));
         }
     }
 }
 
-<span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">ResumeConfig</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">fmt</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span>) -&gt; <span class="ident">fmt::Result</span> {
-        <span class="self">self</span>.<span class="ident">path</span>.<span class="ident">fmt</span>(<span class="ident">fmt</span>)
+<span class="kw">impl </span>fmt::Debug <span class="kw">for </span>ResumeConfig {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, fmt: <span class="kw-2">&amp;mut </span>fmt::Formatter) -&gt; fmt::Result {
+        <span class="self">self</span>.path.fmt(fmt)
     }
 }
 
-<span class="kw">impl</span> <span class="ident">Serialize</span> <span class="kw">for</span> <span class="ident">ResumeConfig</span> {
-    <span class="kw">fn</span> <span class="ident">serialize</span><span class="op">&lt;</span><span class="ident">S</span>: <span class="ident">Serializer</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">serializer</span>: <span class="ident">S</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">S::Ok</span>, <span class="ident">S::Error</span><span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">path</span>.<span class="ident">serialize</span>(<span class="ident">serializer</span>)
+<span class="kw">impl </span>Serialize <span class="kw">for </span>ResumeConfig {
+    <span class="kw">fn </span>serialize&lt;S: Serializer&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, serializer: S) -&gt; <span class="prelude-ty">Result</span>&lt;S::Ok, S::Error&gt; {
+        <span class="self">self</span>.path.serialize(serializer)
     }
 }
 
-<span class="kw">impl</span> <span class="ident">TryFrom</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">ResumeConfig</span> {
-    <span class="kw">type</span> <span class="ident">Error</span> <span class="op">=</span> <span class="ident">anyhow::Error</span>;
+<span class="kw">impl </span>TryFrom&lt;PathBuf&gt; <span class="kw">for </span>ResumeConfig {
+    <span class="kw">type </span>Error = anyhow::Error;
 
-    <span class="kw">fn</span> <span class="ident">try_from</span>(<span class="ident">path</span>: <span class="ident">PathBuf</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident"><span class="self">Self</span>::Error</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">file</span> <span class="op">=</span> <span class="ident">OpenOptions::new</span>()
-            .<span class="ident">create_new</span>(<span class="bool-val">true</span>)
-            .<span class="ident">write</span>(<span class="bool-val">true</span>)
-            .<span class="ident">open</span>(<span class="kw-2">&amp;</span><span class="ident">path</span>)<span class="question-mark">?</span>;
+    <span class="kw">fn </span>try_from(path: PathBuf) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, <span class="self">Self</span>::Error&gt; {
+        <span class="kw">let </span>file = OpenOptions::new()
+            .create_new(<span class="bool-val">true</span>)
+            .write(<span class="bool-val">true</span>)
+            .open(<span class="kw-2">&amp;</span>path)<span class="question-mark">?</span>;
 
-        <span class="prelude-val">Ok</span>(<span class="self">Self</span> {
-            <span class="ident">file</span>,
-            <span class="ident">path</span>,
-            <span class="ident">temp</span>: <span class="bool-val">true</span>,
+        <span class="prelude-val">Ok</span>(<span class="self">Self </span>{
+            file,
+            path,
+            temp: <span class="bool-val">true</span>,
         })
     }
 }
 
-<span class="kw">impl</span> <span class="ident">ResumeConfig</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">write</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">config</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="ident">anyhow::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
-        <span class="ident">std::io::Write::write_fmt</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">file</span>, <span class="macro">format_args!</span>(<span class="string">&quot;{}\n&quot;</span>, <span class="ident">config</span>))<span class="question-mark">?</span>;
+<span class="kw">impl </span>ResumeConfig {
+    <span class="kw">pub fn </span>write(<span class="kw-2">mut </span><span class="self">self</span>, config: <span class="kw-2">&amp;</span>str) -&gt; anyhow::Result&lt;()&gt; {
+        std::io::Write::write_fmt(<span class="kw-2">&amp;mut </span><span class="self">self</span>.file, <span class="macro">format_args!</span>(<span class="string">&quot;{config}\n&quot;</span>))<span class="question-mark">?</span>;
 
-        <span class="self">self</span>.<span class="ident">temp</span> <span class="op">=</span> <span class="bool-val">false</span>;
+        <span class="self">self</span>.temp = <span class="bool-val">false</span>;
 
         <span class="prelude-val">Ok</span>(())
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="rustcoalescence" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0-nightly (affe0d3a0 2022-08-05)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="rustcoalescence" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (5e9772042 2022-10-29)" ></div></body></html>

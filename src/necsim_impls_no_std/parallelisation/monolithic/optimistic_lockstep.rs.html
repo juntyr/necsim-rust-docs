@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `necsim/impls/no-std/src/parallelisation/monolithic/optimistic_lockstep.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>optimistic_lockstep.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../storage.js"></script><script defer src="../../../../source-script.js"></script><script defer src="../../../../source-files.js"></script><script defer src="../../../../main.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../../necsim_impls_no_std/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../../necsim_impls_no_std/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../../necsim_impls_no_std/index.html"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `necsim/impls/no-std/src/parallelisation/monolithic/optimistic_lockstep.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>optimistic_lockstep.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../../normalize.css"><link rel="stylesheet" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../../ayu.css" disabled><link rel="stylesheet" href="../../../../dark.css" disabled><link rel="stylesheet" href="../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../storage.js"></script><script defer src="../../../../source-script.js"></script><script defer src="../../../../source-files.js"></script><script defer src="../../../../main.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../../../necsim_impls_no_std/index.html"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../wheel.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -167,174 +167,174 @@
 <span id="167">167</span>
 <span id="168">168</span>
 <span id="169">169</span>
-</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">core::ops::ControlFlow</span>;
+</pre><pre class="rust"><code><span class="kw">use </span>core::ops::ControlFlow;
 
-<span class="kw">use</span> <span class="ident">necsim_core</span>::{
-    <span class="ident">cogs</span>::{
-        <span class="ident">ActiveLineageSampler</span>, <span class="ident">Backup</span>, <span class="ident">CoalescenceSampler</span>, <span class="ident">DispersalSampler</span>, <span class="ident">EventSampler</span>, <span class="ident">Habitat</span>,
-        <span class="ident">LocallyCoherentLineageStore</span>, <span class="ident">MathsCore</span>, <span class="ident">RngCore</span>, <span class="ident">SpeciationProbability</span>, <span class="ident">TurnoverRate</span>,
+<span class="kw">use </span>necsim_core::{
+    cogs::{
+        ActiveLineageSampler, Backup, CoalescenceSampler, DispersalSampler, EventSampler, Habitat,
+        LocallyCoherentLineageStore, MathsCore, RngCore, SpeciationProbability, TurnoverRate,
     },
-    <span class="ident">reporter</span>::{<span class="ident">NullReporter</span>, <span class="ident">Reporter</span>},
-    <span class="ident">simulation::Simulation</span>,
+    reporter::{NullReporter, Reporter},
+    simulation::Simulation,
 };
-<span class="kw">use</span> <span class="ident">necsim_core_bond</span>::{<span class="ident">NonNegativeF64</span>, <span class="ident">PositiveF64</span>};
+<span class="kw">use </span>necsim_core_bond::{NonNegativeF64, PositiveF64};
 
-<span class="kw">use</span> <span class="ident">necsim_partitioning_core</span>::{<span class="ident">LocalPartition</span>, <span class="ident">MigrationMode</span>};
+<span class="kw">use </span>necsim_partitioning_core::{LocalPartition, MigrationMode};
 
-<span class="kw">use</span> <span class="kw">crate</span>::{
-    <span class="ident">cogs</span>::{
-        <span class="ident">emigration_exit::domain::DomainEmigrationExit</span>,
-        <span class="ident">immigration_entry::buffered::BufferedImmigrationEntry</span>,
+<span class="kw">use crate</span>::{
+    cogs::{
+        emigration_exit::domain::DomainEmigrationExit,
+        immigration_entry::buffered::BufferedImmigrationEntry,
     },
-    <span class="ident">decomposition::Decomposition</span>,
-    <span class="ident">parallelisation::Status</span>,
+    decomposition::Decomposition,
+    parallelisation::Status,
 };
 
-<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::type_complexity</span>)]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">simulate</span><span class="op">&lt;</span>
+<span class="attribute">#[allow(clippy::type_complexity)]
+</span><span class="kw">pub fn </span>simulate&lt;
     <span class="lifetime">&#39;p</span>,
-    <span class="ident">M</span>: <span class="ident">MathsCore</span>,
-    <span class="ident">H</span>: <span class="ident">Habitat</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span>,
-    <span class="ident">G</span>: <span class="ident">RngCore</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span>,
-    <span class="ident">S</span>: <span class="ident">LocallyCoherentLineageStore</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span><span class="op">&gt;</span>,
-    <span class="ident">D</span>: <span class="ident">DispersalSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span><span class="op">&gt;</span>,
-    <span class="ident">C</span>: <span class="ident">CoalescenceSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">S</span><span class="op">&gt;</span>,
-    <span class="ident">T</span>: <span class="ident">TurnoverRate</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span><span class="op">&gt;</span>,
-    <span class="ident">N</span>: <span class="ident">SpeciationProbability</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span><span class="op">&gt;</span>,
-    <span class="ident">O</span>: <span class="ident">Decomposition</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span><span class="op">&gt;</span>,
-    <span class="ident">E</span>: <span class="ident">EventSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span>, <span class="ident">S</span>, <span class="ident">DomainEmigrationExit</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">O</span><span class="op">&gt;</span>, <span class="ident">D</span>, <span class="ident">C</span>, <span class="ident">T</span>, <span class="ident">N</span><span class="op">&gt;</span>,
-    <span class="ident">A</span>: <span class="ident">ActiveLineageSampler</span><span class="op">&lt;</span>
-        <span class="ident">M</span>,
-        <span class="ident">H</span>,
-        <span class="ident">G</span>,
-        <span class="ident">S</span>,
-        <span class="ident">DomainEmigrationExit</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">O</span><span class="op">&gt;</span>,
-        <span class="ident">D</span>,
-        <span class="ident">C</span>,
-        <span class="ident">T</span>,
-        <span class="ident">N</span>,
-        <span class="ident">E</span>,
-        <span class="ident">BufferedImmigrationEntry</span>,
-    <span class="op">&gt;</span>,
-    <span class="ident">P</span>: <span class="ident">Reporter</span>,
-    <span class="ident">L</span>: <span class="ident">LocalPartition</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span>, <span class="ident">P</span><span class="op">&gt;</span>,
-<span class="op">&gt;</span>(
-    <span class="ident">simulation</span>: <span class="kw-2">&amp;mut</span> <span class="ident">Simulation</span><span class="op">&lt;</span>
-        <span class="ident">M</span>,
-        <span class="ident">H</span>,
-        <span class="ident">G</span>,
-        <span class="ident">S</span>,
-        <span class="ident">DomainEmigrationExit</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">O</span><span class="op">&gt;</span>,
-        <span class="ident">D</span>,
-        <span class="ident">C</span>,
-        <span class="ident">T</span>,
-        <span class="ident">N</span>,
-        <span class="ident">E</span>,
-        <span class="ident">BufferedImmigrationEntry</span>,
-        <span class="ident">A</span>,
-    <span class="op">&gt;</span>,
-    <span class="ident">local_partition</span>: <span class="kw-2">&amp;mut</span> <span class="ident">L</span>,
-) -&gt; (<span class="ident">Status</span>, <span class="ident">NonNegativeF64</span>, <span class="ident">u64</span>) {
-    <span class="comment">// Ensure that the progress bar starts with the expected target</span>
-    <span class="ident">local_partition</span>.<span class="ident">report_progress_sync</span>(<span class="ident">simulation</span>.<span class="ident">get_balanced_remaining_work</span>().<span class="number">0</span>);
+    M: MathsCore,
+    H: Habitat&lt;M&gt;,
+    G: RngCore&lt;M&gt;,
+    S: LocallyCoherentLineageStore&lt;M, H&gt;,
+    D: DispersalSampler&lt;M, H, G&gt;,
+    C: CoalescenceSampler&lt;M, H, S&gt;,
+    T: TurnoverRate&lt;M, H&gt;,
+    N: SpeciationProbability&lt;M, H&gt;,
+    O: Decomposition&lt;M, H&gt;,
+    E: EventSampler&lt;M, H, G, S, DomainEmigrationExit&lt;M, H, O&gt;, D, C, T, N&gt;,
+    A: ActiveLineageSampler&lt;
+        M,
+        H,
+        G,
+        S,
+        DomainEmigrationExit&lt;M, H, O&gt;,
+        D,
+        C,
+        T,
+        N,
+        E,
+        BufferedImmigrationEntry,
+    &gt;,
+    P: Reporter,
+    L: LocalPartition&lt;<span class="lifetime">&#39;p</span>, P&gt;,
+&gt;(
+    simulation: <span class="kw-2">&amp;mut </span>Simulation&lt;
+        M,
+        H,
+        G,
+        S,
+        DomainEmigrationExit&lt;M, H, O&gt;,
+        D,
+        C,
+        T,
+        N,
+        E,
+        BufferedImmigrationEntry,
+        A,
+    &gt;,
+    local_partition: <span class="kw-2">&amp;mut </span>L,
+) -&gt; (Status, NonNegativeF64, u64) {
+    <span class="comment">// Ensure that the progress bar starts with the expected target
+    </span>local_partition.report_progress_sync(simulation.get_balanced_remaining_work().<span class="number">0</span>);
 
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">simulation_backup</span> <span class="op">=</span> <span class="ident">simulation</span>.<span class="ident">backup</span>();
+    <span class="kw">let </span><span class="kw-2">mut </span>simulation_backup = simulation.backup();
 
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">total_steps</span> <span class="op">=</span> <span class="number">0_u64</span>;
+    <span class="kw">let </span><span class="kw-2">mut </span>total_steps = <span class="number">0_u64</span>;
 
-    <span class="kw">while</span> <span class="ident">local_partition</span>.<span class="ident">reduce_vote_continue</span>(<span class="op">!</span><span class="ident">simulation</span>.<span class="ident">is_done</span>()) {
-        <span class="comment">// Get the next local emigration event time or +inf</span>
-        <span class="comment">//  (we already know at least one partition has some next event time)</span>
-        <span class="kw">let</span> <span class="ident">next_local_emigration_time</span> <span class="op">=</span> {
-            <span class="kw">let</span> (<span class="kw">_</span>, <span class="ident">new_steps</span>) <span class="op">=</span> <span class="ident">simulation</span>.<span class="ident">simulate_incremental_early_stop</span>(
-                <span class="op">|</span><span class="ident">simulation</span>, <span class="kw">_</span>, <span class="kw">_</span><span class="op">|</span> {
-                    <span class="kw">if</span> <span class="ident">simulation</span>.<span class="ident">emigration_exit</span>().<span class="ident">is_empty</span>() {
-                        <span class="ident">ControlFlow::CONTINUE</span>
-                    } <span class="kw">else</span> {
-                        <span class="ident">ControlFlow::BREAK</span>
+    <span class="kw">while </span>local_partition.reduce_vote_continue(!simulation.is_done()) {
+        <span class="comment">// Get the next local emigration event time or +inf
+        //  (we already know at least one partition has some next event time)
+        </span><span class="kw">let </span>next_local_emigration_time = {
+            <span class="kw">let </span>(<span class="kw">_</span>, new_steps) = simulation.simulate_incremental_early_stop(
+                |simulation, <span class="kw">_</span>, <span class="kw">_</span>| {
+                    <span class="kw">if </span>simulation.emigration_exit().is_empty() {
+                        ControlFlow::CONTINUE
+                    } <span class="kw">else </span>{
+                        ControlFlow::BREAK
                     }
                 },
-                <span class="kw-2">&amp;mut</span> <span class="ident">NullReporter</span>,
+                <span class="kw-2">&amp;mut </span>NullReporter,
             );
 
-            <span class="ident">total_steps</span> <span class="op">+</span><span class="op">=</span> <span class="ident">new_steps</span>;
+            total_steps += new_steps;
 
-            <span class="ident">simulation</span>
-                .<span class="ident">emigration_exit_mut</span>()
-                .<span class="ident">min</span>()
-                .<span class="ident">map</span>(<span class="op">|</span>(<span class="kw">_</span>, <span class="ident">first_emigration</span>)<span class="op">|</span> <span class="ident">first_emigration</span>.<span class="ident">event_time</span>)
+            simulation
+                .emigration_exit_mut()
+                .min()
+                .map(|(<span class="kw">_</span>, first_emigration)| first_emigration.event_time)
         }
-        .<span class="ident">unwrap_or_else</span>(<span class="ident">PositiveF64::infinity</span>);
+        .unwrap_or_else(PositiveF64::infinity);
 
-        <span class="comment">// Roll back the simulation to the latest safe point</span>
-        <span class="kw-2">*</span><span class="ident">simulation</span> <span class="op">=</span> <span class="ident">simulation_backup</span>.<span class="ident">resume</span>();
+        <span class="comment">// Roll back the simulation to the latest safe point
+        </span><span class="kw-2">*</span>simulation = simulation_backup.resume();
 
-        <span class="kw">match</span> <span class="ident">local_partition</span>.<span class="ident">reduce_vote_min_time</span>(<span class="ident">next_local_emigration_time</span>) {
-            <span class="comment">// The partition with the next emigration event gets to simulate until and inclusive</span>
-            <span class="comment">//  that event</span>
-            <span class="prelude-val">Ok</span>(<span class="ident">next_global_time</span>) =&gt; {
-                <span class="kw">let</span> (<span class="kw">_</span>, <span class="ident">new_steps</span>) <span class="op">=</span> <span class="ident">simulation</span>.<span class="ident">simulate_incremental_early_stop</span>(
-                    <span class="op">|</span><span class="kw">_</span>, <span class="kw">_</span>, <span class="ident">next_event_time</span><span class="op">|</span> {
-                        <span class="kw">if</span> <span class="ident">next_event_time</span> <span class="op">&gt;</span> <span class="ident">next_global_time</span> {
-                            <span class="ident">ControlFlow::BREAK</span>
-                        } <span class="kw">else</span> {
-                            <span class="ident">ControlFlow::CONTINUE</span>
+        <span class="kw">match </span>local_partition.reduce_vote_min_time(next_local_emigration_time) {
+            <span class="comment">// The partition with the next emigration event gets to simulate until and inclusive
+            //  that event
+            </span><span class="prelude-val">Ok</span>(next_global_time) =&gt; {
+                <span class="kw">let </span>(<span class="kw">_</span>, new_steps) = simulation.simulate_incremental_early_stop(
+                    |<span class="kw">_</span>, <span class="kw">_</span>, next_event_time| {
+                        <span class="kw">if </span>next_event_time &gt; next_global_time {
+                            ControlFlow::BREAK
+                        } <span class="kw">else </span>{
+                            ControlFlow::CONTINUE
                         }
                     },
-                    <span class="ident">local_partition</span>.<span class="ident">get_reporter</span>(),
+                    local_partition.get_reporter(),
                 );
 
-                <span class="ident">total_steps</span> <span class="op">+</span><span class="op">=</span> <span class="ident">new_steps</span>;
+                total_steps += new_steps;
 
-                <span class="comment">// Send off any emigration that might have occurred</span>
-                <span class="kw">for</span> <span class="ident">immigrant</span> <span class="kw">in</span> <span class="ident">local_partition</span>.<span class="ident">migrate_individuals</span>(
-                    <span class="ident">simulation</span>.<span class="ident">emigration_exit_mut</span>(),
-                    <span class="ident">MigrationMode::Default</span>,
-                    <span class="ident">MigrationMode::Default</span>,
+                <span class="comment">// Send off any emigration that might have occurred
+                </span><span class="kw">for </span>immigrant <span class="kw">in </span>local_partition.migrate_individuals(
+                    simulation.emigration_exit_mut(),
+                    MigrationMode::Default,
+                    MigrationMode::Default,
                 ) {
-                    <span class="ident">simulation</span>.<span class="ident">immigration_entry_mut</span>().<span class="ident">push</span>(<span class="ident">immigrant</span>);
+                    simulation.immigration_entry_mut().push(immigrant);
                 }
             },
-            <span class="comment">// All other partitions get to simulate until just before this next migration event</span>
-            <span class="prelude-val">Err</span>(<span class="ident">next_global_time</span>) =&gt; {
-                <span class="kw">let</span> (<span class="kw">_</span>, <span class="ident">new_steps</span>) <span class="op">=</span> <span class="ident">simulation</span>.<span class="ident">simulate_incremental_early_stop</span>(
-                    <span class="op">|</span><span class="kw">_</span>, <span class="kw">_</span>, <span class="ident">next_event_time</span><span class="op">|</span> {
-                        <span class="kw">if</span> <span class="ident">next_event_time</span> <span class="op">&gt;</span><span class="op">=</span> <span class="ident">next_global_time</span> {
-                            <span class="ident">ControlFlow::BREAK</span>
-                        } <span class="kw">else</span> {
-                            <span class="ident">ControlFlow::CONTINUE</span>
+            <span class="comment">// All other partitions get to simulate until just before this next migration event
+            </span><span class="prelude-val">Err</span>(next_global_time) =&gt; {
+                <span class="kw">let </span>(<span class="kw">_</span>, new_steps) = simulation.simulate_incremental_early_stop(
+                    |<span class="kw">_</span>, <span class="kw">_</span>, next_event_time| {
+                        <span class="kw">if </span>next_event_time &gt;= next_global_time {
+                            ControlFlow::BREAK
+                        } <span class="kw">else </span>{
+                            ControlFlow::CONTINUE
                         }
                     },
-                    <span class="ident">local_partition</span>.<span class="ident">get_reporter</span>(),
+                    local_partition.get_reporter(),
                 );
 
-                <span class="ident">total_steps</span> <span class="op">+</span><span class="op">=</span> <span class="ident">new_steps</span>;
+                total_steps += new_steps;
             },
         }
 
-        <span class="comment">// Synchronise after performing any inter-partition migration</span>
-        <span class="kw">while</span> <span class="ident">local_partition</span>.<span class="ident">wait_for_termination</span>() {
-            <span class="kw">for</span> <span class="ident">immigrant</span> <span class="kw">in</span> <span class="ident">local_partition</span>.<span class="ident">migrate_individuals</span>(
-                <span class="kw-2">&amp;mut</span> <span class="ident">core::iter::empty</span>(),
-                <span class="ident">MigrationMode::Force</span>,
-                <span class="ident">MigrationMode::Force</span>,
+        <span class="comment">// Synchronise after performing any inter-partition migration
+        </span><span class="kw">while </span>local_partition.wait_for_termination() {
+            <span class="kw">for </span>immigrant <span class="kw">in </span>local_partition.migrate_individuals(
+                <span class="kw-2">&amp;mut </span>core::iter::empty(),
+                MigrationMode::Force,
+                MigrationMode::Force,
             ) {
-                <span class="ident">simulation</span>.<span class="ident">immigration_entry_mut</span>().<span class="ident">push</span>(<span class="ident">immigrant</span>);
+                simulation.immigration_entry_mut().push(immigrant);
             }
         }
 
-        <span class="comment">// Advance the simulation backup to this new safe point</span>
-        <span class="ident">simulation_backup</span> <span class="op">=</span> <span class="ident">simulation</span>.<span class="ident">backup</span>();
+        <span class="comment">// Advance the simulation backup to this new safe point
+        </span>simulation_backup = simulation.backup();
     }
 
-    <span class="ident">local_partition</span>.<span class="ident">report_progress_sync</span>(<span class="number">0_u64</span>);
+    local_partition.report_progress_sync(<span class="number">0_u64</span>);
 
-    <span class="kw">let</span> (<span class="ident">global_time</span>, <span class="ident">global_steps</span>) <span class="op">=</span> <span class="ident">local_partition</span>.<span class="ident">reduce_global_time_steps</span>(
-        <span class="ident">simulation</span>.<span class="ident">active_lineage_sampler</span>().<span class="ident">get_last_event_time</span>(),
-        <span class="ident">total_steps</span>,
+    <span class="kw">let </span>(global_time, global_steps) = local_partition.reduce_global_time_steps(
+        simulation.active_lineage_sampler().get_last_event_time(),
+        total_steps,
     );
 
-    (<span class="ident">Status::Done</span>, <span class="ident">global_time</span>, <span class="ident">global_steps</span>)
+    (Status::Done, global_time, global_steps)
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="necsim_impls_no_std" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0-nightly (affe0d3a0 2022-08-05)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="necsim_impls_no_std" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (5e9772042 2022-10-29)" ></div></body></html>

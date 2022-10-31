@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `rustcoalescence/src/cli/simulate/dispatch/valid/launch.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>launch.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../../../storage.js"></script><script defer src="../../../../../../source-script.js"></script><script defer src="../../../../../../source-files.js"></script><script defer src="../../../../../../main.js"></script><noscript><link rel="stylesheet" href="../../../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../../../../rustcoalescence/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../../../../rustcoalescence/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../../../../rustcoalescence/index.html"><img class="rust-logo" src="../../../../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `rustcoalescence/src/cli/simulate/dispatch/valid/launch.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>launch.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../../../../normalize.css"><link rel="stylesheet" href="../../../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../../../../ayu.css" disabled><link rel="stylesheet" href="../../../../../../dark.css" disabled><link rel="stylesheet" href="../../../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../../../storage.js"></script><script defer src="../../../../../../source-script.js"></script><script defer src="../../../../../../source-files.js"></script><script defer src="../../../../../../main.js"></script><noscript><link rel="stylesheet" href="../../../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../../../../../rustcoalescence/index.html"><img class="rust-logo" src="../../../../../../rust-logo.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../../../wheel.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -87,94 +87,94 @@
 <span id="87">87</span>
 <span id="88">88</span>
 <span id="89">89</span>
-</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">anyhow::Context</span>;
+</pre><pre class="rust"><code><span class="kw">use </span>anyhow::Context;
 
-<span class="kw">use</span> <span class="ident">rustcoalescence_algorithms</span>::{<span class="ident">result::SimulationOutcome</span>, <span class="ident">Algorithm</span>};
+<span class="kw">use </span>rustcoalescence_algorithms::{result::SimulationOutcome, Algorithm};
 
-<span class="kw">use</span> <span class="ident">necsim_core</span>::{<span class="ident">cogs::MathsCore</span>, <span class="ident">reporter::Reporter</span>};
-<span class="kw">use</span> <span class="ident">necsim_core_bond</span>::{<span class="ident">NonNegativeF64</span>, <span class="ident">PositiveF64</span>};
-<span class="kw">use</span> <span class="ident">necsim_impls_no_std::cogs::origin_sampler::pre_sampler::OriginPreSampler</span>;
-<span class="kw">use</span> <span class="ident">necsim_partitioning_core::LocalPartition</span>;
+<span class="kw">use </span>necsim_core::{cogs::MathsCore, reporter::Reporter};
+<span class="kw">use </span>necsim_core_bond::{NonNegativeF64, PositiveF64};
+<span class="kw">use </span>necsim_impls_no_std::cogs::origin_sampler::pre_sampler::OriginPreSampler;
+<span class="kw">use </span>necsim_partitioning_core::LocalPartition;
 
-<span class="kw">use</span> <span class="ident">rustcoalescence_scenarios::Scenario</span>;
+<span class="kw">use </span>rustcoalescence_scenarios::Scenario;
 
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::args::config::sample</span>::{<span class="ident">Sample</span>, <span class="ident">SampleMode</span>, <span class="ident">SampleModeRestart</span>, <span class="ident">SampleOrigin</span>};
+<span class="kw">use </span><span class="kw">crate</span>::args::config::sample::{Sample, SampleMode, SampleModeRestart, SampleOrigin};
 
-<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">simulate</span><span class="op">&lt;</span>
+<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn </span>simulate&lt;
     <span class="lifetime">&#39;p</span>,
-    <span class="ident">M</span>: <span class="ident">MathsCore</span>,
-    <span class="ident">A</span>: <span class="ident">Algorithm</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span>, <span class="ident">M</span>, <span class="ident">O</span>, <span class="ident">R</span>, <span class="ident">P</span><span class="op">&gt;</span>,
-    <span class="ident">O</span>: <span class="ident">Scenario</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">A::Rng</span><span class="op">&gt;</span>,
-    <span class="ident">R</span>: <span class="ident">Reporter</span>,
-    <span class="ident">P</span>: <span class="ident">LocalPartition</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span>, <span class="ident">R</span><span class="op">&gt;</span>,
-<span class="op">&gt;</span>(
-    <span class="ident">algorithm_args</span>: <span class="ident">A::Arguments</span>,
-    <span class="ident">rng</span>: <span class="ident">A::Rng</span>,
-    <span class="ident">scenario</span>: <span class="ident">O</span>,
-    <span class="ident">sample</span>: <span class="ident">Sample</span>,
-    <span class="ident">pause_before</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">NonNegativeF64</span><span class="op">&gt;</span>,
-    <span class="ident">local_partition</span>: <span class="kw-2">&amp;mut</span> <span class="ident">P</span>,
-) -&gt; <span class="ident">anyhow::Result</span><span class="op">&lt;</span><span class="ident">SimulationOutcome</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">A::Rng</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-    <span class="kw">let</span> <span class="ident">lineages</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">sample</span>.<span class="ident">origin</span> {
-        <span class="ident">SampleOrigin::Habitat</span> =&gt; {
-            <span class="kw">return</span> <span class="ident">A::initialise_and_simulate</span>(
-                <span class="ident">algorithm_args</span>,
-                <span class="ident">rng</span>,
-                <span class="ident">scenario</span>,
-                <span class="ident">OriginPreSampler::all</span>().<span class="ident">percentage</span>(<span class="ident">sample</span>.<span class="ident">percentage</span>),
-                <span class="ident">pause_before</span>,
-                <span class="ident">local_partition</span>,
+    M: MathsCore,
+    A: Algorithm&lt;<span class="lifetime">&#39;p</span>, M, O, R, P&gt;,
+    O: Scenario&lt;M, A::Rng&gt;,
+    R: Reporter,
+    P: LocalPartition&lt;<span class="lifetime">&#39;p</span>, R&gt;,
+&gt;(
+    algorithm_args: A::Arguments,
+    rng: A::Rng,
+    scenario: O,
+    sample: Sample,
+    pause_before: <span class="prelude-ty">Option</span>&lt;NonNegativeF64&gt;,
+    local_partition: <span class="kw-2">&amp;mut </span>P,
+) -&gt; anyhow::Result&lt;SimulationOutcome&lt;M, A::Rng&gt;&gt; {
+    <span class="kw">let </span>lineages = <span class="kw">match </span>sample.origin {
+        SampleOrigin::Habitat =&gt; {
+            <span class="kw">return </span>A::initialise_and_simulate(
+                algorithm_args,
+                rng,
+                scenario,
+                OriginPreSampler::all().percentage(sample.percentage),
+                pause_before,
+                local_partition,
             )
-            .<span class="ident">context</span>(<span class="string">&quot;Failed to perform the fresh simulation.&quot;</span>)
+            .context(<span class="string">&quot;Failed to perform the fresh simulation.&quot;</span>)
         },
-        <span class="ident">SampleOrigin::List</span>(<span class="ident">lineages</span>) =&gt; <span class="ident">lineages</span>,
-        <span class="ident">SampleOrigin::Bincode</span>(<span class="ident">loader</span>) =&gt; <span class="ident">loader</span>.<span class="ident">into_lineages</span>(),
+        SampleOrigin::List(lineages) =&gt; lineages,
+        SampleOrigin::Bincode(loader) =&gt; loader.into_lineages(),
     };
 
-    <span class="kw">match</span> <span class="ident">sample</span>.<span class="ident">mode</span> {
-        <span class="ident">SampleMode::Genesis</span> =&gt; <span class="ident">A::initialise_and_simulate</span>(
-            <span class="ident">algorithm_args</span>,
-            <span class="ident">rng</span>,
-            <span class="ident">scenario</span>,
-            <span class="ident">OriginPreSampler::all</span>().<span class="ident">percentage</span>(<span class="ident">sample</span>.<span class="ident">percentage</span>),
-            <span class="ident">pause_before</span>,
-            <span class="ident">local_partition</span>,
+    <span class="kw">match </span>sample.mode {
+        SampleMode::Genesis =&gt; A::initialise_and_simulate(
+            algorithm_args,
+            rng,
+            scenario,
+            OriginPreSampler::all().percentage(sample.percentage),
+            pause_before,
+            local_partition,
         )
-        .<span class="ident">context</span>(<span class="string">&quot;Failed to perform the fresh simulation.&quot;</span>),
-        <span class="ident">SampleMode::Resume</span> =&gt; <span class="ident">A::resume_and_simulate</span>(
-            <span class="ident">algorithm_args</span>,
-            <span class="ident">rng</span>,
-            <span class="ident">scenario</span>,
-            <span class="ident">OriginPreSampler::all</span>().<span class="ident">percentage</span>(<span class="ident">sample</span>.<span class="ident">percentage</span>),
-            <span class="ident">lineages</span>.<span class="ident">into_iter</span>(),
+        .context(<span class="string">&quot;Failed to perform the fresh simulation.&quot;</span>),
+        SampleMode::Resume =&gt; A::resume_and_simulate(
+            algorithm_args,
+            rng,
+            scenario,
+            OriginPreSampler::all().percentage(sample.percentage),
+            lineages.into_iter(),
             <span class="prelude-val">None</span>,
-            <span class="ident">pause_before</span>,
-            <span class="ident">local_partition</span>,
+            pause_before,
+            local_partition,
         )
-        .<span class="ident">context</span>(<span class="string">&quot;Failed to perform the resuming simulation.&quot;</span>),
-        <span class="ident">SampleMode::FixUp</span>(<span class="ident">strategy</span>) =&gt; <span class="ident">A::fixup_for_restart</span>(
-            <span class="ident">algorithm_args</span>,
-            <span class="ident">rng</span>,
-            <span class="ident">scenario</span>,
-            <span class="ident">OriginPreSampler::all</span>().<span class="ident">percentage</span>(<span class="ident">sample</span>.<span class="ident">percentage</span>),
-            <span class="ident">lineages</span>.<span class="ident">into_iter</span>(),
-            <span class="ident">PositiveF64::new</span>(<span class="ident">pause_before</span>.<span class="ident">unwrap</span>().<span class="ident">get</span>()).<span class="ident">unwrap</span>(),
-            <span class="ident">strategy</span>,
-            <span class="ident">local_partition</span>,
+        .context(<span class="string">&quot;Failed to perform the resuming simulation.&quot;</span>),
+        SampleMode::FixUp(strategy) =&gt; A::fixup_for_restart(
+            algorithm_args,
+            rng,
+            scenario,
+            OriginPreSampler::all().percentage(sample.percentage),
+            lineages.into_iter(),
+            PositiveF64::new(pause_before.unwrap().get()).unwrap(),
+            strategy,
+            local_partition,
         )
-        .<span class="ident">context</span>(<span class="string">&quot;Failed to fix-up the restarting simulation.&quot;</span>),
-        <span class="ident">SampleMode::Restart</span>(<span class="ident">SampleModeRestart</span> { <span class="ident">after</span> }) =&gt; <span class="ident">A::resume_and_simulate</span>(
-            <span class="ident">algorithm_args</span>,
-            <span class="ident">rng</span>,
-            <span class="ident">scenario</span>,
-            <span class="ident">OriginPreSampler::all</span>().<span class="ident">percentage</span>(<span class="ident">sample</span>.<span class="ident">percentage</span>),
-            <span class="ident">lineages</span>.<span class="ident">into_iter</span>(),
-            <span class="prelude-val">Some</span>(<span class="ident">after</span>),
-            <span class="ident">pause_before</span>,
-            <span class="ident">local_partition</span>,
+        .context(<span class="string">&quot;Failed to fix-up the restarting simulation.&quot;</span>),
+        SampleMode::Restart(SampleModeRestart { after }) =&gt; A::resume_and_simulate(
+            algorithm_args,
+            rng,
+            scenario,
+            OriginPreSampler::all().percentage(sample.percentage),
+            lineages.into_iter(),
+            <span class="prelude-val">Some</span>(after),
+            pause_before,
+            local_partition,
         )
-        .<span class="ident">context</span>(<span class="string">&quot;Failed to perform the restarting simulation.&quot;</span>),
+        .context(<span class="string">&quot;Failed to perform the restarting simulation.&quot;</span>),
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../../../../" data-current-crate="rustcoalescence" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0-nightly (affe0d3a0 2022-08-05)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../../../../" data-current-crate="rustcoalescence" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (5e9772042 2022-10-29)" ></div></body></html>

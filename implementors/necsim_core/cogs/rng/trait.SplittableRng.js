@@ -1,3 +1,3 @@
-(function() {var implementors = {};
-implementors["necsim_impls_std"] = [{"text":"impl&lt;M:&nbsp;<a class=\"trait\" href=\"necsim_core_maths/trait.MathsCore.html\" title=\"trait necsim_core_maths::MathsCore\">MathsCore</a>&gt; <a class=\"trait\" href=\"necsim_core/cogs/rng/trait.SplittableRng.html\" title=\"trait necsim_core::cogs::rng::SplittableRng\">SplittableRng</a>&lt;M&gt; for <a class=\"struct\" href=\"necsim_impls_std/cogs/rng/pcg/struct.Pcg.html\" title=\"struct necsim_impls_std::cogs::rng::pcg::Pcg\">Pcg</a>&lt;M&gt;","synthetic":false,"types":["necsim_impls_std::cogs::rng::pcg::Pcg"]}];
-if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()
+(function() {var implementors = {
+"necsim_impls_std":[["impl&lt;M:&nbsp;MathsCore&gt; SplittableRng&lt;M&gt; for <a class=\"struct\" href=\"necsim_impls_std/cogs/rng/pcg/struct.Pcg.html\" title=\"struct necsim_impls_std::cogs::rng::pcg::Pcg\">Pcg</a>&lt;M&gt;"]]
+};if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

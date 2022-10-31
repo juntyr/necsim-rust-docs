@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `rustcoalescence/algorithms/src/lib.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>lib.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../rustcoalescence_algorithms/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../rustcoalescence_algorithms/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../rustcoalescence_algorithms/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `rustcoalescence/algorithms/src/lib.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>lib.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../normalize.css"><link rel="stylesheet" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../ayu.css" disabled><link rel="stylesheet" href="../../dark.css" disabled><link rel="stylesheet" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../rustcoalescence_algorithms/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -87,96 +87,94 @@
 <span id="87">87</span>
 <span id="88">88</span>
 <span id="89">89</span>
-<span id="90">90</span>
-</pre><pre class="rust"><code><span class="attribute">#![<span class="ident">deny</span>(<span class="ident">clippy::pedantic</span>)]</span>
-<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">generic_associated_types</span>)]</span>
+</pre><pre class="rust"><code><span class="attribute">#![deny(clippy::pedantic)]
 
-<span class="kw">use</span> <span class="ident">std::error::Error</span> <span class="kw">as</span> <span class="ident">StdError</span>;
+</span><span class="kw">use </span>std::error::Error <span class="kw">as </span>StdError;
 
-<span class="kw">use</span> <span class="ident">necsim_core</span>::{
-    <span class="ident">cogs</span>::{<span class="ident">LineageStore</span>, <span class="ident">MathsCore</span>, <span class="ident">RngCore</span>},
-    <span class="ident">lineage::Lineage</span>,
-    <span class="ident">reporter::Reporter</span>,
+<span class="kw">use </span>necsim_core::{
+    cogs::{LineageStore, MathsCore, RngCore},
+    lineage::Lineage,
+    reporter::Reporter,
 };
-<span class="kw">use</span> <span class="ident">necsim_core_bond</span>::{<span class="ident">NonNegativeF64</span>, <span class="ident">PositiveF64</span>};
+<span class="kw">use </span>necsim_core_bond::{NonNegativeF64, PositiveF64};
 
-<span class="kw">use</span> <span class="ident">necsim_impls_no_std::cogs::origin_sampler::pre_sampler::OriginPreSampler</span>;
-<span class="kw">use</span> <span class="ident">necsim_partitioning_core</span>::{<span class="ident">partition::Partition</span>, <span class="ident">LocalPartition</span>};
+<span class="kw">use </span>necsim_impls_no_std::cogs::origin_sampler::pre_sampler::OriginPreSampler;
+<span class="kw">use </span>necsim_partitioning_core::{partition::Partition, LocalPartition};
 
-<span class="kw">use</span> <span class="ident">rustcoalescence_scenarios::Scenario</span>;
+<span class="kw">use </span>rustcoalescence_scenarios::Scenario;
 
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">result</span>;
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">strategy</span>;
+<span class="kw">pub mod </span>result;
+<span class="kw">pub mod </span>strategy;
 
-<span class="kw">use</span> <span class="ident">result</span>::{<span class="ident">ResumeError</span>, <span class="ident">SimulationOutcome</span>};
-<span class="kw">use</span> <span class="ident">strategy::RestartFixUpStrategy</span>;
+<span class="kw">use </span>result::{ResumeError, SimulationOutcome};
+<span class="kw">use </span>strategy::RestartFixUpStrategy;
 
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">AlgorithmParamters</span> {
-    <span class="kw">type</span> <span class="ident">Arguments</span>;
-    <span class="kw">type</span> <span class="ident">Error</span>: <span class="ident">StdError</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>;
+<span class="kw">pub trait </span>AlgorithmParamters {
+    <span class="kw">type </span>Arguments;
+    <span class="kw">type </span>Error: StdError + Send + Sync + <span class="lifetime">&#39;static</span>;
 }
 
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">AlgorithmDefaults</span> {
-    <span class="kw">type</span> <span class="ident">MathsCore</span>: <span class="ident">MathsCore</span>;
+<span class="kw">pub trait </span>AlgorithmDefaults {
+    <span class="kw">type </span>MathsCore: MathsCore;
 }
 
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">Algorithm</span><span class="op">&lt;</span>
+<span class="kw">pub trait </span>Algorithm&lt;
     <span class="lifetime">&#39;p</span>,
-    <span class="ident">M</span>: <span class="ident">MathsCore</span>,
-    <span class="ident">O</span>: <span class="ident">Scenario</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident"><span class="self">Self</span>::Rng</span><span class="op">&gt;</span>,
-    <span class="ident">R</span>: <span class="ident">Reporter</span>,
-    <span class="ident">P</span>: <span class="ident">LocalPartition</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span>, <span class="ident">R</span><span class="op">&gt;</span>,
-<span class="op">&gt;</span>: <span class="ident">Sized</span> <span class="op">+</span> <span class="ident">AlgorithmParamters</span> <span class="op">+</span> <span class="ident">AlgorithmDefaults</span>
+    M: MathsCore,
+    O: Scenario&lt;M, <span class="self">Self</span>::Rng&gt;,
+    R: Reporter,
+    P: LocalPartition&lt;<span class="lifetime">&#39;p</span>, R&gt;,
+&gt;: Sized + AlgorithmParamters + AlgorithmDefaults
 {
-    <span class="kw">type</span> <span class="ident">Rng</span>: <span class="ident">RngCore</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span>;
-    <span class="kw">type</span> <span class="ident">LineageStore</span>: <span class="ident">LineageStore</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">O::Habitat</span><span class="op">&gt;</span>;
+    <span class="kw">type </span>Rng: RngCore&lt;M&gt;;
+    <span class="kw">type </span>LineageStore: LineageStore&lt;M, O::Habitat&gt;;
 
-    <span class="kw">fn</span> <span class="ident">get_logical_partition</span>(<span class="ident">args</span>: <span class="kw-2">&amp;</span><span class="ident"><span class="self">Self</span>::Arguments</span>, <span class="ident">local_partition</span>: <span class="kw-2">&amp;</span><span class="ident">P</span>) -&gt; <span class="ident">Partition</span>;
+    <span class="kw">fn </span>get_logical_partition(args: <span class="kw-2">&amp;</span><span class="self">Self</span>::Arguments, local_partition: <span class="kw-2">&amp;</span>P) -&gt; Partition;
 
-    <span class="doccomment">/// # Errors</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Returns a `Self::Error` if initialising the fresh simulation or running</span>
-    <span class="doccomment">///  the algorithm failed</span>
-    <span class="kw">fn</span> <span class="ident">initialise_and_simulate</span><span class="op">&lt;</span><span class="ident">I</span>: <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">u64</span><span class="op">&gt;</span><span class="op">&gt;</span>(
-        <span class="ident">args</span>: <span class="ident"><span class="self">Self</span>::Arguments</span>,
-        <span class="ident">rng</span>: <span class="ident"><span class="self">Self</span>::Rng</span>,
-        <span class="ident">scenario</span>: <span class="ident">O</span>,
-        <span class="ident">pre_sampler</span>: <span class="ident">OriginPreSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">I</span><span class="op">&gt;</span>,
-        <span class="ident">pause_before</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">NonNegativeF64</span><span class="op">&gt;</span>,
-        <span class="ident">local_partition</span>: <span class="kw-2">&amp;mut</span> <span class="ident">P</span>,
-    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">SimulationOutcome</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident"><span class="self">Self</span>::Rng</span><span class="op">&gt;</span>, <span class="ident"><span class="self">Self</span>::Error</span><span class="op">&gt;</span>;
+    <span class="doccomment">/// # Errors
+    ///
+    /// Returns a `Self::Error` if initialising the fresh simulation or running
+    ///  the algorithm failed
+    </span><span class="kw">fn </span>initialise_and_simulate&lt;I: Iterator&lt;Item = u64&gt;&gt;(
+        args: <span class="self">Self</span>::Arguments,
+        rng: <span class="self">Self</span>::Rng,
+        scenario: O,
+        pre_sampler: OriginPreSampler&lt;M, I&gt;,
+        pause_before: <span class="prelude-ty">Option</span>&lt;NonNegativeF64&gt;,
+        local_partition: <span class="kw-2">&amp;mut </span>P,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;SimulationOutcome&lt;M, <span class="self">Self</span>::Rng&gt;, <span class="self">Self</span>::Error&gt;;
 
-    <span class="doccomment">/// # Errors</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Returns a `ContinueError&lt;Self::Error&gt;` if initialising the resuming</span>
-    <span class="doccomment">///  simulation or running the algorithm failed</span>
-    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::type_complexity</span>, <span class="ident">clippy::too_many_arguments</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">resume_and_simulate</span><span class="op">&lt;</span><span class="ident">I</span>: <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">u64</span><span class="op">&gt;</span>, <span class="ident">L</span>: <span class="ident">ExactSizeIterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">Lineage</span><span class="op">&gt;</span><span class="op">&gt;</span>(
-        <span class="ident">args</span>: <span class="ident"><span class="self">Self</span>::Arguments</span>,
-        <span class="ident">rng</span>: <span class="ident"><span class="self">Self</span>::Rng</span>,
-        <span class="ident">scenario</span>: <span class="ident">O</span>,
-        <span class="ident">pre_sampler</span>: <span class="ident">OriginPreSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">I</span><span class="op">&gt;</span>,
-        <span class="ident">lineages</span>: <span class="ident">L</span>,
-        <span class="ident">resume_after</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">NonNegativeF64</span><span class="op">&gt;</span>,
-        <span class="ident">pause_before</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">NonNegativeF64</span><span class="op">&gt;</span>,
-        <span class="ident">local_partition</span>: <span class="kw-2">&amp;mut</span> <span class="ident">P</span>,
-    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">SimulationOutcome</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident"><span class="self">Self</span>::Rng</span><span class="op">&gt;</span>, <span class="ident">ResumeError</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Error</span><span class="op">&gt;</span><span class="op">&gt;</span>;
+    <span class="doccomment">/// # Errors
+    ///
+    /// Returns a `ContinueError&lt;Self::Error&gt;` if initialising the resuming
+    ///  simulation or running the algorithm failed
+    </span><span class="attribute">#[allow(clippy::type_complexity, clippy::too_many_arguments)]
+    </span><span class="kw">fn </span>resume_and_simulate&lt;I: Iterator&lt;Item = u64&gt;, L: ExactSizeIterator&lt;Item = Lineage&gt;&gt;(
+        args: <span class="self">Self</span>::Arguments,
+        rng: <span class="self">Self</span>::Rng,
+        scenario: O,
+        pre_sampler: OriginPreSampler&lt;M, I&gt;,
+        lineages: L,
+        resume_after: <span class="prelude-ty">Option</span>&lt;NonNegativeF64&gt;,
+        pause_before: <span class="prelude-ty">Option</span>&lt;NonNegativeF64&gt;,
+        local_partition: <span class="kw-2">&amp;mut </span>P,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;SimulationOutcome&lt;M, <span class="self">Self</span>::Rng&gt;, ResumeError&lt;<span class="self">Self</span>::Error&gt;&gt;;
 
-    <span class="doccomment">/// # Errors</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Returns a `ContinueError&lt;Self::Error&gt;` if fixing up the restarting</span>
-    <span class="doccomment">///  simulation (incl. running the algorithm) failed</span>
-    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::type_complexity</span>, <span class="ident">clippy::too_many_arguments</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">fixup_for_restart</span><span class="op">&lt;</span><span class="ident">I</span>: <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">u64</span><span class="op">&gt;</span>, <span class="ident">L</span>: <span class="ident">ExactSizeIterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">Lineage</span><span class="op">&gt;</span><span class="op">&gt;</span>(
-        <span class="ident">args</span>: <span class="ident"><span class="self">Self</span>::Arguments</span>,
-        <span class="ident">rng</span>: <span class="ident"><span class="self">Self</span>::Rng</span>,
-        <span class="ident">scenario</span>: <span class="ident">O</span>,
-        <span class="ident">pre_sampler</span>: <span class="ident">OriginPreSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">I</span><span class="op">&gt;</span>,
-        <span class="ident">lineages</span>: <span class="ident">L</span>,
-        <span class="ident">restart_at</span>: <span class="ident">PositiveF64</span>,
-        <span class="ident">fixup_strategy</span>: <span class="ident">RestartFixUpStrategy</span>,
-        <span class="ident">local_partition</span>: <span class="kw-2">&amp;mut</span> <span class="ident">P</span>,
-    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">SimulationOutcome</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident"><span class="self">Self</span>::Rng</span><span class="op">&gt;</span>, <span class="ident">ResumeError</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Error</span><span class="op">&gt;</span><span class="op">&gt;</span>;
+    <span class="doccomment">/// # Errors
+    ///
+    /// Returns a `ContinueError&lt;Self::Error&gt;` if fixing up the restarting
+    ///  simulation (incl. running the algorithm) failed
+    </span><span class="attribute">#[allow(clippy::type_complexity, clippy::too_many_arguments)]
+    </span><span class="kw">fn </span>fixup_for_restart&lt;I: Iterator&lt;Item = u64&gt;, L: ExactSizeIterator&lt;Item = Lineage&gt;&gt;(
+        args: <span class="self">Self</span>::Arguments,
+        rng: <span class="self">Self</span>::Rng,
+        scenario: O,
+        pre_sampler: OriginPreSampler&lt;M, I&gt;,
+        lineages: L,
+        restart_at: PositiveF64,
+        fixup_strategy: RestartFixUpStrategy,
+        local_partition: <span class="kw-2">&amp;mut </span>P,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;SimulationOutcome&lt;M, <span class="self">Self</span>::Rng&gt;, ResumeError&lt;<span class="self">Self</span>::Error&gt;&gt;;
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="rustcoalescence_algorithms" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0-nightly (affe0d3a0 2022-08-05)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="rustcoalescence_algorithms" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (5e9772042 2022-10-29)" ></div></body></html>

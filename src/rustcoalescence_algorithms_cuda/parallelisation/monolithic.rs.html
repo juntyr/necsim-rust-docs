@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `rustcoalescence/algorithms/cuda/src/parallelisation/monolithic.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>monolithic.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../rustcoalescence_algorithms_cuda/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../rustcoalescence_algorithms_cuda/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../rustcoalescence_algorithms_cuda/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `rustcoalescence/algorithms/cuda/src/parallelisation/monolithic.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>monolithic.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../normalize.css"><link rel="stylesheet" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../ayu.css" disabled><link rel="stylesheet" href="../../../dark.css" disabled><link rel="stylesheet" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../../rustcoalescence_algorithms_cuda/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -350,357 +350,357 @@
 <span id="350">350</span>
 <span id="351">351</span>
 <span id="352">352</span>
-</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">collections::VecDeque</span>, <span class="ident">convert::TryInto</span>, <span class="ident">num::NonZeroU64</span>, <span class="ident">sync::atomic::AtomicU64</span>};
+</pre><pre class="rust"><code><span class="kw">use </span>std::{collections::VecDeque, convert::TryInto, num::NonZeroU64, sync::atomic::AtomicU64};
 
-<span class="kw">use</span> <span class="ident">rust_cuda</span>::{
-    <span class="ident">common::RustToCuda</span>,
-    <span class="ident">host</span>::{<span class="ident">HostAndDeviceMutRef</span>, <span class="ident">LendToCuda</span>},
-    <span class="ident">rustacuda::function</span>::{<span class="ident">BlockSize</span>, <span class="ident">GridSize</span>},
-    <span class="ident">utils::exchange::wrapper::ExchangeWrapperOnHost</span>,
+<span class="kw">use </span>rust_cuda::{
+    common::RustToCuda,
+    host::{HostAndDeviceMutRef, LendToCuda},
+    rustacuda::function::{BlockSize, GridSize},
+    utils::exchange::wrapper::ExchangeWrapperOnHost,
 };
 
-<span class="kw">use</span> <span class="ident">necsim_core</span>::{
-    <span class="ident">cogs</span>::{
-        <span class="ident">CoalescenceSampler</span>, <span class="ident">DispersalSampler</span>, <span class="ident">EmigrationExit</span>, <span class="ident">Habitat</span>, <span class="ident">ImmigrationEntry</span>,
-        <span class="ident">LineageStore</span>, <span class="ident">MathsCore</span>, <span class="ident">PrimeableRng</span>, <span class="ident">SpeciationProbability</span>, <span class="ident">TurnoverRate</span>,
+<span class="kw">use </span>necsim_core::{
+    cogs::{
+        CoalescenceSampler, DispersalSampler, EmigrationExit, Habitat, ImmigrationEntry,
+        LineageStore, MathsCore, PrimeableRng, SpeciationProbability, TurnoverRate,
     },
-    <span class="ident">lineage::Lineage</span>,
-    <span class="ident">reporter</span>::{<span class="ident">boolean::Boolean</span>, <span class="ident">Reporter</span>},
-    <span class="ident">simulation::Simulation</span>,
+    lineage::Lineage,
+    reporter::{boolean::Boolean, Reporter},
+    simulation::Simulation,
 };
-<span class="kw">use</span> <span class="ident">necsim_core_bond::NonNegativeF64</span>;
+<span class="kw">use </span>necsim_core_bond::NonNegativeF64;
 
-<span class="kw">use</span> <span class="ident">necsim_impls_no_std</span>::{
-    <span class="ident">cogs</span>::{
-        <span class="ident">active_lineage_sampler::singular::SingularActiveLineageSampler</span>,
-        <span class="ident">event_sampler::tracking::MinSpeciationTrackingEventSampler</span>,
+<span class="kw">use </span>necsim_impls_no_std::{
+    cogs::{
+        active_lineage_sampler::singular::SingularActiveLineageSampler,
+        event_sampler::tracking::MinSpeciationTrackingEventSampler,
     },
-    <span class="ident">parallelisation</span>::{
-        <span class="ident">independent</span>::{
-            <span class="ident">monolithic::reporter</span>::{
-                <span class="ident">WaterLevelReporterConstructor</span>, <span class="ident">WaterLevelReporterProxy</span>, <span class="ident">WaterLevelReporterStrategy</span>,
+    parallelisation::{
+        independent::{
+            monolithic::reporter::{
+                WaterLevelReporterConstructor, WaterLevelReporterProxy, WaterLevelReporterStrategy,
             },
-            <span class="ident">DedupCache</span>, <span class="ident">EventSlice</span>,
+            DedupCache, EventSlice,
         },
-        <span class="ident">Status</span>,
+        Status,
     },
 };
-<span class="kw">use</span> <span class="ident">necsim_partitioning_core::LocalPartition</span>;
+<span class="kw">use </span>necsim_partitioning_core::LocalPartition;
 
-<span class="kw">use</span> <span class="ident">necsim_impls_cuda</span>::{<span class="ident">event_buffer::EventBuffer</span>, <span class="ident">value_buffer::ValueBuffer</span>};
+<span class="kw">use </span>necsim_impls_cuda::{event_buffer::EventBuffer, value_buffer::ValueBuffer};
 
-<span class="kw">use</span> <span class="ident">rustcoalescence_algorithms_cuda_cpu_kernel::SimulationKernel</span>;
-<span class="kw">use</span> <span class="ident">rustcoalescence_algorithms_cuda_gpu_kernel::SimulatableKernel</span>;
+<span class="kw">use </span>rustcoalescence_algorithms_cuda_cpu_kernel::SimulationKernel;
+<span class="kw">use </span>rustcoalescence_algorithms_cuda_gpu_kernel::SimulatableKernel;
 
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::error::CudaError</span>;
+<span class="kw">use </span><span class="kw">crate</span>::error::CudaError;
 
-<span class="kw">type</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">E</span> <span class="op">=</span> <span class="ident">CudaError</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">std::result::Result</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">E</span><span class="op">&gt;</span>;
+<span class="kw">type </span><span class="prelude-ty">Result</span>&lt;T, E = CudaError&gt; = std::result::Result&lt;T, E&gt;;
 
-<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::type_complexity</span>, <span class="ident">clippy::too_many_lines</span>)]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">simulate</span><span class="op">&lt;</span>
+<span class="attribute">#[allow(clippy::type_complexity, clippy::too_many_lines)]
+</span><span class="kw">pub fn </span>simulate&lt;
     <span class="lifetime">&#39;l</span>,
     <span class="lifetime">&#39;p</span>,
-    <span class="ident">M</span>: <span class="ident">MathsCore</span>,
-    <span class="ident">H</span>: <span class="ident">Habitat</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">RustToCuda</span>,
-    <span class="ident">G</span>: <span class="ident">PrimeableRng</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">RustToCuda</span>,
-    <span class="ident">S</span>: <span class="ident">LineageStore</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">RustToCuda</span>,
-    <span class="ident">X</span>: <span class="ident">EmigrationExit</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span>, <span class="ident">S</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">RustToCuda</span>,
-    <span class="ident">D</span>: <span class="ident">DispersalSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">RustToCuda</span>,
-    <span class="ident">C</span>: <span class="ident">CoalescenceSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">S</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">RustToCuda</span>,
-    <span class="ident">T</span>: <span class="ident">TurnoverRate</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">RustToCuda</span>,
-    <span class="ident">N</span>: <span class="ident">SpeciationProbability</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">RustToCuda</span>,
-    <span class="ident">E</span>: <span class="ident">MinSpeciationTrackingEventSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span>, <span class="ident">S</span>, <span class="ident">X</span>, <span class="ident">D</span>, <span class="ident">C</span>, <span class="ident">T</span>, <span class="ident">N</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">RustToCuda</span>,
-    <span class="ident">I</span>: <span class="ident">ImmigrationEntry</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">RustToCuda</span>,
-    <span class="ident">A</span>: <span class="ident">SingularActiveLineageSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span>, <span class="ident">S</span>, <span class="ident">X</span>, <span class="ident">D</span>, <span class="ident">C</span>, <span class="ident">T</span>, <span class="ident">N</span>, <span class="ident">E</span>, <span class="ident">I</span><span class="op">&gt;</span>
-        <span class="op">+</span> <span class="ident">RustToCuda</span>,
-    <span class="ident">P</span>: <span class="ident">Reporter</span>,
-    <span class="ident">L</span>: <span class="ident">LocalPartition</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span>, <span class="ident">P</span><span class="op">&gt;</span>,
-    <span class="ident">LI</span>: <span class="ident">IntoIterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">Lineage</span><span class="op">&gt;</span>,
-<span class="op">&gt;</span>(
-    <span class="ident">simulation</span>: <span class="kw-2">&amp;mut</span> <span class="ident">Simulation</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span>, <span class="ident">S</span>, <span class="ident">X</span>, <span class="ident">D</span>, <span class="ident">C</span>, <span class="ident">T</span>, <span class="ident">N</span>, <span class="ident">E</span>, <span class="ident">I</span>, <span class="ident">A</span><span class="op">&gt;</span>,
-    <span class="kw-2">mut</span> <span class="ident">kernel</span>: <span class="ident">SimulationKernel</span><span class="op">&lt;</span>
-        <span class="ident">M</span>,
-        <span class="ident">H</span>,
-        <span class="ident">G</span>,
-        <span class="ident">S</span>,
-        <span class="ident">X</span>,
-        <span class="ident">D</span>,
-        <span class="ident">C</span>,
-        <span class="ident">T</span>,
-        <span class="ident">N</span>,
-        <span class="ident">E</span>,
-        <span class="ident">I</span>,
-        <span class="ident">A</span>,
-        <span class="op">&lt;</span><span class="op">&lt;</span><span class="ident">WaterLevelReporterStrategy</span> <span class="kw">as</span> <span class="ident">WaterLevelReporterConstructor</span><span class="op">&lt;</span><span class="ident">L::IsLive</span>, <span class="ident">P</span>, <span class="ident">L</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::WaterLevelReporter</span> <span class="kw">as</span> <span class="ident">Reporter</span><span class="op">&gt;</span><span class="ident">::ReportSpeciation</span>,
-        <span class="op">&lt;</span><span class="op">&lt;</span><span class="ident">WaterLevelReporterStrategy</span> <span class="kw">as</span> <span class="ident">WaterLevelReporterConstructor</span><span class="op">&lt;</span><span class="ident">L::IsLive</span>, <span class="ident">P</span>, <span class="ident">L</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::WaterLevelReporter</span> <span class="kw">as</span> <span class="ident">Reporter</span><span class="op">&gt;</span><span class="ident">::ReportDispersal</span>,
-    <span class="op">&gt;</span>,
-    <span class="ident">config</span>: (<span class="ident">GridSize</span>, <span class="ident">BlockSize</span>, <span class="ident">DedupCache</span>, <span class="ident">NonZeroU64</span>),
-    <span class="ident">lineages</span>: <span class="ident">LI</span>,
-    <span class="ident">event_slice</span>: <span class="ident">EventSlice</span>,
-    <span class="ident">pause_before</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">NonNegativeF64</span><span class="op">&gt;</span>,
-    <span class="ident">local_partition</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;l</span> <span class="kw-2">mut</span> <span class="ident">L</span>,
-) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(<span class="ident">Status</span>, <span class="ident">NonNegativeF64</span>, <span class="ident">u64</span>, <span class="kw">impl</span> <span class="ident">IntoIterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">Lineage</span><span class="op">&gt;</span>)<span class="op">&gt;</span>
-    <span class="kw">where</span> <span class="ident">SimulationKernel</span><span class="op">&lt;</span>
-        <span class="ident">M</span>,
-        <span class="ident">H</span>,
-        <span class="ident">G</span>,
-        <span class="ident">S</span>,
-        <span class="ident">X</span>,
-        <span class="ident">D</span>,
-        <span class="ident">C</span>,
-        <span class="ident">T</span>,
-        <span class="ident">N</span>,
-        <span class="ident">E</span>,
-        <span class="ident">I</span>,
-        <span class="ident">A</span>,
-        <span class="op">&lt;</span><span class="op">&lt;</span><span class="ident">WaterLevelReporterStrategy</span> <span class="kw">as</span> <span class="ident">WaterLevelReporterConstructor</span><span class="op">&lt;</span><span class="lifetime">&#39;l</span>, <span class="lifetime">&#39;p</span>, <span class="ident">L::IsLive</span>, <span class="ident">P</span>, <span class="ident">L</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::WaterLevelReporter</span> <span class="kw">as</span> <span class="ident">Reporter</span><span class="op">&gt;</span><span class="ident">::ReportSpeciation</span>,
-        <span class="op">&lt;</span><span class="op">&lt;</span><span class="ident">WaterLevelReporterStrategy</span> <span class="kw">as</span> <span class="ident">WaterLevelReporterConstructor</span><span class="op">&lt;</span><span class="lifetime">&#39;l</span>, <span class="lifetime">&#39;p</span>, <span class="ident">L::IsLive</span>, <span class="ident">P</span>, <span class="ident">L</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::WaterLevelReporter</span> <span class="kw">as</span> <span class="ident">Reporter</span><span class="op">&gt;</span><span class="ident">::ReportDispersal</span>,
-    <span class="op">&gt;</span>: <span class="ident">SimulatableKernel</span><span class="op">&lt;</span>
-        <span class="ident">M</span>,
-        <span class="ident">H</span>,
-        <span class="ident">G</span>,
-        <span class="ident">S</span>,
-        <span class="ident">X</span>,
-        <span class="ident">D</span>,
-        <span class="ident">C</span>,
-        <span class="ident">T</span>,
-        <span class="ident">N</span>,
-        <span class="ident">E</span>,
-        <span class="ident">I</span>,
-        <span class="ident">A</span>,
-        <span class="op">&lt;</span><span class="op">&lt;</span><span class="ident">WaterLevelReporterStrategy</span> <span class="kw">as</span> <span class="ident">WaterLevelReporterConstructor</span><span class="op">&lt;</span><span class="lifetime">&#39;l</span>, <span class="lifetime">&#39;p</span>, <span class="ident">L::IsLive</span>, <span class="ident">P</span>, <span class="ident">L</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::WaterLevelReporter</span> <span class="kw">as</span> <span class="ident">Reporter</span><span class="op">&gt;</span><span class="ident">::ReportSpeciation</span>,
-        <span class="op">&lt;</span><span class="op">&lt;</span><span class="ident">WaterLevelReporterStrategy</span> <span class="kw">as</span> <span class="ident">WaterLevelReporterConstructor</span><span class="op">&lt;</span><span class="lifetime">&#39;l</span>, <span class="lifetime">&#39;p</span>, <span class="ident">L::IsLive</span>, <span class="ident">P</span>, <span class="ident">L</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::WaterLevelReporter</span> <span class="kw">as</span> <span class="ident">Reporter</span><span class="op">&gt;</span><span class="ident">::ReportDispersal</span>,
-    <span class="op">&gt;</span>,
+    M: MathsCore,
+    H: Habitat&lt;M&gt; + RustToCuda,
+    G: PrimeableRng&lt;M&gt; + RustToCuda,
+    S: LineageStore&lt;M, H&gt; + RustToCuda,
+    X: EmigrationExit&lt;M, H, G, S&gt; + RustToCuda,
+    D: DispersalSampler&lt;M, H, G&gt; + RustToCuda,
+    C: CoalescenceSampler&lt;M, H, S&gt; + RustToCuda,
+    T: TurnoverRate&lt;M, H&gt; + RustToCuda,
+    N: SpeciationProbability&lt;M, H&gt; + RustToCuda,
+    E: MinSpeciationTrackingEventSampler&lt;M, H, G, S, X, D, C, T, N&gt; + RustToCuda,
+    I: ImmigrationEntry&lt;M&gt; + RustToCuda,
+    A: SingularActiveLineageSampler&lt;M, H, G, S, X, D, C, T, N, E, I&gt;
+        + RustToCuda,
+    P: Reporter,
+    L: LocalPartition&lt;<span class="lifetime">&#39;p</span>, P&gt;,
+    LI: IntoIterator&lt;Item = Lineage&gt;,
+&gt;(
+    simulation: <span class="kw-2">&amp;mut </span>Simulation&lt;M, H, G, S, X, D, C, T, N, E, I, A&gt;,
+    <span class="kw-2">mut </span>kernel: SimulationKernel&lt;
+        M,
+        H,
+        G,
+        S,
+        X,
+        D,
+        C,
+        T,
+        N,
+        E,
+        I,
+        A,
+        &lt;&lt;WaterLevelReporterStrategy <span class="kw">as </span>WaterLevelReporterConstructor&lt;L::IsLive, P, L&gt;&gt;::WaterLevelReporter <span class="kw">as </span>Reporter&gt;::ReportSpeciation,
+        &lt;&lt;WaterLevelReporterStrategy <span class="kw">as </span>WaterLevelReporterConstructor&lt;L::IsLive, P, L&gt;&gt;::WaterLevelReporter <span class="kw">as </span>Reporter&gt;::ReportDispersal,
+    &gt;,
+    config: (GridSize, BlockSize, DedupCache, NonZeroU64),
+    lineages: LI,
+    event_slice: EventSlice,
+    pause_before: <span class="prelude-ty">Option</span>&lt;NonNegativeF64&gt;,
+    local_partition: <span class="kw-2">&amp;</span><span class="lifetime">&#39;l </span><span class="kw-2">mut </span>L,
+) -&gt; <span class="prelude-ty">Result</span>&lt;(Status, NonNegativeF64, u64, <span class="kw">impl </span>IntoIterator&lt;Item = Lineage&gt;)&gt;
+    <span class="kw">where </span>SimulationKernel&lt;
+        M,
+        H,
+        G,
+        S,
+        X,
+        D,
+        C,
+        T,
+        N,
+        E,
+        I,
+        A,
+        &lt;&lt;WaterLevelReporterStrategy <span class="kw">as </span>WaterLevelReporterConstructor&lt;<span class="lifetime">&#39;l</span>, <span class="lifetime">&#39;p</span>, L::IsLive, P, L&gt;&gt;::WaterLevelReporter <span class="kw">as </span>Reporter&gt;::ReportSpeciation,
+        &lt;&lt;WaterLevelReporterStrategy <span class="kw">as </span>WaterLevelReporterConstructor&lt;<span class="lifetime">&#39;l</span>, <span class="lifetime">&#39;p</span>, L::IsLive, P, L&gt;&gt;::WaterLevelReporter <span class="kw">as </span>Reporter&gt;::ReportDispersal,
+    &gt;: SimulatableKernel&lt;
+        M,
+        H,
+        G,
+        S,
+        X,
+        D,
+        C,
+        T,
+        N,
+        E,
+        I,
+        A,
+        &lt;&lt;WaterLevelReporterStrategy <span class="kw">as </span>WaterLevelReporterConstructor&lt;<span class="lifetime">&#39;l</span>, <span class="lifetime">&#39;p</span>, L::IsLive, P, L&gt;&gt;::WaterLevelReporter <span class="kw">as </span>Reporter&gt;::ReportSpeciation,
+        &lt;&lt;WaterLevelReporterStrategy <span class="kw">as </span>WaterLevelReporterConstructor&lt;<span class="lifetime">&#39;l</span>, <span class="lifetime">&#39;p</span>, L::IsLive, P, L&gt;&gt;::WaterLevelReporter <span class="kw">as </span>Reporter&gt;::ReportDispersal,
+    &gt;,
 {
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">slow_lineages</span> <span class="op">=</span> <span class="ident">lineages</span>
-        .<span class="ident">into_iter</span>()
-        .<span class="ident">map</span>(<span class="op">|</span><span class="ident">lineage</span><span class="op">|</span> {
-            <span class="comment">// We only need a strict lower bound here,</span>
-            <span class="comment">//  i.e. that the next event &gt;= pessimistic_next_event_time</span>
-            <span class="kw">let</span> <span class="ident">pessimistic_next_event_time</span> <span class="op">=</span> <span class="ident">lineage</span>.<span class="ident">last_event_time</span>;
+    <span class="kw">let </span><span class="kw-2">mut </span>slow_lineages = lineages
+        .into_iter()
+        .map(|lineage| {
+            <span class="comment">// We only need a strict lower bound here,
+            //  i.e. that the next event &gt;= pessimistic_next_event_time
+            </span><span class="kw">let </span>pessimistic_next_event_time = lineage.last_event_time;
 
-            (<span class="ident">lineage</span>, <span class="ident">pessimistic_next_event_time</span>)
+            (lineage, pessimistic_next_event_time)
         })
-        .<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">VecDeque</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="op">&gt;</span>();
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">fast_lineages</span> <span class="op">=</span> <span class="ident">VecDeque::new</span>();
+        .collect::&lt;VecDeque&lt;<span class="kw">_</span>&gt;&gt;();
+    <span class="kw">let </span><span class="kw-2">mut </span>fast_lineages = VecDeque::new();
 
-    <span class="comment">// Ensure that the progress bar starts with the expected target</span>
-    <span class="ident">local_partition</span>.<span class="ident">report_progress_sync</span>(<span class="ident">slow_lineages</span>.<span class="ident">len</span>() <span class="kw">as</span> <span class="ident">u64</span>);
+    <span class="comment">// Ensure that the progress bar starts with the expected target
+    </span>local_partition.report_progress_sync(slow_lineages.len() <span class="kw">as </span>u64);
 
-    <span class="kw">let</span> <span class="ident">event_slice</span> <span class="op">=</span> <span class="ident">event_slice</span>.<span class="ident">capacity</span>(<span class="ident">slow_lineages</span>.<span class="ident">len</span>());
+    <span class="kw">let </span>event_slice = event_slice.capacity(slow_lineages.len());
 
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">proxy</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ident">WaterLevelReporterStrategy</span> <span class="kw">as</span> <span class="ident">WaterLevelReporterConstructor</span><span class="op">&lt;</span>
-        <span class="ident">L::IsLive</span>,
-        <span class="ident">P</span>,
-        <span class="ident">L</span>,
-    <span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::WaterLevelReporter::new</span>(<span class="ident">event_slice</span>.<span class="ident">get</span>(), <span class="ident">local_partition</span>);
+    <span class="kw">let </span><span class="kw-2">mut </span>proxy = &lt;WaterLevelReporterStrategy <span class="kw">as </span>WaterLevelReporterConstructor&lt;
+        L::IsLive,
+        P,
+        L,
+    &gt;&gt;::WaterLevelReporter::new(event_slice.get(), local_partition);
 
-    <span class="kw">let</span> (<span class="ident">grid_size</span>, <span class="ident">block_size</span>, <span class="ident">dedup_cache</span>, <span class="ident">step_slice</span>) <span class="op">=</span> <span class="ident">config</span>;
+    <span class="kw">let </span>(grid_size, block_size, dedup_cache, step_slice) = config;
 
-    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::or_fun_call</span>)]</span>
-    <span class="kw">let</span> <span class="ident">intial_max_time</span> <span class="op">=</span> <span class="ident">slow_lineages</span>
-        .<span class="ident">iter</span>()
-        .<span class="ident">map</span>(<span class="op">|</span>(<span class="ident">lineage</span>, <span class="kw">_</span>)<span class="op">|</span> <span class="ident">lineage</span>.<span class="ident">last_event_time</span>)
-        .<span class="ident">max</span>()
-        .<span class="ident">unwrap_or</span>(<span class="ident">NonNegativeF64::zero</span>());
+    <span class="attribute">#[allow(clippy::or_fun_call)]
+    </span><span class="kw">let </span>intial_max_time = slow_lineages
+        .iter()
+        .map(|(lineage, <span class="kw">_</span>)| lineage.last_event_time)
+        .max()
+        .unwrap_or(NonNegativeF64::zero());
 
-    <span class="comment">// Initialise the total_time_max and total_steps_sum atomics</span>
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">total_time_max</span> <span class="op">=</span> <span class="ident">AtomicU64::new</span>(<span class="ident">intial_max_time</span>.<span class="ident">get</span>().<span class="ident">to_bits</span>()).<span class="ident">into</span>();
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">total_steps_sum</span> <span class="op">=</span> <span class="ident">AtomicU64::new</span>(<span class="number">0_u64</span>).<span class="ident">into</span>();
+    <span class="comment">// Initialise the total_time_max and total_steps_sum atomics
+    </span><span class="kw">let </span><span class="kw-2">mut </span>total_time_max = AtomicU64::new(intial_max_time.get().to_bits()).into();
+    <span class="kw">let </span><span class="kw-2">mut </span>total_steps_sum = AtomicU64::new(<span class="number">0_u64</span>).into();
 
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">task_list</span> <span class="op">=</span> <span class="ident">ExchangeWrapperOnHost::new</span>(<span class="ident">ValueBuffer::new</span>(<span class="kw-2">&amp;</span><span class="ident">block_size</span>, <span class="kw-2">&amp;</span><span class="ident">grid_size</span>)<span class="question-mark">?</span>)<span class="question-mark">?</span>;
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">event_buffer</span>: <span class="ident">ExchangeWrapperOnHost</span><span class="op">&lt;</span>
-        <span class="ident">EventBuffer</span><span class="op">&lt;</span>
-            <span class="op">&lt;</span><span class="op">&lt;</span><span class="ident">WaterLevelReporterStrategy</span> <span class="kw">as</span> <span class="ident">WaterLevelReporterConstructor</span><span class="op">&lt;</span>
-                <span class="ident">L::IsLive</span>,
-                <span class="ident">P</span>,
-                <span class="ident">L</span>,
-            <span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::WaterLevelReporter</span> <span class="kw">as</span> <span class="ident">Reporter</span><span class="op">&gt;</span><span class="ident">::ReportSpeciation</span>,
-            <span class="op">&lt;</span><span class="op">&lt;</span><span class="ident">WaterLevelReporterStrategy</span> <span class="kw">as</span> <span class="ident">WaterLevelReporterConstructor</span><span class="op">&lt;</span>
-                <span class="ident">L::IsLive</span>,
-                <span class="ident">P</span>,
-                <span class="ident">L</span>,
-            <span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::WaterLevelReporter</span> <span class="kw">as</span> <span class="ident">Reporter</span><span class="op">&gt;</span><span class="ident">::ReportDispersal</span>,
-        <span class="op">&gt;</span>,
-    <span class="op">&gt;</span> <span class="op">=</span> <span class="ident">ExchangeWrapperOnHost::new</span>(<span class="ident">EventBuffer::new</span>(
-        <span class="kw-2">&amp;</span><span class="ident">block_size</span>,
-        <span class="kw-2">&amp;</span><span class="ident">grid_size</span>,
-        <span class="ident">step_slice</span>.<span class="ident">get</span>().<span class="ident">try_into</span>().<span class="ident">unwrap_or</span>(<span class="ident">usize::MAX</span>),
+    <span class="kw">let </span><span class="kw-2">mut </span>task_list = ExchangeWrapperOnHost::new(ValueBuffer::new(<span class="kw-2">&amp;</span>block_size, <span class="kw-2">&amp;</span>grid_size)<span class="question-mark">?</span>)<span class="question-mark">?</span>;
+    <span class="kw">let </span><span class="kw-2">mut </span>event_buffer: ExchangeWrapperOnHost&lt;
+        EventBuffer&lt;
+            &lt;&lt;WaterLevelReporterStrategy <span class="kw">as </span>WaterLevelReporterConstructor&lt;
+                L::IsLive,
+                P,
+                L,
+            &gt;&gt;::WaterLevelReporter <span class="kw">as </span>Reporter&gt;::ReportSpeciation,
+            &lt;&lt;WaterLevelReporterStrategy <span class="kw">as </span>WaterLevelReporterConstructor&lt;
+                L::IsLive,
+                P,
+                L,
+            &gt;&gt;::WaterLevelReporter <span class="kw">as </span>Reporter&gt;::ReportDispersal,
+        &gt;,
+    &gt; = ExchangeWrapperOnHost::new(EventBuffer::new(
+        <span class="kw-2">&amp;</span>block_size,
+        <span class="kw-2">&amp;</span>grid_size,
+        step_slice.get().try_into().unwrap_or(usize::MAX),
     )<span class="question-mark">?</span>)<span class="question-mark">?</span>;
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">min_spec_sample_buffer</span> <span class="op">=</span>
-        <span class="ident">ExchangeWrapperOnHost::new</span>(<span class="ident">ValueBuffer::new</span>(<span class="kw-2">&amp;</span><span class="ident">block_size</span>, <span class="kw-2">&amp;</span><span class="ident">grid_size</span>)<span class="question-mark">?</span>)<span class="question-mark">?</span>;
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">next_event_time_buffer</span> <span class="op">=</span>
-        <span class="ident">ExchangeWrapperOnHost::new</span>(<span class="ident">ValueBuffer::new</span>(<span class="kw-2">&amp;</span><span class="ident">block_size</span>, <span class="kw-2">&amp;</span><span class="ident">grid_size</span>)<span class="question-mark">?</span>)<span class="question-mark">?</span>;
+    <span class="kw">let </span><span class="kw-2">mut </span>min_spec_sample_buffer =
+        ExchangeWrapperOnHost::new(ValueBuffer::new(<span class="kw-2">&amp;</span>block_size, <span class="kw-2">&amp;</span>grid_size)<span class="question-mark">?</span>)<span class="question-mark">?</span>;
+    <span class="kw">let </span><span class="kw-2">mut </span>next_event_time_buffer =
+        ExchangeWrapperOnHost::new(ValueBuffer::new(<span class="kw-2">&amp;</span>block_size, <span class="kw-2">&amp;</span>grid_size)<span class="question-mark">?</span>)<span class="question-mark">?</span>;
 
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">min_spec_samples</span> <span class="op">=</span> <span class="ident">dedup_cache</span>.<span class="ident">construct</span>(<span class="ident">slow_lineages</span>.<span class="ident">len</span>());
+    <span class="kw">let </span><span class="kw-2">mut </span>min_spec_samples = dedup_cache.construct(slow_lineages.len());
 
-    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::or_fun_call</span>)]</span>
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">level_time</span> <span class="op">=</span> <span class="ident">slow_lineages</span>
-        .<span class="ident">iter</span>()
-        .<span class="ident">map</span>(<span class="op">|</span>(<span class="ident">lineage</span>, <span class="kw">_</span>)<span class="op">|</span> <span class="ident">lineage</span>.<span class="ident">last_event_time</span>)
-        .<span class="ident">min</span>()
-        .<span class="ident">unwrap_or</span>(<span class="ident">NonNegativeF64::zero</span>());
+    <span class="attribute">#[allow(clippy::or_fun_call)]
+    </span><span class="kw">let </span><span class="kw-2">mut </span>level_time = slow_lineages
+        .iter()
+        .map(|(lineage, <span class="kw">_</span>)| lineage.last_event_time)
+        .min()
+        .unwrap_or(NonNegativeF64::zero());
 
-    <span class="kw">let</span> <span class="ident">cpu_habitat</span> <span class="op">=</span> <span class="ident">simulation</span>.<span class="ident">habitat</span>().<span class="ident">backup</span>();
-    <span class="kw">let</span> <span class="ident">cpu_turnover_rate</span> <span class="op">=</span> <span class="ident">simulation</span>.<span class="ident">turnover_rate</span>().<span class="ident">backup</span>();
-    <span class="kw">let</span> <span class="ident">cpu_speciation_probability</span> <span class="op">=</span> <span class="ident">simulation</span>.<span class="ident">speciation_probability</span>().<span class="ident">backup</span>();
+    <span class="kw">let </span>cpu_habitat = simulation.habitat().backup();
+    <span class="kw">let </span>cpu_turnover_rate = simulation.turnover_rate().backup();
+    <span class="kw">let </span>cpu_speciation_probability = simulation.speciation_probability().backup();
 
-    <span class="ident">HostAndDeviceMutRef::with_new</span>(<span class="kw-2">&amp;mut</span> <span class="ident">total_time_max</span>, <span class="op">|</span><span class="ident">total_time_max</span><span class="op">|</span> -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
-        <span class="ident">HostAndDeviceMutRef::with_new</span>(<span class="kw-2">&amp;mut</span> <span class="ident">total_steps_sum</span>, <span class="op">|</span><span class="ident">total_steps_sum</span><span class="op">|</span> -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
-            <span class="comment">// TODO: Pipeline async launches and callbacks of simulation/event analysis</span>
-            <span class="ident">simulation</span>.<span class="ident">lend_to_cuda_mut</span>(<span class="op">|</span><span class="kw-2">mut</span> <span class="ident">simulation_cuda_repr</span><span class="op">|</span> -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
-                <span class="kw">while</span> <span class="op">!</span><span class="ident">slow_lineages</span>.<span class="ident">is_empty</span>()
-                    <span class="op">&amp;&amp;</span> <span class="ident">pause_before</span>.<span class="ident">map_or</span>(<span class="bool-val">true</span>, <span class="op">|</span><span class="ident">pause_before</span><span class="op">|</span> <span class="ident">level_time</span> <span class="op">&lt;</span> <span class="ident">pause_before</span>)
+    HostAndDeviceMutRef::with_new(<span class="kw-2">&amp;mut </span>total_time_max, |total_time_max| -&gt; <span class="prelude-ty">Result</span>&lt;()&gt; {
+        HostAndDeviceMutRef::with_new(<span class="kw-2">&amp;mut </span>total_steps_sum, |total_steps_sum| -&gt; <span class="prelude-ty">Result</span>&lt;()&gt; {
+            <span class="comment">// TODO: Pipeline async launches and callbacks of simulation/event analysis
+            </span>simulation.lend_to_cuda_mut(|<span class="kw-2">mut </span>simulation_cuda_repr| -&gt; <span class="prelude-ty">Result</span>&lt;()&gt; {
+                <span class="kw">while </span>!slow_lineages.is_empty()
+                    &amp;&amp; pause_before.map_or(<span class="bool-val">true</span>, |pause_before| level_time &lt; pause_before)
                 {
-                    <span class="kw">let</span> <span class="ident">total_event_rate</span>: <span class="ident">NonNegativeF64</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">P::ReportDispersal::VALUE</span> {
-                        <span class="comment">// Full event rate lambda with speciation</span>
-                        <span class="ident">slow_lineages</span>
-                            .<span class="ident">iter</span>()
-                            .<span class="ident">map</span>(<span class="op">|</span>(<span class="ident">lineage</span>, <span class="kw">_</span>)<span class="op">|</span> {
-                                <span class="ident">cpu_turnover_rate</span>.<span class="ident">get_turnover_rate_at_location</span>(
-                                    <span class="ident">lineage</span>.<span class="ident">indexed_location</span>.<span class="ident">location</span>(),
-                                    <span class="kw-2">&amp;</span><span class="ident">cpu_habitat</span>,
+                    <span class="kw">let </span>total_event_rate: NonNegativeF64 = <span class="kw">if </span>P::ReportDispersal::VALUE {
+                        <span class="comment">// Full event rate lambda with speciation
+                        </span>slow_lineages
+                            .iter()
+                            .map(|(lineage, <span class="kw">_</span>)| {
+                                cpu_turnover_rate.get_turnover_rate_at_location(
+                                    lineage.indexed_location.location(),
+                                    <span class="kw-2">&amp;</span>cpu_habitat,
                                 )
                             })
-                            .<span class="ident">sum</span>()
-                    } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">P::ReportSpeciation::VALUE</span> {
-                        <span class="comment">// Only speciation event rate lambda * nu</span>
-                        <span class="ident">slow_lineages</span>
-                            .<span class="ident">iter</span>()
-                            .<span class="ident">map</span>(<span class="op">|</span>(<span class="ident">lineage</span>, <span class="kw">_</span>)<span class="op">|</span> {
-                                <span class="kw">let</span> <span class="ident">location</span> <span class="op">=</span> <span class="ident">lineage</span>.<span class="ident">indexed_location</span>.<span class="ident">location</span>();
+                            .sum()
+                    } <span class="kw">else if </span>P::ReportSpeciation::VALUE {
+                        <span class="comment">// Only speciation event rate lambda * nu
+                        </span>slow_lineages
+                            .iter()
+                            .map(|(lineage, <span class="kw">_</span>)| {
+                                <span class="kw">let </span>location = lineage.indexed_location.location();
 
-                                <span class="ident">cpu_turnover_rate</span>
-                                    .<span class="ident">get_turnover_rate_at_location</span>(<span class="ident">location</span>, <span class="kw-2">&amp;</span><span class="ident">cpu_habitat</span>)
-                                    <span class="op">*</span> <span class="ident">cpu_speciation_probability</span>
-                                        .<span class="ident">get_speciation_probability_at_location</span>(
-                                            <span class="ident">location</span>,
-                                            <span class="kw-2">&amp;</span><span class="ident">cpu_habitat</span>,
+                                cpu_turnover_rate
+                                    .get_turnover_rate_at_location(location, <span class="kw-2">&amp;</span>cpu_habitat)
+                                    * cpu_speciation_probability
+                                        .get_speciation_probability_at_location(
+                                            location,
+                                            <span class="kw-2">&amp;</span>cpu_habitat,
                                         )
                             })
-                            .<span class="ident">sum</span>()
-                    } <span class="kw">else</span> {
-                        <span class="comment">// No events produced -&gt; no restriction</span>
-                        <span class="ident">NonNegativeF64::zero</span>()
+                            .sum()
+                    } <span class="kw">else </span>{
+                        <span class="comment">// No events produced -&gt; no restriction
+                        </span>NonNegativeF64::zero()
                     };
 
-                    <span class="ident">level_time</span> <span class="op">+</span><span class="op">=</span> <span class="ident">NonNegativeF64::from</span>(<span class="ident">event_slice</span>.<span class="ident">get</span>()) <span class="op">/</span> <span class="ident">total_event_rate</span>;
+                    level_time += NonNegativeF64::from(event_slice.get()) / total_event_rate;
 
-                    <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">pause_before</span>) <span class="op">=</span> <span class="ident">pause_before</span> {
-                        <span class="ident">level_time</span> <span class="op">=</span> <span class="ident">level_time</span>.<span class="ident">min</span>(<span class="ident">pause_before</span>);
+                    <span class="kw">if let </span><span class="prelude-val">Some</span>(pause_before) = pause_before {
+                        level_time = level_time.min(pause_before);
                     }
 
-                    <span class="comment">// [Report all events below the water level] + Advance the water level</span>
-                    <span class="ident">proxy</span>.<span class="ident">advance_water_level</span>(<span class="ident">level_time</span>);
+                    <span class="comment">// [Report all events below the water level] + Advance the water level
+                    </span>proxy.advance_water_level(level_time);
 
-                    <span class="comment">// Simulate all slow lineages until they have finished or exceeded the</span>
-                    <span class="comment">// new water  level</span>
-                    <span class="kw">while</span> <span class="op">!</span><span class="ident">slow_lineages</span>.<span class="ident">is_empty</span>() {
-                        <span class="comment">// Upload the new tasks from the front of the task queue</span>
-                        <span class="kw">for</span> <span class="kw-2">mut</span> <span class="ident">task</span> <span class="kw">in</span> <span class="ident">task_list</span>.<span class="ident">iter_mut</span>() {
-                            <span class="kw">let</span> <span class="ident">next_slow_lineage</span> <span class="op">=</span> <span class="kw">loop</span> {
-                                <span class="kw">match</span> <span class="ident">slow_lineages</span>.<span class="ident">pop_front</span>() {
-                                    <span class="prelude-val">None</span> =&gt; <span class="kw">break</span> <span class="prelude-val">None</span>,
-                                    <span class="prelude-val">Some</span>((<span class="ident">slow_lineage</span>, <span class="ident">next_event</span>)) <span class="kw">if</span> <span class="ident">next_event</span> <span class="op">&lt;</span> <span class="ident">level_time</span> =&gt; {
-                                        <span class="kw">break</span> <span class="prelude-val">Some</span>(<span class="ident">slow_lineage</span>)
+                    <span class="comment">// Simulate all slow lineages until they have finished or exceeded the
+                    // new water  level
+                    </span><span class="kw">while </span>!slow_lineages.is_empty() {
+                        <span class="comment">// Upload the new tasks from the front of the task queue
+                        </span><span class="kw">for </span><span class="kw-2">mut </span>task <span class="kw">in </span>task_list.iter_mut() {
+                            <span class="kw">let </span>next_slow_lineage = <span class="kw">loop </span>{
+                                <span class="kw">match </span>slow_lineages.pop_front() {
+                                    <span class="prelude-val">None </span>=&gt; <span class="kw">break </span><span class="prelude-val">None</span>,
+                                    <span class="prelude-val">Some</span>((slow_lineage, next_event)) <span class="kw">if </span>next_event &lt; level_time =&gt; {
+                                        <span class="kw">break </span><span class="prelude-val">Some</span>(slow_lineage)
                                     },
-                                    <span class="prelude-val">Some</span>((<span class="ident">fast_lineage</span>, <span class="ident">next_event</span>)) =&gt; {
-                                        <span class="ident">fast_lineages</span>.<span class="ident">push_back</span>((<span class="ident">fast_lineage</span>, <span class="ident">next_event</span>));
+                                    <span class="prelude-val">Some</span>((fast_lineage, next_event)) =&gt; {
+                                        fast_lineages.push_back((fast_lineage, next_event));
                                     },
                                 }
                             };
 
-                            <span class="ident">task</span>.<span class="ident">replace</span>(<span class="ident">next_slow_lineage</span>);
+                            task.replace(next_slow_lineage);
                         }
 
-                        <span class="comment">// Move the task list, event buffer and min speciation sample buffer</span>
-                        <span class="comment">// to CUDA</span>
-                        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">event_buffer_cuda</span> <span class="op">=</span> <span class="ident">event_buffer</span>.<span class="ident">move_to_device</span>()<span class="question-mark">?</span>;
-                        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">min_spec_sample_buffer_cuda</span> <span class="op">=</span>
-                            <span class="ident">min_spec_sample_buffer</span>.<span class="ident">move_to_device</span>()<span class="question-mark">?</span>;
-                        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">next_event_time_buffer_cuda</span> <span class="op">=</span>
-                            <span class="ident">next_event_time_buffer</span>.<span class="ident">move_to_device</span>()<span class="question-mark">?</span>;
-                        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">task_list_cuda</span> <span class="op">=</span> <span class="ident">task_list</span>.<span class="ident">move_to_device</span>()<span class="question-mark">?</span>;
+                        <span class="comment">// Move the task list, event buffer and min speciation sample buffer
+                        // to CUDA
+                        </span><span class="kw">let </span><span class="kw-2">mut </span>event_buffer_cuda = event_buffer.move_to_device()<span class="question-mark">?</span>;
+                        <span class="kw">let </span><span class="kw-2">mut </span>min_spec_sample_buffer_cuda =
+                            min_spec_sample_buffer.move_to_device()<span class="question-mark">?</span>;
+                        <span class="kw">let </span><span class="kw-2">mut </span>next_event_time_buffer_cuda =
+                            next_event_time_buffer.move_to_device()<span class="question-mark">?</span>;
+                        <span class="kw">let </span><span class="kw-2">mut </span>task_list_cuda = task_list.move_to_device()<span class="question-mark">?</span>;
 
-                        <span class="ident">kernel</span>.<span class="ident">simulate_raw</span>(
-                            <span class="ident">simulation_cuda_repr</span>.<span class="ident">as_mut</span>(),
-                            <span class="ident">task_list_cuda</span>.<span class="ident">as_mut</span>(),
-                            <span class="ident">event_buffer_cuda</span>.<span class="ident">as_mut</span>(),
-                            <span class="ident">min_spec_sample_buffer_cuda</span>.<span class="ident">as_mut</span>(),
-                            <span class="ident">next_event_time_buffer_cuda</span>.<span class="ident">as_mut</span>(),
-                            <span class="ident">total_time_max</span>.<span class="ident">as_ref</span>(),
-                            <span class="ident">total_steps_sum</span>.<span class="ident">as_ref</span>(),
-                            <span class="ident">step_slice</span>.<span class="ident">get</span>().<span class="ident">into</span>(),
-                            <span class="ident">level_time</span>.<span class="ident">into</span>(),
+                        kernel.simulate_raw(
+                            simulation_cuda_repr.as_mut(),
+                            task_list_cuda.as_mut(),
+                            event_buffer_cuda.as_mut(),
+                            min_spec_sample_buffer_cuda.as_mut(),
+                            next_event_time_buffer_cuda.as_mut(),
+                            total_time_max.as_ref(),
+                            total_steps_sum.as_ref(),
+                            step_slice.get().into(),
+                            level_time.into(),
                         )<span class="question-mark">?</span>;
 
-                        <span class="ident">min_spec_sample_buffer</span> <span class="op">=</span> <span class="ident">min_spec_sample_buffer_cuda</span>.<span class="ident">move_to_host</span>()<span class="question-mark">?</span>;
-                        <span class="ident">next_event_time_buffer</span> <span class="op">=</span> <span class="ident">next_event_time_buffer_cuda</span>.<span class="ident">move_to_host</span>()<span class="question-mark">?</span>;
-                        <span class="ident">task_list</span> <span class="op">=</span> <span class="ident">task_list_cuda</span>.<span class="ident">move_to_host</span>()<span class="question-mark">?</span>;
-                        <span class="ident">event_buffer</span> <span class="op">=</span> <span class="ident">event_buffer_cuda</span>.<span class="ident">move_to_host</span>()<span class="question-mark">?</span>;
+                        min_spec_sample_buffer = min_spec_sample_buffer_cuda.move_to_host()<span class="question-mark">?</span>;
+                        next_event_time_buffer = next_event_time_buffer_cuda.move_to_host()<span class="question-mark">?</span>;
+                        task_list = task_list_cuda.move_to_host()<span class="question-mark">?</span>;
+                        event_buffer = event_buffer_cuda.move_to_host()<span class="question-mark">?</span>;
 
-                        <span class="comment">// Fetch the completion of the tasks</span>
-                        <span class="kw">for</span> ((<span class="kw-2">mut</span> <span class="ident">spec_sample</span>, <span class="kw-2">mut</span> <span class="ident">next_event_time</span>), <span class="kw-2">mut</span> <span class="ident">task</span>) <span class="kw">in</span>
-                            <span class="ident">min_spec_sample_buffer</span>
-                                .<span class="ident">iter_mut</span>()
-                                .<span class="ident">zip</span>(<span class="ident">next_event_time_buffer</span>.<span class="ident">iter_mut</span>())
-                                .<span class="ident">zip</span>(<span class="ident">task_list</span>.<span class="ident">iter_mut</span>())
+                        <span class="comment">// Fetch the completion of the tasks
+                        </span><span class="kw">for </span>((<span class="kw-2">mut </span>spec_sample, <span class="kw-2">mut </span>next_event_time), <span class="kw-2">mut </span>task) <span class="kw">in
+                            </span>min_spec_sample_buffer
+                                .iter_mut()
+                                .zip(next_event_time_buffer.iter_mut())
+                                .zip(task_list.iter_mut())
                         {
-                            <span class="kw">let</span> <span class="ident">duplicate_individual</span> <span class="op">=</span> <span class="ident">spec_sample</span>
-                                .<span class="ident">take</span>()
-                                .<span class="ident">map_or</span>(<span class="bool-val">false</span>, <span class="op">|</span><span class="ident">spec_sample</span><span class="op">|</span> <span class="op">!</span><span class="ident">min_spec_samples</span>.<span class="ident">insert</span>(<span class="ident">spec_sample</span>));
+                            <span class="kw">let </span>duplicate_individual = spec_sample
+                                .take()
+                                .map_or(<span class="bool-val">false</span>, |spec_sample| !min_spec_samples.insert(spec_sample));
 
-                            <span class="kw">if</span> <span class="kw">let</span> (<span class="prelude-val">Some</span>(<span class="ident">task</span>), <span class="prelude-val">Some</span>(<span class="ident">next_event_time</span>)) <span class="op">=</span>
-                                (<span class="ident">task</span>.<span class="ident">take</span>(), <span class="ident">next_event_time</span>.<span class="ident">take</span>())
+                            <span class="kw">if let </span>(<span class="prelude-val">Some</span>(task), <span class="prelude-val">Some</span>(next_event_time)) =
+                                (task.take(), next_event_time.take())
                             {
-                                <span class="kw">if</span> <span class="op">!</span><span class="ident">duplicate_individual</span> {
-                                    <span class="comment">// Reclassify lineages as either slow (still below</span>
-                                    <span class="comment">// water) or</span>
-                                    <span class="comment">// fast</span>
-                                    <span class="kw">if</span> <span class="ident">next_event_time</span> <span class="op">&lt;</span> <span class="ident">level_time</span> {
-                                        <span class="ident">slow_lineages</span>.<span class="ident">push_back</span>((<span class="ident">task</span>, <span class="ident">next_event_time</span>.<span class="ident">into</span>()));
-                                    } <span class="kw">else</span> {
-                                        <span class="ident">fast_lineages</span>.<span class="ident">push_back</span>((<span class="ident">task</span>, <span class="ident">next_event_time</span>.<span class="ident">into</span>()));
+                                <span class="kw">if </span>!duplicate_individual {
+                                    <span class="comment">// Reclassify lineages as either slow (still below
+                                    // water) or
+                                    // fast
+                                    </span><span class="kw">if </span>next_event_time &lt; level_time {
+                                        slow_lineages.push_back((task, next_event_time.into()));
+                                    } <span class="kw">else </span>{
+                                        fast_lineages.push_back((task, next_event_time.into()));
                                     }
                                 }
                             }
                         }
 
-                        <span class="ident">event_buffer</span>.<span class="ident">report_events</span>(<span class="kw-2">&amp;mut</span> <span class="ident">proxy</span>);
+                        event_buffer.report_events(<span class="kw-2">&amp;mut </span>proxy);
 
-                        <span class="ident">proxy</span>.<span class="ident">local_partition</span>().<span class="ident">get_reporter</span>().<span class="ident">report_progress</span>(
-                            <span class="kw-2">&amp;</span>((<span class="ident">slow_lineages</span>.<span class="ident">len</span>() <span class="kw">as</span> <span class="ident">u64</span>) <span class="op">+</span> (<span class="ident">fast_lineages</span>.<span class="ident">len</span>() <span class="kw">as</span> <span class="ident">u64</span>)).<span class="ident">into</span>(),
+                        proxy.local_partition().get_reporter().report_progress(
+                            <span class="kw-2">&amp;</span>((slow_lineages.len() <span class="kw">as </span>u64) + (fast_lineages.len() <span class="kw">as </span>u64)).into(),
                         );
                     }
 
-                    <span class="comment">// Fast lineages are now slow again</span>
-                    <span class="ident">std::mem::swap</span>(<span class="kw-2">&amp;mut</span> <span class="ident">slow_lineages</span>, <span class="kw-2">&amp;mut</span> <span class="ident">fast_lineages</span>);
+                    <span class="comment">// Fast lineages are now slow again
+                    </span>std::mem::swap(<span class="kw-2">&amp;mut </span>slow_lineages, <span class="kw-2">&amp;mut </span>fast_lineages);
                 }
 
                 <span class="prelude-val">Ok</span>(())
             })<span class="question-mark">?</span>;
 
-            <span class="comment">// [Report all remaining events]</span>
-            <span class="ident">proxy</span>.<span class="ident">finalise</span>();
+            <span class="comment">// [Report all remaining events]
+            </span>proxy.finalise();
 
             <span class="prelude-val">Ok</span>(())
         })
     })<span class="question-mark">?</span>;
 
-    <span class="comment">// Safety: Max of NonNegativeF64 values from the GPU</span>
-    <span class="kw">let</span> <span class="ident">total_time_max</span> <span class="op">=</span> <span class="kw">unsafe</span> {
-        <span class="ident">NonNegativeF64::new_unchecked</span>(<span class="ident">f64::from_bits</span>(<span class="ident">total_time_max</span>.<span class="ident">into_inner</span>().<span class="ident">into_inner</span>()))
+    <span class="comment">// Safety: Max of NonNegativeF64 values from the GPU
+    </span><span class="kw">let </span>total_time_max = <span class="kw">unsafe </span>{
+        NonNegativeF64::new_unchecked(f64::from_bits(total_time_max.into_inner().into_inner()))
     };
-    <span class="kw">let</span> <span class="ident">total_steps_sum</span> <span class="op">=</span> <span class="ident">total_steps_sum</span>.<span class="ident">into_inner</span>().<span class="ident">into_inner</span>();
+    <span class="kw">let </span>total_steps_sum = total_steps_sum.into_inner().into_inner();
 
-    <span class="ident">local_partition</span>.<span class="ident">report_progress_sync</span>(<span class="ident">slow_lineages</span>.<span class="ident">len</span>() <span class="kw">as</span> <span class="ident">u64</span>);
+    local_partition.report_progress_sync(slow_lineages.len() <span class="kw">as </span>u64);
 
-    <span class="kw">let</span> <span class="ident">status</span> <span class="op">=</span> <span class="ident">Status::paused</span>(<span class="ident">local_partition</span>.<span class="ident">reduce_vote_continue</span>(<span class="op">!</span><span class="ident">slow_lineages</span>.<span class="ident">is_empty</span>()));
-    <span class="kw">let</span> (<span class="ident">global_time</span>, <span class="ident">global_steps</span>) <span class="op">=</span>
-        <span class="ident">local_partition</span>.<span class="ident">reduce_global_time_steps</span>(<span class="ident">total_time_max</span>, <span class="ident">total_steps_sum</span>);
-    <span class="kw">let</span> <span class="ident">lineages</span> <span class="op">=</span> <span class="ident">slow_lineages</span>.<span class="ident">into_iter</span>().<span class="ident">map</span>(<span class="op">|</span>(<span class="ident">lineage</span>, <span class="kw">_</span>)<span class="op">|</span> <span class="ident">lineage</span>);
+    <span class="kw">let </span>status = Status::paused(local_partition.reduce_vote_continue(!slow_lineages.is_empty()));
+    <span class="kw">let </span>(global_time, global_steps) =
+        local_partition.reduce_global_time_steps(total_time_max, total_steps_sum);
+    <span class="kw">let </span>lineages = slow_lineages.into_iter().map(|(lineage, <span class="kw">_</span>)| lineage);
 
-    <span class="prelude-val">Ok</span>((<span class="ident">status</span>, <span class="ident">global_time</span>, <span class="ident">global_steps</span>, <span class="ident">lineages</span>))
+    <span class="prelude-val">Ok</span>((status, global_time, global_steps, lineages))
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="rustcoalescence_algorithms_cuda" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0-nightly (affe0d3a0 2022-08-05)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="rustcoalescence_algorithms_cuda" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (5e9772042 2022-10-29)" ></div></body></html>

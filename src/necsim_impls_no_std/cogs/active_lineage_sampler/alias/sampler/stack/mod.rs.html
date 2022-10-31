@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `necsim/impls/no-std/src/cogs/active_lineage_sampler/alias/sampler/stack/mod.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>mod.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../../../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../../../../storage.js"></script><script defer src="../../../../../../../source-script.js"></script><script defer src="../../../../../../../source-files.js"></script><script defer src="../../../../../../../main.js"></script><noscript><link rel="stylesheet" href="../../../../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../../../../../necsim_impls_no_std/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../../../../../necsim_impls_no_std/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../../../../../necsim_impls_no_std/index.html"><img class="rust-logo" src="../../../../../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `necsim/impls/no-std/src/cogs/active_lineage_sampler/alias/sampler/stack/mod.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>mod.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../../../../../normalize.css"><link rel="stylesheet" href="../../../../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../../../../../ayu.css" disabled><link rel="stylesheet" href="../../../../../../../dark.css" disabled><link rel="stylesheet" href="../../../../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../../../../storage.js"></script><script defer src="../../../../../../../source-script.js"></script><script defer src="../../../../../../../source-files.js"></script><script defer src="../../../../../../../main.js"></script><noscript><link rel="stylesheet" href="../../../../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../../../../../../necsim_impls_no_std/index.html"><img class="rust-logo" src="../../../../../../../rust-logo.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../../../../wheel.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -228,235 +228,235 @@
 <span id="228">228</span>
 <span id="229">229</span>
 <span id="230">230</span>
-</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">alloc</span>::{<span class="ident">vec</span>, <span class="ident">vec::Vec</span>};
-<span class="kw">use</span> <span class="ident">core</span>::{
-    <span class="ident">cmp::Ordering</span>,
-    <span class="ident">fmt</span>,
-    <span class="ident">hash::Hash</span>,
-    <span class="ident">num</span>::{<span class="ident">NonZeroU128</span>, <span class="ident">NonZeroUsize</span>},
+</pre><pre class="rust"><code><span class="kw">use </span>alloc::{vec, vec::Vec};
+<span class="kw">use </span>core::{
+    cmp::Ordering,
+    fmt,
+    hash::Hash,
+    num::{NonZeroU128, NonZeroUsize},
 };
 
-<span class="kw">use</span> <span class="ident">necsim_core::cogs</span>::{<span class="ident">MathsCore</span>, <span class="ident">RngCore</span>, <span class="ident">RngSampler</span>};
-<span class="kw">use</span> <span class="ident">necsim_core_bond</span>::{<span class="ident">NonNegativeF64</span>, <span class="ident">PositiveF64</span>};
+<span class="kw">use </span>necsim_core::cogs::{MathsCore, RngCore, RngSampler};
+<span class="kw">use </span>necsim_core_bond::{NonNegativeF64, PositiveF64};
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
-<span class="kw">mod</span> <span class="ident">tests</span>;
+<span class="attribute">#[cfg(test)]
+</span><span class="kw">mod </span>tests;
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
-<span class="kw">struct</span> <span class="ident">RejectionSamplingGroup</span><span class="op">&lt;</span><span class="ident">E</span>: <span class="ident">Eq</span> <span class="op">+</span> <span class="ident">Hash</span><span class="op">&gt;</span> {
-    <span class="ident">events</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">E</span><span class="op">&gt;</span>,
-    <span class="ident">weights</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span>,
-    <span class="ident">total_weight</span>: <span class="ident">u128</span>,
+<span class="attribute">#[derive(Clone, Debug, PartialEq, Eq)]
+</span><span class="kw">struct </span>RejectionSamplingGroup&lt;E: Eq + Hash&gt; {
+    events: Vec&lt;E&gt;,
+    weights: Vec&lt;u64&gt;,
+    total_weight: u128,
 }
 
-<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::module_name_repetitions</span>)]</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">DynamicAliasMethodStackSampler</span><span class="op">&lt;</span><span class="ident">E</span>: <span class="ident">Eq</span> <span class="op">+</span> <span class="ident">Hash</span> <span class="op">+</span> <span class="ident">Clone</span><span class="op">&gt;</span> {
-    <span class="ident">exponents</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">i16</span><span class="op">&gt;</span>,
-    <span class="ident">groups</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">RejectionSamplingGroup</span><span class="op">&lt;</span><span class="ident">E</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    <span class="ident">min_exponent</span>: <span class="ident">i16</span>,
-    <span class="ident">total_weight</span>: <span class="ident">u128</span>,
+<span class="attribute">#[allow(clippy::module_name_repetitions)]
+#[derive(Clone)]
+</span><span class="kw">pub struct </span>DynamicAliasMethodStackSampler&lt;E: Eq + Hash + Clone&gt; {
+    exponents: Vec&lt;i16&gt;,
+    groups: Vec&lt;RejectionSamplingGroup&lt;E&gt;&gt;,
+    min_exponent: i16,
+    total_weight: u128,
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">E</span>: <span class="ident">Eq</span> <span class="op">+</span> <span class="ident">Hash</span> <span class="op">+</span> <span class="ident">Clone</span><span class="op">&gt;</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">DynamicAliasMethodStackSampler</span><span class="op">&lt;</span><span class="ident">E</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">fmt</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span>) -&gt; <span class="ident">fmt::Result</span> {
-        <span class="ident">fmt</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;DynamicAliasMethodStackSampler&quot;</span>)
-            .<span class="ident">field</span>(<span class="string">&quot;exponents&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">exponents</span>)
-            .<span class="ident">field</span>(<span class="string">&quot;total_weight&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">total_weight</span>().<span class="ident">get</span>())
-            .<span class="ident">finish</span>()
+<span class="kw">impl</span>&lt;E: Eq + Hash + Clone&gt; fmt::Debug <span class="kw">for </span>DynamicAliasMethodStackSampler&lt;E&gt; {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, fmt: <span class="kw-2">&amp;mut </span>fmt::Formatter) -&gt; fmt::Result {
+        fmt.debug_struct(<span class="string">&quot;DynamicAliasMethodStackSampler&quot;</span>)
+            .field(<span class="string">&quot;exponents&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.exponents)
+            .field(<span class="string">&quot;total_weight&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.total_weight().get())
+            .finish()
     }
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">E</span>: <span class="ident">Eq</span> <span class="op">+</span> <span class="ident">Hash</span><span class="op">&gt;</span> <span class="ident">RejectionSamplingGroup</span><span class="op">&lt;</span><span class="ident">E</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">iter</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw">impl</span> <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">E</span><span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">events</span>.<span class="ident">iter</span>()
+<span class="kw">impl</span>&lt;E: Eq + Hash&gt; RejectionSamplingGroup&lt;E&gt; {
+    <span class="kw">fn </span>iter(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw">impl </span>Iterator&lt;Item = <span class="kw-2">&amp;</span>E&gt; {
+        <span class="self">self</span>.events.iter()
     }
 
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">sample_pop_inplace</span><span class="op">&lt;</span><span class="ident">M</span>: <span class="ident">MathsCore</span>, <span class="ident">G</span>: <span class="ident">RngCore</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span><span class="op">&gt;</span>(
-        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
-        <span class="ident">rng</span>: <span class="kw-2">&amp;mut</span> <span class="ident">G</span>,
-    ) -&gt; (<span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;mut</span> <span class="self">Self</span><span class="op">&gt;</span>, <span class="ident">E</span>) {
-        <span class="kw">if</span> <span class="kw">let</span> [<span class="ident">_event</span>] <span class="op">=</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">events</span>[..] {
-            <span class="comment">// Safety: If there is only one event, the pop must succeed</span>
-            <span class="kw">return</span> (<span class="prelude-val">None</span>, <span class="self">self</span>.<span class="ident">events</span>.<span class="ident">pop</span>().<span class="ident">unwrap_unchecked</span>());
+    <span class="kw">unsafe fn </span>sample_pop_inplace&lt;M: MathsCore, G: RngCore&lt;M&gt;&gt;(
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        rng: <span class="kw-2">&amp;mut </span>G,
+    ) -&gt; (<span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;mut </span><span class="self">Self</span>&gt;, E) {
+        <span class="kw">if let </span>[_event] = <span class="kw-2">&amp;</span><span class="self">self</span>.events[..] {
+            <span class="comment">// Safety: If there is only one event, the pop must succeed
+            </span><span class="kw">return </span>(<span class="prelude-val">None</span>, <span class="self">self</span>.events.pop().unwrap_unchecked());
         }
 
-        <span class="kw">loop</span> {
-            <span class="comment">// Safety: By construction, the group never contains zero elements</span>
-            <span class="kw">let</span> <span class="ident">index</span> <span class="op">=</span> <span class="ident">rng</span>.<span class="ident">sample_index</span>(<span class="ident">NonZeroUsize::new_unchecked</span>(<span class="self">self</span>.<span class="ident">weights</span>.<span class="ident">len</span>()));
-            <span class="kw">let</span> <span class="ident">height</span> <span class="op">=</span> <span class="ident">rng</span>.<span class="ident">sample_u64</span>() <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">11</span>;
+        <span class="kw">loop </span>{
+            <span class="comment">// Safety: By construction, the group never contains zero elements
+            </span><span class="kw">let </span>index = rng.sample_index(NonZeroUsize::new_unchecked(<span class="self">self</span>.weights.len()));
+            <span class="kw">let </span>height = rng.sample_u64() &gt;&gt; <span class="number">11</span>;
 
-            <span class="comment">// 53rd bit of weight is always 1, so sampling chance &gt;= 50%</span>
-            <span class="kw">if</span> <span class="ident">height</span> <span class="op">&lt;</span> <span class="self">self</span>.<span class="ident">weights</span>[<span class="ident">index</span>] {
-                <span class="kw">let</span> <span class="ident">old_weight</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">weights</span>.<span class="ident">swap_remove</span>(<span class="ident">index</span>);
+            <span class="comment">// 53rd bit of weight is always 1, so sampling chance &gt;= 50%
+            </span><span class="kw">if </span>height &lt; <span class="self">self</span>.weights[index] {
+                <span class="kw">let </span>old_weight = <span class="self">self</span>.weights.swap_remove(index);
 
-                <span class="self">self</span>.<span class="ident">total_weight</span> <span class="op">-</span><span class="op">=</span> <span class="ident">u128::from</span>(<span class="ident">old_weight</span>);
+                <span class="self">self</span>.total_weight -= u128::from(old_weight);
 
-                <span class="kw">let</span> <span class="ident">old_event</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">events</span>.<span class="ident">swap_remove</span>(<span class="ident">index</span>);
+                <span class="kw">let </span>old_event = <span class="self">self</span>.events.swap_remove(index);
 
-                <span class="kw">return</span> (<span class="prelude-val">Some</span>(<span class="self">self</span>), <span class="ident">old_event</span>);
+                <span class="kw">return </span>(<span class="prelude-val">Some</span>(<span class="self">self</span>), old_event);
             }
         }
     }
 
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">sample_pop</span><span class="op">&lt;</span><span class="ident">M</span>: <span class="ident">MathsCore</span>, <span class="ident">G</span>: <span class="ident">RngCore</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">rng</span>: <span class="kw-2">&amp;mut</span> <span class="ident">G</span>) -&gt; (<span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>, <span class="ident">E</span>) {
-        <span class="kw">match</span> <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">sample_pop_inplace</span>(<span class="ident">rng</span>) } {
-            (<span class="prelude-val">Some</span>(<span class="kw">_</span>), <span class="ident">event</span>) =&gt; (<span class="prelude-val">Some</span>(<span class="self">self</span>), <span class="ident">event</span>),
-            (<span class="prelude-val">None</span>, <span class="ident">event</span>) =&gt; (<span class="prelude-val">None</span>, <span class="ident">event</span>),
+    <span class="attribute">#[cfg(test)]
+    </span><span class="kw">fn </span>sample_pop&lt;M: MathsCore, G: RngCore&lt;M&gt;&gt;(<span class="kw-2">mut </span><span class="self">self</span>, rng: <span class="kw-2">&amp;mut </span>G) -&gt; (<span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>&gt;, E) {
+        <span class="kw">match unsafe </span>{ <span class="self">self</span>.sample_pop_inplace(rng) } {
+            (<span class="prelude-val">Some</span>(<span class="kw">_</span>), event) =&gt; (<span class="prelude-val">Some</span>(<span class="self">self</span>), event),
+            (<span class="prelude-val">None</span>, event) =&gt; (<span class="prelude-val">None</span>, event),
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">add</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">event</span>: <span class="ident">E</span>, <span class="ident">weight</span>: <span class="ident">u64</span>) {
-        <span class="self">self</span>.<span class="ident">events</span>.<span class="ident">push</span>(<span class="ident">event</span>);
-        <span class="self">self</span>.<span class="ident">weights</span>.<span class="ident">push</span>(<span class="ident">weight</span>);
+    <span class="kw">fn </span>add(<span class="kw-2">&amp;mut </span><span class="self">self</span>, event: E, weight: u64) {
+        <span class="self">self</span>.events.push(event);
+        <span class="self">self</span>.weights.push(weight);
 
-        <span class="self">self</span>.<span class="ident">total_weight</span> <span class="op">+</span><span class="op">=</span> <span class="ident">u128::from</span>(<span class="ident">weight</span>);
+        <span class="self">self</span>.total_weight += u128::from(weight);
     }
 
-    <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">event</span>: <span class="ident">E</span>, <span class="ident">weight</span>: <span class="ident">u64</span>) -&gt; <span class="self">Self</span> {
-        <span class="self">Self</span> {
-            <span class="ident">events</span>: <span class="macro">vec!</span>[<span class="ident">event</span>],
-            <span class="ident">weights</span>: <span class="macro">vec!</span>[<span class="ident">weight</span>],
-            <span class="ident">total_weight</span>: <span class="ident">u128::from</span>(<span class="ident">weight</span>),
+    <span class="kw">fn </span>new(event: E, weight: u64) -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{
+            events: <span class="macro">vec!</span>[event],
+            weights: <span class="macro">vec!</span>[weight],
+            total_weight: u128::from(weight),
         }
     }
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">E</span>: <span class="ident">Eq</span> <span class="op">+</span> <span class="ident">Hash</span> <span class="op">+</span> <span class="ident">Clone</span><span class="op">&gt;</span> <span class="ident">DynamicAliasMethodStackSampler</span><span class="op">&lt;</span><span class="ident">E</span><span class="op">&gt;</span> {
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() -&gt; <span class="self">Self</span> {
-        <span class="self">Self</span> {
-            <span class="ident">exponents</span>: <span class="ident">Vec::new</span>(),
-            <span class="ident">groups</span>: <span class="ident">Vec::new</span>(),
-            <span class="ident">min_exponent</span>: <span class="number">0_i16</span>,
-            <span class="ident">total_weight</span>: <span class="number">0_u128</span>,
+<span class="kw">impl</span>&lt;E: Eq + Hash + Clone&gt; DynamicAliasMethodStackSampler&lt;E&gt; {
+    <span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>new() -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{
+            exponents: Vec::new(),
+            groups: Vec::new(),
+            min_exponent: <span class="number">0_i16</span>,
+            total_weight: <span class="number">0_u128</span>,
         }
     }
 
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">not</span>(<span class="ident">test</span>), <span class="ident">allow</span>(<span class="ident">dead_code</span>))]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_capacity</span>(<span class="ident">capacity</span>: <span class="ident">usize</span>) -&gt; <span class="self">Self</span> {
-        <span class="kw">let</span> <span class="ident">capacity_log2_approx</span> <span class="op">=</span> (<span class="ident">usize::BITS</span> <span class="op">-</span> <span class="ident">capacity</span>.<span class="ident">leading_zeros</span>()) <span class="kw">as</span> <span class="ident">usize</span>;
+    <span class="attribute">#[must_use]
+    #[cfg_attr(not(test), allow(dead_code))]
+    </span><span class="kw">pub fn </span>with_capacity(capacity: usize) -&gt; <span class="self">Self </span>{
+        <span class="kw">let </span>capacity_log2_approx = (usize::BITS - capacity.leading_zeros()) <span class="kw">as </span>usize;
 
-        <span class="self">Self</span> {
-            <span class="ident">exponents</span>: <span class="ident">Vec::with_capacity</span>(<span class="ident">capacity_log2_approx</span>),
-            <span class="ident">groups</span>: <span class="ident">Vec::with_capacity</span>(<span class="ident">capacity_log2_approx</span>),
-            <span class="ident">min_exponent</span>: <span class="number">0_i16</span>,
-            <span class="ident">total_weight</span>: <span class="number">0_u128</span>,
+        <span class="self">Self </span>{
+            exponents: Vec::with_capacity(capacity_log2_approx),
+            groups: Vec::with_capacity(capacity_log2_approx),
+            min_exponent: <span class="number">0_i16</span>,
+            total_weight: <span class="number">0_u128</span>,
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">iter_all_events_ordered</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw">impl</span> <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">E</span><span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">groups</span>.<span class="ident">iter</span>().<span class="ident">flat_map</span>(<span class="ident">RejectionSamplingGroup::iter</span>)
+    <span class="kw">pub fn </span>iter_all_events_ordered(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw">impl </span>Iterator&lt;Item = <span class="kw-2">&amp;</span>E&gt; {
+        <span class="self">self</span>.groups.iter().flat_map(RejectionSamplingGroup::iter)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">sample_pop</span><span class="op">&lt;</span><span class="ident">M</span>: <span class="ident">MathsCore</span>, <span class="ident">G</span>: <span class="ident">RngCore</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">rng</span>: <span class="kw-2">&amp;mut</span> <span class="ident">G</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">E</span><span class="op">&gt;</span> {
-        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">total_weight</span>) <span class="op">=</span> <span class="ident">NonZeroU128::new</span>(<span class="self">self</span>.<span class="ident">total_weight</span>) {
-            <span class="kw">let</span> <span class="ident">cdf_sample</span> <span class="op">=</span> <span class="kw">if</span> <span class="kw">let</span> [<span class="ident">_group</span>] <span class="op">=</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">groups</span>[..] {
-                <span class="number">0_u128</span>
-            } <span class="kw">else</span> {
-                <span class="ident">rng</span>.<span class="ident">sample_index_u128</span>(<span class="ident">total_weight</span>)
+    <span class="kw">pub fn </span>sample_pop&lt;M: MathsCore, G: RngCore&lt;M&gt;&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, rng: <span class="kw-2">&amp;mut </span>G) -&gt; <span class="prelude-ty">Option</span>&lt;E&gt; {
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(total_weight) = NonZeroU128::new(<span class="self">self</span>.total_weight) {
+            <span class="kw">let </span>cdf_sample = <span class="kw">if let </span>[_group] = <span class="kw-2">&amp;</span><span class="self">self</span>.groups[..] {
+                <span class="number">0_u128
+            </span>} <span class="kw">else </span>{
+                rng.sample_index_u128(total_weight)
             };
 
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">cdf_acc</span> <span class="op">=</span> <span class="number">0_u128</span>;
+            <span class="kw">let </span><span class="kw-2">mut </span>cdf_acc = <span class="number">0_u128</span>;
 
-            <span class="kw">for</span> (<span class="ident">i</span>, (<span class="ident">exponent</span>, <span class="ident">group</span>)) <span class="kw">in</span> <span class="self">self</span>
-                .<span class="ident">exponents</span>
-                .<span class="ident">iter</span>()
-                .<span class="ident">copied</span>()
-                .<span class="ident">zip</span>(<span class="self">self</span>.<span class="ident">groups</span>.<span class="ident">iter_mut</span>())
-                .<span class="ident">enumerate</span>()
+            <span class="kw">for </span>(i, (exponent, group)) <span class="kw">in </span><span class="self">self
+                </span>.exponents
+                .iter()
+                .copied()
+                .zip(<span class="self">self</span>.groups.iter_mut())
+                .enumerate()
             {
-                <span class="ident">cdf_acc</span> <span class="op">+</span><span class="op">=</span>
-                    <span class="ident">group</span>.<span class="ident">total_weight</span> <span class="op">&lt;</span><span class="op">&lt;</span> (<span class="ident">i32::from</span>(<span class="ident">exponent</span>) <span class="op">-</span> <span class="ident">i32::from</span>(<span class="self">self</span>.<span class="ident">min_exponent</span>));
+                cdf_acc +=
+                    group.total_weight &lt;&lt; (i32::from(exponent) - i32::from(<span class="self">self</span>.min_exponent));
 
-                <span class="kw">if</span> <span class="ident">cdf_sample</span> <span class="op">&lt;</span> <span class="ident">cdf_acc</span> {
-                    <span class="kw">let</span> <span class="ident">exponent_shift</span> <span class="op">=</span> <span class="ident">i32::from</span>(<span class="ident">exponent</span>) <span class="op">-</span> <span class="ident">i32::from</span>(<span class="self">self</span>.<span class="ident">min_exponent</span>);
+                <span class="kw">if </span>cdf_sample &lt; cdf_acc {
+                    <span class="kw">let </span>exponent_shift = i32::from(exponent) - i32::from(<span class="self">self</span>.min_exponent);
 
-                    <span class="self">self</span>.<span class="ident">total_weight</span> <span class="op">=</span> <span class="self">self</span>
-                        .<span class="ident">total_weight</span>
-                        .<span class="ident">wrapping_sub</span>(<span class="ident">group</span>.<span class="ident">total_weight</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="ident">exponent_shift</span>);
+                    <span class="self">self</span>.total_weight = <span class="self">self
+                        </span>.total_weight
+                        .wrapping_sub(group.total_weight &lt;&lt; exponent_shift);
 
-                    <span class="kw">let</span> (<span class="ident">group</span>, <span class="ident">sample</span>) <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">group</span>.<span class="ident">sample_pop_inplace</span>(<span class="ident">rng</span>) };
+                    <span class="kw">let </span>(group, sample) = <span class="kw">unsafe </span>{ group.sample_pop_inplace(rng) };
 
-                    <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">group</span>) <span class="op">=</span> <span class="ident">group</span> {
-                        <span class="self">self</span>.<span class="ident">total_weight</span> <span class="op">=</span> <span class="self">self</span>
-                            .<span class="ident">total_weight</span>
-                            .<span class="ident">wrapping_add</span>(<span class="ident">group</span>.<span class="ident">total_weight</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="ident">exponent_shift</span>);
-                    } <span class="kw">else</span> {
-                        <span class="self">self</span>.<span class="ident">groups</span>.<span class="ident">remove</span>(<span class="ident">i</span>);
-                        <span class="self">self</span>.<span class="ident">exponents</span>.<span class="ident">remove</span>(<span class="ident">i</span>);
+                    <span class="kw">if let </span><span class="prelude-val">Some</span>(group) = group {
+                        <span class="self">self</span>.total_weight = <span class="self">self
+                            </span>.total_weight
+                            .wrapping_add(group.total_weight &lt;&lt; exponent_shift);
+                    } <span class="kw">else </span>{
+                        <span class="self">self</span>.groups.remove(i);
+                        <span class="self">self</span>.exponents.remove(i);
 
-                        <span class="kw">let</span> <span class="ident">old_min_exponent</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">min_exponent</span>;
-                        <span class="self">self</span>.<span class="ident">min_exponent</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">exponents</span>.<span class="ident">last</span>().<span class="ident">copied</span>().<span class="ident">unwrap_or</span>(<span class="number">0_i16</span>);
+                        <span class="kw">let </span>old_min_exponent = <span class="self">self</span>.min_exponent;
+                        <span class="self">self</span>.min_exponent = <span class="self">self</span>.exponents.last().copied().unwrap_or(<span class="number">0_i16</span>);
 
-                        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">min_exponent</span> <span class="op">&gt;</span> <span class="ident">old_min_exponent</span> {
-                            <span class="self">self</span>.<span class="ident">total_weight</span> <span class="op">&gt;</span><span class="op">&gt;</span><span class="op">=</span>
-                                <span class="ident">i32::from</span>(<span class="self">self</span>.<span class="ident">min_exponent</span>) <span class="op">-</span> <span class="ident">i32::from</span>(<span class="ident">old_min_exponent</span>);
+                        <span class="kw">if </span><span class="self">self</span>.min_exponent &gt; old_min_exponent {
+                            <span class="self">self</span>.total_weight &gt;&gt;=
+                                i32::from(<span class="self">self</span>.min_exponent) - i32::from(old_min_exponent);
                         }
                     }
 
-                    <span class="kw">return</span> <span class="prelude-val">Some</span>(<span class="ident">sample</span>);
+                    <span class="kw">return </span><span class="prelude-val">Some</span>(sample);
                 }
             }
         }
 
-        <span class="prelude-val">None</span>
-    }
+        <span class="prelude-val">None
+    </span>}
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">add_push</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">event</span>: <span class="ident">E</span>, <span class="ident">weight</span>: <span class="ident">PositiveF64</span>) {
-        <span class="kw">let</span> <span class="ident">weight_decomposed</span> <span class="op">=</span> <span class="ident"><span class="kw">super</span>::decompose_weight</span>(<span class="ident">weight</span>);
+    <span class="kw">pub fn </span>add_push(<span class="kw-2">&amp;mut </span><span class="self">self</span>, event: E, weight: PositiveF64) {
+        <span class="kw">let </span>weight_decomposed = <span class="kw">super</span>::decompose_weight(weight);
 
-        <span class="kw">match</span> <span class="self">self</span>.<span class="ident">lookup_group_index</span>(<span class="ident">weight_decomposed</span>.<span class="ident">exponent</span>) {
-            <span class="prelude-val">Ok</span>(<span class="ident">i</span>) =&gt; {
-                <span class="kw">let</span> <span class="ident">group_mut</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">groups</span>.<span class="ident">get_unchecked_mut</span>(<span class="ident">i</span>) };
+        <span class="kw">match </span><span class="self">self</span>.lookup_group_index(weight_decomposed.exponent) {
+            <span class="prelude-val">Ok</span>(i) =&gt; {
+                <span class="kw">let </span>group_mut = <span class="kw">unsafe </span>{ <span class="self">self</span>.groups.get_unchecked_mut(i) };
 
-                <span class="ident">group_mut</span>.<span class="ident">add</span>(<span class="ident">event</span>, <span class="ident">weight_decomposed</span>.<span class="ident">mantissa</span>);
+                group_mut.add(event, weight_decomposed.mantissa);
             },
-            <span class="prelude-val">Err</span>(<span class="ident">i</span>) =&gt; {
-                <span class="self">self</span>.<span class="ident">exponents</span>.<span class="ident">insert</span>(<span class="ident">i</span>, <span class="ident">weight_decomposed</span>.<span class="ident">exponent</span>);
-                <span class="self">self</span>.<span class="ident">groups</span>.<span class="ident">insert</span>(
-                    <span class="ident">i</span>,
-                    <span class="ident">RejectionSamplingGroup::new</span>(<span class="ident">event</span>, <span class="ident">weight_decomposed</span>.<span class="ident">mantissa</span>),
+            <span class="prelude-val">Err</span>(i) =&gt; {
+                <span class="self">self</span>.exponents.insert(i, weight_decomposed.exponent);
+                <span class="self">self</span>.groups.insert(
+                    i,
+                    RejectionSamplingGroup::new(event, weight_decomposed.mantissa),
                 );
 
-                <span class="kw">let</span> <span class="ident">old_min_exponent</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">min_exponent</span>;
-                <span class="self">self</span>.<span class="ident">min_exponent</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">exponents</span>.<span class="ident">last</span>().<span class="ident">copied</span>().<span class="ident">unwrap_or</span>(<span class="number">0_i16</span>);
+                <span class="kw">let </span>old_min_exponent = <span class="self">self</span>.min_exponent;
+                <span class="self">self</span>.min_exponent = <span class="self">self</span>.exponents.last().copied().unwrap_or(<span class="number">0_i16</span>);
 
-                <span class="kw">if</span> <span class="self">self</span>.<span class="ident">min_exponent</span> <span class="op">&lt;</span> <span class="ident">old_min_exponent</span> {
-                    <span class="self">self</span>.<span class="ident">total_weight</span> <span class="op">&lt;</span><span class="op">&lt;</span><span class="op">=</span>
-                        <span class="ident">i32::from</span>(<span class="ident">old_min_exponent</span>) <span class="op">-</span> <span class="ident">i32::from</span>(<span class="self">self</span>.<span class="ident">min_exponent</span>);
+                <span class="kw">if </span><span class="self">self</span>.min_exponent &lt; old_min_exponent {
+                    <span class="self">self</span>.total_weight &lt;&lt;=
+                        i32::from(old_min_exponent) - i32::from(<span class="self">self</span>.min_exponent);
                 }
             },
         };
 
-        <span class="self">self</span>.<span class="ident">total_weight</span> <span class="op">+</span><span class="op">=</span> <span class="ident">u128::from</span>(<span class="ident">weight_decomposed</span>.<span class="ident">mantissa</span>)
-            <span class="op">&lt;</span><span class="op">&lt;</span> (<span class="ident">i32::from</span>(<span class="ident">weight_decomposed</span>.<span class="ident">exponent</span>) <span class="op">-</span> <span class="ident">i32::from</span>(<span class="self">self</span>.<span class="ident">min_exponent</span>));
+        <span class="self">self</span>.total_weight += u128::from(weight_decomposed.mantissa)
+            &lt;&lt; (i32::from(weight_decomposed.exponent) - i32::from(<span class="self">self</span>.min_exponent));
     }
 
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">total_weight</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">NonNegativeF64</span> {
-        <span class="ident"><span class="kw">super</span>::compose_weight</span>(<span class="self">self</span>.<span class="ident">min_exponent</span>, <span class="self">self</span>.<span class="ident">total_weight</span>)
+    <span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>total_weight(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; NonNegativeF64 {
+        <span class="kw">super</span>::compose_weight(<span class="self">self</span>.min_exponent, <span class="self">self</span>.total_weight)
     }
 
-    <span class="kw">fn</span> <span class="ident">lookup_group_index</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">exponent</span>: <span class="ident">i16</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span>, <span class="ident">usize</span><span class="op">&gt;</span> {
-        <span class="kw">for</span> (<span class="ident">i</span>, <span class="ident">e</span>) <span class="kw">in</span> <span class="self">self</span>.<span class="ident">exponents</span>.<span class="ident">iter</span>().<span class="ident">enumerate</span>() {
-            <span class="kw">match</span> <span class="ident">exponent</span>.<span class="ident">cmp</span>(<span class="ident">e</span>) {
-                <span class="ident">Ordering::Equal</span> =&gt; <span class="kw">return</span> <span class="prelude-val">Ok</span>(<span class="ident">i</span>),
-                <span class="ident">Ordering::Greater</span> =&gt; <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">i</span>),
-                <span class="ident">Ordering::Less</span> =&gt; <span class="kw">continue</span>,
+    <span class="kw">fn </span>lookup_group_index(<span class="kw-2">&amp;</span><span class="self">self</span>, exponent: i16) -&gt; <span class="prelude-ty">Result</span>&lt;usize, usize&gt; {
+        <span class="kw">for </span>(i, e) <span class="kw">in </span><span class="self">self</span>.exponents.iter().enumerate() {
+            <span class="kw">match </span>exponent.cmp(e) {
+                Ordering::Equal =&gt; <span class="kw">return </span><span class="prelude-val">Ok</span>(i),
+                Ordering::Greater =&gt; <span class="kw">return </span><span class="prelude-val">Err</span>(i),
+                Ordering::Less =&gt; <span class="kw">continue</span>,
             }
         }
 
-        <span class="prelude-val">Err</span>(<span class="self">self</span>.<span class="ident">exponents</span>.<span class="ident">len</span>())
+        <span class="prelude-val">Err</span>(<span class="self">self</span>.exponents.len())
     }
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">E</span>: <span class="ident">Eq</span> <span class="op">+</span> <span class="ident">Hash</span> <span class="op">+</span> <span class="ident">Clone</span><span class="op">&gt;</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">DynamicAliasMethodStackSampler</span><span class="op">&lt;</span><span class="ident">E</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">default</span>() -&gt; <span class="self">Self</span> {
-        <span class="ident"><span class="self">Self</span>::new</span>()
+<span class="kw">impl</span>&lt;E: Eq + Hash + Clone&gt; Default <span class="kw">for </span>DynamicAliasMethodStackSampler&lt;E&gt; {
+    <span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{
+        <span class="self">Self</span>::new()
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../../../../../" data-current-crate="necsim_impls_no_std" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0-nightly (affe0d3a0 2022-08-05)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../../../../../" data-current-crate="necsim_impls_no_std" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (5e9772042 2022-10-29)" ></div></body></html>

@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `necsim/plugins/core/src/export.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>export.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../necsim_plugins_core/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../necsim_plugins_core/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../necsim_plugins_core/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `necsim/plugins/core/src/export.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>export.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../normalize.css"><link rel="stylesheet" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../ayu.css" disabled><link rel="stylesheet" href="../../dark.css" disabled><link rel="stylesheet" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../necsim_plugins_core/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -166,173 +166,173 @@
 <span id="166">166</span>
 <span id="167">167</span>
 <span id="168">168</span>
-</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">std::mem::ManuallyDrop</span>;
+</pre><pre class="rust"><code><span class="kw">use </span>std::mem::ManuallyDrop;
 
-<span class="kw">use</span> <span class="ident">necsim_core::reporter</span>::{
-    <span class="ident">boolean</span>::{<span class="ident">Boolean</span>, <span class="ident">True</span>},
-    <span class="ident">Reporter</span>,
+<span class="kw">use </span>necsim_core::reporter::{
+    boolean::{Boolean, True},
+    Reporter,
 };
 
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">SerializeableReporter</span>: <span class="ident">Reporter</span> <span class="op">+</span> <span class="ident">erased_serde::Serialize</span> {
-    <span class="kw">fn</span> <span class="ident">reporter_name</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>;
+<span class="kw">pub trait </span>SerializeableReporter: Reporter + erased_serde::Serialize {
+    <span class="kw">fn </span>reporter_name(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str;
 }
 
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ReporterPluginDeclaration</span> {
-    <span class="kw">pub</span> <span class="ident">rustc_version</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>,
-    <span class="kw">pub</span> <span class="ident">core_version</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>,
+<span class="kw">pub struct </span>ReporterPluginDeclaration {
+    <span class="kw">pub </span>rustc_version: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str,
+    <span class="kw">pub </span>core_version: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str,
 
-    <span class="kw">pub</span> <span class="ident">init</span>: <span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="kw">dyn</span> <span class="ident">log::Log</span>, <span class="ident">log::LevelFilter</span>),
+    <span class="kw">pub </span>init: <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span><span class="kw">dyn </span>log::Log, log::LevelFilter),
 
-    <span class="kw">pub</span> <span class="ident">deserialise</span>:
-        <span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span>(
-            <span class="kw-2">&amp;mut</span> <span class="kw">dyn</span> <span class="ident">erased_serde::Deserializer</span>,
+    <span class="kw">pub </span>deserialise:
+        <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn</span>(
+            <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>erased_serde::Deserializer,
         )
-            -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">ManuallyDrop</span><span class="op">&lt;</span><span class="ident">UnsafeReporterPlugin</span><span class="op">&gt;</span>, <span class="ident">erased_serde::Error</span><span class="op">&gt;</span>,
+            -&gt; <span class="prelude-ty">Result</span>&lt;ManuallyDrop&lt;UnsafeReporterPlugin&gt;, erased_serde::Error&gt;,
 
-    <span class="kw">pub</span> <span class="ident">library_path</span>: <span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span>() -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">::std::path::PathBuf</span><span class="op">&gt;</span>,
+    <span class="kw">pub </span>library_path: <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn</span>() -&gt; <span class="prelude-ty">Option</span>&lt;::std::path::PathBuf&gt;,
 
-    <span class="kw">pub</span> <span class="ident">drop</span>: <span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span>(<span class="ident">ManuallyDrop</span><span class="op">&lt;</span><span class="ident">UnsafeReporterPlugin</span><span class="op">&gt;</span>),
+    <span class="kw">pub </span>drop: <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn</span>(ManuallyDrop&lt;UnsafeReporterPlugin&gt;),
 }
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>)]</span>
-<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">dead_code</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ReporterPluginFilter</span> {
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">report_speciation</span>: <span class="ident">bool</span>,
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">report_dispersal</span>: <span class="ident">bool</span>,
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">report_progress</span>: <span class="ident">bool</span>,
+<span class="attribute">#[derive(Copy, Clone)]
+#[allow(dead_code)]
+</span><span class="kw">pub struct </span>ReporterPluginFilter {
+    <span class="kw">pub</span>(<span class="kw">crate</span>) report_speciation: bool,
+    <span class="kw">pub</span>(<span class="kw">crate</span>) report_dispersal: bool,
+    <span class="kw">pub</span>(<span class="kw">crate</span>) report_progress: bool,
 }
 
-<span class="kw">impl</span> <span class="ident">ReporterPluginFilter</span> {
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_reporter</span><span class="op">&lt;</span><span class="ident">R</span>: <span class="ident">SerializeableReporter</span><span class="op">&gt;</span>() -&gt; <span class="self">Self</span> {
-        <span class="self">Self</span> {
-            <span class="ident">report_speciation</span>: <span class="ident">R::ReportSpeciation::VALUE</span>,
-            <span class="ident">report_dispersal</span>: <span class="ident">R::ReportDispersal::VALUE</span>,
-            <span class="ident">report_progress</span>: <span class="ident">R::ReportProgress::VALUE</span>,
+<span class="kw">impl </span>ReporterPluginFilter {
+    <span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>from_reporter&lt;R: SerializeableReporter&gt;() -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{
+            report_speciation: R::ReportSpeciation::VALUE,
+            report_dispersal: R::ReportDispersal::VALUE,
+            report_progress: R::ReportProgress::VALUE,
         }
     }
 }
 
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">DynReporterPlugin</span> <span class="op">=</span> <span class="kw">dyn</span> <span class="ident">SerializeableReporter</span><span class="op">&lt;</span>
-    <span class="ident">ReportSpeciation</span> <span class="op">=</span> <span class="ident">True</span>,
-    <span class="ident">ReportDispersal</span> <span class="op">=</span> <span class="ident">True</span>,
-    <span class="ident">ReportProgress</span> <span class="op">=</span> <span class="ident">True</span>,
-<span class="op">&gt;</span>;
+<span class="kw">pub type </span>DynReporterPlugin = <span class="kw">dyn </span>SerializeableReporter&lt;
+    ReportSpeciation = True,
+    ReportDispersal = True,
+    ReportProgress = True,
+&gt;;
 
-<span class="attribute">#[<span class="ident">repr</span>(<span class="ident">C</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">UnsafeReporterPlugin</span> {
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">reporter</span>: <span class="ident">Box</span><span class="op">&lt;</span><span class="ident">DynReporterPlugin</span><span class="op">&gt;</span>,
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">filter</span>: <span class="ident">ReporterPluginFilter</span>,
+<span class="attribute">#[repr(C)]
+</span><span class="kw">pub struct </span>UnsafeReporterPlugin {
+    <span class="kw">pub</span>(<span class="kw">crate</span>) reporter: Box&lt;DynReporterPlugin&gt;,
+    <span class="kw">pub</span>(<span class="kw">crate</span>) filter: ReporterPluginFilter,
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">R</span>: <span class="ident">SerializeableReporter</span><span class="op">&gt;</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">R</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">UnsafeReporterPlugin</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">reporter</span>: <span class="ident">R</span>) -&gt; <span class="self">Self</span> {
-        <span class="kw">let</span> <span class="ident">boxed_reporter</span>: <span class="ident">Box</span><span class="op">&lt;</span>
-            <span class="kw">dyn</span> <span class="ident">SerializeableReporter</span><span class="op">&lt;</span>
-                <span class="ident">ReportSpeciation</span> <span class="op">=</span> <span class="ident">R::ReportSpeciation</span>,
-                <span class="ident">ReportDispersal</span> <span class="op">=</span> <span class="ident">R::ReportDispersal</span>,
-                <span class="ident">ReportProgress</span> <span class="op">=</span> <span class="ident">R::ReportProgress</span>,
-            <span class="op">&gt;</span>,
-        <span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Box::new</span>(<span class="ident">reporter</span>);
+<span class="kw">impl</span>&lt;R: SerializeableReporter&gt; From&lt;R&gt; <span class="kw">for </span>UnsafeReporterPlugin {
+    <span class="kw">fn </span>from(reporter: R) -&gt; <span class="self">Self </span>{
+        <span class="kw">let </span>boxed_reporter: Box&lt;
+            <span class="kw">dyn </span>SerializeableReporter&lt;
+                ReportSpeciation = R::ReportSpeciation,
+                ReportDispersal = R::ReportDispersal,
+                ReportProgress = R::ReportProgress,
+            &gt;,
+        &gt; = Box::new(reporter);
 
-        <span class="self">Self</span> {
-            <span class="ident">reporter</span>: <span class="kw">unsafe</span> { <span class="ident">std::mem::transmute</span>(<span class="ident">boxed_reporter</span>) },
-            <span class="ident">filter</span>: <span class="ident">ReporterPluginFilter::from_reporter</span>::<span class="op">&lt;</span><span class="ident">R</span><span class="op">&gt;</span>(),
+        <span class="self">Self </span>{
+            reporter: <span class="kw">unsafe </span>{ std::mem::transmute(boxed_reporter) },
+            filter: ReporterPluginFilter::from_reporter::&lt;R&gt;(),
         }
     }
 }
 
-<span class="attribute">#[<span class="ident">macro_export</span>]</span>
-<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::module_name_repetitions</span>)]</span>
-<span class="macro">macro_rules!</span> <span class="ident">export_plugin</span> {
-    ($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>:<span class="ident">ident</span> =&gt; <span class="macro-nonterminal">$</span><span class="macro-nonterminal">plugin</span>:<span class="ident">ty</span>),<span class="op">+</span>$(,)<span class="question-mark">?</span>) =&gt; {
-        <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-        <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">__necsim_reporter_plugin_init</span>(
-            <span class="ident">log</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="kw">dyn</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::log::Log</span>,
-            <span class="ident">max_level</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::log::LevelFilter</span>,
+<span class="attribute">#[macro_export]
+#[allow(clippy::module_name_repetitions)]
+</span><span class="macro">macro_rules! </span>export_plugin {
+    ($(<span class="macro-nonterminal">$name</span>:ident =&gt; <span class="macro-nonterminal">$plugin</span>:ty),+$(,)<span class="question-mark">?</span>) =&gt; {
+        <span class="attribute">#[doc(hidden)]
+        </span><span class="kw">extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>__necsim_reporter_plugin_init(
+            log: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span><span class="kw">dyn </span><span class="macro-nonterminal">$crate::log::Log</span>,
+            max_level: <span class="macro-nonterminal">$crate::log::LevelFilter</span>,
         ) {
-            <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::log::set_logger</span>(<span class="ident">log</span>);
+            <span class="kw">let _ </span>= <span class="macro-nonterminal">$crate::log::set_logger</span>(log);
 
-            <span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::log::set_max_level</span>(<span class="ident">max_level</span>);
+            <span class="macro-nonterminal">$crate::log::set_max_level</span>(max_level);
         }
 
-        <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-        <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">__necsim_reporter_plugin_deserialise</span><span class="op">&lt;</span><span class="lifetime">&#39;de</span><span class="op">&gt;</span>(
-            <span class="ident">deserializer</span>: <span class="kw-2">&amp;mut</span> <span class="kw">dyn</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::erased_serde::Deserializer</span><span class="op">&lt;</span><span class="lifetime">&#39;de</span><span class="op">&gt;</span>,
-        ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>
-            <span class="ident">::std::mem::ManuallyDrop</span><span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::export::UnsafeReporterPlugin</span><span class="op">&gt;</span>,
-            <span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::erased_serde::Error</span>,
-        <span class="op">&gt;</span> {
-            <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::enum_variant_names</span>)]</span>
-            <span class="attribute">#[<span class="ident">derive</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::serde::Deserialize</span>)]</span>
-            <span class="attribute">#[<span class="ident">serde</span>(<span class="kw">crate</span> <span class="op">=</span> <span class="string">&quot;::necsim_plugins_core::serde&quot;</span>)]</span>
-            <span class="kw">enum</span> <span class="ident">Reporters</span> {
-                $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">plugin</span>)),<span class="op">*</span>
+        <span class="attribute">#[doc(hidden)]
+        </span><span class="kw">extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>__necsim_reporter_plugin_deserialise&lt;<span class="lifetime">&#39;de</span>&gt;(
+            deserializer: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span><span class="macro-nonterminal">$crate::erased_serde::Deserializer</span>&lt;<span class="lifetime">&#39;de</span>&gt;,
+        ) -&gt; <span class="prelude-ty">Result</span>&lt;
+            ::std::mem::ManuallyDrop&lt;<span class="macro-nonterminal">$crate::export::UnsafeReporterPlugin</span>&gt;,
+            <span class="macro-nonterminal">$crate::erased_serde::Error</span>,
+        &gt; {
+            <span class="attribute">#[allow(clippy::enum_variant_names)]
+            #[derive(<span class="macro-nonterminal">$crate::serde::Deserialize</span>)]
+            #[serde(<span class="kw">crate </span>= <span class="string">&quot;::necsim_plugins_core::serde&quot;</span>)]
+            </span><span class="kw">enum </span>Reporters {
+                $(<span class="macro-nonterminal">$name</span>(<span class="macro-nonterminal">$plugin</span>)),*
             }
 
-            <span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::erased_serde::deserialize</span>::<span class="op">&lt;</span><span class="ident">Reporters</span><span class="op">&gt;</span>(<span class="ident">deserializer</span>).<span class="ident">map</span>(<span class="op">|</span><span class="ident">reporter</span><span class="op">|</span> {
-                <span class="kw">match</span> <span class="ident">reporter</span> {
-                    $(<span class="ident">Reporters</span>::<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>(<span class="ident">reporter</span>) =&gt; <span class="ident">reporter</span>.<span class="ident">into</span>()),<span class="op">*</span>
+            <span class="macro-nonterminal">$crate::erased_serde::deserialize</span>::&lt;Reporters&gt;(deserializer).map(|reporter| {
+                <span class="kw">match </span>reporter {
+                    $(Reporters::<span class="macro-nonterminal">$name</span>(reporter) =&gt; reporter.into()),*
                 }
-            }).<span class="ident">map</span>(<span class="ident">::std::mem::ManuallyDrop::new</span>)
+            }).map(::std::mem::ManuallyDrop::new)
         }
 
-        $(<span class="kw">impl</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::export::SerializeableReporter</span> <span class="kw">for</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">plugin</span> {
-            <span class="kw">fn</span> <span class="ident">reporter_name</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span> {
-                <span class="macro">stringify!</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>)
+        $(<span class="kw">impl </span><span class="macro-nonterminal">$crate::export::SerializeableReporter </span><span class="kw">for </span><span class="macro-nonterminal">$plugin </span>{
+            <span class="kw">fn </span>reporter_name(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str {
+                <span class="macro">stringify!</span>(<span class="macro-nonterminal">$name</span>)
             }
-        })<span class="op">*</span>
+        })*
 
-        <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-        <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">__necsim_reporter_plugin_library_path</span>() -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">::std::path::PathBuf</span><span class="op">&gt;</span> {
-            <span class="ident">::necsim_plugins_core::process_path::get_dylib_path</span>()
+        <span class="attribute">#[doc(hidden)]
+        </span><span class="kw">extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>__necsim_reporter_plugin_library_path() -&gt; <span class="prelude-ty">Option</span>&lt;::std::path::PathBuf&gt; {
+            ::necsim_plugins_core::process_path::get_dylib_path()
         }
 
-        <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-        <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">__necsim_reporter_plugin_drop</span>(
-            <span class="ident">plugin</span>: <span class="ident">::std::mem::ManuallyDrop</span><span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::export::UnsafeReporterPlugin</span><span class="op">&gt;</span>,
+        <span class="attribute">#[doc(hidden)]
+        </span><span class="kw">extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>__necsim_reporter_plugin_drop(
+            plugin: ::std::mem::ManuallyDrop&lt;<span class="macro-nonterminal">$crate::export::UnsafeReporterPlugin</span>&gt;,
         ) {
-            <span class="ident">::std::mem::drop</span>(<span class="ident">::std::mem::ManuallyDrop::into_inner</span>(<span class="ident">plugin</span>))
+            ::std::mem::drop(::std::mem::ManuallyDrop::into_inner(plugin))
         }
 
-        <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-        <span class="attribute">#[<span class="ident">no_mangle</span>]</span>
-        <span class="kw">pub</span> <span class="kw">static</span> <span class="ident">NECSIM_REPORTER_PLUGIN_DECLARATION</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::export::ReporterPluginDeclaration</span> <span class="op">=</span>
-            <span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::export::ReporterPluginDeclaration</span> {
-                <span class="ident">rustc_version</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::RUSTC_VERSION</span>,
-                <span class="ident">core_version</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::CORE_VERSION</span>,
+        <span class="attribute">#[doc(hidden)]
+        #[no_mangle]
+        </span><span class="kw">pub static </span>NECSIM_REPORTER_PLUGIN_DECLARATION: <span class="macro-nonterminal">$crate::export::ReporterPluginDeclaration </span>=
+            <span class="macro-nonterminal">$crate::export::ReporterPluginDeclaration </span>{
+                rustc_version: <span class="macro-nonterminal">$crate::RUSTC_VERSION</span>,
+                core_version: <span class="macro-nonterminal">$crate::CORE_VERSION</span>,
 
-                <span class="ident">init</span>: <span class="ident">__necsim_reporter_plugin_init</span>,
-                <span class="ident">deserialise</span>: <span class="ident">__necsim_reporter_plugin_deserialise</span>,
-                <span class="ident">library_path</span>: <span class="ident">__necsim_reporter_plugin_library_path</span>,
-                <span class="ident">drop</span>: <span class="ident">__necsim_reporter_plugin_drop</span>,
+                init: __necsim_reporter_plugin_init,
+                deserialise: __necsim_reporter_plugin_deserialise,
+                library_path: __necsim_reporter_plugin_library_path,
+                drop: __necsim_reporter_plugin_drop,
             };
     };
 }
 
-<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Reporters</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span> {
-    <span class="ident">DynReporter</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;r</span> <span class="ident">DynReporterPlugin</span>),
+<span class="kw">pub enum </span>Reporters&lt;<span class="lifetime">&#39;r</span>&gt; {
+    DynReporter(<span class="kw-2">&amp;</span><span class="lifetime">&#39;r </span>DynReporterPlugin),
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span> <span class="ident">serde::Serialize</span> <span class="kw">for</span> <span class="ident">Reporters</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">serialize</span><span class="op">&lt;</span><span class="ident">S</span>: <span class="ident">serde::Serializer</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">serializer</span>: <span class="ident">S</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">S::Ok</span>, <span class="ident">S::Error</span><span class="op">&gt;</span> {
-        <span class="kw">struct</span> <span class="ident">Reporter</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;r</span> <span class="ident">DynReporterPlugin</span>);
+<span class="kw">impl</span>&lt;<span class="lifetime">&#39;r</span>&gt; serde::Serialize <span class="kw">for </span>Reporters&lt;<span class="lifetime">&#39;r</span>&gt; {
+    <span class="kw">fn </span>serialize&lt;S: serde::Serializer&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, serializer: S) -&gt; <span class="prelude-ty">Result</span>&lt;S::Ok, S::Error&gt; {
+        <span class="kw">struct </span>Reporter&lt;<span class="lifetime">&#39;r</span>&gt;(<span class="kw-2">&amp;</span><span class="lifetime">&#39;r </span>DynReporterPlugin);
 
-        <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span> <span class="ident">serde::Serialize</span> <span class="kw">for</span> <span class="ident">Reporter</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span> {
-            <span class="kw">fn</span> <span class="ident">serialize</span><span class="op">&lt;</span><span class="ident">S</span>: <span class="ident">serde::Serializer</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">serializer</span>: <span class="ident">S</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">S::Ok</span>, <span class="ident">S::Error</span><span class="op">&gt;</span> {
-                <span class="ident">erased_serde::serialize</span>(<span class="self">self</span>.<span class="number">0</span>, <span class="ident">serializer</span>)
+        <span class="kw">impl</span>&lt;<span class="lifetime">&#39;r</span>&gt; serde::Serialize <span class="kw">for </span>Reporter&lt;<span class="lifetime">&#39;r</span>&gt; {
+            <span class="kw">fn </span>serialize&lt;S: serde::Serializer&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, serializer: S) -&gt; <span class="prelude-ty">Result</span>&lt;S::Ok, S::Error&gt; {
+                erased_serde::serialize(<span class="self">self</span>.<span class="number">0</span>, serializer)
             }
         }
 
-        <span class="kw">let</span> <span class="ident"><span class="self">Self</span>::DynReporter</span>(<span class="ident">reporter</span>) <span class="op">=</span> <span class="self">self</span>;
+        <span class="kw">let </span><span class="self">Self</span>::DynReporter(reporter) = <span class="self">self</span>;
 
-        <span class="ident">serializer</span>.<span class="ident">serialize_newtype_variant</span>(
+        serializer.serialize_newtype_variant(
             <span class="string">&quot;Reporters&quot;</span>,
             <span class="number">0</span>,
-            <span class="ident">reporter</span>.<span class="ident">reporter_name</span>(),
-            <span class="kw-2">&amp;</span><span class="ident">Reporter</span>(<span class="kw-2">*</span><span class="ident">reporter</span>),
+            reporter.reporter_name(),
+            <span class="kw-2">&amp;</span>Reporter(<span class="kw-2">*</span>reporter),
         )
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="necsim_plugins_core" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0-nightly (affe0d3a0 2022-08-05)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="necsim_plugins_core" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (5e9772042 2022-10-29)" ></div></body></html>

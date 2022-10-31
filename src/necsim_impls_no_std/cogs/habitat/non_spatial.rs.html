@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `necsim/impls/no-std/src/cogs/habitat/non_spatial.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>non_spatial.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../storage.js"></script><script defer src="../../../../source-script.js"></script><script defer src="../../../../source-files.js"></script><script defer src="../../../../main.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../../necsim_impls_no_std/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../../necsim_impls_no_std/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../../necsim_impls_no_std/index.html"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `necsim/impls/no-std/src/cogs/habitat/non_spatial.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>non_spatial.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../../normalize.css"><link rel="stylesheet" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../../ayu.css" disabled><link rel="stylesheet" href="../../../../dark.css" disabled><link rel="stylesheet" href="../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../storage.js"></script><script defer src="../../../../source-script.js"></script><script defer src="../../../../source-files.js"></script><script defer src="../../../../main.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../../../necsim_impls_no_std/index.html"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../wheel.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -140,147 +140,149 @@
 <span id="140">140</span>
 <span id="141">141</span>
 <span id="142">142</span>
-</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">core</span>::{
-    <span class="ident">marker::PhantomData</span>,
-    <span class="ident">num</span>::{<span class="ident">NonZeroU32</span>, <span class="ident">NonZeroU64</span>},
+<span id="143">143</span>
+</pre><pre class="rust"><code><span class="kw">use </span>core::{
+    marker::PhantomData,
+    num::{NonZeroU32, NonZeroU64},
 };
 
-<span class="kw">use</span> <span class="ident">necsim_core</span>::{
-    <span class="ident">cogs</span>::{<span class="ident">Backup</span>, <span class="ident">Habitat</span>, <span class="ident">MathsCore</span>, <span class="ident">RngCore</span>, <span class="ident">UniformlySampleableHabitat</span>},
-    <span class="ident">landscape</span>::{<span class="ident">IndexedLocation</span>, <span class="ident">LandscapeExtent</span>, <span class="ident">Location</span>},
+<span class="kw">use </span>necsim_core::{
+    cogs::{Backup, Habitat, MathsCore, RngCore, UniformlySampleableHabitat},
+    landscape::{IndexedLocation, LandscapeExtent, Location},
 };
-<span class="kw">use</span> <span class="ident">necsim_core_bond</span>::{<span class="ident">OffByOneU32</span>, <span class="ident">OffByOneU64</span>};
+<span class="kw">use </span>necsim_core_bond::{OffByOneU32, OffByOneU64};
 
-<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::module_name_repetitions</span>)]</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;cuda&quot;</span>, <span class="ident">derive</span>(<span class="ident">rust_cuda::common::LendRustToCuda</span>))]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">NonSpatialHabitat</span><span class="op">&lt;</span><span class="ident">M</span>: <span class="ident">MathsCore</span><span class="op">&gt;</span> {
-    <span class="ident">extent</span>: <span class="ident">LandscapeExtent</span>,
-    <span class="ident">deme</span>: <span class="ident">NonZeroU32</span>,
-    <span class="ident">marker</span>: <span class="ident">PhantomData</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span>,
+<span class="attribute">#[allow(clippy::module_name_repetitions)]
+#[derive(Debug)]
+#[cfg_attr(feature = <span class="string">&quot;cuda&quot;</span>, derive(rust_cuda::common::LendRustToCuda))]
+#[cfg_attr(feature = <span class="string">&quot;cuda&quot;</span>, cuda(free = <span class="string">&quot;M&quot;</span>))]
+</span><span class="kw">pub struct </span>NonSpatialHabitat&lt;M: MathsCore&gt; {
+    extent: LandscapeExtent,
+    deme: NonZeroU32,
+    marker: PhantomData&lt;M&gt;,
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">M</span>: <span class="ident">MathsCore</span><span class="op">&gt;</span> <span class="ident">NonSpatialHabitat</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span> {
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="attribute">#[<span class="ident">debug_ensures</span>(
-        <span class="ident">ret</span>.<span class="ident">get_total_habitat</span>() <span class="op">==</span> <span class="ident">old</span>(
-            <span class="ident">OffByOneU64::from</span>(<span class="ident">area</span>.<span class="number">0</span>) <span class="op">*</span> <span class="ident">OffByOneU64::from</span>(<span class="ident">area</span>.<span class="number">1</span>) <span class="op">*</span> <span class="ident">OffByOneU64::from</span>(<span class="ident">deme</span>)
+<span class="kw">impl</span>&lt;M: MathsCore&gt; NonSpatialHabitat&lt;M&gt; {
+    <span class="attribute">#[must_use]
+    #[debug_ensures(
+        ret.get_total_habitat() == old(
+            OffByOneU64::from(area.<span class="number">0</span>) * OffByOneU64::from(area.<span class="number">1</span>) * OffByOneU64::from(deme)
         ),
-        <span class="string">&quot;creates a habitat with community size area.0 * area.1 * deme&quot;</span>
-    )]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">area</span>: (<span class="ident">OffByOneU32</span>, <span class="ident">OffByOneU32</span>), <span class="ident">deme</span>: <span class="ident">NonZeroU32</span>) -&gt; <span class="self">Self</span> {
-        <span class="self">Self</span> {
-            <span class="ident">extent</span>: <span class="ident">LandscapeExtent::new</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="ident">area</span>.<span class="number">0</span>, <span class="ident">area</span>.<span class="number">1</span>),
-            <span class="ident">deme</span>,
-            <span class="ident">marker</span>: <span class="ident">PhantomData</span>::<span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span>,
+        <span class="string">&quot;creates a habitat with community size area.0 * area.1 * deme&quot;
+    </span>)]
+    </span><span class="kw">pub fn </span>new(area: (OffByOneU32, OffByOneU32), deme: NonZeroU32) -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{
+            extent: LandscapeExtent::new(<span class="number">0</span>, <span class="number">0</span>, area.<span class="number">0</span>, area.<span class="number">1</span>),
+            deme,
+            marker: PhantomData::&lt;M&gt;,
         }
     }
 
-    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">new_with_offset</span>(
-        <span class="ident">x</span>: <span class="ident">u32</span>,
-        <span class="ident">y</span>: <span class="ident">u32</span>,
-        <span class="ident">area</span>: (<span class="ident">OffByOneU32</span>, <span class="ident">OffByOneU32</span>),
-        <span class="ident">deme</span>: <span class="ident">NonZeroU32</span>,
-    ) -&gt; <span class="self">Self</span> {
-        <span class="self">Self</span> {
-            <span class="ident">extent</span>: <span class="ident">LandscapeExtent::new</span>(<span class="ident">x</span>, <span class="ident">y</span>, <span class="ident">area</span>.<span class="number">0</span>, <span class="ident">area</span>.<span class="number">1</span>),
-            <span class="ident">deme</span>,
-            <span class="ident">marker</span>: <span class="ident">PhantomData</span>::<span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span>,
+    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn </span>new_with_offset(
+        x: u32,
+        y: u32,
+        area: (OffByOneU32, OffByOneU32),
+        deme: NonZeroU32,
+    ) -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{
+            extent: LandscapeExtent::new(x, y, area.<span class="number">0</span>, area.<span class="number">1</span>),
+            deme,
+            marker: PhantomData::&lt;M&gt;,
         }
     }
 
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_deme</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">NonZeroU32</span> {
-        <span class="self">self</span>.<span class="ident">deme</span>
+    <span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>get_deme(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; NonZeroU32 {
+        <span class="self">self</span>.deme
     }
 }
 
-<span class="attribute">#[<span class="ident">contract_trait</span>]</span>
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">M</span>: <span class="ident">MathsCore</span><span class="op">&gt;</span> <span class="ident">Backup</span> <span class="kw">for</span> <span class="ident">NonSpatialHabitat</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span> {
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">backup_unchecked</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="self">Self</span> {
-        <span class="self">Self</span> {
-            <span class="ident">extent</span>: <span class="self">self</span>.<span class="ident">extent</span>.<span class="ident">clone</span>(),
-            <span class="ident">deme</span>: <span class="self">self</span>.<span class="ident">deme</span>,
-            <span class="ident">marker</span>: <span class="ident">PhantomData</span>::<span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span>,
+<span class="attribute">#[contract_trait]
+</span><span class="kw">impl</span>&lt;M: MathsCore&gt; Backup <span class="kw">for </span>NonSpatialHabitat&lt;M&gt; {
+    <span class="kw">unsafe fn </span>backup_unchecked(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{
+            extent: <span class="self">self</span>.extent.clone(),
+            deme: <span class="self">self</span>.deme,
+            marker: PhantomData::&lt;M&gt;,
         }
     }
 }
 
-<span class="attribute">#[<span class="ident">contract_trait</span>]</span>
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">M</span>: <span class="ident">MathsCore</span><span class="op">&gt;</span> <span class="ident">Habitat</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">NonSpatialHabitat</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span> {
-    <span class="kw">type</span> <span class="ident">LocationIterator</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="op">=</span> <span class="kw">impl</span> <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">Location</span><span class="op">&gt;</span>;
+<span class="attribute">#[contract_trait]
+</span><span class="kw">impl</span>&lt;M: MathsCore&gt; Habitat&lt;M&gt; <span class="kw">for </span>NonSpatialHabitat&lt;M&gt; {
+    <span class="kw">type </span>LocationIterator&lt;<span class="lifetime">&#39;a</span>&gt; = <span class="kw">impl </span>Iterator&lt;Item = Location&gt;;
 
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">fn</span> <span class="ident">get_extent</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">LandscapeExtent</span> {
-        <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">extent</span>
+    <span class="attribute">#[must_use]
+    </span><span class="kw">fn </span>get_extent(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>LandscapeExtent {
+        <span class="kw-2">&amp;</span><span class="self">self</span>.extent
     }
 
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">fn</span> <span class="ident">get_total_habitat</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">OffByOneU64</span> {
-        <span class="ident">OffByOneU64::from</span>(<span class="self">self</span>.<span class="ident">extent</span>.<span class="ident">width</span>())
-            <span class="op">*</span> <span class="ident">OffByOneU64::from</span>(<span class="self">self</span>.<span class="ident">extent</span>.<span class="ident">height</span>())
-            <span class="op">*</span> <span class="ident">OffByOneU64::from</span>(<span class="self">self</span>.<span class="ident">deme</span>)
+    <span class="attribute">#[must_use]
+    </span><span class="kw">fn </span>get_total_habitat(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; OffByOneU64 {
+        OffByOneU64::from(<span class="self">self</span>.extent.width())
+            * OffByOneU64::from(<span class="self">self</span>.extent.height())
+            * OffByOneU64::from(<span class="self">self</span>.deme)
     }
 
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">fn</span> <span class="ident">get_habitat_at_location</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">_location</span>: <span class="kw-2">&amp;</span><span class="ident">Location</span>) -&gt; <span class="ident">u32</span> {
-        <span class="self">self</span>.<span class="ident">deme</span>.<span class="ident">get</span>()
+    <span class="attribute">#[must_use]
+    </span><span class="kw">fn </span>get_habitat_at_location(<span class="kw-2">&amp;</span><span class="self">self</span>, _location: <span class="kw-2">&amp;</span>Location) -&gt; u32 {
+        <span class="self">self</span>.deme.get()
     }
 
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">fn</span> <span class="ident">map_indexed_location_to_u64_injective</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">indexed_location</span>: <span class="kw-2">&amp;</span><span class="ident">IndexedLocation</span>) -&gt; <span class="ident">u64</span> {
-        (<span class="ident">u64::from</span>(
-            <span class="ident">indexed_location</span>
-                .<span class="ident">location</span>()
-                .<span class="ident">y</span>()
-                .<span class="ident">wrapping_sub</span>(<span class="self">self</span>.<span class="ident">extent</span>.<span class="ident">y</span>()),
-        ) <span class="op">*</span> <span class="ident">u64::from</span>(<span class="self">self</span>.<span class="ident">extent</span>.<span class="ident">width</span>())
-            <span class="op">+</span> <span class="ident">u64::from</span>(
-                <span class="ident">indexed_location</span>
-                    .<span class="ident">location</span>()
-                    .<span class="ident">x</span>()
-                    .<span class="ident">wrapping_sub</span>(<span class="self">self</span>.<span class="ident">extent</span>.<span class="ident">x</span>()),
+    <span class="attribute">#[must_use]
+    </span><span class="kw">fn </span>map_indexed_location_to_u64_injective(<span class="kw-2">&amp;</span><span class="self">self</span>, indexed_location: <span class="kw-2">&amp;</span>IndexedLocation) -&gt; u64 {
+        (u64::from(
+            indexed_location
+                .location()
+                .y()
+                .wrapping_sub(<span class="self">self</span>.extent.y()),
+        ) * u64::from(<span class="self">self</span>.extent.width())
+            + u64::from(
+                indexed_location
+                    .location()
+                    .x()
+                    .wrapping_sub(<span class="self">self</span>.extent.x()),
             ))
-            <span class="op">*</span> <span class="ident">u64::from</span>(<span class="self">self</span>.<span class="ident">deme</span>.<span class="ident">get</span>())
-            <span class="op">+</span> <span class="ident">u64::from</span>(<span class="ident">indexed_location</span>.<span class="ident">index</span>())
+            * u64::from(<span class="self">self</span>.deme.get())
+            + u64::from(indexed_location.index())
     }
 
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">fn</span> <span class="ident">iter_habitable_locations</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident"><span class="self">Self</span>::LocationIterator</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">get_extent</span>().<span class="ident">iter</span>()
+    <span class="attribute">#[must_use]
+    </span><span class="kw">fn </span>iter_habitable_locations(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="self">Self</span>::LocationIterator&lt;<span class="lifetime">&#39;_</span>&gt; {
+        <span class="self">self</span>.get_extent().iter()
     }
 }
 
-<span class="attribute">#[<span class="ident">contract_trait</span>]</span>
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">M</span>: <span class="ident">MathsCore</span>, <span class="ident">G</span>: <span class="ident">RngCore</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="ident">UniformlySampleableHabitat</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">G</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">NonSpatialHabitat</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span> {
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">sample_habitable_indexed_location</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">rng</span>: <span class="kw-2">&amp;mut</span> <span class="ident">G</span>) -&gt; <span class="ident">IndexedLocation</span> {
-        <span class="kw">use</span> <span class="ident">necsim_core::cogs::RngSampler</span>;
+<span class="attribute">#[contract_trait]
+</span><span class="kw">impl</span>&lt;M: MathsCore, G: RngCore&lt;M&gt;&gt; UniformlySampleableHabitat&lt;M, G&gt; <span class="kw">for </span>NonSpatialHabitat&lt;M&gt; {
+    <span class="attribute">#[must_use]
+    #[inline]
+    </span><span class="kw">fn </span>sample_habitable_indexed_location(<span class="kw-2">&amp;</span><span class="self">self</span>, rng: <span class="kw-2">&amp;mut </span>G) -&gt; IndexedLocation {
+        <span class="kw">use </span>necsim_core::cogs::RngSampler;
 
-        <span class="kw">let</span> <span class="ident">habitat_index_max</span> <span class="op">=</span>
-            <span class="self">self</span>.<span class="ident">extent</span>.<span class="ident">width</span>().<span class="ident">get</span>() <span class="op">*</span> <span class="self">self</span>.<span class="ident">extent</span>.<span class="ident">height</span>().<span class="ident">get</span>() <span class="op">*</span> <span class="ident">u64::from</span>(<span class="self">self</span>.<span class="ident">deme</span>.<span class="ident">get</span>());
+        <span class="kw">let </span>habitat_index_max =
+            <span class="self">self</span>.extent.width().get() * <span class="self">self</span>.extent.height().get() * u64::from(<span class="self">self</span>.deme.get());
 
-        <span class="comment">// Safety: habitat width, height, and deme are all &gt; 0</span>
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">dispersal_target_index</span> <span class="op">=</span>
-            <span class="ident">rng</span>.<span class="ident">sample_index_u64</span>(<span class="kw">unsafe</span> { <span class="ident">NonZeroU64::new_unchecked</span>(<span class="ident">habitat_index_max</span>) });
-        <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::cast_possible_truncation</span>)]</span>
-        <span class="kw">let</span> <span class="ident">index</span> <span class="op">=</span> (<span class="ident">dispersal_target_index</span> <span class="op">%</span> <span class="ident">u64::from</span>(<span class="self">self</span>.<span class="ident">deme</span>.<span class="ident">get</span>())) <span class="kw">as</span> <span class="ident">u32</span>;
-        <span class="ident">dispersal_target_index</span> <span class="op">/</span><span class="op">=</span> <span class="ident">u64::from</span>(<span class="self">self</span>.<span class="ident">deme</span>.<span class="ident">get</span>());
+        <span class="comment">// Safety: habitat width, height, and deme are all &gt; 0
+        </span><span class="kw">let </span><span class="kw-2">mut </span>dispersal_target_index =
+            rng.sample_index_u64(<span class="kw">unsafe </span>{ NonZeroU64::new_unchecked(habitat_index_max) });
+        <span class="attribute">#[allow(clippy::cast_possible_truncation)]
+        </span><span class="kw">let </span>index = (dispersal_target_index % u64::from(<span class="self">self</span>.deme.get())) <span class="kw">as </span>u32;
+        dispersal_target_index /= u64::from(<span class="self">self</span>.deme.get());
 
-        <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::cast_possible_truncation</span>)]</span>
-        <span class="ident">IndexedLocation::new</span>(
-            <span class="ident">Location::new</span>(
-                <span class="self">self</span>.<span class="ident">extent</span>
-                    .<span class="ident">x</span>()
-                    .<span class="ident">wrapping_add</span>((<span class="ident">dispersal_target_index</span> <span class="op">%</span> <span class="self">self</span>.<span class="ident">extent</span>.<span class="ident">width</span>().<span class="ident">get</span>()) <span class="kw">as</span> <span class="ident">u32</span>),
-                <span class="self">self</span>.<span class="ident">extent</span>
-                    .<span class="ident">y</span>()
-                    .<span class="ident">wrapping_add</span>((<span class="ident">dispersal_target_index</span> <span class="op">/</span> <span class="self">self</span>.<span class="ident">extent</span>.<span class="ident">width</span>().<span class="ident">get</span>()) <span class="kw">as</span> <span class="ident">u32</span>),
+        <span class="attribute">#[allow(clippy::cast_possible_truncation)]
+        </span>IndexedLocation::new(
+            Location::new(
+                <span class="self">self</span>.extent
+                    .x()
+                    .wrapping_add((dispersal_target_index % <span class="self">self</span>.extent.width().get()) <span class="kw">as </span>u32),
+                <span class="self">self</span>.extent
+                    .y()
+                    .wrapping_add((dispersal_target_index / <span class="self">self</span>.extent.width().get()) <span class="kw">as </span>u32),
             ),
-            <span class="ident">index</span>,
+            index,
         )
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="necsim_impls_no_std" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0-nightly (affe0d3a0 2022-08-05)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="necsim_impls_no_std" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (5e9772042 2022-10-29)" ></div></body></html>

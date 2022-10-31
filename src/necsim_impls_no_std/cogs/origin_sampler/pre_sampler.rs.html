@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `necsim/impls/no-std/src/cogs/origin_sampler/pre_sampler.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>pre_sampler.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../storage.js"></script><script defer src="../../../../source-script.js"></script><script defer src="../../../../source-files.js"></script><script defer src="../../../../main.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../../necsim_impls_no_std/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../../necsim_impls_no_std/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../../necsim_impls_no_std/index.html"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `necsim/impls/no-std/src/cogs/origin_sampler/pre_sampler.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>pre_sampler.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../../normalize.css"><link rel="stylesheet" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../../ayu.css" disabled><link rel="stylesheet" href="../../../../dark.css" disabled><link rel="stylesheet" href="../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../storage.js"></script><script defer src="../../../../source-script.js"></script><script defer src="../../../../source-files.js"></script><script defer src="../../../../main.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../../../necsim_impls_no_std/index.html"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../wheel.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -113,120 +113,120 @@
 <span id="113">113</span>
 <span id="114">114</span>
 <span id="115">115</span>
-</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">core</span>::{
-    <span class="ident">fmt</span>,
-    <span class="ident">iter::Empty</span>,
-    <span class="ident">marker::PhantomData</span>,
-    <span class="ident">ops</span>::{<span class="ident">Deref</span>, <span class="ident">DerefMut</span>, <span class="ident">RangeFrom</span>},
+</pre><pre class="rust"><code><span class="kw">use </span>core::{
+    fmt,
+    iter::Empty,
+    marker::PhantomData,
+    ops::{Deref, DerefMut, RangeFrom},
 };
 
-<span class="kw">use</span> <span class="ident">necsim_core::cogs::MathsCore</span>;
-<span class="kw">use</span> <span class="ident">necsim_core_bond::ClosedUnitF64</span>;
-<span class="kw">use</span> <span class="ident">necsim_partitioning_core::partition::Partition</span>;
+<span class="kw">use </span>necsim_core::cogs::MathsCore;
+<span class="kw">use </span>necsim_core_bond::ClosedUnitF64;
+<span class="kw">use </span>necsim_partitioning_core::partition::Partition;
 
-<span class="kw">const</span> <span class="ident">INV_PHI</span>: <span class="ident">f64</span> <span class="op">=</span> <span class="number">6.180_339_887_498_949e-1_f64</span>;
+<span class="kw">const </span>INV_PHI: f64 = <span class="number">6.180_339_887_498_949e-1_f64</span>;
 
-<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::module_name_repetitions</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">OriginPreSampler</span><span class="op">&lt;</span><span class="ident">M</span>: <span class="ident">MathsCore</span>, <span class="ident">I</span>: <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">u64</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-    <span class="ident">inner</span>: <span class="ident">I</span>,
-    <span class="ident">proportion</span>: <span class="ident">ClosedUnitF64</span>,
-    <span class="ident">_marker</span>: <span class="ident">PhantomData</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span>,
+<span class="attribute">#[allow(clippy::module_name_repetitions)]
+</span><span class="kw">pub struct </span>OriginPreSampler&lt;M: MathsCore, I: Iterator&lt;Item = u64&gt;&gt; {
+    inner: I,
+    proportion: ClosedUnitF64,
+    _marker: PhantomData&lt;M&gt;,
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">M</span>: <span class="ident">MathsCore</span>, <span class="ident">I</span>: <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">u64</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="ident">OriginPreSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">I</span><span class="op">&gt;</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_sample_proportion</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">ClosedUnitF64</span> {
-        <span class="self">self</span>.<span class="ident">proportion</span>
+<span class="kw">impl</span>&lt;M: MathsCore, I: Iterator&lt;Item = u64&gt;&gt; OriginPreSampler&lt;M, I&gt; {
+    <span class="kw">pub fn </span>get_sample_proportion(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; ClosedUnitF64 {
+        <span class="self">self</span>.proportion
     }
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">M</span>: <span class="ident">MathsCore</span>, <span class="ident">I</span>: <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">u64</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="ident">Deref</span> <span class="kw">for</span> <span class="ident">OriginPreSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">I</span><span class="op">&gt;</span> {
-    <span class="kw">type</span> <span class="ident">Target</span> <span class="op">=</span> <span class="ident">I</span>;
+<span class="kw">impl</span>&lt;M: MathsCore, I: Iterator&lt;Item = u64&gt;&gt; Deref <span class="kw">for </span>OriginPreSampler&lt;M, I&gt; {
+    <span class="kw">type </span>Target = I;
 
-    <span class="kw">fn</span> <span class="ident">deref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident"><span class="self">Self</span>::Target</span> {
-        <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">inner</span>
+    <span class="kw">fn </span>deref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="self">Self</span>::Target {
+        <span class="kw-2">&amp;</span><span class="self">self</span>.inner
     }
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">M</span>: <span class="ident">MathsCore</span>, <span class="ident">I</span>: <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">u64</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="ident">DerefMut</span> <span class="kw">for</span> <span class="ident">OriginPreSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">I</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">deref_mut</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="ident"><span class="self">Self</span>::Target</span> {
-        <span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">inner</span>
+<span class="kw">impl</span>&lt;M: MathsCore, I: Iterator&lt;Item = u64&gt;&gt; DerefMut <span class="kw">for </span>OriginPreSampler&lt;M, I&gt; {
+    <span class="kw">fn </span>deref_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self</span>::Target {
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>.inner
     }
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">M</span>: <span class="ident">MathsCore</span>, <span class="ident">I</span>: <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">u64</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">OriginPreSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">I</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">fmt</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span>) -&gt; <span class="ident">fmt::Result</span> {
-        <span class="ident">fmt</span>.<span class="ident">debug_struct</span>(<span class="macro">stringify!</span>(<span class="ident">OriginPreSampler</span>))
-            .<span class="ident">field</span>(<span class="string">&quot;proportion&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">proportion</span>)
-            .<span class="ident">finish</span>()
+<span class="kw">impl</span>&lt;M: MathsCore, I: Iterator&lt;Item = u64&gt;&gt; fmt::Debug <span class="kw">for </span>OriginPreSampler&lt;M, I&gt; {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, fmt: <span class="kw-2">&amp;mut </span>fmt::Formatter) -&gt; fmt::Result {
+        fmt.debug_struct(<span class="macro">stringify!</span>(OriginPreSampler))
+            .field(<span class="string">&quot;proportion&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.proportion)
+            .finish()
     }
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">M</span>: <span class="ident">MathsCore</span><span class="op">&gt;</span> <span class="ident">OriginPreSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">RangeFrom</span><span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">all</span>() -&gt; <span class="self">Self</span> {
-        <span class="self">Self</span> {
-            <span class="ident">inner</span>: <span class="number">0</span>..,
-            <span class="ident">proportion</span>: <span class="ident">ClosedUnitF64::one</span>(),
-            <span class="ident">_marker</span>: <span class="ident">PhantomData</span>::<span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span>,
+<span class="kw">impl</span>&lt;M: MathsCore&gt; OriginPreSampler&lt;M, RangeFrom&lt;u64&gt;&gt; {
+    <span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>all() -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{
+            inner: <span class="number">0</span>..,
+            proportion: ClosedUnitF64::one(),
+            _marker: PhantomData::&lt;M&gt;,
         }
     }
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">M</span>: <span class="ident">MathsCore</span><span class="op">&gt;</span> <span class="ident">OriginPreSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">Empty</span><span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">none</span>() -&gt; <span class="self">Self</span> {
-        <span class="self">Self</span> {
-            <span class="ident">inner</span>: <span class="ident">core::iter::empty</span>(),
-            <span class="ident">proportion</span>: <span class="ident">ClosedUnitF64::zero</span>(),
-            <span class="ident">_marker</span>: <span class="ident">PhantomData</span>::<span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span>,
+<span class="kw">impl</span>&lt;M: MathsCore&gt; OriginPreSampler&lt;M, Empty&lt;u64&gt;&gt; {
+    <span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>none() -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{
+            inner: core::iter::empty(),
+            proportion: ClosedUnitF64::zero(),
+            _marker: PhantomData::&lt;M&gt;,
         }
     }
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">M</span>: <span class="ident">MathsCore</span>, <span class="ident">I</span>: <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">u64</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="ident">OriginPreSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">I</span><span class="op">&gt;</span> {
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">percentage</span>(
-        <span class="kw-2">mut</span> <span class="self">self</span>,
-        <span class="ident">percentage</span>: <span class="ident">ClosedUnitF64</span>,
-    ) -&gt; <span class="ident">OriginPreSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="kw">impl</span> <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">u64</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">inv_geometric_sample_rate</span> <span class="op">=</span> <span class="ident">M::ln</span>(<span class="number">1.0_f64</span> <span class="op">-</span> <span class="ident">percentage</span>.<span class="ident">get</span>()).<span class="ident">recip</span>();
+<span class="kw">impl</span>&lt;M: MathsCore, I: Iterator&lt;Item = u64&gt;&gt; OriginPreSampler&lt;M, I&gt; {
+    <span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>percentage(
+        <span class="kw-2">mut </span><span class="self">self</span>,
+        percentage: ClosedUnitF64,
+    ) -&gt; OriginPreSampler&lt;M, <span class="kw">impl </span>Iterator&lt;Item = u64&gt;&gt; {
+        <span class="kw">let </span>inv_geometric_sample_rate = M::ln(<span class="number">1.0_f64 </span>- percentage.get()).recip();
 
-        <span class="ident">OriginPreSampler</span> {
-            <span class="ident">proportion</span>: <span class="self">self</span>.<span class="ident">proportion</span> <span class="op">*</span> <span class="ident">percentage</span>,
-            <span class="ident">inner</span>: <span class="ident">core::iter::repeat</span>(()).<span class="ident">scan</span>(<span class="number">0.5_f64</span>, <span class="kw">move</span> <span class="op">|</span><span class="ident">quasi_random</span>, <span class="kw">_</span><span class="op">|</span> {
-                <span class="kw">if</span> <span class="ident">percentage</span> <span class="op">&lt;</span><span class="op">=</span> <span class="number">0.0_f64</span> {
-                    <span class="kw">return</span> <span class="prelude-val">None</span>;
+        OriginPreSampler {
+            proportion: <span class="self">self</span>.proportion * percentage,
+            inner: core::iter::repeat(()).scan(<span class="number">0.5_f64</span>, <span class="kw">move </span>|quasi_random, <span class="kw">_</span>| {
+                <span class="kw">if </span>percentage &lt;= <span class="number">0.0_f64 </span>{
+                    <span class="kw">return </span><span class="prelude-val">None</span>;
                 }
 
-                <span class="kw">if</span> <span class="ident">percentage</span> <span class="op">&gt;</span><span class="op">=</span> <span class="number">1.0_f64</span> {
-                    <span class="kw">return</span> <span class="self">self</span>.<span class="ident">next</span>();
+                <span class="kw">if </span>percentage &gt;= <span class="number">1.0_f64 </span>{
+                    <span class="kw">return </span><span class="self">self</span>.next();
                 }
 
-                <span class="comment">// q = (q + INV_PHI) % 1  where q &gt;= 0</span>
-                <span class="kw-2">*</span><span class="ident">quasi_random</span> <span class="op">+</span><span class="op">=</span> <span class="ident">INV_PHI</span>;
-                <span class="kw-2">*</span><span class="ident">quasi_random</span> <span class="op">-</span><span class="op">=</span> <span class="ident">M::floor</span>(<span class="kw-2">*</span><span class="ident">quasi_random</span>);
+                <span class="comment">// q = (q + INV_PHI) % 1  where q &gt;= 0
+                </span><span class="kw-2">*</span>quasi_random += INV_PHI;
+                <span class="kw-2">*</span>quasi_random -= M::floor(<span class="kw-2">*</span>quasi_random);
 
-                <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::cast_sign_loss</span>, <span class="ident">clippy::cast_possible_truncation</span>)]</span>
-                <span class="kw">let</span> <span class="ident">skip</span> <span class="op">=</span> <span class="ident">M::floor</span>(<span class="ident">M::ln</span>(<span class="kw-2">*</span><span class="ident">quasi_random</span>) <span class="op">*</span> <span class="ident">inv_geometric_sample_rate</span>) <span class="kw">as</span> <span class="ident">usize</span>;
+                <span class="attribute">#[allow(clippy::cast_sign_loss, clippy::cast_possible_truncation)]
+                </span><span class="kw">let </span>skip = M::floor(M::ln(<span class="kw-2">*</span>quasi_random) * inv_geometric_sample_rate) <span class="kw">as </span>usize;
 
-                <span class="self">self</span>.<span class="ident">nth</span>(<span class="ident">skip</span>)
+                <span class="self">self</span>.nth(skip)
             }),
-            <span class="ident">_marker</span>: <span class="ident">PhantomData</span>::<span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span>,
+            _marker: PhantomData::&lt;M&gt;,
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">partition</span>(
-        <span class="kw-2">mut</span> <span class="self">self</span>,
-        <span class="ident">partition</span>: <span class="ident">Partition</span>,
-    ) -&gt; <span class="ident">OriginPreSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="kw">impl</span> <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">u64</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">advance_by</span>(<span class="ident">partition</span>.<span class="ident">rank</span>() <span class="kw">as</span> <span class="ident">usize</span>);
+    <span class="kw">pub fn </span>partition(
+        <span class="kw-2">mut </span><span class="self">self</span>,
+        partition: Partition,
+    ) -&gt; OriginPreSampler&lt;M, <span class="kw">impl </span>Iterator&lt;Item = u64&gt;&gt; {
+        <span class="kw">let _ </span>= <span class="self">self</span>.advance_by(partition.rank() <span class="kw">as </span>usize);
 
-        <span class="ident">OriginPreSampler</span> {
-            <span class="ident">proportion</span>: <span class="self">self</span>.<span class="ident">proportion</span> <span class="op">/</span> <span class="ident">partition</span>.<span class="ident">size</span>(),
-            <span class="ident">inner</span>: <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">step_by</span>(<span class="ident">partition</span>.<span class="ident">size</span>().<span class="ident">get</span>() <span class="kw">as</span> <span class="ident">usize</span>),
-            <span class="ident">_marker</span>: <span class="ident">PhantomData</span>::<span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span>,
+        OriginPreSampler {
+            proportion: <span class="self">self</span>.proportion / partition.size(),
+            inner: <span class="self">self</span>.inner.step_by(partition.size().get() <span class="kw">as </span>usize),
+            _marker: PhantomData::&lt;M&gt;,
         }
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="necsim_impls_no_std" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0-nightly (affe0d3a0 2022-08-05)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="necsim_impls_no_std" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (5e9772042 2022-10-29)" ></div></body></html>

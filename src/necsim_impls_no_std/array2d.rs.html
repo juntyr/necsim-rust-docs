@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `necsim/impls/no-std/src/array2d.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>array2d.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../necsim_impls_no_std/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../necsim_impls_no_std/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../necsim_impls_no_std/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `necsim/impls/no-std/src/array2d.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>array2d.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../normalize.css"><link rel="stylesheet" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../ayu.css" disabled><link rel="stylesheet" href="../../dark.css" disabled><link rel="stylesheet" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../necsim_impls_no_std/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -497,504 +497,516 @@
 <span id="497">497</span>
 <span id="498">498</span>
 <span id="499">499</span>
-</pre><pre class="rust"><code><span class="attribute">#![<span class="ident">allow</span>(<span class="ident">clippy::doc_markdown</span>)]</span>
-<span class="doccomment">/// no-std fixed-size two-dimensional array with `RustToCuda` support</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// Based on a subset of Harrison McCullough&#39;s MIT-licensed [`array2d`] crate.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// [`array2d`]: https://github.com/HarrisonMc555/array2d</span>
-<span class="kw">use</span> <span class="ident">alloc</span>::{<span class="ident">boxed::Box</span>, <span class="ident">vec::Vec</span>};
+<span id="500">500</span>
+<span id="501">501</span>
+<span id="502">502</span>
+<span id="503">503</span>
+<span id="504">504</span>
+<span id="505">505</span>
+</pre><pre class="rust"><code><span class="attribute">#![allow(clippy::doc_markdown)]
+</span><span class="doccomment">/// no-std fixed-size two-dimensional array with `RustToCuda` support
+///
+/// Based on a subset of Harrison McCullough&#39;s MIT-licensed [`array2d`] crate.
+///
+/// [`array2d`]: https://github.com/HarrisonMc555/array2d
+</span><span class="kw">use </span>alloc::{boxed::Box, vec::Vec};
 
-<span class="kw">use</span> <span class="ident">core::ops</span>::{<span class="ident">Index</span>, <span class="ident">IndexMut</span>};
+<span class="kw">use </span>core::ops::{Index, IndexMut};
 
-<span class="doccomment">/// A fixed sized two-dimensional array.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Eq</span>, <span class="ident">PartialEq</span>)]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;cuda&quot;</span>, <span class="ident">derive</span>(<span class="ident">rust_cuda::common::LendRustToCuda</span>))]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;cuda&quot;</span>, <span class="ident">r2cBound</span>(<span class="ident">T</span>: <span class="ident">rust_cuda::safety::StackOnly</span> <span class="op">+</span> <span class="ident">const_type_layout::TypeLayout</span>))]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Array2D</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
-    <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;cuda&quot;</span>, <span class="ident">r2cEmbed</span>)]</span>
-    <span class="ident">array</span>: <span class="ident">Box</span><span class="op">&lt;</span>[<span class="ident">T</span>]<span class="op">&gt;</span>,
-    <span class="ident">num_rows</span>: <span class="ident">usize</span>,
+<span class="doccomment">/// A fixed sized two-dimensional array.
+</span><span class="attribute">#[derive(Clone, Eq, PartialEq)]
+#[cfg_attr(feature = <span class="string">&quot;cuda&quot;</span>, derive(rust_cuda::common::LendRustToCuda))]
+#[cfg_attr(
+    feature = <span class="string">&quot;cuda&quot;</span>,
+    cuda(
+        free = <span class="string">&quot;T&quot;</span>,
+        bound = <span class="string">&quot;T: rust_cuda::safety::StackOnly + ~const const_type_layout::TypeGraphLayout&quot;
+    </span>)
+)]
+</span><span class="kw">pub struct </span>Array2D&lt;T&gt; {
+    <span class="attribute">#[cfg_attr(feature = <span class="string">&quot;cuda&quot;</span>, cuda(embed))]
+    </span>array: Box&lt;[T]&gt;,
+    num_rows: usize,
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">core::fmt::Debug</span> <span class="kw">for</span> <span class="ident">Array2D</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">fmt</span>: <span class="kw-2">&amp;mut</span> <span class="ident">core::fmt::Formatter</span>) -&gt; <span class="ident">core::fmt::Result</span> {
+<span class="kw">impl</span>&lt;T&gt; core::fmt::Debug <span class="kw">for </span>Array2D&lt;T&gt; {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, fmt: <span class="kw-2">&amp;mut </span>core::fmt::Formatter) -&gt; core::fmt::Result {
         <span class="macro">write!</span>(
-            <span class="ident">fmt</span>,
+            fmt,
             <span class="string">&quot;Array2D&lt;{}; WxH = {}x{}&gt;&quot;</span>,
-            <span class="ident">core::any::type_name</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(),
-            <span class="self">self</span>.<span class="ident">num_columns</span>(),
-            <span class="self">self</span>.<span class="ident">num_rows</span>()
+            core::any::type_name::&lt;T&gt;(),
+            <span class="self">self</span>.num_columns(),
+            <span class="self">self</span>.num_rows()
         )
     }
 }
 
-<span class="doccomment">/// An error that can arise during the use of an [`Array2D`].</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// [`Array2D`]: struct.Array2D.html</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Eq</span>, <span class="ident">PartialEq</span>)]</span>
-<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Error</span> {
-    <span class="doccomment">/// The given indices were out of bounds.</span>
-    <span class="ident">IndicesOutOfBounds</span>(<span class="ident">usize</span>, <span class="ident">usize</span>),
-    <span class="doccomment">/// The dimensions given did not match the elements provided</span>
-    <span class="ident">DimensionMismatch</span>,
-    <span class="doccomment">/// There were not enough elements to fill the array.</span>
-    <span class="ident">NotEnoughElements</span>,
+<span class="doccomment">/// An error that can arise during the use of an [`Array2D`].
+///
+/// [`Array2D`]: struct.Array2D.html
+</span><span class="attribute">#[derive(Debug, Eq, PartialEq)]
+</span><span class="kw">pub enum </span>Error {
+    <span class="doccomment">/// The given indices were out of bounds.
+    </span>IndicesOutOfBounds(usize, usize),
+    <span class="doccomment">/// The dimensions given did not match the elements provided
+    </span>DimensionMismatch,
+    <span class="doccomment">/// There were not enough elements to fill the array.
+    </span>NotEnoughElements,
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">Array2D</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
-    <span class="doccomment">/// Creates a new [`Array2D`] from a slice of rows, each of which is a</span>
-    <span class="doccomment">/// [`Vec`] of elements.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Errors</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Returns an `DimensionMismatch` error if the rows are not all the same</span>
-    <span class="doccomment">/// size.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Examples</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// ```</span>
-    <span class="doccomment">/// # use necsim_impls_no_std::array2d::{Array2D, Error};</span>
-    <span class="doccomment">/// # fn main() -&gt; Result&lt;(), Error&gt; {</span>
-    <span class="doccomment">/// let rows = vec![vec![1, 2, 3], vec![4, 5, 6]];</span>
-    <span class="doccomment">/// let array = Array2D::from_rows(&amp;rows)?;</span>
-    <span class="doccomment">/// assert_eq!(array[(1, 2)], 6);</span>
-    <span class="doccomment">/// assert_eq!(array.as_rows(), rows);</span>
-    <span class="doccomment">/// # Ok(())</span>
-    <span class="doccomment">/// # }</span>
-    <span class="doccomment">/// ```</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// [`Array2D`]: struct.Array2D.html</span>
-    <span class="doccomment">/// [`Vec`]: https://doc.rust-lang.org/std/vec/struct.Vec.html</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_rows</span>(<span class="ident">elements</span>: <span class="kw-2">&amp;</span>[<span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>]) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">Error</span><span class="op">&gt;</span>
-    <span class="kw">where</span>
-        <span class="ident">T</span>: <span class="ident">Clone</span>,
+<span class="kw">impl</span>&lt;T&gt; Array2D&lt;T&gt; {
+    <span class="doccomment">/// Creates a new [`Array2D`] from a slice of rows, each of which is a
+    /// [`Vec`] of elements.
+    ///
+    /// # Errors
+    ///
+    /// Returns an `DimensionMismatch` error if the rows are not all the same
+    /// size.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// # use necsim_impls_no_std::array2d::{Array2D, Error};
+    /// # fn main() -&gt; Result&lt;(), Error&gt; {
+    /// let rows = vec![vec![1, 2, 3], vec![4, 5, 6]];
+    /// let array = Array2D::from_rows(&amp;rows)?;
+    /// assert_eq!(array[(1, 2)], 6);
+    /// assert_eq!(array.as_rows(), rows);
+    /// # Ok(())
+    /// # }
+    /// ```
+    ///
+    /// [`Array2D`]: struct.Array2D.html
+    /// [`Vec`]: https://doc.rust-lang.org/std/vec/struct.Vec.html
+    </span><span class="kw">pub fn </span>from_rows(elements: <span class="kw-2">&amp;</span>[Vec&lt;T&gt;]) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, Error&gt;
+    <span class="kw">where
+        </span>T: Clone,
     {
-        <span class="kw">let</span> <span class="ident">row_len</span> <span class="op">=</span> <span class="ident">elements</span>.<span class="ident">get</span>(<span class="number">0</span>).<span class="ident">map_or</span>(<span class="number">0</span>, <span class="ident">Vec::len</span>);
-        <span class="kw">if</span> <span class="op">!</span><span class="ident">elements</span>.<span class="ident">iter</span>().<span class="ident">all</span>(<span class="op">|</span><span class="ident">row</span><span class="op">|</span> <span class="ident">row</span>.<span class="ident">len</span>() <span class="op">==</span> <span class="ident">row_len</span>) {
-            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Error::DimensionMismatch</span>);
+        <span class="kw">let </span>row_len = elements.get(<span class="number">0</span>).map_or(<span class="number">0</span>, Vec::len);
+        <span class="kw">if </span>!elements.iter().all(|row| row.len() == row_len) {
+            <span class="kw">return </span><span class="prelude-val">Err</span>(Error::DimensionMismatch);
         }
-        <span class="prelude-val">Ok</span>(<span class="ident">Array2D</span> {
-            <span class="ident">array</span>: <span class="ident">elements</span>
-                .<span class="ident">iter</span>()
-                .<span class="ident">flat_map</span>(<span class="ident">Vec::clone</span>)
-                .<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="op">&gt;</span>()
-                .<span class="ident">into_boxed_slice</span>(),
-            <span class="ident">num_rows</span>: <span class="ident">elements</span>.<span class="ident">len</span>(),
+        <span class="prelude-val">Ok</span>(Array2D {
+            array: elements
+                .iter()
+                .flat_map(Vec::clone)
+                .collect::&lt;Vec&lt;<span class="kw">_</span>&gt;&gt;()
+                .into_boxed_slice(),
+            num_rows: elements.len(),
         })
     }
 
-    <span class="doccomment">/// Creates a new [`Array2D`] from the given flat slice in [row major</span>
-    <span class="doccomment">/// order].</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Returns an error if the number of elements in `elements` is not the</span>
-    <span class="doccomment">/// product of `num_rows` and `num_columns`, i.e. the dimensions do not</span>
-    <span class="doccomment">/// match.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Errors</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Returns a `DimensionMismatch` error if</span>
-    <span class="doccomment">///  `elements.len() != num_rows * num_columns`</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Examples</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// ```</span>
-    <span class="doccomment">/// # use necsim_impls_no_std::array2d::{Array2D, Error};</span>
-    <span class="doccomment">/// # fn main() -&gt; Result&lt;(), Error&gt; {</span>
-    <span class="doccomment">/// let row_major = vec![1, 2, 3, 4, 5, 6];</span>
-    <span class="doccomment">/// let array = Array2D::from_row_major(&amp;row_major, 2, 3)?;</span>
-    <span class="doccomment">/// assert_eq!(array[(1, 2)], 6);</span>
-    <span class="doccomment">/// assert_eq!(array.as_rows(), vec![vec![1, 2, 3], vec![4, 5, 6]]);</span>
-    <span class="doccomment">/// # Ok(())</span>
-    <span class="doccomment">/// # }</span>
-    <span class="doccomment">/// ```</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// [`Array2D`]: struct.Array2D.html</span>
-    <span class="doccomment">/// [row major order]: https://en.wikipedia.org/wiki/Row-_and_column-major_order</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_row_major</span>(
-        <span class="ident">elements</span>: <span class="kw-2">&amp;</span>[<span class="ident">T</span>],
-        <span class="ident">num_rows</span>: <span class="ident">usize</span>,
-        <span class="ident">num_columns</span>: <span class="ident">usize</span>,
-    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">Error</span><span class="op">&gt;</span>
-    <span class="kw">where</span>
-        <span class="ident">T</span>: <span class="ident">Clone</span>,
+    <span class="doccomment">/// Creates a new [`Array2D`] from the given flat slice in [row major
+    /// order].
+    ///
+    /// Returns an error if the number of elements in `elements` is not the
+    /// product of `num_rows` and `num_columns`, i.e. the dimensions do not
+    /// match.
+    ///
+    /// # Errors
+    ///
+    /// Returns a `DimensionMismatch` error if
+    ///  `elements.len() != num_rows * num_columns`
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// # use necsim_impls_no_std::array2d::{Array2D, Error};
+    /// # fn main() -&gt; Result&lt;(), Error&gt; {
+    /// let row_major = vec![1, 2, 3, 4, 5, 6];
+    /// let array = Array2D::from_row_major(&amp;row_major, 2, 3)?;
+    /// assert_eq!(array[(1, 2)], 6);
+    /// assert_eq!(array.as_rows(), vec![vec![1, 2, 3], vec![4, 5, 6]]);
+    /// # Ok(())
+    /// # }
+    /// ```
+    ///
+    /// [`Array2D`]: struct.Array2D.html
+    /// [row major order]: https://en.wikipedia.org/wiki/Row-_and_column-major_order
+    </span><span class="kw">pub fn </span>from_row_major(
+        elements: <span class="kw-2">&amp;</span>[T],
+        num_rows: usize,
+        num_columns: usize,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, Error&gt;
+    <span class="kw">where
+        </span>T: Clone,
     {
-        <span class="kw">let</span> <span class="ident">total_len</span> <span class="op">=</span> <span class="ident">num_rows</span> <span class="op">*</span> <span class="ident">num_columns</span>;
-        <span class="kw">if</span> <span class="ident">total_len</span> <span class="op">!</span><span class="op">=</span> <span class="ident">elements</span>.<span class="ident">len</span>() {
-            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Error::DimensionMismatch</span>);
+        <span class="kw">let </span>total_len = num_rows * num_columns;
+        <span class="kw">if </span>total_len != elements.len() {
+            <span class="kw">return </span><span class="prelude-val">Err</span>(Error::DimensionMismatch);
         }
-        <span class="prelude-val">Ok</span>(<span class="ident">Array2D</span> {
-            <span class="ident">array</span>: <span class="ident">elements</span>.<span class="ident">to_vec</span>().<span class="ident">into_boxed_slice</span>(),
-            <span class="ident">num_rows</span>,
+        <span class="prelude-val">Ok</span>(Array2D {
+            array: elements.to_vec().into_boxed_slice(),
+            num_rows,
         })
     }
 
-    <span class="doccomment">/// Creates a new [`Array2D`] with the specified number of rows and columns</span>
-    <span class="doccomment">/// that contains `element` in every location.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Examples</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// ```</span>
-    <span class="doccomment">/// # use necsim_impls_no_std::array2d::{Array2D, Error};</span>
-    <span class="doccomment">/// let array = Array2D::filled_with(42, 2, 3);</span>
-    <span class="doccomment">/// assert_eq!(array.as_rows(), vec![vec![42, 42, 42], vec![42, 42, 42]]);</span>
-    <span class="doccomment">/// ```</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// [`Array2D`]: struct.Array2D.html</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">filled_with</span>(<span class="ident">element</span>: <span class="ident">T</span>, <span class="ident">num_rows</span>: <span class="ident">usize</span>, <span class="ident">num_columns</span>: <span class="ident">usize</span>) -&gt; <span class="self">Self</span>
-    <span class="kw">where</span>
-        <span class="ident">T</span>: <span class="ident">Clone</span>,
+    <span class="doccomment">/// Creates a new [`Array2D`] with the specified number of rows and columns
+    /// that contains `element` in every location.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// # use necsim_impls_no_std::array2d::{Array2D, Error};
+    /// let array = Array2D::filled_with(42, 2, 3);
+    /// assert_eq!(array.as_rows(), vec![vec![42, 42, 42], vec![42, 42, 42]]);
+    /// ```
+    ///
+    /// [`Array2D`]: struct.Array2D.html
+    </span><span class="kw">pub fn </span>filled_with(element: T, num_rows: usize, num_columns: usize) -&gt; <span class="self">Self
+    </span><span class="kw">where
+        </span>T: Clone,
     {
-        <span class="kw">let</span> <span class="ident">total_len</span> <span class="op">=</span> <span class="ident">num_rows</span> <span class="op">*</span> <span class="ident">num_columns</span>;
-        <span class="kw">let</span> <span class="ident">array</span> <span class="op">=</span> <span class="macro">alloc::vec!</span>[<span class="ident">element</span>; <span class="ident">total_len</span>];
-        <span class="ident">Array2D</span> {
-            <span class="ident">array</span>: <span class="ident">array</span>.<span class="ident">into_boxed_slice</span>(),
-            <span class="ident">num_rows</span>,
+        <span class="kw">let </span>total_len = num_rows * num_columns;
+        <span class="kw">let </span>array = <span class="macro">alloc::vec!</span>[element; total_len];
+        Array2D {
+            array: array.into_boxed_slice(),
+            num_rows,
         }
     }
 
-    <span class="doccomment">/// Creates a new [`Array2D`] with the specified number of rows and columns</span>
-    <span class="doccomment">/// and fills each element with the elements produced from the provided</span>
-    <span class="doccomment">/// iterator. If the iterator produces more than enough elements, the</span>
-    <span class="doccomment">/// remaining are unused. Returns an error if the iterator does not produce</span>
-    <span class="doccomment">/// enough elements.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// The elements are inserted into the array in [row major order].</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Errors</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Returns a `NotEnoughElements` error if</span>
-    <span class="doccomment">///  `iterator.len() &lt; num_rows * num_columns`</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Examples</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// ```</span>
-    <span class="doccomment">/// # use necsim_impls_no_std::array2d::{Array2D, Error};</span>
-    <span class="doccomment">/// # fn main() -&gt; Result&lt;(), Error&gt; {</span>
-    <span class="doccomment">/// let iterator = (1..);</span>
-    <span class="doccomment">/// let array = Array2D::from_iter_row_major(iterator, 2, 3)?;</span>
-    <span class="doccomment">/// assert_eq!(array.as_rows(), vec![vec![1, 2, 3], vec![4, 5, 6]]);</span>
-    <span class="doccomment">/// # Ok(())</span>
-    <span class="doccomment">/// # }</span>
-    <span class="doccomment">/// ```</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// [`Array2D`]: struct.Array2D.html</span>
-    <span class="doccomment">/// [row major order]: https://en.wikipedia.org/wiki/Row-_and_column-major_order</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_iter_row_major</span><span class="op">&lt;</span><span class="ident">I</span><span class="op">&gt;</span>(
-        <span class="ident">iterator</span>: <span class="ident">I</span>,
-        <span class="ident">num_rows</span>: <span class="ident">usize</span>,
-        <span class="ident">num_columns</span>: <span class="ident">usize</span>,
-    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">Error</span><span class="op">&gt;</span>
-    <span class="kw">where</span>
-        <span class="ident">I</span>: <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">T</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// Creates a new [`Array2D`] with the specified number of rows and columns
+    /// and fills each element with the elements produced from the provided
+    /// iterator. If the iterator produces more than enough elements, the
+    /// remaining are unused. Returns an error if the iterator does not produce
+    /// enough elements.
+    ///
+    /// The elements are inserted into the array in [row major order].
+    ///
+    /// # Errors
+    ///
+    /// Returns a `NotEnoughElements` error if
+    ///  `iterator.len() &lt; num_rows * num_columns`
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// # use necsim_impls_no_std::array2d::{Array2D, Error};
+    /// # fn main() -&gt; Result&lt;(), Error&gt; {
+    /// let iterator = (1..);
+    /// let array = Array2D::from_iter_row_major(iterator, 2, 3)?;
+    /// assert_eq!(array.as_rows(), vec![vec![1, 2, 3], vec![4, 5, 6]]);
+    /// # Ok(())
+    /// # }
+    /// ```
+    ///
+    /// [`Array2D`]: struct.Array2D.html
+    /// [row major order]: https://en.wikipedia.org/wiki/Row-_and_column-major_order
+    </span><span class="kw">pub fn </span>from_iter_row_major&lt;I&gt;(
+        iterator: I,
+        num_rows: usize,
+        num_columns: usize,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, Error&gt;
+    <span class="kw">where
+        </span>I: Iterator&lt;Item = T&gt;,
     {
-        <span class="kw">let</span> <span class="ident">total_len</span> <span class="op">=</span> <span class="ident">num_rows</span> <span class="op">*</span> <span class="ident">num_columns</span>;
-        <span class="kw">let</span> <span class="ident">array</span> <span class="op">=</span> <span class="ident">iterator</span>.<span class="ident">take</span>(<span class="ident">total_len</span>).<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="op">&gt;</span>();
-        <span class="kw">if</span> <span class="ident">array</span>.<span class="ident">len</span>() <span class="op">!</span><span class="op">=</span> <span class="ident">total_len</span> {
-            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Error::NotEnoughElements</span>);
+        <span class="kw">let </span>total_len = num_rows * num_columns;
+        <span class="kw">let </span>array = iterator.take(total_len).collect::&lt;Vec&lt;<span class="kw">_</span>&gt;&gt;();
+        <span class="kw">if </span>array.len() != total_len {
+            <span class="kw">return </span><span class="prelude-val">Err</span>(Error::NotEnoughElements);
         }
-        <span class="prelude-val">Ok</span>(<span class="ident">Array2D</span> {
-            <span class="ident">array</span>: <span class="ident">array</span>.<span class="ident">into_boxed_slice</span>(),
-            <span class="ident">num_rows</span>,
+        <span class="prelude-val">Ok</span>(Array2D {
+            array: array.into_boxed_slice(),
+            num_rows,
         })
     }
 
-    <span class="doccomment">/// The number of rows.</span>
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">num_rows</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">usize</span> {
-        <span class="self">self</span>.<span class="ident">num_rows</span>
+    <span class="doccomment">/// The number of rows.
+    </span><span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>num_rows(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; usize {
+        <span class="self">self</span>.num_rows
     }
 
-    <span class="doccomment">/// The number of columns.</span>
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">num_columns</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">usize</span> {
-        <span class="self">self</span>.<span class="ident">array</span>.<span class="ident">len</span>() <span class="op">/</span> <span class="self">self</span>.<span class="ident">num_rows</span>
+    <span class="doccomment">/// The number of columns.
+    </span><span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>num_columns(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; usize {
+        <span class="self">self</span>.array.len() / <span class="self">self</span>.num_rows
     }
 
-    <span class="doccomment">/// The total number of elements, i.e. the product of `num_rows` and</span>
-    <span class="doccomment">/// `num_columns`.</span>
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">num_elements</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">usize</span> {
-        <span class="self">self</span>.<span class="ident">array</span>.<span class="ident">len</span>()
+    <span class="doccomment">/// The total number of elements, i.e. the product of `num_rows` and
+    /// `num_columns`.
+    </span><span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>num_elements(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; usize {
+        <span class="self">self</span>.array.len()
     }
 
-    <span class="doccomment">/// The number of elements in each row, i.e. the number of columns.</span>
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">row_len</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">usize</span> {
-        <span class="self">self</span>.<span class="ident">num_columns</span>()
+    <span class="doccomment">/// The number of elements in each row, i.e. the number of columns.
+    </span><span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>row_len(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; usize {
+        <span class="self">self</span>.num_columns()
     }
 
-    <span class="doccomment">/// The number of elements in each column, i.e. the number of rows.</span>
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">column_len</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">usize</span> {
-        <span class="self">self</span>.<span class="ident">num_rows</span>()
+    <span class="doccomment">/// The number of elements in each column, i.e. the number of rows.
+    </span><span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>column_len(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; usize {
+        <span class="self">self</span>.num_rows()
     }
 
-    <span class="doccomment">/// Returns a reference to the element at the given `row` and `column` if</span>
-    <span class="doccomment">/// the index is in bounds (wrapped in [`Some`]). Returns [`None`] if</span>
-    <span class="doccomment">/// the index is out of bounds.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Examples</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// ```</span>
-    <span class="doccomment">/// # use necsim_impls_no_std::array2d::{Array2D, Error};</span>
-    <span class="doccomment">/// let array = Array2D::filled_with(42, 2, 3);</span>
-    <span class="doccomment">/// assert_eq!(array.get(0, 0), Some(&amp;42));</span>
-    <span class="doccomment">/// assert_eq!(array.get(10, 10), None);</span>
-    <span class="doccomment">/// ```</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// [`Some`]: https://doc.rust-lang.org/std/option/enum.Option.html#variant.Some</span>
-    <span class="doccomment">/// [`None`]: https://doc.rust-lang.org/std/option/enum.Option.html#variant.None</span>
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">row</span>: <span class="ident">usize</span>, <span class="ident">column</span>: <span class="ident">usize</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">T</span><span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">get_index</span>(<span class="ident">row</span>, <span class="ident">column</span>).<span class="ident">map</span>(<span class="op">|</span><span class="ident">index</span><span class="op">|</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">array</span>[<span class="ident">index</span>])
+    <span class="doccomment">/// Returns a reference to the element at the given `row` and `column` if
+    /// the index is in bounds (wrapped in [`Some`]). Returns [`None`] if
+    /// the index is out of bounds.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// # use necsim_impls_no_std::array2d::{Array2D, Error};
+    /// let array = Array2D::filled_with(42, 2, 3);
+    /// assert_eq!(array.get(0, 0), Some(&amp;42));
+    /// assert_eq!(array.get(10, 10), None);
+    /// ```
+    ///
+    /// [`Some`]: https://doc.rust-lang.org/std/option/enum.Option.html#variant.Some
+    /// [`None`]: https://doc.rust-lang.org/std/option/enum.Option.html#variant.None
+    </span><span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>get(<span class="kw-2">&amp;</span><span class="self">self</span>, row: usize, column: usize) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>T&gt; {
+        <span class="self">self</span>.get_index(row, column).map(|index| <span class="kw-2">&amp;</span><span class="self">self</span>.array[index])
     }
 
-    <span class="doccomment">/// Returns a mutable reference to the element at the given `row` and</span>
-    <span class="doccomment">/// `column` if the index is in bounds (wrapped in [`Some`]). Returns</span>
-    <span class="doccomment">/// [`None`] if the index is out of bounds.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Examples</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// ```</span>
-    <span class="doccomment">/// # use necsim_impls_no_std::array2d::{Array2D, Error};</span>
-    <span class="doccomment">/// let mut array = Array2D::filled_with(42, 2, 3);</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// assert_eq!(array.get_mut(0, 0), Some(&amp;mut 42));</span>
-    <span class="doccomment">/// assert_eq!(array.get_mut(10, 10), None);</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// array.get_mut(0, 0).map(|x| *x = 100);</span>
-    <span class="doccomment">/// assert_eq!(array.get(0, 0), Some(&amp;100));</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// array.get_mut(10, 10).map(|x| *x = 200);</span>
-    <span class="doccomment">/// assert_eq!(array.get(10, 10), None);</span>
-    <span class="doccomment">/// ```</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// [`Some`]: https://doc.rust-lang.org/std/option/enum.Option.html#variant.Some</span>
-    <span class="doccomment">/// [`None`]: https://doc.rust-lang.org/std/option/enum.Option.html#variant.None</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_mut</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">row</span>: <span class="ident">usize</span>, <span class="ident">column</span>: <span class="ident">usize</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;mut</span> <span class="ident">T</span><span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">get_index</span>(<span class="ident">row</span>, <span class="ident">column</span>)
-            .<span class="ident">map</span>(<span class="kw">move</span> <span class="op">|</span><span class="ident">index</span><span class="op">|</span> <span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">array</span>[<span class="ident">index</span>])
+    <span class="doccomment">/// Returns a mutable reference to the element at the given `row` and
+    /// `column` if the index is in bounds (wrapped in [`Some`]). Returns
+    /// [`None`] if the index is out of bounds.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// # use necsim_impls_no_std::array2d::{Array2D, Error};
+    /// let mut array = Array2D::filled_with(42, 2, 3);
+    ///
+    /// assert_eq!(array.get_mut(0, 0), Some(&amp;mut 42));
+    /// assert_eq!(array.get_mut(10, 10), None);
+    ///
+    /// array.get_mut(0, 0).map(|x| *x = 100);
+    /// assert_eq!(array.get(0, 0), Some(&amp;100));
+    ///
+    /// array.get_mut(10, 10).map(|x| *x = 200);
+    /// assert_eq!(array.get(10, 10), None);
+    /// ```
+    ///
+    /// [`Some`]: https://doc.rust-lang.org/std/option/enum.Option.html#variant.Some
+    /// [`None`]: https://doc.rust-lang.org/std/option/enum.Option.html#variant.None
+    </span><span class="kw">pub fn </span>get_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>, row: usize, column: usize) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;mut </span>T&gt; {
+        <span class="self">self</span>.get_index(row, column)
+            .map(<span class="kw">move </span>|index| <span class="kw-2">&amp;mut </span><span class="self">self</span>.array[index])
     }
 
-    <span class="doccomment">/// Returns an [`Iterator`] over references to all elements in the given</span>
-    <span class="doccomment">/// row. Returns an error if the index is out of bounds.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Errors</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Returns a `IndicesOutOfBounds(row_index, 0)` error</span>
-    <span class="doccomment">///  if `row_index &gt;= self.num_rows()`</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Examples</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// ```</span>
-    <span class="doccomment">/// # use necsim_impls_no_std::array2d::{Array2D, Error};</span>
-    <span class="doccomment">/// # fn main() -&gt; Result&lt;(), Error&gt; {</span>
-    <span class="doccomment">/// let rows = vec![vec![1, 2, 3], vec![4, 5, 6]];</span>
-    <span class="doccomment">/// let array = Array2D::from_rows(&amp;rows)?;</span>
-    <span class="doccomment">/// let mut row_iter = array.row_iter(1)?;</span>
-    <span class="doccomment">/// assert_eq!(row_iter.next(), Some(&amp;4));</span>
-    <span class="doccomment">/// assert_eq!(row_iter.next(), Some(&amp;5));</span>
-    <span class="doccomment">/// assert_eq!(row_iter.next(), Some(&amp;6));</span>
-    <span class="doccomment">/// assert_eq!(row_iter.next(), None);</span>
-    <span class="doccomment">/// # Ok(())</span>
-    <span class="doccomment">/// # }</span>
-    <span class="doccomment">/// ```</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// [`Iterator`]: https://doc.rust-lang.org/std/iter/trait.Iterator.html</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">row_iter</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">row_index</span>: <span class="ident">usize</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="kw">impl</span> <span class="ident">DoubleEndedIterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">start</span> <span class="op">=</span> <span class="self">self</span>
-            .<span class="ident">get_index</span>(<span class="ident">row_index</span>, <span class="number">0</span>)
-            .<span class="ident">ok_or</span>(<span class="ident">Error::IndicesOutOfBounds</span>(<span class="ident">row_index</span>, <span class="number">0</span>))<span class="question-mark">?</span>;
-        <span class="kw">let</span> <span class="ident">end</span> <span class="op">=</span> <span class="ident">start</span> <span class="op">+</span> <span class="self">self</span>.<span class="ident">row_len</span>();
-        <span class="prelude-val">Ok</span>(<span class="self">self</span>.<span class="ident">array</span>[<span class="ident">start</span>..<span class="ident">end</span>].<span class="ident">iter</span>())
+    <span class="doccomment">/// Returns an [`Iterator`] over references to all elements in the given
+    /// row. Returns an error if the index is out of bounds.
+    ///
+    /// # Errors
+    ///
+    /// Returns a `IndicesOutOfBounds(row_index, 0)` error
+    ///  if `row_index &gt;= self.num_rows()`
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// # use necsim_impls_no_std::array2d::{Array2D, Error};
+    /// # fn main() -&gt; Result&lt;(), Error&gt; {
+    /// let rows = vec![vec![1, 2, 3], vec![4, 5, 6]];
+    /// let array = Array2D::from_rows(&amp;rows)?;
+    /// let mut row_iter = array.row_iter(1)?;
+    /// assert_eq!(row_iter.next(), Some(&amp;4));
+    /// assert_eq!(row_iter.next(), Some(&amp;5));
+    /// assert_eq!(row_iter.next(), Some(&amp;6));
+    /// assert_eq!(row_iter.next(), None);
+    /// # Ok(())
+    /// # }
+    /// ```
+    ///
+    /// [`Iterator`]: https://doc.rust-lang.org/std/iter/trait.Iterator.html
+    </span><span class="kw">pub fn </span>row_iter(<span class="kw-2">&amp;</span><span class="self">self</span>, row_index: usize) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="kw">impl </span>DoubleEndedIterator&lt;Item = <span class="kw-2">&amp;</span>T&gt;, Error&gt; {
+        <span class="kw">let </span>start = <span class="self">self
+            </span>.get_index(row_index, <span class="number">0</span>)
+            .ok_or(Error::IndicesOutOfBounds(row_index, <span class="number">0</span>))<span class="question-mark">?</span>;
+        <span class="kw">let </span>end = start + <span class="self">self</span>.row_len();
+        <span class="prelude-val">Ok</span>(<span class="self">self</span>.array[start..end].iter())
     }
 
-    <span class="doccomment">/// Returns an [`Iterator`] over all rows. Each [`Item`] is itself another</span>
-    <span class="doccomment">/// [`Iterator`] over references to the elements in that row.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Examples</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// ```</span>
-    <span class="doccomment">/// # use necsim_impls_no_std::array2d::{Array2D, Error};</span>
-    <span class="doccomment">/// # fn main() -&gt; Result&lt;(), Error&gt; {</span>
-    <span class="doccomment">/// let rows = vec![vec![1, 2, 3], vec![4, 5, 6]];</span>
-    <span class="doccomment">/// let array = Array2D::from_rows(&amp;rows)?;</span>
-    <span class="doccomment">/// for row_iter in array.rows_iter() {</span>
-    <span class="doccomment">///     for element in row_iter {</span>
-    <span class="doccomment">///         print!(&quot;{} &quot;, element);</span>
-    <span class="doccomment">///     }</span>
-    <span class="doccomment">///     println!();</span>
-    <span class="doccomment">/// }</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// let mut rows_iter = array.rows_iter();</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// let mut first_row_iter = rows_iter.next().unwrap();</span>
-    <span class="doccomment">/// assert_eq!(first_row_iter.next(), Some(&amp;1));</span>
-    <span class="doccomment">/// assert_eq!(first_row_iter.next(), Some(&amp;2));</span>
-    <span class="doccomment">/// assert_eq!(first_row_iter.next(), Some(&amp;3));</span>
-    <span class="doccomment">/// assert_eq!(first_row_iter.next(), None);</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// let mut second_row_iter = rows_iter.next().unwrap();</span>
-    <span class="doccomment">/// assert_eq!(second_row_iter.next(), Some(&amp;4));</span>
-    <span class="doccomment">/// assert_eq!(second_row_iter.next(), Some(&amp;5));</span>
-    <span class="doccomment">/// assert_eq!(second_row_iter.next(), Some(&amp;6));</span>
-    <span class="doccomment">/// assert_eq!(second_row_iter.next(), None);</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// assert!(rows_iter.next().is_none());</span>
-    <span class="doccomment">/// # Ok(())</span>
-    <span class="doccomment">/// # }</span>
-    <span class="doccomment">/// ```</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// [`Iterator`]: https://doc.rust-lang.org/std/iter/trait.Iterator.html</span>
-    <span class="doccomment">/// [`Item`]: https://doc.rust-lang.org/std/iter/trait.Iterator.html#associatedtype.Item</span>
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">rows_iter</span>(
+    <span class="doccomment">/// Returns an [`Iterator`] over all rows. Each [`Item`] is itself another
+    /// [`Iterator`] over references to the elements in that row.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// # use necsim_impls_no_std::array2d::{Array2D, Error};
+    /// # fn main() -&gt; Result&lt;(), Error&gt; {
+    /// let rows = vec![vec![1, 2, 3], vec![4, 5, 6]];
+    /// let array = Array2D::from_rows(&amp;rows)?;
+    /// for row_iter in array.rows_iter() {
+    ///     for element in row_iter {
+    ///         print!(&quot;{} &quot;, element);
+    ///     }
+    ///     println!();
+    /// }
+    ///
+    /// let mut rows_iter = array.rows_iter();
+    ///
+    /// let mut first_row_iter = rows_iter.next().unwrap();
+    /// assert_eq!(first_row_iter.next(), Some(&amp;1));
+    /// assert_eq!(first_row_iter.next(), Some(&amp;2));
+    /// assert_eq!(first_row_iter.next(), Some(&amp;3));
+    /// assert_eq!(first_row_iter.next(), None);
+    ///
+    /// let mut second_row_iter = rows_iter.next().unwrap();
+    /// assert_eq!(second_row_iter.next(), Some(&amp;4));
+    /// assert_eq!(second_row_iter.next(), Some(&amp;5));
+    /// assert_eq!(second_row_iter.next(), Some(&amp;6));
+    /// assert_eq!(second_row_iter.next(), None);
+    ///
+    /// assert!(rows_iter.next().is_none());
+    /// # Ok(())
+    /// # }
+    /// ```
+    ///
+    /// [`Iterator`]: https://doc.rust-lang.org/std/iter/trait.Iterator.html
+    /// [`Item`]: https://doc.rust-lang.org/std/iter/trait.Iterator.html#associatedtype.Item
+    </span><span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>rows_iter(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-    ) -&gt; <span class="kw">impl</span> <span class="ident">DoubleEndedIterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="kw">impl</span> <span class="ident">DoubleEndedIterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-        (<span class="number">0</span>..<span class="self">self</span>.<span class="ident">num_rows</span>()).<span class="ident">map</span>(<span class="kw">move</span> <span class="op">|</span><span class="ident">row_index</span><span class="op">|</span> {
-            <span class="self">self</span>.<span class="ident">row_iter</span>(<span class="ident">row_index</span>)
-                .<span class="ident">expect</span>(<span class="string">&quot;rows_iter should never fail&quot;</span>)
+    ) -&gt; <span class="kw">impl </span>DoubleEndedIterator&lt;Item = <span class="kw">impl </span>DoubleEndedIterator&lt;Item = <span class="kw-2">&amp;</span>T&gt;&gt; {
+        (<span class="number">0</span>..<span class="self">self</span>.num_rows()).map(<span class="kw">move </span>|row_index| {
+            <span class="self">self</span>.row_iter(row_index)
+                .expect(<span class="string">&quot;rows_iter should never fail&quot;</span>)
         })
     }
 
-    <span class="doccomment">/// Collects the [`Array2D`] into a [`Vec`] of rows, each of which contains</span>
-    <span class="doccomment">/// a [`Vec`] of elements.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Examples</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// ```</span>
-    <span class="doccomment">/// # use necsim_impls_no_std::array2d::{Array2D, Error};</span>
-    <span class="doccomment">/// # fn main() -&gt; Result&lt;(), Error&gt; {</span>
-    <span class="doccomment">/// let rows = vec![vec![1, 2, 3], vec![4, 5, 6]];</span>
-    <span class="doccomment">/// let array = Array2D::from_rows(&amp;rows)?;</span>
-    <span class="doccomment">/// assert_eq!(array.as_rows(), rows);</span>
-    <span class="doccomment">/// # Ok(())</span>
-    <span class="doccomment">/// # }</span>
-    <span class="doccomment">/// ```</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// [`Array2D`]: struct.Array2D.html</span>
-    <span class="doccomment">/// [`Vec`]: https://doc.rust-lang.org/std/vec/struct.Vec.html</span>
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_rows</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span>
-    <span class="kw">where</span>
-        <span class="ident">T</span>: <span class="ident">Clone</span>,
+    <span class="doccomment">/// Collects the [`Array2D`] into a [`Vec`] of rows, each of which contains
+    /// a [`Vec`] of elements.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// # use necsim_impls_no_std::array2d::{Array2D, Error};
+    /// # fn main() -&gt; Result&lt;(), Error&gt; {
+    /// let rows = vec![vec![1, 2, 3], vec![4, 5, 6]];
+    /// let array = Array2D::from_rows(&amp;rows)?;
+    /// assert_eq!(array.as_rows(), rows);
+    /// # Ok(())
+    /// # }
+    /// ```
+    ///
+    /// [`Array2D`]: struct.Array2D.html
+    /// [`Vec`]: https://doc.rust-lang.org/std/vec/struct.Vec.html
+    </span><span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>as_rows(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Vec&lt;Vec&lt;T&gt;&gt;
+    <span class="kw">where
+        </span>T: Clone,
     {
-        <span class="self">self</span>.<span class="ident">rows_iter</span>()
-            .<span class="ident">map</span>(<span class="op">|</span><span class="ident">row_iter</span><span class="op">|</span> <span class="ident">row_iter</span>.<span class="ident">cloned</span>().<span class="ident">collect</span>())
-            .<span class="ident">collect</span>()
+        <span class="self">self</span>.rows_iter()
+            .map(|row_iter| row_iter.cloned().collect())
+            .collect()
     }
 
-    <span class="doccomment">/// Converts the [`Array2D`] into a [`Vec`] of elements in [row major</span>
-    <span class="doccomment">/// order].</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Examples</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// ```</span>
-    <span class="doccomment">/// # use necsim_impls_no_std::array2d::{Array2D, Error};</span>
-    <span class="doccomment">/// # fn main() -&gt; Result&lt;(), Error&gt; {</span>
-    <span class="doccomment">/// let rows = vec![vec![1, 2, 3], vec![4, 5, 6]];</span>
-    <span class="doccomment">/// let array = Array2D::from_rows(&amp;rows)?;</span>
-    <span class="doccomment">/// assert_eq!(array.into_row_major(), vec![1, 2, 3, 4, 5, 6]);</span>
-    <span class="doccomment">/// # Ok(())</span>
-    <span class="doccomment">/// # }</span>
-    <span class="doccomment">/// ```</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// [`Array2D`]: struct.Array2D.html</span>
-    <span class="doccomment">/// [`Vec`]: https://doc.rust-lang.org/std/vec/struct.Vec.html</span>
-    <span class="doccomment">/// [row major order]: https://en.wikipedia.org/wiki/Row-_and_column-major_order</span>
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">into_row_major</span>(<span class="self">self</span>) -&gt; <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">array</span>.<span class="ident">into</span>()
+    <span class="doccomment">/// Converts the [`Array2D`] into a [`Vec`] of elements in [row major
+    /// order].
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// # use necsim_impls_no_std::array2d::{Array2D, Error};
+    /// # fn main() -&gt; Result&lt;(), Error&gt; {
+    /// let rows = vec![vec![1, 2, 3], vec![4, 5, 6]];
+    /// let array = Array2D::from_rows(&amp;rows)?;
+    /// assert_eq!(array.into_row_major(), vec![1, 2, 3, 4, 5, 6]);
+    /// # Ok(())
+    /// # }
+    /// ```
+    ///
+    /// [`Array2D`]: struct.Array2D.html
+    /// [`Vec`]: https://doc.rust-lang.org/std/vec/struct.Vec.html
+    /// [row major order]: https://en.wikipedia.org/wiki/Row-_and_column-major_order
+    </span><span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>into_row_major(<span class="self">self</span>) -&gt; Vec&lt;T&gt; {
+        <span class="self">self</span>.array.into()
     }
 
-    <span class="doccomment">/// Returns an [`Iterator`] over references to all elements in</span>
-    <span class="doccomment">/// [row major order].</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Examples</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// ```</span>
-    <span class="doccomment">/// # use necsim_impls_no_std::array2d::{Array2D, Error};</span>
-    <span class="doccomment">/// # fn main() -&gt; Result&lt;(), Error&gt; {</span>
-    <span class="doccomment">/// let rows = vec![vec![1, 2, 3], vec![4, 5, 6]];</span>
-    <span class="doccomment">/// let elements = vec![1, 2, 3, 4, 5, 6];</span>
-    <span class="doccomment">/// let array = Array2D::from_rows(&amp;rows)?;</span>
-    <span class="doccomment">/// let row_major = array.elements_row_major_iter();</span>
-    <span class="doccomment">/// assert_eq!(row_major.cloned().collect::&lt;Vec&lt;_&gt;&gt;(), elements);</span>
-    <span class="doccomment">/// # Ok(())</span>
-    <span class="doccomment">/// # }</span>
-    <span class="doccomment">/// ```</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// [`Iterator`]: https://doc.rust-lang.org/std/iter/trait.Iterator.html</span>
-    <span class="doccomment">/// [row major order]: https://en.wikipedia.org/wiki/Row-_and_column-major_order</span>
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">elements_row_major_iter</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw">impl</span> <span class="ident">DoubleEndedIterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">T</span><span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">array</span>.<span class="ident">iter</span>()
+    <span class="doccomment">/// Returns an [`Iterator`] over references to all elements in
+    /// [row major order].
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// # use necsim_impls_no_std::array2d::{Array2D, Error};
+    /// # fn main() -&gt; Result&lt;(), Error&gt; {
+    /// let rows = vec![vec![1, 2, 3], vec![4, 5, 6]];
+    /// let elements = vec![1, 2, 3, 4, 5, 6];
+    /// let array = Array2D::from_rows(&amp;rows)?;
+    /// let row_major = array.elements_row_major_iter();
+    /// assert_eq!(row_major.cloned().collect::&lt;Vec&lt;_&gt;&gt;(), elements);
+    /// # Ok(())
+    /// # }
+    /// ```
+    ///
+    /// [`Iterator`]: https://doc.rust-lang.org/std/iter/trait.Iterator.html
+    /// [row major order]: https://en.wikipedia.org/wiki/Row-_and_column-major_order
+    </span><span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>elements_row_major_iter(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw">impl </span>DoubleEndedIterator&lt;Item = <span class="kw-2">&amp;</span>T&gt; {
+        <span class="self">self</span>.array.iter()
     }
 
-    <span class="kw">fn</span> <span class="ident">get_index</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">row</span>: <span class="ident">usize</span>, <span class="ident">column</span>: <span class="ident">usize</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
-        <span class="kw">if</span> <span class="ident">row</span> <span class="op">&lt;</span> <span class="self">self</span>.<span class="ident">num_rows</span> <span class="op">&amp;&amp;</span> <span class="ident">column</span> <span class="op">&lt;</span> <span class="self">self</span>.<span class="ident">num_columns</span>() {
-            <span class="prelude-val">Some</span>(<span class="ident">row</span> <span class="op">*</span> <span class="self">self</span>.<span class="ident">row_len</span>() <span class="op">+</span> <span class="ident">column</span>)
-        } <span class="kw">else</span> {
-            <span class="prelude-val">None</span>
-        }
-    }
-}
-
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">Index</span><span class="op">&lt;</span>(<span class="ident">usize</span>, <span class="ident">usize</span>)<span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Array2D</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
-    <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="ident">T</span>;
-
-    <span class="doccomment">/// Returns the element at the given indices, given as `(row, column)`.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Examples</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// ```</span>
-    <span class="doccomment">/// # use necsim_impls_no_std::array2d::{Array2D, Error};</span>
-    <span class="doccomment">/// let array = Array2D::filled_with(42, 2, 3);</span>
-    <span class="doccomment">/// assert_eq!(array[(0, 0)], 42);</span>
-    <span class="doccomment">/// ```</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Panics</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Panics if the indices are out of bounds.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// ```rust,should_panic</span>
-    <span class="doccomment">/// # use necsim_impls_no_std::array2d::Array2D;</span>
-    <span class="doccomment">/// let array = Array2D::filled_with(42, 2, 3);</span>
-    <span class="doccomment">/// let element = array[(10, 10)];</span>
-    <span class="doccomment">/// ```</span>
-    <span class="kw">fn</span> <span class="ident">index</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, (<span class="ident">row</span>, <span class="ident">column</span>): (<span class="ident">usize</span>, <span class="ident">usize</span>)) -&gt; <span class="kw-2">&amp;</span><span class="ident"><span class="self">Self</span>::Output</span> {
-        <span class="self">self</span>.<span class="ident">get</span>(<span class="ident">row</span>, <span class="ident">column</span>)
-            .<span class="ident">unwrap_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="macro">panic!</span>(<span class="string">&quot;Index indices {}, {} out of bounds&quot;</span>, <span class="ident">row</span>, <span class="ident">column</span>))
+    <span class="kw">fn </span>get_index(<span class="kw-2">&amp;</span><span class="self">self</span>, row: usize, column: usize) -&gt; <span class="prelude-ty">Option</span>&lt;usize&gt; {
+        <span class="kw">if </span>row &lt; <span class="self">self</span>.num_rows &amp;&amp; column &lt; <span class="self">self</span>.num_columns() {
+            <span class="prelude-val">Some</span>(row * <span class="self">self</span>.row_len() + column)
+        } <span class="kw">else </span>{
+            <span class="prelude-val">None
+        </span>}
     }
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">IndexMut</span><span class="op">&lt;</span>(<span class="ident">usize</span>, <span class="ident">usize</span>)<span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Array2D</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
-    <span class="doccomment">/// Returns a mutable version of the element at the given indices, given as</span>
-    <span class="doccomment">/// `(row, column)`.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Examples</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// ```</span>
-    <span class="doccomment">/// # use necsim_impls_no_std::array2d::{Array2D, Error};</span>
-    <span class="doccomment">/// let mut array = Array2D::filled_with(42, 2, 3);</span>
-    <span class="doccomment">/// array[(0, 0)] = 100;</span>
-    <span class="doccomment">/// assert_eq!(array[(0, 0)], 100);</span>
-    <span class="doccomment">/// ```</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Panics</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Panics if the indices are out of bounds.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// ```rust,should_panic</span>
-    <span class="doccomment">/// # use necsim_impls_no_std::array2d::Array2D;</span>
-    <span class="doccomment">/// let mut array = Array2D::filled_with(42, 2, 3);</span>
-    <span class="doccomment">/// array[(10, 10)] = 7;</span>
-    <span class="doccomment">/// ```</span>
-    <span class="kw">fn</span> <span class="ident">index_mut</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, (<span class="ident">row</span>, <span class="ident">column</span>): (<span class="ident">usize</span>, <span class="ident">usize</span>)) -&gt; <span class="kw-2">&amp;mut</span> <span class="ident"><span class="self">Self</span>::Output</span> {
-        <span class="self">self</span>.<span class="ident">get_mut</span>(<span class="ident">row</span>, <span class="ident">column</span>)
-            .<span class="ident">unwrap_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="macro">panic!</span>(<span class="string">&quot;Index mut indices {}, {} out of bounds&quot;</span>, <span class="ident">row</span>, <span class="ident">column</span>))
+<span class="kw">impl</span>&lt;T&gt; Index&lt;(usize, usize)&gt; <span class="kw">for </span>Array2D&lt;T&gt; {
+    <span class="kw">type </span>Output = T;
+
+    <span class="doccomment">/// Returns the element at the given indices, given as `(row, column)`.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// # use necsim_impls_no_std::array2d::{Array2D, Error};
+    /// let array = Array2D::filled_with(42, 2, 3);
+    /// assert_eq!(array[(0, 0)], 42);
+    /// ```
+    ///
+    /// # Panics
+    ///
+    /// Panics if the indices are out of bounds.
+    ///
+    /// ```rust,should_panic
+    /// # use necsim_impls_no_std::array2d::Array2D;
+    /// let array = Array2D::filled_with(42, 2, 3);
+    /// let element = array[(10, 10)];
+    /// ```
+    </span><span class="kw">fn </span>index(<span class="kw-2">&amp;</span><span class="self">self</span>, (row, column): (usize, usize)) -&gt; <span class="kw-2">&amp;</span><span class="self">Self</span>::Output {
+        <span class="self">self</span>.get(row, column)
+            .unwrap_or_else(|| <span class="macro">panic!</span>(<span class="string">&quot;Index indices {}, {} out of bounds&quot;</span>, row, column))
+    }
+}
+
+<span class="kw">impl</span>&lt;T&gt; IndexMut&lt;(usize, usize)&gt; <span class="kw">for </span>Array2D&lt;T&gt; {
+    <span class="doccomment">/// Returns a mutable version of the element at the given indices, given as
+    /// `(row, column)`.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// # use necsim_impls_no_std::array2d::{Array2D, Error};
+    /// let mut array = Array2D::filled_with(42, 2, 3);
+    /// array[(0, 0)] = 100;
+    /// assert_eq!(array[(0, 0)], 100);
+    /// ```
+    ///
+    /// # Panics
+    ///
+    /// Panics if the indices are out of bounds.
+    ///
+    /// ```rust,should_panic
+    /// # use necsim_impls_no_std::array2d::Array2D;
+    /// let mut array = Array2D::filled_with(42, 2, 3);
+    /// array[(10, 10)] = 7;
+    /// ```
+    </span><span class="kw">fn </span>index_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>, (row, column): (usize, usize)) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self</span>::Output {
+        <span class="self">self</span>.get_mut(row, column)
+            .unwrap_or_else(|| <span class="macro">panic!</span>(<span class="string">&quot;Index mut indices {}, {} out of bounds&quot;</span>, row, column))
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="necsim_impls_no_std" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0-nightly (affe0d3a0 2022-08-05)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="necsim_impls_no_std" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (5e9772042 2022-10-29)" ></div></body></html>

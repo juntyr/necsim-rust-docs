@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `rustcoalescence/src/args/config/algorithm.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>algorithm.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../storage.js"></script><script defer src="../../../../source-script.js"></script><script defer src="../../../../source-files.js"></script><script defer src="../../../../main.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../../rustcoalescence/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../../rustcoalescence/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../../rustcoalescence/index.html"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `rustcoalescence/src/args/config/algorithm.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>algorithm.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../../normalize.css"><link rel="stylesheet" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../../ayu.css" disabled><link rel="stylesheet" href="../../../../dark.css" disabled><link rel="stylesheet" href="../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../storage.js"></script><script defer src="../../../../source-script.js"></script><script defer src="../../../../source-files.js"></script><script defer src="../../../../main.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../../../rustcoalescence/index.html"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../wheel.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -66,68 +66,68 @@
 <span id="66">66</span>
 <span id="67">67</span>
 <span id="68">68</span>
-</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Serialize</span>, <span class="ident">Serializer</span>};
+</pre><pre class="rust"><code><span class="kw">use </span>serde::{Serialize, Serializer};
 
-<span class="kw">use</span> <span class="ident">necsim_partitioning_core::partition::Partition</span>;
+<span class="kw">use </span>necsim_partitioning_core::partition::Partition;
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(
-    <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rustcoalescence-algorithms-gillespie&quot;</span>,
-    <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rustcoalescence-algorithms-independent&quot;</span>,
-    <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rustcoalescence-algorithms-cuda&quot;</span>
-))]</span>
-<span class="kw">use</span> <span class="ident">rustcoalescence_algorithms::AlgorithmParamters</span>;
+<span class="attribute">#[cfg(any(
+    feature = <span class="string">&quot;rustcoalescence-algorithms-gillespie&quot;</span>,
+    feature = <span class="string">&quot;rustcoalescence-algorithms-independent&quot;</span>,
+    feature = <span class="string">&quot;rustcoalescence-algorithms-cuda&quot;
+</span>))]
+</span><span class="kw">use </span>rustcoalescence_algorithms::AlgorithmParamters;
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">DeserializeState</span>)]</span>
-<span class="attribute">#[<span class="ident">serde</span>(<span class="ident">deserialize_state</span> <span class="op">=</span> <span class="string">&quot;Partition&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Algorithm</span> {
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rustcoalescence-algorithms-gillespie&quot;</span>)]</span>
-    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;Classical&quot;</span>)]</span>
-    <span class="ident">Gillespie</span>(
-        <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">deserialize_state</span>)]</span>
-        <span class="op">&lt;</span><span class="ident">rustcoalescence_algorithms_gillespie::gillespie::GillespieAlgorithm</span> <span class="kw">as</span> <span class="ident">rustcoalescence_algorithms::AlgorithmParamters</span><span class="op">&gt;</span><span class="ident">::Arguments</span>,
+<span class="attribute">#[derive(Debug, DeserializeState)]
+#[serde(deserialize_state = <span class="string">&quot;Partition&quot;</span>)]
+</span><span class="kw">pub enum </span>Algorithm {
+    <span class="attribute">#[cfg(feature = <span class="string">&quot;rustcoalescence-algorithms-gillespie&quot;</span>)]
+    #[serde(alias = <span class="string">&quot;Classical&quot;</span>)]
+    </span>Gillespie(
+        <span class="attribute">#[serde(deserialize_state)]
+        </span>&lt;rustcoalescence_algorithms_gillespie::gillespie::GillespieAlgorithm <span class="kw">as </span>rustcoalescence_algorithms::AlgorithmParamters&gt;::Arguments,
     ),
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rustcoalescence-algorithms-gillespie&quot;</span>)]</span>
-    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;SkippingGillespie&quot;</span>)]</span>
-    <span class="ident">EventSkipping</span>(
-        <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">deserialize_state</span>)]</span>
-        <span class="op">&lt;</span><span class="ident">rustcoalescence_algorithms_gillespie::event_skipping::EventSkippingAlgorithm</span> <span class="kw">as</span> <span class="ident">AlgorithmParamters</span><span class="op">&gt;</span><span class="ident">::Arguments</span>,
+    <span class="attribute">#[cfg(feature = <span class="string">&quot;rustcoalescence-algorithms-gillespie&quot;</span>)]
+    #[serde(alias = <span class="string">&quot;SkippingGillespie&quot;</span>)]
+    </span>EventSkipping(
+        <span class="attribute">#[serde(deserialize_state)]
+        </span>&lt;rustcoalescence_algorithms_gillespie::event_skipping::EventSkippingAlgorithm <span class="kw">as </span>AlgorithmParamters&gt;::Arguments,
     ),
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rustcoalescence-algorithms-cuda&quot;</span>)]</span>
-    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;CUDA&quot;</span>)]</span>
-    <span class="ident">Cuda</span>(<span class="attribute">#[<span class="ident">serde</span>(<span class="ident">deserialize_state</span>)]</span> <span class="op">&lt;</span><span class="ident">rustcoalescence_algorithms_cuda::CudaAlgorithm</span> <span class="kw">as</span> <span class="ident">AlgorithmParamters</span><span class="op">&gt;</span><span class="ident">::Arguments</span>),
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rustcoalescence-algorithms-independent&quot;</span>)]</span>
-    <span class="ident">Independent</span>(
-        <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">deserialize_state</span>)]</span> <span class="op">&lt;</span><span class="ident">rustcoalescence_algorithms_independent::IndependentAlgorithm</span> <span class="kw">as</span> <span class="ident">AlgorithmParamters</span><span class="op">&gt;</span><span class="ident">::Arguments</span>,
+    <span class="attribute">#[cfg(feature = <span class="string">&quot;rustcoalescence-algorithms-cuda&quot;</span>)]
+    #[serde(alias = <span class="string">&quot;CUDA&quot;</span>)]
+    </span>Cuda(<span class="attribute">#[serde(deserialize_state)] </span>&lt;rustcoalescence_algorithms_cuda::CudaAlgorithm <span class="kw">as </span>AlgorithmParamters&gt;::Arguments),
+    <span class="attribute">#[cfg(feature = <span class="string">&quot;rustcoalescence-algorithms-independent&quot;</span>)]
+    </span>Independent(
+        <span class="attribute">#[serde(deserialize_state)] </span>&lt;rustcoalescence_algorithms_independent::IndependentAlgorithm <span class="kw">as </span>AlgorithmParamters&gt;::Arguments,
     ),
 }
 
-<span class="kw">impl</span> <span class="ident">Serialize</span> <span class="kw">for</span> <span class="ident">Algorithm</span> {
-    <span class="kw">fn</span> <span class="ident">serialize</span><span class="op">&lt;</span><span class="ident">S</span>: <span class="ident">Serializer</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">serializer</span>: <span class="ident">S</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">S::Ok</span>, <span class="ident">S::Error</span><span class="op">&gt;</span> {
-        <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">unreachable_patterns</span>, <span class="ident">clippy::single_match_else</span>)]</span>
-        <span class="kw">match</span> <span class="self">self</span> {
-            <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rustcoalescence-algorithms-gillespie&quot;</span>)]</span>
-            <span class="ident"><span class="self">Self</span>::Gillespie</span>(<span class="ident">args</span>) =&gt; {
-                <span class="ident">serializer</span>.<span class="ident">serialize_newtype_variant</span>(<span class="macro">stringify!</span>(<span class="ident">Algorithm</span>), <span class="number">0</span>, <span class="string">&quot;Gillespie&quot;</span>, <span class="ident">args</span>)
+<span class="kw">impl </span>Serialize <span class="kw">for </span>Algorithm {
+    <span class="kw">fn </span>serialize&lt;S: Serializer&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, serializer: S) -&gt; <span class="prelude-ty">Result</span>&lt;S::Ok, S::Error&gt; {
+        <span class="attribute">#[allow(unreachable_patterns, clippy::single_match_else)]
+        </span><span class="kw">match </span><span class="self">self </span>{
+            <span class="attribute">#[cfg(feature = <span class="string">&quot;rustcoalescence-algorithms-gillespie&quot;</span>)]
+            </span><span class="self">Self</span>::Gillespie(args) =&gt; {
+                serializer.serialize_newtype_variant(<span class="macro">stringify!</span>(Algorithm), <span class="number">0</span>, <span class="string">&quot;Gillespie&quot;</span>, args)
             },
-            <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rustcoalescence-algorithms-gillespie&quot;</span>)]</span>
-            <span class="ident"><span class="self">Self</span>::EventSkipping</span>(<span class="ident">args</span>) =&gt; <span class="ident">serializer</span>.<span class="ident">serialize_newtype_variant</span>(
-                <span class="macro">stringify!</span>(<span class="ident">Algorithm</span>),
+            <span class="attribute">#[cfg(feature = <span class="string">&quot;rustcoalescence-algorithms-gillespie&quot;</span>)]
+            </span><span class="self">Self</span>::EventSkipping(args) =&gt; serializer.serialize_newtype_variant(
+                <span class="macro">stringify!</span>(Algorithm),
                 <span class="number">1</span>,
                 <span class="string">&quot;EventSkipping&quot;</span>,
-                <span class="ident">args</span>,
+                args,
             ),
-            <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rustcoalescence-algorithms-cuda&quot;</span>)]</span>
-            <span class="ident"><span class="self">Self</span>::Cuda</span>(<span class="ident">args</span>) =&gt; {
-                <span class="ident">serializer</span>.<span class="ident">serialize_newtype_variant</span>(<span class="macro">stringify!</span>(<span class="ident">Algorithm</span>), <span class="number">2</span>, <span class="string">&quot;CUDA&quot;</span>, <span class="ident">args</span>)
+            <span class="attribute">#[cfg(feature = <span class="string">&quot;rustcoalescence-algorithms-cuda&quot;</span>)]
+            </span><span class="self">Self</span>::Cuda(args) =&gt; {
+                serializer.serialize_newtype_variant(<span class="macro">stringify!</span>(Algorithm), <span class="number">2</span>, <span class="string">&quot;CUDA&quot;</span>, args)
             },
-            <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rustcoalescence-algorithms-independent&quot;</span>)]</span>
-            <span class="ident"><span class="self">Self</span>::Independent</span>(<span class="ident">args</span>) =&gt; {
-                <span class="ident">serializer</span>.<span class="ident">serialize_newtype_variant</span>(<span class="macro">stringify!</span>(<span class="ident">Algorithm</span>), <span class="number">3</span>, <span class="string">&quot;Independent&quot;</span>, <span class="ident">args</span>)
+            <span class="attribute">#[cfg(feature = <span class="string">&quot;rustcoalescence-algorithms-independent&quot;</span>)]
+            </span><span class="self">Self</span>::Independent(args) =&gt; {
+                serializer.serialize_newtype_variant(<span class="macro">stringify!</span>(Algorithm), <span class="number">3</span>, <span class="string">&quot;Independent&quot;</span>, args)
             },
-            <span class="kw">_</span> =&gt; {
-                <span class="ident">std::mem::drop</span>(<span class="ident">serializer</span>);
+            <span class="kw">_ </span>=&gt; {
+                std::mem::drop(serializer);
 
-                <span class="prelude-val">Err</span>(<span class="ident">serde::ser::Error::custom</span>(
+                <span class="prelude-val">Err</span>(serde::ser::Error::custom(
                     <span class="string">&quot;rustcoalescence must be compiled to support at least one algorithm&quot;</span>,
                 ))
             },
@@ -135,4 +135,4 @@
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="rustcoalescence" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0-nightly (affe0d3a0 2022-08-05)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="rustcoalescence" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (5e9772042 2022-10-29)" ></div></body></html>

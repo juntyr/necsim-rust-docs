@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `rustcoalescence/algorithms/cuda/src/error.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>error.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../rustcoalescence_algorithms_cuda/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../rustcoalescence_algorithms_cuda/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../rustcoalescence_algorithms_cuda/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `rustcoalescence/algorithms/cuda/src/error.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>error.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../normalize.css"><link rel="stylesheet" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../ayu.css" disabled><link rel="stylesheet" href="../../dark.css" disabled><link rel="stylesheet" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../rustcoalescence_algorithms_cuda/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -91,98 +91,98 @@
 <span id="91">91</span>
 <span id="92">92</span>
 <span id="93">93</span>
-</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">rust_cuda::rustacuda::error::CudaError</span> <span class="kw">as</span> <span class="ident">RustaCudaError</span>;
-<span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>};
+</pre><pre class="rust"><code><span class="kw">use </span>rust_cuda::rustacuda::error::CudaError <span class="kw">as </span>RustaCudaError;
+<span class="kw">use </span>serde::{Deserialize, Serialize};
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">thiserror::Error</span>, <span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
-<span class="attribute">#[<span class="ident">serde</span>(<span class="ident">into</span> <span class="op">=</span> <span class="string">&quot;CudaErrorRaw&quot;</span>, <span class="ident">from</span> <span class="op">=</span> <span class="string">&quot;CudaErrorRaw&quot;</span>)]</span>
-<span class="attribute">#[<span class="ident">error</span>(<span class="ident">transparent</span>)]</span>
-<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::module_name_repetitions</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">CudaError</span>(<span class="attribute">#[<span class="ident">from</span>]</span> <span class="ident">RustaCudaError</span>);
+<span class="attribute">#[derive(thiserror::Error, Debug, Clone, Serialize, Deserialize)]
+#[serde(into = <span class="string">&quot;CudaErrorRaw&quot;</span>, from = <span class="string">&quot;CudaErrorRaw&quot;</span>)]
+#[error(transparent)]
+#[allow(clippy::module_name_repetitions)]
+</span><span class="kw">pub struct </span>CudaError(<span class="attribute">#[from] </span>RustaCudaError);
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
-<span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;CudaError&quot;</span>)]</span>
-<span class="kw">struct</span> <span class="ident">CudaErrorRaw</span> {
-    <span class="ident">code</span>: <span class="ident">u32</span>,
+<span class="attribute">#[derive(Serialize, Deserialize)]
+#[serde(rename = <span class="string">&quot;CudaError&quot;</span>)]
+</span><span class="kw">struct </span>CudaErrorRaw {
+    code: u32,
 }
 
-<span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">CudaError</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">CudaErrorRaw</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">error</span>: <span class="ident">CudaError</span>) -&gt; <span class="self">Self</span> {
-        <span class="self">Self</span> {
-            <span class="ident">code</span>: <span class="ident">error</span>.<span class="number">0</span> <span class="kw">as</span> <span class="ident">u32</span>,
+<span class="kw">impl </span>From&lt;CudaError&gt; <span class="kw">for </span>CudaErrorRaw {
+    <span class="kw">fn </span>from(error: CudaError) -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{
+            code: error.<span class="number">0 </span><span class="kw">as </span>u32,
         }
     }
 }
 
-<span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">CudaErrorRaw</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">CudaError</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">value</span>: <span class="ident">CudaErrorRaw</span>) -&gt; <span class="self">Self</span> {
-        <span class="kw">type</span> <span class="ident">E</span> <span class="op">=</span> <span class="ident">RustaCudaError</span>;
+<span class="kw">impl </span>From&lt;CudaErrorRaw&gt; <span class="kw">for </span>CudaError {
+    <span class="kw">fn </span>from(value: CudaErrorRaw) -&gt; <span class="self">Self </span>{
+        <span class="kw">type </span>E = RustaCudaError;
 
-        <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::wildcard_in_or_patterns</span>)]</span>
-        <span class="kw">let</span> <span class="ident">code</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">value</span>.<span class="ident">code</span> {
-            <span class="kw">const</span> { <span class="ident">E::InvalidValue</span> <span class="kw">as</span> <span class="ident">u32</span> } =&gt; <span class="ident">E::InvalidValue</span>,
-            <span class="kw">const</span> { <span class="ident">E::OutOfMemory</span> <span class="kw">as</span> <span class="ident">u32</span> } =&gt; <span class="ident">E::OutOfMemory</span>,
-            <span class="kw">const</span> { <span class="ident">E::NotInitialized</span> <span class="kw">as</span> <span class="ident">u32</span> } =&gt; <span class="ident">E::NotInitialized</span>,
-            <span class="kw">const</span> { <span class="ident">E::Deinitialized</span> <span class="kw">as</span> <span class="ident">u32</span> } =&gt; <span class="ident">E::Deinitialized</span>,
-            <span class="kw">const</span> { <span class="ident">E::ProfilerDisabled</span> <span class="kw">as</span> <span class="ident">u32</span> } =&gt; <span class="ident">E::ProfilerDisabled</span>,
-            <span class="kw">const</span> { <span class="ident">E::ProfilerNotInitialized</span> <span class="kw">as</span> <span class="ident">u32</span> } =&gt; <span class="ident">E::ProfilerNotInitialized</span>,
-            <span class="kw">const</span> { <span class="ident">E::ProfilerAlreadyStarted</span> <span class="kw">as</span> <span class="ident">u32</span> } =&gt; <span class="ident">E::ProfilerAlreadyStarted</span>,
-            <span class="kw">const</span> { <span class="ident">E::ProfilerAlreadyStopped</span> <span class="kw">as</span> <span class="ident">u32</span> } =&gt; <span class="ident">E::ProfilerAlreadyStopped</span>,
-            <span class="kw">const</span> { <span class="ident">E::NoDevice</span> <span class="kw">as</span> <span class="ident">u32</span> } =&gt; <span class="ident">E::NoDevice</span>,
-            <span class="kw">const</span> { <span class="ident">E::InvalidDevice</span> <span class="kw">as</span> <span class="ident">u32</span> } =&gt; <span class="ident">E::InvalidDevice</span>,
-            <span class="kw">const</span> { <span class="ident">E::InvalidImage</span> <span class="kw">as</span> <span class="ident">u32</span> } =&gt; <span class="ident">E::InvalidImage</span>,
-            <span class="kw">const</span> { <span class="ident">E::InvalidContext</span> <span class="kw">as</span> <span class="ident">u32</span> } =&gt; <span class="ident">E::InvalidContext</span>,
-            <span class="kw">const</span> { <span class="ident">E::ContextAlreadyCurrent</span> <span class="kw">as</span> <span class="ident">u32</span> } =&gt; <span class="ident">E::ContextAlreadyCurrent</span>,
-            <span class="kw">const</span> { <span class="ident">E::MapFailed</span> <span class="kw">as</span> <span class="ident">u32</span> } =&gt; <span class="ident">E::MapFailed</span>,
-            <span class="kw">const</span> { <span class="ident">E::UnmapFailed</span> <span class="kw">as</span> <span class="ident">u32</span> } =&gt; <span class="ident">E::UnmapFailed</span>,
-            <span class="kw">const</span> { <span class="ident">E::ArrayIsMapped</span> <span class="kw">as</span> <span class="ident">u32</span> } =&gt; <span class="ident">E::ArrayIsMapped</span>,
-            <span class="kw">const</span> { <span class="ident">E::AlreadyMapped</span> <span class="kw">as</span> <span class="ident">u32</span> } =&gt; <span class="ident">E::AlreadyMapped</span>,
-            <span class="kw">const</span> { <span class="ident">E::NoBinaryForGpu</span> <span class="kw">as</span> <span class="ident">u32</span> } =&gt; <span class="ident">E::NoBinaryForGpu</span>,
-            <span class="kw">const</span> { <span class="ident">E::AlreadyAcquired</span> <span class="kw">as</span> <span class="ident">u32</span> } =&gt; <span class="ident">E::AlreadyAcquired</span>,
-            <span class="kw">const</span> { <span class="ident">E::NotMapped</span> <span class="kw">as</span> <span class="ident">u32</span> } =&gt; <span class="ident">E::NotMapped</span>,
-            <span class="kw">const</span> { <span class="ident">E::NotMappedAsArray</span> <span class="kw">as</span> <span class="ident">u32</span> } =&gt; <span class="ident">E::NotMappedAsArray</span>,
-            <span class="kw">const</span> { <span class="ident">E::NotMappedAsPointer</span> <span class="kw">as</span> <span class="ident">u32</span> } =&gt; <span class="ident">E::NotMappedAsPointer</span>,
-            <span class="kw">const</span> { <span class="ident">E::EccUncorrectable</span> <span class="kw">as</span> <span class="ident">u32</span> } =&gt; <span class="ident">E::EccUncorrectable</span>,
-            <span class="kw">const</span> { <span class="ident">E::UnsupportedLimit</span> <span class="kw">as</span> <span class="ident">u32</span> } =&gt; <span class="ident">E::UnsupportedLimit</span>,
-            <span class="kw">const</span> { <span class="ident">E::ContextAlreadyInUse</span> <span class="kw">as</span> <span class="ident">u32</span> } =&gt; <span class="ident">E::ContextAlreadyInUse</span>,
-            <span class="kw">const</span> { <span class="ident">E::PeerAccessUnsupported</span> <span class="kw">as</span> <span class="ident">u32</span> } =&gt; <span class="ident">E::PeerAccessUnsupported</span>,
-            <span class="kw">const</span> { <span class="ident">E::InvalidPtx</span> <span class="kw">as</span> <span class="ident">u32</span> } =&gt; <span class="ident">E::InvalidPtx</span>,
-            <span class="kw">const</span> { <span class="ident">E::InvalidGraphicsContext</span> <span class="kw">as</span> <span class="ident">u32</span> } =&gt; <span class="ident">E::InvalidGraphicsContext</span>,
-            <span class="kw">const</span> { <span class="ident">E::NvlinkUncorrectable</span> <span class="kw">as</span> <span class="ident">u32</span> } =&gt; <span class="ident">E::NvlinkUncorrectable</span>,
-            <span class="kw">const</span> { <span class="ident">E::InvalidSouce</span> <span class="kw">as</span> <span class="ident">u32</span> } =&gt; <span class="ident">E::InvalidSouce</span>,
-            <span class="kw">const</span> { <span class="ident">E::FileNotFound</span> <span class="kw">as</span> <span class="ident">u32</span> } =&gt; <span class="ident">E::FileNotFound</span>,
-            <span class="kw">const</span> { <span class="ident">E::SharedObjectSymbolNotFound</span> <span class="kw">as</span> <span class="ident">u32</span> } =&gt; <span class="ident">E::SharedObjectSymbolNotFound</span>,
-            <span class="kw">const</span> { <span class="ident">E::SharedObjectInitFailed</span> <span class="kw">as</span> <span class="ident">u32</span> } =&gt; <span class="ident">E::SharedObjectInitFailed</span>,
-            <span class="kw">const</span> { <span class="ident">E::OperatingSystemError</span> <span class="kw">as</span> <span class="ident">u32</span> } =&gt; <span class="ident">E::OperatingSystemError</span>,
-            <span class="kw">const</span> { <span class="ident">E::InvalidHandle</span> <span class="kw">as</span> <span class="ident">u32</span> } =&gt; <span class="ident">E::InvalidHandle</span>,
-            <span class="kw">const</span> { <span class="ident">E::NotFound</span> <span class="kw">as</span> <span class="ident">u32</span> } =&gt; <span class="ident">E::NotFound</span>,
-            <span class="kw">const</span> { <span class="ident">E::NotReady</span> <span class="kw">as</span> <span class="ident">u32</span> } =&gt; <span class="ident">E::NotReady</span>,
-            <span class="kw">const</span> { <span class="ident">E::IllegalAddress</span> <span class="kw">as</span> <span class="ident">u32</span> } =&gt; <span class="ident">E::IllegalAddress</span>,
-            <span class="kw">const</span> { <span class="ident">E::LaunchOutOfResources</span> <span class="kw">as</span> <span class="ident">u32</span> } =&gt; <span class="ident">E::LaunchOutOfResources</span>,
-            <span class="kw">const</span> { <span class="ident">E::LaunchTimeout</span> <span class="kw">as</span> <span class="ident">u32</span> } =&gt; <span class="ident">E::LaunchTimeout</span>,
-            <span class="kw">const</span> { <span class="ident">E::LaunchIncompatibleTexturing</span> <span class="kw">as</span> <span class="ident">u32</span> } =&gt; <span class="ident">E::LaunchIncompatibleTexturing</span>,
-            <span class="kw">const</span> { <span class="ident">E::PeerAccessAlreadyEnabled</span> <span class="kw">as</span> <span class="ident">u32</span> } =&gt; <span class="ident">E::PeerAccessAlreadyEnabled</span>,
-            <span class="kw">const</span> { <span class="ident">E::PeerAccessNotEnabled</span> <span class="kw">as</span> <span class="ident">u32</span> } =&gt; <span class="ident">E::PeerAccessNotEnabled</span>,
-            <span class="kw">const</span> { <span class="ident">E::PrimaryContextActive</span> <span class="kw">as</span> <span class="ident">u32</span> } =&gt; <span class="ident">E::PrimaryContextActive</span>,
-            <span class="kw">const</span> { <span class="ident">E::ContextIsDestroyed</span> <span class="kw">as</span> <span class="ident">u32</span> } =&gt; <span class="ident">E::ContextIsDestroyed</span>,
-            <span class="kw">const</span> { <span class="ident">E::AssertError</span> <span class="kw">as</span> <span class="ident">u32</span> } =&gt; <span class="ident">E::AssertError</span>,
-            <span class="kw">const</span> { <span class="ident">E::TooManyPeers</span> <span class="kw">as</span> <span class="ident">u32</span> } =&gt; <span class="ident">E::TooManyPeers</span>,
-            <span class="kw">const</span> { <span class="ident">E::HostMemoryAlreadyRegistered</span> <span class="kw">as</span> <span class="ident">u32</span> } =&gt; <span class="ident">E::HostMemoryAlreadyRegistered</span>,
-            <span class="kw">const</span> { <span class="ident">E::HostMemoryNotRegistered</span> <span class="kw">as</span> <span class="ident">u32</span> } =&gt; <span class="ident">E::HostMemoryNotRegistered</span>,
-            <span class="kw">const</span> { <span class="ident">E::HardwareStackError</span> <span class="kw">as</span> <span class="ident">u32</span> } =&gt; <span class="ident">E::HardwareStackError</span>,
-            <span class="kw">const</span> { <span class="ident">E::IllegalInstruction</span> <span class="kw">as</span> <span class="ident">u32</span> } =&gt; <span class="ident">E::IllegalInstruction</span>,
-            <span class="kw">const</span> { <span class="ident">E::MisalignedAddress</span> <span class="kw">as</span> <span class="ident">u32</span> } =&gt; <span class="ident">E::MisalignedAddress</span>,
-            <span class="kw">const</span> { <span class="ident">E::InvalidAddressSpace</span> <span class="kw">as</span> <span class="ident">u32</span> } =&gt; <span class="ident">E::InvalidAddressSpace</span>,
-            <span class="kw">const</span> { <span class="ident">E::InvalidProgramCounter</span> <span class="kw">as</span> <span class="ident">u32</span> } =&gt; <span class="ident">E::InvalidProgramCounter</span>,
-            <span class="kw">const</span> { <span class="ident">E::LaunchFailed</span> <span class="kw">as</span> <span class="ident">u32</span> } =&gt; <span class="ident">E::LaunchFailed</span>,
-            <span class="kw">const</span> { <span class="ident">E::NotPermitted</span> <span class="kw">as</span> <span class="ident">u32</span> } =&gt; <span class="ident">E::NotPermitted</span>,
-            <span class="kw">const</span> { <span class="ident">E::NotSupported</span> <span class="kw">as</span> <span class="ident">u32</span> } =&gt; <span class="ident">E::NotSupported</span>,
-            <span class="kw">const</span> { <span class="ident">E::InvalidMemoryAllocation</span> <span class="kw">as</span> <span class="ident">u32</span> } =&gt; <span class="ident">E::InvalidMemoryAllocation</span>,
-            <span class="kw">const</span> { <span class="ident">E::UnknownError</span> <span class="kw">as</span> <span class="ident">u32</span> } <span class="op">|</span> <span class="kw">_</span> =&gt; <span class="ident">E::UnknownError</span>,
+        <span class="attribute">#[allow(clippy::wildcard_in_or_patterns)]
+        </span><span class="kw">let </span>code = <span class="kw">match </span>value.code {
+            <span class="kw">const </span>{ E::InvalidValue <span class="kw">as </span>u32 } =&gt; E::InvalidValue,
+            <span class="kw">const </span>{ E::OutOfMemory <span class="kw">as </span>u32 } =&gt; E::OutOfMemory,
+            <span class="kw">const </span>{ E::NotInitialized <span class="kw">as </span>u32 } =&gt; E::NotInitialized,
+            <span class="kw">const </span>{ E::Deinitialized <span class="kw">as </span>u32 } =&gt; E::Deinitialized,
+            <span class="kw">const </span>{ E::ProfilerDisabled <span class="kw">as </span>u32 } =&gt; E::ProfilerDisabled,
+            <span class="kw">const </span>{ E::ProfilerNotInitialized <span class="kw">as </span>u32 } =&gt; E::ProfilerNotInitialized,
+            <span class="kw">const </span>{ E::ProfilerAlreadyStarted <span class="kw">as </span>u32 } =&gt; E::ProfilerAlreadyStarted,
+            <span class="kw">const </span>{ E::ProfilerAlreadyStopped <span class="kw">as </span>u32 } =&gt; E::ProfilerAlreadyStopped,
+            <span class="kw">const </span>{ E::NoDevice <span class="kw">as </span>u32 } =&gt; E::NoDevice,
+            <span class="kw">const </span>{ E::InvalidDevice <span class="kw">as </span>u32 } =&gt; E::InvalidDevice,
+            <span class="kw">const </span>{ E::InvalidImage <span class="kw">as </span>u32 } =&gt; E::InvalidImage,
+            <span class="kw">const </span>{ E::InvalidContext <span class="kw">as </span>u32 } =&gt; E::InvalidContext,
+            <span class="kw">const </span>{ E::ContextAlreadyCurrent <span class="kw">as </span>u32 } =&gt; E::ContextAlreadyCurrent,
+            <span class="kw">const </span>{ E::MapFailed <span class="kw">as </span>u32 } =&gt; E::MapFailed,
+            <span class="kw">const </span>{ E::UnmapFailed <span class="kw">as </span>u32 } =&gt; E::UnmapFailed,
+            <span class="kw">const </span>{ E::ArrayIsMapped <span class="kw">as </span>u32 } =&gt; E::ArrayIsMapped,
+            <span class="kw">const </span>{ E::AlreadyMapped <span class="kw">as </span>u32 } =&gt; E::AlreadyMapped,
+            <span class="kw">const </span>{ E::NoBinaryForGpu <span class="kw">as </span>u32 } =&gt; E::NoBinaryForGpu,
+            <span class="kw">const </span>{ E::AlreadyAcquired <span class="kw">as </span>u32 } =&gt; E::AlreadyAcquired,
+            <span class="kw">const </span>{ E::NotMapped <span class="kw">as </span>u32 } =&gt; E::NotMapped,
+            <span class="kw">const </span>{ E::NotMappedAsArray <span class="kw">as </span>u32 } =&gt; E::NotMappedAsArray,
+            <span class="kw">const </span>{ E::NotMappedAsPointer <span class="kw">as </span>u32 } =&gt; E::NotMappedAsPointer,
+            <span class="kw">const </span>{ E::EccUncorrectable <span class="kw">as </span>u32 } =&gt; E::EccUncorrectable,
+            <span class="kw">const </span>{ E::UnsupportedLimit <span class="kw">as </span>u32 } =&gt; E::UnsupportedLimit,
+            <span class="kw">const </span>{ E::ContextAlreadyInUse <span class="kw">as </span>u32 } =&gt; E::ContextAlreadyInUse,
+            <span class="kw">const </span>{ E::PeerAccessUnsupported <span class="kw">as </span>u32 } =&gt; E::PeerAccessUnsupported,
+            <span class="kw">const </span>{ E::InvalidPtx <span class="kw">as </span>u32 } =&gt; E::InvalidPtx,
+            <span class="kw">const </span>{ E::InvalidGraphicsContext <span class="kw">as </span>u32 } =&gt; E::InvalidGraphicsContext,
+            <span class="kw">const </span>{ E::NvlinkUncorrectable <span class="kw">as </span>u32 } =&gt; E::NvlinkUncorrectable,
+            <span class="kw">const </span>{ E::InvalidSouce <span class="kw">as </span>u32 } =&gt; E::InvalidSouce,
+            <span class="kw">const </span>{ E::FileNotFound <span class="kw">as </span>u32 } =&gt; E::FileNotFound,
+            <span class="kw">const </span>{ E::SharedObjectSymbolNotFound <span class="kw">as </span>u32 } =&gt; E::SharedObjectSymbolNotFound,
+            <span class="kw">const </span>{ E::SharedObjectInitFailed <span class="kw">as </span>u32 } =&gt; E::SharedObjectInitFailed,
+            <span class="kw">const </span>{ E::OperatingSystemError <span class="kw">as </span>u32 } =&gt; E::OperatingSystemError,
+            <span class="kw">const </span>{ E::InvalidHandle <span class="kw">as </span>u32 } =&gt; E::InvalidHandle,
+            <span class="kw">const </span>{ E::NotFound <span class="kw">as </span>u32 } =&gt; E::NotFound,
+            <span class="kw">const </span>{ E::NotReady <span class="kw">as </span>u32 } =&gt; E::NotReady,
+            <span class="kw">const </span>{ E::IllegalAddress <span class="kw">as </span>u32 } =&gt; E::IllegalAddress,
+            <span class="kw">const </span>{ E::LaunchOutOfResources <span class="kw">as </span>u32 } =&gt; E::LaunchOutOfResources,
+            <span class="kw">const </span>{ E::LaunchTimeout <span class="kw">as </span>u32 } =&gt; E::LaunchTimeout,
+            <span class="kw">const </span>{ E::LaunchIncompatibleTexturing <span class="kw">as </span>u32 } =&gt; E::LaunchIncompatibleTexturing,
+            <span class="kw">const </span>{ E::PeerAccessAlreadyEnabled <span class="kw">as </span>u32 } =&gt; E::PeerAccessAlreadyEnabled,
+            <span class="kw">const </span>{ E::PeerAccessNotEnabled <span class="kw">as </span>u32 } =&gt; E::PeerAccessNotEnabled,
+            <span class="kw">const </span>{ E::PrimaryContextActive <span class="kw">as </span>u32 } =&gt; E::PrimaryContextActive,
+            <span class="kw">const </span>{ E::ContextIsDestroyed <span class="kw">as </span>u32 } =&gt; E::ContextIsDestroyed,
+            <span class="kw">const </span>{ E::AssertError <span class="kw">as </span>u32 } =&gt; E::AssertError,
+            <span class="kw">const </span>{ E::TooManyPeers <span class="kw">as </span>u32 } =&gt; E::TooManyPeers,
+            <span class="kw">const </span>{ E::HostMemoryAlreadyRegistered <span class="kw">as </span>u32 } =&gt; E::HostMemoryAlreadyRegistered,
+            <span class="kw">const </span>{ E::HostMemoryNotRegistered <span class="kw">as </span>u32 } =&gt; E::HostMemoryNotRegistered,
+            <span class="kw">const </span>{ E::HardwareStackError <span class="kw">as </span>u32 } =&gt; E::HardwareStackError,
+            <span class="kw">const </span>{ E::IllegalInstruction <span class="kw">as </span>u32 } =&gt; E::IllegalInstruction,
+            <span class="kw">const </span>{ E::MisalignedAddress <span class="kw">as </span>u32 } =&gt; E::MisalignedAddress,
+            <span class="kw">const </span>{ E::InvalidAddressSpace <span class="kw">as </span>u32 } =&gt; E::InvalidAddressSpace,
+            <span class="kw">const </span>{ E::InvalidProgramCounter <span class="kw">as </span>u32 } =&gt; E::InvalidProgramCounter,
+            <span class="kw">const </span>{ E::LaunchFailed <span class="kw">as </span>u32 } =&gt; E::LaunchFailed,
+            <span class="kw">const </span>{ E::NotPermitted <span class="kw">as </span>u32 } =&gt; E::NotPermitted,
+            <span class="kw">const </span>{ E::NotSupported <span class="kw">as </span>u32 } =&gt; E::NotSupported,
+            <span class="kw">const </span>{ E::InvalidMemoryAllocation <span class="kw">as </span>u32 } =&gt; E::InvalidMemoryAllocation,
+            <span class="kw">const </span>{ E::UnknownError <span class="kw">as </span>u32 } | <span class="kw">_ </span>=&gt; E::UnknownError,
         };
 
-        <span class="self">Self</span>(<span class="ident">code</span>)
+        <span class="self">Self</span>(code)
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="rustcoalescence_algorithms_cuda" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0-nightly (affe0d3a0 2022-08-05)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="rustcoalescence_algorithms_cuda" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (5e9772042 2022-10-29)" ></div></body></html>

@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `necsim/core/src/cogs/active_lineage_sampler.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>active_lineage_sampler.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../necsim_core/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../necsim_core/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../necsim_core/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `necsim/core/src/cogs/active_lineage_sampler.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>active_lineage_sampler.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../normalize.css"><link rel="stylesheet" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../ayu.css" disabled><link rel="stylesheet" href="../../../dark.css" disabled><link rel="stylesheet" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../../necsim_core/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -89,96 +89,96 @@
 <span id="89">89</span>
 <span id="90">90</span>
 <span id="91">91</span>
-</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">core::ops::ControlFlow</span>;
+</pre><pre class="rust"><code><span class="kw">use </span>core::ops::ControlFlow;
 
-<span class="kw">use</span> <span class="ident">necsim_core_bond</span>::{<span class="ident">NonNegativeF64</span>, <span class="ident">PositiveF64</span>};
+<span class="kw">use </span>necsim_core_bond::{NonNegativeF64, PositiveF64};
 
-<span class="kw">use</span> <span class="kw">super</span>::{
-    <span class="ident">CoalescenceSampler</span>, <span class="ident">DispersalSampler</span>, <span class="ident">EmigrationExit</span>, <span class="ident">EventSampler</span>, <span class="ident">Habitat</span>, <span class="ident">ImmigrationEntry</span>,
-    <span class="ident">LineageStore</span>, <span class="ident">MathsCore</span>, <span class="ident">RngCore</span>, <span class="ident">SpeciationProbability</span>, <span class="ident">TurnoverRate</span>,
+<span class="kw">use super</span>::{
+    CoalescenceSampler, DispersalSampler, EmigrationExit, EventSampler, Habitat, ImmigrationEntry,
+    LineageStore, MathsCore, RngCore, SpeciationProbability, TurnoverRate,
 };
 
-<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">lineage::Lineage</span>, <span class="ident">simulation::partial::active_lineage_sampler::PartialSimulation</span>};
+<span class="kw">use crate</span>::{lineage::Lineage, simulation::partial::active_lineage_sampler::PartialSimulation};
 
-<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::inline_always</span>, <span class="ident">clippy::inline_fn_without_body</span>)]</span>
-<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::no_effect_underscore_binding</span>)]</span>
-<span class="attribute">#[<span class="ident">contract_trait</span>]</span>
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">ActiveLineageSampler</span><span class="op">&lt;</span>
-    <span class="ident">M</span>: <span class="ident">MathsCore</span>,
-    <span class="ident">H</span>: <span class="ident">Habitat</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span>,
-    <span class="ident">G</span>: <span class="ident">RngCore</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span>,
-    <span class="ident">S</span>: <span class="ident">LineageStore</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span><span class="op">&gt;</span>,
-    <span class="ident">X</span>: <span class="ident">EmigrationExit</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span>, <span class="ident">S</span><span class="op">&gt;</span>,
-    <span class="ident">D</span>: <span class="ident">DispersalSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span><span class="op">&gt;</span>,
-    <span class="ident">C</span>: <span class="ident">CoalescenceSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">S</span><span class="op">&gt;</span>,
-    <span class="ident">T</span>: <span class="ident">TurnoverRate</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span><span class="op">&gt;</span>,
-    <span class="ident">N</span>: <span class="ident">SpeciationProbability</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span><span class="op">&gt;</span>,
-    <span class="ident">E</span>: <span class="ident">EventSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span>, <span class="ident">S</span>, <span class="ident">X</span>, <span class="ident">D</span>, <span class="ident">C</span>, <span class="ident">T</span>, <span class="ident">N</span><span class="op">&gt;</span>,
-    <span class="ident">I</span>: <span class="ident">ImmigrationEntry</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span>,
-<span class="op">&gt;</span>: <span class="ident"><span class="kw">crate</span>::cogs::Backup</span> <span class="op">+</span> <span class="ident">core::fmt::Debug</span>
+<span class="attribute">#[allow(clippy::inline_always, clippy::inline_fn_without_body)]
+#[allow(clippy::no_effect_underscore_binding)]
+#[contract_trait]
+</span><span class="kw">pub trait </span>ActiveLineageSampler&lt;
+    M: MathsCore,
+    H: Habitat&lt;M&gt;,
+    G: RngCore&lt;M&gt;,
+    S: LineageStore&lt;M, H&gt;,
+    X: EmigrationExit&lt;M, H, G, S&gt;,
+    D: DispersalSampler&lt;M, H, G&gt;,
+    C: CoalescenceSampler&lt;M, H, S&gt;,
+    T: TurnoverRate&lt;M, H&gt;,
+    N: SpeciationProbability&lt;M, H&gt;,
+    E: EventSampler&lt;M, H, G, S, X, D, C, T, N&gt;,
+    I: ImmigrationEntry&lt;M&gt;,
+&gt;: <span class="kw">crate</span>::cogs::Backup + core::fmt::Debug
 {
-    <span class="kw">type</span> <span class="ident">LineageIterator</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>: <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">Lineage</span><span class="op">&gt;</span>
-    <span class="kw">where</span>
-        <span class="ident">M</span>: <span class="lifetime">&#39;a</span>,
-        <span class="ident">H</span>: <span class="lifetime">&#39;a</span>,
-        <span class="ident">S</span>: <span class="lifetime">&#39;a</span>,
+    <span class="kw">type </span>LineageIterator&lt;<span class="lifetime">&#39;a</span>&gt;: Iterator&lt;Item = <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>Lineage&gt;
+    <span class="kw">where
+        </span>M: <span class="lifetime">&#39;a</span>,
+        H: <span class="lifetime">&#39;a</span>,
+        S: <span class="lifetime">&#39;a</span>,
         <span class="self">Self</span>: <span class="lifetime">&#39;a</span>;
 
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">fn</span> <span class="ident">number_active_lineages</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">usize</span>;
+    <span class="attribute">#[must_use]
+    </span><span class="kw">fn </span>number_active_lineages(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; usize;
 
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">fn</span> <span class="ident">iter_active_lineages_ordered</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(
-        <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="self">self</span>,
-        <span class="ident">habitat</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">H</span>,
-        <span class="ident">lineage_store</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">S</span>,
-    ) -&gt; <span class="ident"><span class="self">Self</span>::LineageIterator</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>;
+    <span class="attribute">#[must_use]
+    </span><span class="kw">fn </span>iter_active_lineages_ordered&lt;<span class="lifetime">&#39;a</span>&gt;(
+        <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="self">self</span>,
+        habitat: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>H,
+        lineage_store: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>S,
+    ) -&gt; <span class="self">Self</span>::LineageIterator&lt;<span class="lifetime">&#39;a</span>&gt;;
 
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">fn</span> <span class="ident">get_last_event_time</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">NonNegativeF64</span>;
+    <span class="attribute">#[must_use]
+    </span><span class="kw">fn </span>get_last_event_time(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; NonNegativeF64;
 
-    <span class="attribute">#[<span class="ident">debug_ensures</span>(<span class="kw">match</span> <span class="ident">ret</span> {
+    <span class="attribute">#[debug_ensures(<span class="kw">match </span>ret {
         <span class="prelude-val">Some</span>(<span class="kw">_</span>) =&gt; {
-            <span class="self">self</span>.<span class="ident">number_active_lineages</span>() <span class="op">==</span>
-            <span class="ident">old</span>(<span class="self">self</span>.<span class="ident">number_active_lineages</span>()) <span class="op">-</span> <span class="number">1</span>
+            <span class="self">self</span>.number_active_lineages() ==
+            old(<span class="self">self</span>.number_active_lineages()) - <span class="number">1
+        </span>},
+        <span class="prelude-val">None </span>=&gt; {
+            <span class="self">self</span>.number_active_lineages() ==
+            old(<span class="self">self</span>.number_active_lineages())
         },
-        <span class="prelude-val">None</span> =&gt; {
-            <span class="self">self</span>.<span class="ident">number_active_lineages</span>() <span class="op">==</span>
-            <span class="ident">old</span>(<span class="self">self</span>.<span class="ident">number_active_lineages</span>())
-        },
-    }, <span class="string">&quot;removes an active lineage if `Some(_)` returned&quot;</span>)]</span>
-    <span class="attribute">#[<span class="ident">debug_ensures</span>(
-        <span class="ident">old</span>(<span class="self">self</span>.<span class="ident">number_active_lineages</span>()) <span class="op">!</span><span class="op">=</span> <span class="number">0</span> <span class="op">|</span><span class="op">|</span> <span class="ident">ret</span>.<span class="ident">is_none</span>(),
-        <span class="string">&quot;returns `None` if no lineages are left&quot;</span>
-    )]</span>
-    <span class="attribute">#[<span class="ident">debug_ensures</span>(
-        <span class="ident">ret</span>.<span class="ident">is_none</span>() <span class="op">|</span><span class="op">|</span> <span class="ident">ret</span>.<span class="ident">as_ref</span>().<span class="ident">unwrap</span>().<span class="number">1</span> <span class="op">&gt;</span> <span class="ident">old</span>(<span class="self">self</span>.<span class="ident">get_last_event_time</span>()),
-        <span class="string">&quot;event occurs later than last event time&quot;</span>
-    )]</span>
-    <span class="attribute">#[<span class="ident">debug_ensures</span>(<span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>((<span class="kw-2">ref</span> <span class="ident">_lineage</span>, <span class="ident">event_time</span>)) <span class="op">=</span> <span class="ident">ret</span> {
-        <span class="self">self</span>.<span class="ident">get_last_event_time</span>() <span class="op">==</span> <span class="ident">event_time</span>
-    } <span class="kw">else</span> { <span class="bool-val">true</span> }, <span class="string">&quot;updates the time of the last event&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">pop_active_lineage_and_event_time</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">FnOnce</span>(<span class="ident">PositiveF64</span>) -&gt; <span class="ident">ControlFlow</span><span class="op">&lt;</span>(), ()<span class="op">&gt;</span><span class="op">&gt;</span>(
-        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
-        <span class="ident">simulation</span>: <span class="kw-2">&amp;mut</span> <span class="ident">PartialSimulation</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span>, <span class="ident">S</span>, <span class="ident">X</span>, <span class="ident">D</span>, <span class="ident">C</span>, <span class="ident">T</span>, <span class="ident">N</span>, <span class="ident">E</span><span class="op">&gt;</span>,
-        <span class="ident">rng</span>: <span class="kw-2">&amp;mut</span> <span class="ident">G</span>,
-        <span class="ident">early_peek_stop</span>: <span class="ident">P</span>,
-    ) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span>(<span class="ident">Lineage</span>, <span class="ident">PositiveF64</span>)<span class="op">&gt;</span>;
+    }, <span class="string">&quot;removes an active lineage if `Some(_)` returned&quot;</span>)]
+    #[debug_ensures(
+        old(<span class="self">self</span>.number_active_lineages()) != <span class="number">0 </span>|| ret.is_none(),
+        <span class="string">&quot;returns `None` if no lineages are left&quot;
+    </span>)]
+    #[debug_ensures(
+        ret.is_none() || ret.as_ref().unwrap().<span class="number">1 </span>&gt; old(<span class="self">self</span>.get_last_event_time()),
+        <span class="string">&quot;event occurs later than last event time&quot;
+    </span>)]
+    #[debug_ensures(<span class="kw">if let </span><span class="prelude-val">Some</span>((<span class="kw-2">ref </span>_lineage, event_time)) = ret {
+        <span class="self">self</span>.get_last_event_time() == event_time
+    } <span class="kw">else </span>{ <span class="bool-val">true </span>}, <span class="string">&quot;updates the time of the last event&quot;</span>)]
+    </span><span class="kw">fn </span>pop_active_lineage_and_event_time&lt;P: FnOnce(PositiveF64) -&gt; ControlFlow&lt;(), ()&gt;&gt;(
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        simulation: <span class="kw-2">&amp;mut </span>PartialSimulation&lt;M, H, G, S, X, D, C, T, N, E&gt;,
+        rng: <span class="kw-2">&amp;mut </span>G,
+        early_peek_stop: P,
+    ) -&gt; <span class="prelude-ty">Option</span>&lt;(Lineage, PositiveF64)&gt;;
 
-    <span class="attribute">#[<span class="ident">debug_ensures</span>(
-        <span class="self">self</span>.<span class="ident">number_active_lineages</span>() <span class="op">==</span> <span class="ident">old</span>(<span class="self">self</span>.<span class="ident">number_active_lineages</span>()) <span class="op">+</span> <span class="number">1</span>,
-        <span class="string">&quot;adds an active lineage&quot;</span>
-    )]</span>
-    <span class="attribute">#[<span class="ident">debug_ensures</span>(
-        <span class="self">self</span>.<span class="ident">get_last_event_time</span>() <span class="op">==</span> <span class="ident">old</span>(<span class="ident">lineage</span>.<span class="ident">last_event_time</span>),
-        <span class="string">&quot;updates the time of the last event&quot;</span>
-    )]</span>
-    <span class="kw">fn</span> <span class="ident">push_active_lineage</span>(
-        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
-        <span class="ident">lineage</span>: <span class="ident">Lineage</span>,
-        <span class="ident">simulation</span>: <span class="kw-2">&amp;mut</span> <span class="ident">PartialSimulation</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">H</span>, <span class="ident">G</span>, <span class="ident">S</span>, <span class="ident">X</span>, <span class="ident">D</span>, <span class="ident">C</span>, <span class="ident">T</span>, <span class="ident">N</span>, <span class="ident">E</span><span class="op">&gt;</span>,
-        <span class="ident">rng</span>: <span class="kw-2">&amp;mut</span> <span class="ident">G</span>,
+    <span class="attribute">#[debug_ensures(
+        <span class="self">self</span>.number_active_lineages() == old(<span class="self">self</span>.number_active_lineages()) + <span class="number">1</span>,
+        <span class="string">&quot;adds an active lineage&quot;
+    </span>)]
+    #[debug_ensures(
+        <span class="self">self</span>.get_last_event_time() == old(lineage.last_event_time),
+        <span class="string">&quot;updates the time of the last event&quot;
+    </span>)]
+    </span><span class="kw">fn </span>push_active_lineage(
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        lineage: Lineage,
+        simulation: <span class="kw-2">&amp;mut </span>PartialSimulation&lt;M, H, G, S, X, D, C, T, N, E&gt;,
+        rng: <span class="kw-2">&amp;mut </span>G,
     );
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="necsim_core" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0-nightly (affe0d3a0 2022-08-05)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="necsim_core" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (5e9772042 2022-10-29)" ></div></body></html>

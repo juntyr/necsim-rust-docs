@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `necsim/impls/std/src/event_log/recorder.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>recorder.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../necsim_impls_std/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../necsim_impls_std/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../necsim_impls_std/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `necsim/impls/std/src/event_log/recorder.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>recorder.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../normalize.css"><link rel="stylesheet" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../ayu.css" disabled><link rel="stylesheet" href="../../../dark.css" disabled><link rel="stylesheet" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../../necsim_impls_std/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -241,248 +241,248 @@
 <span id="241">241</span>
 <span id="242">242</span>
 <span id="243">243</span>
-</pre><pre class="rust"><code><span class="comment">// Based on https://docs.rs/extsort/0.4.2/src/extsort/sorter.rs.html</span>
+</pre><pre class="rust"><code><span class="comment">// Based on https://docs.rs/extsort/0.4.2/src/extsort/sorter.rs.html
 
-<span class="comment">// Copyright 2018 Andre-Philippe Paquet</span>
-<span class="comment">//</span>
-<span class="comment">// Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
-<span class="comment">// you may not use this file except in compliance with the License.</span>
-<span class="comment">// You may obtain a copy of the License at</span>
-<span class="comment">//</span>
-<span class="comment">//     http://www.apache.org/licenses/LICENSE-2.0</span>
-<span class="comment">//</span>
-<span class="comment">// Unless required by applicable law or agreed to in writing, software</span>
-<span class="comment">// distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
-<span class="comment">// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
-<span class="comment">// See the License for the specific language governing permissions and</span>
-<span class="comment">// limitations under the License.</span>
+// Copyright 2018 Andre-Philippe Paquet
+//
+// Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 
-<span class="kw">use</span> <span class="ident">std</span>::{
-    <span class="ident">convert::TryFrom</span>,
-    <span class="ident">fmt</span>,
-    <span class="ident">fs</span>::{<span class="self">self</span>, <span class="ident">OpenOptions</span>},
-    <span class="ident">io::BufWriter</span>,
-    <span class="ident">num::NonZeroUsize</span>,
-    <span class="ident">path</span>::{<span class="ident">Path</span>, <span class="ident">PathBuf</span>},
+</span><span class="kw">use </span>std::{
+    convert::TryFrom,
+    fmt,
+    fs::{<span class="self">self</span>, OpenOptions},
+    io::BufWriter,
+    num::NonZeroUsize,
+    path::{Path, PathBuf},
 };
 
-<span class="kw">use</span> <span class="ident">anyhow</span>::{<span class="ident">Error</span>, <span class="prelude-ty">Result</span>};
-<span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>, <span class="ident">Serializer</span>};
+<span class="kw">use </span>anyhow::{Error, <span class="prelude-ty">Result</span>};
+<span class="kw">use </span>serde::{Deserialize, Serialize, Serializer};
 
-<span class="kw">use</span> <span class="ident">necsim_core::event</span>::{<span class="ident">DispersalEvent</span>, <span class="ident">PackedEvent</span>, <span class="ident">SpeciationEvent</span>};
+<span class="kw">use </span>necsim_core::event::{DispersalEvent, PackedEvent, SpeciationEvent};
 
-<span class="kw">use</span> <span class="ident"><span class="kw">super</span>::EventLogHeader</span>;
+<span class="kw">use </span><span class="kw">super</span>::EventLogHeader;
 
-<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::module_name_repetitions</span>)]</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Deserialize</span>)]</span>
-<span class="attribute">#[<span class="ident">serde</span>(<span class="ident">try_from</span> <span class="op">=</span> <span class="string">&quot;EventLogRecorderRaw&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">EventLogRecorder</span> {
-    <span class="ident">segment_capacity</span>: <span class="ident">NonZeroUsize</span>,
-    <span class="ident">directory</span>: <span class="ident">PathBuf</span>,
-    <span class="ident">segment_index</span>: <span class="ident">usize</span>,
-    <span class="ident">buffer</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">PackedEvent</span><span class="op">&gt;</span>,
+<span class="attribute">#[allow(clippy::module_name_repetitions)]
+#[derive(Deserialize)]
+#[serde(try_from = <span class="string">&quot;EventLogRecorderRaw&quot;</span>)]
+</span><span class="kw">pub struct </span>EventLogRecorder {
+    segment_capacity: NonZeroUsize,
+    directory: PathBuf,
+    segment_index: usize,
+    buffer: Vec&lt;PackedEvent&gt;,
 
-    <span class="ident">record_speciation</span>: <span class="ident">bool</span>,
-    <span class="ident">record_dispersal</span>: <span class="ident">bool</span>,
+    record_speciation: bool,
+    record_dispersal: bool,
 }
 
-<span class="kw">impl</span> <span class="ident">TryFrom</span><span class="op">&lt;</span><span class="ident">EventLogRecorderRaw</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">EventLogRecorder</span> {
-    <span class="kw">type</span> <span class="ident">Error</span> <span class="op">=</span> <span class="ident">Error</span>;
+<span class="kw">impl </span>TryFrom&lt;EventLogRecorderRaw&gt; <span class="kw">for </span>EventLogRecorder {
+    <span class="kw">type </span>Error = Error;
 
-    <span class="kw">fn</span> <span class="ident">try_from</span>(<span class="ident">raw</span>: <span class="ident">EventLogRecorderRaw</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident"><span class="self">Self</span>::Error</span><span class="op">&gt;</span> {
-        <span class="ident"><span class="self">Self</span>::try_new</span>(<span class="kw-2">&amp;</span><span class="ident">raw</span>.<span class="ident">directory</span>, <span class="ident">raw</span>.<span class="ident">capacity</span>)
+    <span class="kw">fn </span>try_from(raw: EventLogRecorderRaw) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, <span class="self">Self</span>::Error&gt; {
+        <span class="self">Self</span>::try_new(<span class="kw-2">&amp;</span>raw.directory, raw.capacity)
     }
 }
 
-<span class="kw">impl</span> <span class="ident">Serialize</span> <span class="kw">for</span> <span class="ident">EventLogRecorder</span> {
-    <span class="kw">fn</span> <span class="ident">serialize</span><span class="op">&lt;</span><span class="ident">S</span>: <span class="ident">Serializer</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">serializer</span>: <span class="ident">S</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">S::Ok</span>, <span class="ident">S::Error</span><span class="op">&gt;</span> {
-        <span class="ident">EventLogRecorderRaw</span> {
-            <span class="ident">directory</span>: <span class="self">self</span>.<span class="ident">directory</span>.<span class="ident">clone</span>(),
-            <span class="ident">capacity</span>: <span class="self">self</span>.<span class="ident">segment_capacity</span>,
+<span class="kw">impl </span>Serialize <span class="kw">for </span>EventLogRecorder {
+    <span class="kw">fn </span>serialize&lt;S: Serializer&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, serializer: S) -&gt; <span class="prelude-ty">Result</span>&lt;S::Ok, S::Error&gt; {
+        EventLogRecorderRaw {
+            directory: <span class="self">self</span>.directory.clone(),
+            capacity: <span class="self">self</span>.segment_capacity,
         }
-        .<span class="ident">serialize</span>(<span class="ident">serializer</span>)
+        .serialize(serializer)
     }
 }
 
-<span class="kw">impl</span> <span class="ident">Drop</span> <span class="kw">for</span> <span class="ident">EventLogRecorder</span> {
-    <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
-        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">buffer</span>.<span class="ident">is_empty</span>() {
-            <span class="comment">// Try to remove the directory if it is empty</span>
-            <span class="ident">std::mem::drop</span>(<span class="ident">fs::remove_dir</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">directory</span>));
-        } <span class="kw">else</span> {
-            <span class="ident">std::mem::drop</span>(<span class="self">self</span>.<span class="ident">sort_and_write_segment</span>());
+<span class="kw">impl </span>Drop <span class="kw">for </span>EventLogRecorder {
+    <span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+        <span class="kw">if </span><span class="self">self</span>.buffer.is_empty() {
+            <span class="comment">// Try to remove the directory if it is empty
+            </span>std::mem::drop(fs::remove_dir(<span class="kw-2">&amp;</span><span class="self">self</span>.directory));
+        } <span class="kw">else </span>{
+            std::mem::drop(<span class="self">self</span>.sort_and_write_segment());
         }
     }
 }
 
-<span class="kw">impl</span> <span class="ident">EventLogRecorder</span> {
-    <span class="doccomment">/// # Errors</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Fails to construct iff `path` is not a writable directory.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">try_new</span>(<span class="ident">path</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>, <span class="ident">segment_capacity</span>: <span class="ident">NonZeroUsize</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
-        <span class="ident">fs::create_dir_all</span>(<span class="ident">path</span>)<span class="question-mark">?</span>;
+<span class="kw">impl </span>EventLogRecorder {
+    <span class="doccomment">/// # Errors
+    ///
+    /// Fails to construct iff `path` is not a writable directory.
+    </span><span class="kw">pub fn </span>try_new(path: <span class="kw-2">&amp;</span>Path, segment_capacity: NonZeroUsize) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
+        fs::create_dir_all(path)<span class="question-mark">?</span>;
 
-        <span class="kw">let</span> <span class="ident">metadata</span> <span class="op">=</span> <span class="ident">fs::metadata</span>(<span class="ident">path</span>)<span class="question-mark">?</span>;
+        <span class="kw">let </span>metadata = fs::metadata(path)<span class="question-mark">?</span>;
 
-        <span class="kw">if</span> <span class="op">!</span><span class="ident">metadata</span>.<span class="ident">is_dir</span>() {
-            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="macro">anyhow::anyhow!</span>(<span class="string">&quot;{:?} is not a directory.&quot;</span>, <span class="ident">path</span>));
+        <span class="kw">if </span>!metadata.is_dir() {
+            <span class="kw">return </span><span class="prelude-val">Err</span>(<span class="macro">anyhow::anyhow!</span>(<span class="string">&quot;{:?} is not a directory.&quot;</span>, path));
         }
 
-        <span class="kw">if</span> <span class="ident">metadata</span>.<span class="ident">permissions</span>().<span class="ident">readonly</span>() {
-            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="macro">anyhow::anyhow!</span>(<span class="string">&quot;{:?} is a read-only directory.&quot;</span>, <span class="ident">path</span>));
+        <span class="kw">if </span>metadata.permissions().readonly() {
+            <span class="kw">return </span><span class="prelude-val">Err</span>(<span class="macro">anyhow::anyhow!</span>(<span class="string">&quot;{:?} is a read-only directory.&quot;</span>, path));
         }
 
-        <span class="prelude-val">Ok</span>(<span class="self">Self</span> {
-            <span class="ident">segment_capacity</span>,
-            <span class="ident">directory</span>: <span class="ident">path</span>.<span class="ident">to_owned</span>(),
-            <span class="ident">segment_index</span>: <span class="number">0_usize</span>,
-            <span class="ident">buffer</span>: <span class="ident">Vec::with_capacity</span>(<span class="ident">segment_capacity</span>.<span class="ident">get</span>()),
+        <span class="prelude-val">Ok</span>(<span class="self">Self </span>{
+            segment_capacity,
+            directory: path.to_owned(),
+            segment_index: <span class="number">0_usize</span>,
+            buffer: Vec::with_capacity(segment_capacity.get()),
 
-            <span class="ident">record_speciation</span>: <span class="bool-val">false</span>,
-            <span class="ident">record_dispersal</span>: <span class="bool-val">false</span>,
+            record_speciation: <span class="bool-val">false</span>,
+            record_dispersal: <span class="bool-val">false</span>,
         })
     }
 
-    <span class="doccomment">/// # Errors</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Fails to construct iff `path` is not a writable directory.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">r#move</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">path</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
-        <span class="kw">if</span> <span class="op">!</span><span class="self">self</span>.<span class="ident">buffer</span>.<span class="ident">is_empty</span>() {
-            <span class="self">self</span>.<span class="ident">sort_and_write_segment</span>()<span class="question-mark">?</span>;
-        } <span class="kw">else</span> <span class="kw">if</span> <span class="op">!</span><span class="ident">path</span>.<span class="ident">starts_with</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">directory</span>) {
-            <span class="comment">// Try to remove the directory if it is empty and the</span>
-            <span class="comment">//  new path is not a child of the current directory</span>
-            <span class="ident">std::mem::drop</span>(<span class="ident">fs::remove_dir</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">directory</span>));
+    <span class="doccomment">/// # Errors
+    ///
+    /// Fails to construct iff `path` is not a writable directory.
+    </span><span class="kw">pub fn </span>r#move(<span class="kw-2">mut </span><span class="self">self</span>, path: <span class="kw-2">&amp;</span>Path) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
+        <span class="kw">if </span>!<span class="self">self</span>.buffer.is_empty() {
+            <span class="self">self</span>.sort_and_write_segment()<span class="question-mark">?</span>;
+        } <span class="kw">else if </span>!path.starts_with(<span class="kw-2">&amp;</span><span class="self">self</span>.directory) {
+            <span class="comment">// Try to remove the directory if it is empty and the
+            //  new path is not a child of the current directory
+            </span>std::mem::drop(fs::remove_dir(<span class="kw-2">&amp;</span><span class="self">self</span>.directory));
         }
 
-        <span class="ident">fs::create_dir_all</span>(<span class="ident">path</span>)<span class="question-mark">?</span>;
+        fs::create_dir_all(path)<span class="question-mark">?</span>;
 
-        <span class="kw">let</span> <span class="ident">metadata</span> <span class="op">=</span> <span class="ident">fs::metadata</span>(<span class="ident">path</span>)<span class="question-mark">?</span>;
+        <span class="kw">let </span>metadata = fs::metadata(path)<span class="question-mark">?</span>;
 
-        <span class="kw">if</span> <span class="op">!</span><span class="ident">metadata</span>.<span class="ident">is_dir</span>() {
-            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="macro">anyhow::anyhow!</span>(<span class="string">&quot;{:?} is not a directory.&quot;</span>, <span class="ident">path</span>));
+        <span class="kw">if </span>!metadata.is_dir() {
+            <span class="kw">return </span><span class="prelude-val">Err</span>(<span class="macro">anyhow::anyhow!</span>(<span class="string">&quot;{:?} is not a directory.&quot;</span>, path));
         }
 
-        <span class="kw">if</span> <span class="ident">metadata</span>.<span class="ident">permissions</span>().<span class="ident">readonly</span>() {
-            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="macro">anyhow::anyhow!</span>(<span class="string">&quot;{:?} is a read-only directory.&quot;</span>, <span class="ident">path</span>));
+        <span class="kw">if </span>metadata.permissions().readonly() {
+            <span class="kw">return </span><span class="prelude-val">Err</span>(<span class="macro">anyhow::anyhow!</span>(<span class="string">&quot;{:?} is a read-only directory.&quot;</span>, path));
         }
 
-        <span class="self">self</span>.<span class="ident">directory</span> <span class="op">=</span> <span class="ident">path</span>.<span class="ident">to_owned</span>();
+        <span class="self">self</span>.directory = path.to_owned();
 
         <span class="prelude-val">Ok</span>(<span class="self">self</span>)
     }
 
-    <span class="doccomment">/// # Errors</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Fails to construct iff `path` is not an empty directory.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">assert_empty</span>(<span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
-        <span class="kw">if</span> <span class="ident">fs::read_dir</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">directory</span>)<span class="question-mark">?</span>.<span class="ident">next</span>().<span class="ident">is_some</span>() {
-            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="macro">anyhow::anyhow!</span>(
+    <span class="doccomment">/// # Errors
+    ///
+    /// Fails to construct iff `path` is not an empty directory.
+    </span><span class="kw">pub fn </span>assert_empty(<span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
+        <span class="kw">if </span>fs::read_dir(<span class="kw-2">&amp;</span><span class="self">self</span>.directory)<span class="question-mark">?</span>.next().is_some() {
+            <span class="kw">return </span><span class="prelude-val">Err</span>(<span class="macro">anyhow::anyhow!</span>(
                 <span class="string">&quot;{:?} is not an empty directory.\n\nIf you are starting a new simulation, clean \
                  out the existing log.\nIf you are pausing or resuming a simulation, try \
                  appending a\n simulation-slice-specific postfix to your log path, and keep all\n \
                  these log-slices in the same parent directory for easy analysis.&quot;</span>,
-                <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">directory</span>
+                <span class="kw-2">&amp;</span><span class="self">self</span>.directory
             ));
         }
 
         <span class="prelude-val">Ok</span>(<span class="self">self</span>)
     }
 
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">directory</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">Path</span> {
-        <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">directory</span>
+    <span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>directory(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>Path {
+        <span class="kw-2">&amp;</span><span class="self">self</span>.directory
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_event_filter</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">record_speciation</span>: <span class="ident">bool</span>, <span class="ident">record_dispersal</span>: <span class="ident">bool</span>) {
-        <span class="self">self</span>.<span class="ident">record_speciation</span> <span class="op">=</span> <span class="ident">record_speciation</span>;
-        <span class="self">self</span>.<span class="ident">record_dispersal</span> <span class="op">=</span> <span class="ident">record_dispersal</span>;
+    <span class="kw">pub fn </span>set_event_filter(<span class="kw-2">&amp;mut </span><span class="self">self</span>, record_speciation: bool, record_dispersal: bool) {
+        <span class="self">self</span>.record_speciation = record_speciation;
+        <span class="self">self</span>.record_dispersal = record_dispersal;
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">record_speciation</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">event</span>: <span class="kw-2">&amp;</span><span class="ident">SpeciationEvent</span>) {
-        <span class="self">self</span>.<span class="ident">record_speciation</span> <span class="op">=</span> <span class="bool-val">true</span>;
+    <span class="kw">pub fn </span>record_speciation(<span class="kw-2">&amp;mut </span><span class="self">self</span>, event: <span class="kw-2">&amp;</span>SpeciationEvent) {
+        <span class="self">self</span>.record_speciation = <span class="bool-val">true</span>;
 
-        <span class="self">self</span>.<span class="ident">buffer</span>.<span class="ident">push</span>(<span class="ident">event</span>.<span class="ident">clone</span>().<span class="ident">into</span>());
+        <span class="self">self</span>.buffer.push(event.clone().into());
 
-        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">buffer</span>.<span class="ident">len</span>() <span class="op">&gt;</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">segment_capacity</span>.<span class="ident">get</span>() {
-            <span class="ident">std::mem::drop</span>(<span class="self">self</span>.<span class="ident">sort_and_write_segment</span>());
+        <span class="kw">if </span><span class="self">self</span>.buffer.len() &gt;= <span class="self">self</span>.segment_capacity.get() {
+            std::mem::drop(<span class="self">self</span>.sort_and_write_segment());
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">record_dispersal</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">event</span>: <span class="kw-2">&amp;</span><span class="ident">DispersalEvent</span>) {
-        <span class="self">self</span>.<span class="ident">record_dispersal</span> <span class="op">=</span> <span class="bool-val">true</span>;
+    <span class="kw">pub fn </span>record_dispersal(<span class="kw-2">&amp;mut </span><span class="self">self</span>, event: <span class="kw-2">&amp;</span>DispersalEvent) {
+        <span class="self">self</span>.record_dispersal = <span class="bool-val">true</span>;
 
-        <span class="self">self</span>.<span class="ident">buffer</span>.<span class="ident">push</span>(<span class="ident">event</span>.<span class="ident">clone</span>().<span class="ident">into</span>());
+        <span class="self">self</span>.buffer.push(event.clone().into());
 
-        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">buffer</span>.<span class="ident">len</span>() <span class="op">&gt;</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">segment_capacity</span>.<span class="ident">get</span>() {
-            <span class="ident">std::mem::drop</span>(<span class="self">self</span>.<span class="ident">sort_and_write_segment</span>());
+        <span class="kw">if </span><span class="self">self</span>.buffer.len() &gt;= <span class="self">self</span>.segment_capacity.get() {
+            std::mem::drop(<span class="self">self</span>.sort_and_write_segment());
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">sort_and_write_segment</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">buffer</span>.<span class="ident">sort</span>();
+    <span class="kw">fn </span>sort_and_write_segment(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;()&gt; {
+        <span class="self">self</span>.buffer.sort();
 
-        <span class="kw">let</span> <span class="ident">segment_path</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">directory</span>.<span class="ident">join</span>(<span class="macro">format!</span>(<span class="string">&quot;{}&quot;</span>, <span class="self">self</span>.<span class="ident">segment_index</span>));
-        <span class="self">self</span>.<span class="ident">segment_index</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>;
+        <span class="kw">let </span>segment_path = <span class="self">self</span>.directory.join(<span class="macro">format!</span>(<span class="string">&quot;{}&quot;</span>, <span class="self">self</span>.segment_index));
+        <span class="self">self</span>.segment_index += <span class="number">1</span>;
 
-        <span class="kw">let</span> <span class="ident">segment_file</span> <span class="op">=</span> <span class="ident">OpenOptions::new</span>()
-            .<span class="ident">create</span>(<span class="bool-val">true</span>)
-            .<span class="ident">truncate</span>(<span class="bool-val">true</span>)
-            .<span class="ident">write</span>(<span class="bool-val">true</span>)
-            .<span class="ident">open</span>(<span class="kw-2">&amp;</span><span class="ident">segment_path</span>)<span class="question-mark">?</span>;
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buf_writer</span> <span class="op">=</span> <span class="ident">BufWriter::new</span>(<span class="ident">segment_file</span>);
+        <span class="kw">let </span>segment_file = OpenOptions::new()
+            .create(<span class="bool-val">true</span>)
+            .truncate(<span class="bool-val">true</span>)
+            .write(<span class="bool-val">true</span>)
+            .open(segment_path)<span class="question-mark">?</span>;
+        <span class="kw">let </span><span class="kw-2">mut </span>buf_writer = BufWriter::new(segment_file);
 
-        <span class="ident">bincode::serialize_into</span>(
-            <span class="kw-2">&amp;mut</span> <span class="ident">buf_writer</span>,
-            <span class="kw-2">&amp;</span><span class="ident">EventLogHeader::new</span>(
-                <span class="self">self</span>.<span class="ident">buffer</span>[<span class="number">0</span>].<span class="ident">event_time</span>(),
-                <span class="self">self</span>.<span class="ident">buffer</span>[<span class="self">self</span>.<span class="ident">buffer</span>.<span class="ident">len</span>() <span class="op">-</span> <span class="number">1</span>].<span class="ident">event_time</span>(),
-                <span class="self">self</span>.<span class="ident">buffer</span>.<span class="ident">len</span>(),
-                <span class="self">self</span>.<span class="ident">record_speciation</span>,
-                <span class="self">self</span>.<span class="ident">record_dispersal</span>,
+        bincode::serialize_into(
+            <span class="kw-2">&amp;mut </span>buf_writer,
+            <span class="kw-2">&amp;</span>EventLogHeader::new(
+                <span class="self">self</span>.buffer[<span class="number">0</span>].event_time(),
+                <span class="self">self</span>.buffer[<span class="self">self</span>.buffer.len() - <span class="number">1</span>].event_time(),
+                <span class="self">self</span>.buffer.len(),
+                <span class="self">self</span>.record_speciation,
+                <span class="self">self</span>.record_dispersal,
             ),
         )<span class="question-mark">?</span>;
 
-        <span class="kw">for</span> <span class="ident">event</span> <span class="kw">in</span> <span class="self">self</span>.<span class="ident">buffer</span>.<span class="ident">drain</span>(<span class="number">0</span>..) {
-            <span class="ident">bincode::serialize_into</span>(<span class="kw-2">&amp;mut</span> <span class="ident">buf_writer</span>, <span class="kw-2">&amp;</span><span class="ident">event</span>)<span class="question-mark">?</span>;
+        <span class="kw">for </span>event <span class="kw">in </span><span class="self">self</span>.buffer.drain(<span class="number">0</span>..) {
+            bincode::serialize_into(<span class="kw-2">&amp;mut </span>buf_writer, <span class="kw-2">&amp;</span>event)<span class="question-mark">?</span>;
         }
 
-        <span class="ident">buf_writer</span>.<span class="ident">into_inner</span>()<span class="question-mark">?</span>;
+        buf_writer.into_inner()<span class="question-mark">?</span>;
 
         <span class="prelude-val">Ok</span>(())
     }
 }
 
-<span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">EventLogRecorder</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
-        <span class="kw">struct</span> <span class="ident">EventBufferLen</span>(<span class="ident">usize</span>);
+<span class="kw">impl </span>fmt::Debug <span class="kw">for </span>EventLogRecorder {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
+        <span class="kw">struct </span>EventBufferLen(usize);
 
-        <span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">EventBufferLen</span> {
-            <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
-                <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;Vec&lt;Event; {}&gt;&quot;</span>, <span class="self">self</span>.<span class="number">0</span>)
+        <span class="kw">impl </span>fmt::Debug <span class="kw">for </span>EventBufferLen {
+            <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
+                <span class="macro">write!</span>(f, <span class="string">&quot;Vec&lt;Event; {}&gt;&quot;</span>, <span class="self">self</span>.<span class="number">0</span>)
             }
         }
 
-        <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="macro">stringify!</span>(<span class="ident">EventLogRecorder</span>))
-            .<span class="ident">field</span>(<span class="string">&quot;segment_capacity&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">segment_capacity</span>)
-            .<span class="ident">field</span>(<span class="string">&quot;directory&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">directory</span>)
-            .<span class="ident">field</span>(<span class="string">&quot;segment_index&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">segment_index</span>)
-            .<span class="ident">field</span>(<span class="string">&quot;buffer&quot;</span>, <span class="kw-2">&amp;</span><span class="ident">EventBufferLen</span>(<span class="self">self</span>.<span class="ident">buffer</span>.<span class="ident">len</span>()))
-            .<span class="ident">finish</span>()
+        f.debug_struct(<span class="macro">stringify!</span>(EventLogRecorder))
+            .field(<span class="string">&quot;segment_capacity&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.segment_capacity)
+            .field(<span class="string">&quot;directory&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.directory)
+            .field(<span class="string">&quot;segment_index&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.segment_index)
+            .field(<span class="string">&quot;buffer&quot;</span>, <span class="kw-2">&amp;</span>EventBufferLen(<span class="self">self</span>.buffer.len()))
+            .finish()
     }
 }
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
-<span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;EventLog&quot;</span>)]</span>
-<span class="attribute">#[<span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>)]</span>
-<span class="kw">struct</span> <span class="ident">EventLogRecorderRaw</span> {
-    <span class="ident">directory</span>: <span class="ident">PathBuf</span>,
-    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">default</span> <span class="op">=</span> <span class="string">&quot;default_event_log_recorder_segment_capacity&quot;</span>)]</span>
-    <span class="ident">capacity</span>: <span class="ident">NonZeroUsize</span>,
+<span class="attribute">#[derive(Serialize, Deserialize)]
+#[serde(rename = <span class="string">&quot;EventLog&quot;</span>)]
+#[serde(deny_unknown_fields)]
+</span><span class="kw">struct </span>EventLogRecorderRaw {
+    directory: PathBuf,
+    <span class="attribute">#[serde(default = <span class="string">&quot;default_event_log_recorder_segment_capacity&quot;</span>)]
+    </span>capacity: NonZeroUsize,
 }
 
-<span class="kw">fn</span> <span class="ident">default_event_log_recorder_segment_capacity</span>() -&gt; <span class="ident">NonZeroUsize</span> {
-    <span class="ident">NonZeroUsize::new</span>(<span class="number">1_000_000_usize</span>).<span class="ident">unwrap</span>()
+<span class="kw">fn </span>default_event_log_recorder_segment_capacity() -&gt; NonZeroUsize {
+    NonZeroUsize::new(<span class="number">1_000_000_usize</span>).unwrap()
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="necsim_impls_std" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0-nightly (affe0d3a0 2022-08-05)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="necsim_impls_std" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (5e9772042 2022-10-29)" ></div></body></html>

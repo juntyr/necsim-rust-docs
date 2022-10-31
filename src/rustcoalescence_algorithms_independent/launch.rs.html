@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `rustcoalescence/algorithms/independent/src/launch.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>launch.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../rustcoalescence_algorithms_independent/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../rustcoalescence_algorithms_independent/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../rustcoalescence_algorithms_independent/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `rustcoalescence/algorithms/independent/src/launch.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>launch.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../normalize.css"><link rel="stylesheet" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../ayu.css" disabled><link rel="stylesheet" href="../../dark.css" disabled><link rel="stylesheet" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../rustcoalescence_algorithms_independent/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -344,351 +344,351 @@
 <span id="344">344</span>
 <span id="345">345</span>
 <span id="346">346</span>
-</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">std::marker::PhantomData</span>;
+</pre><pre class="rust"><code><span class="kw">use </span>std::marker::PhantomData;
 
-<span class="kw">use</span> <span class="ident">necsim_core</span>::{
-    <span class="ident">cogs</span>::{<span class="ident">MathsCore</span>, <span class="ident">PrimeableRng</span>},
-    <span class="ident">reporter::Reporter</span>,
-    <span class="ident">simulation::SimulationBuilder</span>,
+<span class="kw">use </span>necsim_core::{
+    cogs::{MathsCore, PrimeableRng},
+    reporter::Reporter,
+    simulation::SimulationBuilder,
 };
-<span class="kw">use</span> <span class="ident">necsim_core_bond::NonNegativeF64</span>;
+<span class="kw">use </span>necsim_core_bond::NonNegativeF64;
 
-<span class="kw">use</span> <span class="ident">necsim_impls_no_std</span>::{
-    <span class="ident">cogs</span>::{
-        <span class="ident">active_lineage_sampler::independent::event_time_sampler::poisson::PoissonEventTimeSampler</span>,
-        <span class="ident">coalescence_sampler::independent::IndependentCoalescenceSampler</span>,
-        <span class="ident">dispersal_sampler::in_memory::alias::InMemoryAliasDispersalSampler</span>,
-        <span class="ident">emigration_exit</span>::{
-            <span class="ident">independent</span>::{
-                <span class="ident">choice</span>::{
-                    <span class="ident">always::AlwaysEmigrationChoice</span>, <span class="ident">probabilistic::ProbabilisticEmigrationChoice</span>,
+<span class="kw">use </span>necsim_impls_no_std::{
+    cogs::{
+        active_lineage_sampler::independent::event_time_sampler::poisson::PoissonEventTimeSampler,
+        coalescence_sampler::independent::IndependentCoalescenceSampler,
+        dispersal_sampler::in_memory::alias::InMemoryAliasDispersalSampler,
+        emigration_exit::{
+            independent::{
+                choice::{
+                    always::AlwaysEmigrationChoice, probabilistic::ProbabilisticEmigrationChoice,
                 },
-                <span class="ident">IndependentEmigrationExit</span>,
+                IndependentEmigrationExit,
             },
-            <span class="ident">never::NeverEmigrationExit</span>,
+            never::NeverEmigrationExit,
         },
-        <span class="ident">event_sampler::independent::IndependentEventSampler</span>,
-        <span class="ident">immigration_entry::never::NeverImmigrationEntry</span>,
-        <span class="ident">origin_sampler</span>::{
-            <span class="ident">decomposition::DecompositionOriginSampler</span>, <span class="ident">pre_sampler::OriginPreSampler</span>,
+        event_sampler::independent::IndependentEventSampler,
+        immigration_entry::never::NeverImmigrationEntry,
+        origin_sampler::{
+            decomposition::DecompositionOriginSampler, pre_sampler::OriginPreSampler,
         },
     },
-    <span class="ident">parallelisation</span>::{<span class="self">self</span>, <span class="ident">Status</span>},
+    parallelisation::{<span class="self">self</span>, Status},
 };
-<span class="kw">use</span> <span class="ident">necsim_partitioning_core::LocalPartition</span>;
+<span class="kw">use </span>necsim_partitioning_core::LocalPartition;
 
-<span class="kw">use</span> <span class="ident">rustcoalescence_algorithms::result::SimulationOutcome</span>;
-<span class="kw">use</span> <span class="ident">rustcoalescence_scenarios::Scenario</span>;
+<span class="kw">use </span>rustcoalescence_algorithms::result::SimulationOutcome;
+<span class="kw">use </span>rustcoalescence_scenarios::Scenario;
 
-<span class="kw">use</span> <span class="kw">crate</span>::{
-    <span class="ident">arguments</span>::{
-        <span class="ident">IndependentArguments</span>, <span class="ident">IsolatedParallelismMode</span>, <span class="ident">MonolithicParallelismMode</span>, <span class="ident">ParallelismMode</span>,
-        <span class="ident">ProbabilisticParallelismMode</span>,
+<span class="kw">use crate</span>::{
+    arguments::{
+        IndependentArguments, IsolatedParallelismMode, MonolithicParallelismMode, ParallelismMode,
+        ProbabilisticParallelismMode,
     },
-    <span class="ident">initialiser::IndependentLineageStoreSampleInitialiser</span>,
+    initialiser::IndependentLineageStoreSampleInitialiser,
 };
 
-<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::too_many_lines</span>)]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">initialise_and_simulate</span><span class="op">&lt;</span>
+<span class="attribute">#[allow(clippy::too_many_lines)]
+</span><span class="kw">pub fn </span>initialise_and_simulate&lt;
     <span class="lifetime">&#39;p</span>,
-    <span class="ident">M</span>: <span class="ident">MathsCore</span>,
-    <span class="ident">G</span>: <span class="ident">PrimeableRng</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span>,
-    <span class="ident">O</span>: <span class="ident">Scenario</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">G</span><span class="op">&gt;</span>,
-    <span class="ident">R</span>: <span class="ident">Reporter</span>,
-    <span class="ident">P</span>: <span class="ident">LocalPartition</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span>, <span class="ident">R</span><span class="op">&gt;</span>,
-    <span class="ident">I</span>: <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">u64</span><span class="op">&gt;</span>,
-    <span class="ident">L</span>: <span class="ident">IndependentLineageStoreSampleInitialiser</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">G</span>, <span class="ident">O</span>, <span class="ident">Error</span><span class="op">&gt;</span>,
-    <span class="ident">Error</span>,
-<span class="op">&gt;</span>(
-    <span class="ident">args</span>: <span class="kw-2">&amp;</span><span class="ident">IndependentArguments</span>,
-    <span class="ident">rng</span>: <span class="ident">G</span>,
-    <span class="ident">scenario</span>: <span class="ident">O</span>,
-    <span class="ident">pre_sampler</span>: <span class="ident">OriginPreSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">I</span><span class="op">&gt;</span>,
-    <span class="ident">pause_before</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">NonNegativeF64</span><span class="op">&gt;</span>,
-    <span class="ident">local_partition</span>: <span class="kw-2">&amp;mut</span> <span class="ident">P</span>,
-    <span class="ident">lineage_store_sampler_initialiser</span>: <span class="ident">L</span>,
-) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">SimulationOutcome</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">G</span><span class="op">&gt;</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
-    <span class="kw">match</span> <span class="ident">args</span>.<span class="ident">parallelism_mode</span> {
-        <span class="ident">ParallelismMode::Monolithic</span>(<span class="ident">MonolithicParallelismMode</span> { <span class="ident">event_slice</span> })
-        <span class="op">|</span> <span class="ident">ParallelismMode::IsolatedIndividuals</span>(<span class="ident">IsolatedParallelismMode</span> { <span class="ident">event_slice</span>, .. })
-        <span class="op">|</span> <span class="ident">ParallelismMode::IsolatedLandscape</span>(<span class="ident">IsolatedParallelismMode</span> { <span class="ident">event_slice</span>, .. }) =&gt; {
-            <span class="kw">let</span> (
-                <span class="ident">habitat</span>,
-                <span class="ident">dispersal_sampler</span>,
-                <span class="ident">turnover_rate</span>,
-                <span class="ident">speciation_probability</span>,
-                <span class="ident">origin_sampler_auxiliary</span>,
-                <span class="ident">decomposition_auxiliary</span>,
-            ) <span class="op">=</span> <span class="ident">scenario</span>.<span class="ident">build</span>::<span class="op">&lt;</span><span class="ident">InMemoryAliasDispersalSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">O::Habitat</span>, <span class="ident">G</span><span class="op">&gt;</span><span class="op">&gt;</span>();
-            <span class="kw">let</span> <span class="ident">coalescence_sampler</span> <span class="op">=</span> <span class="ident">IndependentCoalescenceSampler::default</span>();
-            <span class="kw">let</span> <span class="ident">event_sampler</span> <span class="op">=</span> <span class="ident">IndependentEventSampler::default</span>();
+    M: MathsCore,
+    G: PrimeableRng&lt;M&gt;,
+    O: Scenario&lt;M, G&gt;,
+    R: Reporter,
+    P: LocalPartition&lt;<span class="lifetime">&#39;p</span>, R&gt;,
+    I: Iterator&lt;Item = u64&gt;,
+    L: IndependentLineageStoreSampleInitialiser&lt;M, G, O, Error&gt;,
+    Error,
+&gt;(
+    args: <span class="kw-2">&amp;</span>IndependentArguments,
+    rng: G,
+    scenario: O,
+    pre_sampler: OriginPreSampler&lt;M, I&gt;,
+    pause_before: <span class="prelude-ty">Option</span>&lt;NonNegativeF64&gt;,
+    local_partition: <span class="kw-2">&amp;mut </span>P,
+    lineage_store_sampler_initialiser: L,
+) -&gt; <span class="prelude-ty">Result</span>&lt;SimulationOutcome&lt;M, G&gt;, Error&gt; {
+    <span class="kw">match </span>args.parallelism_mode {
+        ParallelismMode::Monolithic(MonolithicParallelismMode { event_slice })
+        | ParallelismMode::IsolatedIndividuals(IsolatedParallelismMode { event_slice, .. })
+        | ParallelismMode::IsolatedLandscape(IsolatedParallelismMode { event_slice, .. }) =&gt; {
+            <span class="kw">let </span>(
+                habitat,
+                dispersal_sampler,
+                turnover_rate,
+                speciation_probability,
+                origin_sampler_auxiliary,
+                decomposition_auxiliary,
+            ) = scenario.build::&lt;InMemoryAliasDispersalSampler&lt;M, O::Habitat, G&gt;&gt;();
+            <span class="kw">let </span>coalescence_sampler = IndependentCoalescenceSampler::default();
+            <span class="kw">let </span>event_sampler = IndependentEventSampler::default();
 
-            <span class="kw">let</span> (<span class="ident">lineage_store</span>, <span class="ident">dispersal_sampler</span>, <span class="ident">active_lineage_sampler</span>, <span class="ident">lineages</span>, <span class="ident">passthrough</span>) <span class="op">=</span>
-                <span class="kw">match</span> <span class="ident">args</span>.<span class="ident">parallelism_mode</span> {
-                    <span class="comment">// Apply no lineage origin partitioning in the `Monolithic` mode</span>
-                    <span class="ident">ParallelismMode::Monolithic</span>(..) =&gt; <span class="ident">lineage_store_sampler_initialiser</span>.<span class="ident">init</span>(
-                        <span class="ident">O::sample_habitat</span>(<span class="kw-2">&amp;</span><span class="ident">habitat</span>, <span class="ident">pre_sampler</span>, <span class="ident">origin_sampler_auxiliary</span>),
-                        <span class="ident">dispersal_sampler</span>,
-                        <span class="ident">PoissonEventTimeSampler::new</span>(<span class="ident">args</span>.<span class="ident">delta_t</span>),
+            <span class="kw">let </span>(lineage_store, dispersal_sampler, active_lineage_sampler, lineages, passthrough) =
+                <span class="kw">match </span>args.parallelism_mode {
+                    <span class="comment">// Apply no lineage origin partitioning in the `Monolithic` mode
+                    </span>ParallelismMode::Monolithic(..) =&gt; lineage_store_sampler_initialiser.init(
+                        O::sample_habitat(<span class="kw-2">&amp;</span>habitat, pre_sampler, origin_sampler_auxiliary),
+                        dispersal_sampler,
+                        PoissonEventTimeSampler::new(args.delta_t),
                     )<span class="question-mark">?</span>,
-                    <span class="comment">// Apply lineage origin partitioning in the `IsolatedIndividuals` mode</span>
-                    <span class="ident">ParallelismMode::IsolatedIndividuals</span>(<span class="ident">IsolatedParallelismMode</span> {
-                        <span class="ident">partition</span>,
+                    <span class="comment">// Apply lineage origin partitioning in the `IsolatedIndividuals` mode
+                    </span>ParallelismMode::IsolatedIndividuals(IsolatedParallelismMode {
+                        partition,
                         ..
-                    }) =&gt; <span class="ident">lineage_store_sampler_initialiser</span>.<span class="ident">init</span>(
-                        <span class="ident">O::sample_habitat</span>(
-                            <span class="kw-2">&amp;</span><span class="ident">habitat</span>,
-                            <span class="ident">pre_sampler</span>.<span class="ident">partition</span>(<span class="ident">partition</span>),
-                            <span class="ident">origin_sampler_auxiliary</span>,
+                    }) =&gt; lineage_store_sampler_initialiser.init(
+                        O::sample_habitat(
+                            <span class="kw-2">&amp;</span>habitat,
+                            pre_sampler.partition(partition),
+                            origin_sampler_auxiliary,
                         ),
-                        <span class="ident">dispersal_sampler</span>,
-                        <span class="ident">PoissonEventTimeSampler::new</span>(<span class="ident">args</span>.<span class="ident">delta_t</span>),
+                        dispersal_sampler,
+                        PoissonEventTimeSampler::new(args.delta_t),
                     )<span class="question-mark">?</span>,
-                    <span class="comment">// Apply lineage origin partitioning in the `IsolatedLandscape` mode</span>
-                    <span class="ident">ParallelismMode::IsolatedLandscape</span>(<span class="ident">IsolatedParallelismMode</span> {
-                        <span class="ident">partition</span>,
+                    <span class="comment">// Apply lineage origin partitioning in the `IsolatedLandscape` mode
+                    </span>ParallelismMode::IsolatedLandscape(IsolatedParallelismMode {
+                        partition,
                         ..
-                    }) =&gt; <span class="ident">lineage_store_sampler_initialiser</span>.<span class="ident">init</span>(
-                        <span class="ident">DecompositionOriginSampler::new</span>(
-                            <span class="ident">O::sample_habitat</span>(<span class="kw-2">&amp;</span><span class="ident">habitat</span>, <span class="ident">pre_sampler</span>, <span class="ident">origin_sampler_auxiliary</span>),
-                            <span class="kw-2">&amp;</span><span class="ident">O::decompose</span>(<span class="kw-2">&amp;</span><span class="ident">habitat</span>, <span class="ident">partition</span>, <span class="ident">decomposition_auxiliary</span>),
+                    }) =&gt; lineage_store_sampler_initialiser.init(
+                        DecompositionOriginSampler::new(
+                            O::sample_habitat(<span class="kw-2">&amp;</span>habitat, pre_sampler, origin_sampler_auxiliary),
+                            <span class="kw-2">&amp;</span>O::decompose(<span class="kw-2">&amp;</span>habitat, partition, decomposition_auxiliary),
                         ),
-                        <span class="ident">dispersal_sampler</span>,
-                        <span class="ident">PoissonEventTimeSampler::new</span>(<span class="ident">args</span>.<span class="ident">delta_t</span>),
+                        dispersal_sampler,
+                        PoissonEventTimeSampler::new(args.delta_t),
                     )<span class="question-mark">?</span>,
-                    <span class="kw">_</span> =&gt; <span class="kw">unsafe</span> { <span class="ident">std::hint::unreachable_unchecked</span>() },
+                    <span class="kw">_ </span>=&gt; <span class="kw">unsafe </span>{ std::hint::unreachable_unchecked() },
                 };
 
-            <span class="kw">let</span> <span class="ident">emigration_exit</span> <span class="op">=</span> <span class="ident">NeverEmigrationExit::default</span>();
-            <span class="kw">let</span> <span class="ident">immigration_entry</span> <span class="op">=</span> <span class="ident">NeverImmigrationEntry::default</span>();
+            <span class="kw">let </span>emigration_exit = NeverEmigrationExit::default();
+            <span class="kw">let </span>immigration_entry = NeverImmigrationEntry::default();
 
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">simulation</span> <span class="op">=</span> <span class="ident">SimulationBuilder</span> {
-                <span class="ident">maths</span>: <span class="ident">PhantomData</span>::<span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span>,
-                <span class="ident">habitat</span>,
-                <span class="ident">lineage_store</span>,
-                <span class="ident">dispersal_sampler</span>,
-                <span class="ident">coalescence_sampler</span>,
-                <span class="ident">turnover_rate</span>,
-                <span class="ident">speciation_probability</span>,
-                <span class="ident">emigration_exit</span>,
-                <span class="ident">event_sampler</span>,
-                <span class="ident">active_lineage_sampler</span>,
-                <span class="ident">rng</span>,
-                <span class="ident">immigration_entry</span>,
+            <span class="kw">let </span><span class="kw-2">mut </span>simulation = SimulationBuilder {
+                maths: PhantomData::&lt;M&gt;,
+                habitat,
+                lineage_store,
+                dispersal_sampler,
+                coalescence_sampler,
+                turnover_rate,
+                speciation_probability,
+                emigration_exit,
+                event_sampler,
+                active_lineage_sampler,
+                rng,
+                immigration_entry,
             }
-            .<span class="ident">build</span>();
+            .build();
 
-            <span class="kw">let</span> (<span class="kw-2">mut</span> <span class="ident">status</span>, <span class="ident">time</span>, <span class="ident">steps</span>, <span class="ident">lineages</span>) <span class="op">=</span>
-                <span class="ident">parallelisation::independent::monolithic::simulate</span>(
-                    <span class="kw-2">&amp;mut</span> <span class="ident">simulation</span>,
-                    <span class="ident">lineages</span>,
-                    <span class="ident">args</span>.<span class="ident">dedup_cache</span>,
-                    <span class="ident">args</span>.<span class="ident">step_slice</span>,
-                    <span class="ident">event_slice</span>,
-                    <span class="ident">pause_before</span>,
-                    <span class="ident">local_partition</span>,
+            <span class="kw">let </span>(<span class="kw-2">mut </span>status, time, steps, lineages) =
+                parallelisation::independent::monolithic::simulate(
+                    <span class="kw-2">&amp;mut </span>simulation,
+                    lineages,
+                    args.dedup_cache,
+                    args.step_slice,
+                    event_slice,
+                    pause_before,
+                    local_partition,
                 );
 
-            <span class="kw">if</span> <span class="op">!</span><span class="ident">passthrough</span>.<span class="ident">is_empty</span>() {
-                <span class="ident">status</span> <span class="op">=</span> <span class="ident">Status::Paused</span>;
+            <span class="kw">if </span>!passthrough.is_empty() {
+                status = Status::Paused;
             }
 
-            <span class="kw">match</span> <span class="ident">status</span> {
-                <span class="ident">Status::Done</span> =&gt; <span class="prelude-val">Ok</span>(<span class="ident">SimulationOutcome::Done</span> { <span class="ident">time</span>, <span class="ident">steps</span> }),
-                <span class="ident">Status::Paused</span> =&gt; <span class="prelude-val">Ok</span>(<span class="ident">SimulationOutcome::Paused</span> {
-                    <span class="ident">time</span>,
-                    <span class="ident">steps</span>,
-                    <span class="ident">lineages</span>: <span class="ident">lineages</span>
-                        .<span class="ident">into_iter</span>()
-                        .<span class="ident">chain</span>(<span class="ident">passthrough</span>.<span class="ident">into_iter</span>())
-                        .<span class="ident">collect</span>(),
-                    <span class="ident">rng</span>: <span class="ident">simulation</span>.<span class="ident">rng_mut</span>().<span class="ident">clone</span>(),
-                    <span class="ident">marker</span>: <span class="ident">PhantomData</span>::<span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span>,
+            <span class="kw">match </span>status {
+                Status::Done =&gt; <span class="prelude-val">Ok</span>(SimulationOutcome::Done { time, steps }),
+                Status::Paused =&gt; <span class="prelude-val">Ok</span>(SimulationOutcome::Paused {
+                    time,
+                    steps,
+                    lineages: lineages
+                        .into_iter()
+                        .chain(passthrough.into_iter())
+                        .collect(),
+                    rng: simulation.rng_mut().clone(),
+                    marker: PhantomData::&lt;M&gt;,
                 }),
             }
         },
-        <span class="ident">ParallelismMode::Individuals</span> =&gt; {
-            <span class="kw">let</span> (
-                <span class="ident">habitat</span>,
-                <span class="ident">dispersal_sampler</span>,
-                <span class="ident">turnover_rate</span>,
-                <span class="ident">speciation_probability</span>,
-                <span class="ident">origin_sampler_auxiliary</span>,
-                <span class="ident">_decomposition_auxiliary</span>,
-            ) <span class="op">=</span> <span class="ident">scenario</span>.<span class="ident">build</span>::<span class="op">&lt;</span><span class="ident">InMemoryAliasDispersalSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">O::Habitat</span>, <span class="ident">G</span><span class="op">&gt;</span><span class="op">&gt;</span>();
-            <span class="kw">let</span> <span class="ident">coalescence_sampler</span> <span class="op">=</span> <span class="ident">IndependentCoalescenceSampler::default</span>();
-            <span class="kw">let</span> <span class="ident">event_sampler</span> <span class="op">=</span> <span class="ident">IndependentEventSampler::default</span>();
+        ParallelismMode::Individuals =&gt; {
+            <span class="kw">let </span>(
+                habitat,
+                dispersal_sampler,
+                turnover_rate,
+                speciation_probability,
+                origin_sampler_auxiliary,
+                _decomposition_auxiliary,
+            ) = scenario.build::&lt;InMemoryAliasDispersalSampler&lt;M, O::Habitat, G&gt;&gt;();
+            <span class="kw">let </span>coalescence_sampler = IndependentCoalescenceSampler::default();
+            <span class="kw">let </span>event_sampler = IndependentEventSampler::default();
 
-            <span class="kw">let</span> (<span class="ident">lineage_store</span>, <span class="ident">dispersal_sampler</span>, <span class="ident">active_lineage_sampler</span>, <span class="ident">lineages</span>, <span class="ident">_passthrough</span>) <span class="op">=</span>
-                <span class="ident">lineage_store_sampler_initialiser</span>.<span class="ident">init</span>(
-                    <span class="ident">O::sample_habitat</span>(
-                        <span class="kw-2">&amp;</span><span class="ident">habitat</span>,
-                        <span class="ident">pre_sampler</span>.<span class="ident">partition</span>(<span class="ident">local_partition</span>.<span class="ident">get_partition</span>()),
-                        <span class="ident">origin_sampler_auxiliary</span>,
+            <span class="kw">let </span>(lineage_store, dispersal_sampler, active_lineage_sampler, lineages, _passthrough) =
+                lineage_store_sampler_initialiser.init(
+                    O::sample_habitat(
+                        <span class="kw-2">&amp;</span>habitat,
+                        pre_sampler.partition(local_partition.get_partition()),
+                        origin_sampler_auxiliary,
                     ),
-                    <span class="ident">dispersal_sampler</span>,
-                    <span class="ident">PoissonEventTimeSampler::new</span>(<span class="ident">args</span>.<span class="ident">delta_t</span>),
+                    dispersal_sampler,
+                    PoissonEventTimeSampler::new(args.delta_t),
                 )<span class="question-mark">?</span>;
 
-            <span class="kw">let</span> <span class="ident">emigration_exit</span> <span class="op">=</span> <span class="ident">NeverEmigrationExit::default</span>();
-            <span class="kw">let</span> <span class="ident">immigration_entry</span> <span class="op">=</span> <span class="ident">NeverImmigrationEntry::default</span>();
+            <span class="kw">let </span>emigration_exit = NeverEmigrationExit::default();
+            <span class="kw">let </span>immigration_entry = NeverImmigrationEntry::default();
 
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">simulation</span> <span class="op">=</span> <span class="ident">SimulationBuilder</span> {
-                <span class="ident">maths</span>: <span class="ident">PhantomData</span>::<span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span>,
-                <span class="ident">habitat</span>,
-                <span class="ident">lineage_store</span>,
-                <span class="ident">dispersal_sampler</span>,
-                <span class="ident">coalescence_sampler</span>,
-                <span class="ident">turnover_rate</span>,
-                <span class="ident">speciation_probability</span>,
-                <span class="ident">emigration_exit</span>,
-                <span class="ident">event_sampler</span>,
-                <span class="ident">active_lineage_sampler</span>,
-                <span class="ident">rng</span>,
-                <span class="ident">immigration_entry</span>,
+            <span class="kw">let </span><span class="kw-2">mut </span>simulation = SimulationBuilder {
+                maths: PhantomData::&lt;M&gt;,
+                habitat,
+                lineage_store,
+                dispersal_sampler,
+                coalescence_sampler,
+                turnover_rate,
+                speciation_probability,
+                emigration_exit,
+                event_sampler,
+                active_lineage_sampler,
+                rng,
+                immigration_entry,
             }
-            .<span class="ident">build</span>();
+            .build();
 
-            <span class="kw">let</span> (<span class="ident">_status</span>, <span class="ident">time</span>, <span class="ident">steps</span>, <span class="ident">_lineages</span>) <span class="op">=</span>
-                <span class="ident">parallelisation::independent::individuals::simulate</span>(
-                    <span class="kw-2">&amp;mut</span> <span class="ident">simulation</span>,
-                    <span class="ident">lineages</span>,
-                    <span class="ident">args</span>.<span class="ident">dedup_cache</span>,
-                    <span class="ident">args</span>.<span class="ident">step_slice</span>,
-                    <span class="ident">local_partition</span>,
+            <span class="kw">let </span>(_status, time, steps, _lineages) =
+                parallelisation::independent::individuals::simulate(
+                    <span class="kw-2">&amp;mut </span>simulation,
+                    lineages,
+                    args.dedup_cache,
+                    args.step_slice,
+                    local_partition,
                 );
 
-            <span class="comment">// TODO: Adapt for parallel pausing</span>
-            <span class="comment">// TODO: Adapt for lineage passthrough</span>
-            <span class="prelude-val">Ok</span>(<span class="ident">SimulationOutcome::Done</span> { <span class="ident">time</span>, <span class="ident">steps</span> })
+            <span class="comment">// TODO: Adapt for parallel pausing
+            // TODO: Adapt for lineage passthrough
+            </span><span class="prelude-val">Ok</span>(SimulationOutcome::Done { time, steps })
         },
-        <span class="ident">ParallelismMode::Landscape</span> =&gt; {
-            <span class="kw">let</span> (
-                <span class="ident">habitat</span>,
-                <span class="ident">dispersal_sampler</span>,
-                <span class="ident">turnover_rate</span>,
-                <span class="ident">speciation_probability</span>,
-                <span class="ident">origin_sampler_auxiliary</span>,
-                <span class="ident">decomposition_auxiliary</span>,
-            ) <span class="op">=</span> <span class="ident">scenario</span>.<span class="ident">build</span>::<span class="op">&lt;</span><span class="ident">InMemoryAliasDispersalSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">O::Habitat</span>, <span class="ident">G</span><span class="op">&gt;</span><span class="op">&gt;</span>();
-            <span class="kw">let</span> <span class="ident">coalescence_sampler</span> <span class="op">=</span> <span class="ident">IndependentCoalescenceSampler::default</span>();
-            <span class="kw">let</span> <span class="ident">event_sampler</span> <span class="op">=</span> <span class="ident">IndependentEventSampler::default</span>();
+        ParallelismMode::Landscape =&gt; {
+            <span class="kw">let </span>(
+                habitat,
+                dispersal_sampler,
+                turnover_rate,
+                speciation_probability,
+                origin_sampler_auxiliary,
+                decomposition_auxiliary,
+            ) = scenario.build::&lt;InMemoryAliasDispersalSampler&lt;M, O::Habitat, G&gt;&gt;();
+            <span class="kw">let </span>coalescence_sampler = IndependentCoalescenceSampler::default();
+            <span class="kw">let </span>event_sampler = IndependentEventSampler::default();
 
-            <span class="kw">let</span> <span class="ident">decomposition</span> <span class="op">=</span> <span class="ident">O::decompose</span>(
-                <span class="kw-2">&amp;</span><span class="ident">habitat</span>,
-                <span class="ident">local_partition</span>.<span class="ident">get_partition</span>(),
-                <span class="ident">decomposition_auxiliary</span>,
+            <span class="kw">let </span>decomposition = O::decompose(
+                <span class="kw-2">&amp;</span>habitat,
+                local_partition.get_partition(),
+                decomposition_auxiliary,
             );
 
-            <span class="kw">let</span> (<span class="ident">lineage_store</span>, <span class="ident">dispersal_sampler</span>, <span class="ident">active_lineage_sampler</span>, <span class="ident">lineages</span>, <span class="ident">_passthrough</span>) <span class="op">=</span>
-                <span class="ident">lineage_store_sampler_initialiser</span>.<span class="ident">init</span>(
-                    <span class="ident">DecompositionOriginSampler::new</span>(
-                        <span class="ident">O::sample_habitat</span>(<span class="kw-2">&amp;</span><span class="ident">habitat</span>, <span class="ident">pre_sampler</span>, <span class="ident">origin_sampler_auxiliary</span>),
-                        <span class="kw-2">&amp;</span><span class="ident">decomposition</span>,
+            <span class="kw">let </span>(lineage_store, dispersal_sampler, active_lineage_sampler, lineages, _passthrough) =
+                lineage_store_sampler_initialiser.init(
+                    DecompositionOriginSampler::new(
+                        O::sample_habitat(<span class="kw-2">&amp;</span>habitat, pre_sampler, origin_sampler_auxiliary),
+                        <span class="kw-2">&amp;</span>decomposition,
                     ),
-                    <span class="ident">dispersal_sampler</span>,
-                    <span class="ident">PoissonEventTimeSampler::new</span>(<span class="ident">args</span>.<span class="ident">delta_t</span>),
+                    dispersal_sampler,
+                    PoissonEventTimeSampler::new(args.delta_t),
                 )<span class="question-mark">?</span>;
 
-            <span class="kw">let</span> <span class="ident">emigration_exit</span> <span class="op">=</span>
-                <span class="ident">IndependentEmigrationExit::new</span>(<span class="ident">decomposition</span>, <span class="ident">AlwaysEmigrationChoice::default</span>());
-            <span class="kw">let</span> <span class="ident">immigration_entry</span> <span class="op">=</span> <span class="ident">NeverImmigrationEntry::default</span>();
+            <span class="kw">let </span>emigration_exit =
+                IndependentEmigrationExit::new(decomposition, AlwaysEmigrationChoice::default());
+            <span class="kw">let </span>immigration_entry = NeverImmigrationEntry::default();
 
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">simulation</span> <span class="op">=</span> <span class="ident">SimulationBuilder</span> {
-                <span class="ident">maths</span>: <span class="ident">PhantomData</span>::<span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span>,
-                <span class="ident">habitat</span>,
-                <span class="ident">lineage_store</span>,
-                <span class="ident">dispersal_sampler</span>,
-                <span class="ident">coalescence_sampler</span>,
-                <span class="ident">turnover_rate</span>,
-                <span class="ident">speciation_probability</span>,
-                <span class="ident">emigration_exit</span>,
-                <span class="ident">event_sampler</span>,
-                <span class="ident">active_lineage_sampler</span>,
-                <span class="ident">rng</span>,
-                <span class="ident">immigration_entry</span>,
+            <span class="kw">let </span><span class="kw-2">mut </span>simulation = SimulationBuilder {
+                maths: PhantomData::&lt;M&gt;,
+                habitat,
+                lineage_store,
+                dispersal_sampler,
+                coalescence_sampler,
+                turnover_rate,
+                speciation_probability,
+                emigration_exit,
+                event_sampler,
+                active_lineage_sampler,
+                rng,
+                immigration_entry,
             }
-            .<span class="ident">build</span>();
+            .build();
 
-            <span class="kw">let</span> (<span class="ident">_status</span>, <span class="ident">time</span>, <span class="ident">steps</span>, <span class="ident">_lineages</span>) <span class="op">=</span>
-                <span class="ident">parallelisation::independent::landscape::simulate</span>(
-                    <span class="kw-2">&amp;mut</span> <span class="ident">simulation</span>,
-                    <span class="ident">lineages</span>,
-                    <span class="ident">args</span>.<span class="ident">dedup_cache</span>,
-                    <span class="ident">args</span>.<span class="ident">step_slice</span>,
-                    <span class="ident">local_partition</span>,
+            <span class="kw">let </span>(_status, time, steps, _lineages) =
+                parallelisation::independent::landscape::simulate(
+                    <span class="kw-2">&amp;mut </span>simulation,
+                    lineages,
+                    args.dedup_cache,
+                    args.step_slice,
+                    local_partition,
                 );
 
-            <span class="comment">// TODO: Adapt for parallel pausing</span>
-            <span class="comment">// TODO: Adapt for lineage passthrough</span>
-            <span class="prelude-val">Ok</span>(<span class="ident">SimulationOutcome::Done</span> { <span class="ident">time</span>, <span class="ident">steps</span> })
+            <span class="comment">// TODO: Adapt for parallel pausing
+            // TODO: Adapt for lineage passthrough
+            </span><span class="prelude-val">Ok</span>(SimulationOutcome::Done { time, steps })
         },
-        <span class="ident">ParallelismMode::Probabilistic</span>(<span class="ident">ProbabilisticParallelismMode</span> {
-            <span class="ident">communication_probability</span>,
+        ParallelismMode::Probabilistic(ProbabilisticParallelismMode {
+            communication_probability,
         }) =&gt; {
-            <span class="kw">let</span> (
-                <span class="ident">habitat</span>,
-                <span class="ident">dispersal_sampler</span>,
-                <span class="ident">turnover_rate</span>,
-                <span class="ident">speciation_probability</span>,
-                <span class="ident">origin_sampler_auxiliary</span>,
-                <span class="ident">decomposition_auxiliary</span>,
-            ) <span class="op">=</span> <span class="ident">scenario</span>.<span class="ident">build</span>::<span class="op">&lt;</span><span class="ident">InMemoryAliasDispersalSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">O::Habitat</span>, <span class="ident">G</span><span class="op">&gt;</span><span class="op">&gt;</span>();
-            <span class="kw">let</span> <span class="ident">coalescence_sampler</span> <span class="op">=</span> <span class="ident">IndependentCoalescenceSampler::default</span>();
-            <span class="kw">let</span> <span class="ident">event_sampler</span> <span class="op">=</span> <span class="ident">IndependentEventSampler::default</span>();
+            <span class="kw">let </span>(
+                habitat,
+                dispersal_sampler,
+                turnover_rate,
+                speciation_probability,
+                origin_sampler_auxiliary,
+                decomposition_auxiliary,
+            ) = scenario.build::&lt;InMemoryAliasDispersalSampler&lt;M, O::Habitat, G&gt;&gt;();
+            <span class="kw">let </span>coalescence_sampler = IndependentCoalescenceSampler::default();
+            <span class="kw">let </span>event_sampler = IndependentEventSampler::default();
 
-            <span class="kw">let</span> <span class="ident">decomposition</span> <span class="op">=</span> <span class="ident">O::decompose</span>(
-                <span class="kw-2">&amp;</span><span class="ident">habitat</span>,
-                <span class="ident">local_partition</span>.<span class="ident">get_partition</span>(),
-                <span class="ident">decomposition_auxiliary</span>,
+            <span class="kw">let </span>decomposition = O::decompose(
+                <span class="kw-2">&amp;</span>habitat,
+                local_partition.get_partition(),
+                decomposition_auxiliary,
             );
 
-            <span class="kw">let</span> (<span class="ident">lineage_store</span>, <span class="ident">dispersal_sampler</span>, <span class="ident">active_lineage_sampler</span>, <span class="ident">lineages</span>, <span class="ident">_passthrough</span>) <span class="op">=</span>
-                <span class="ident">lineage_store_sampler_initialiser</span>.<span class="ident">init</span>(
-                    <span class="ident">DecompositionOriginSampler::new</span>(
-                        <span class="ident">O::sample_habitat</span>(<span class="kw-2">&amp;</span><span class="ident">habitat</span>, <span class="ident">pre_sampler</span>, <span class="ident">origin_sampler_auxiliary</span>),
-                        <span class="kw-2">&amp;</span><span class="ident">decomposition</span>,
+            <span class="kw">let </span>(lineage_store, dispersal_sampler, active_lineage_sampler, lineages, _passthrough) =
+                lineage_store_sampler_initialiser.init(
+                    DecompositionOriginSampler::new(
+                        O::sample_habitat(<span class="kw-2">&amp;</span>habitat, pre_sampler, origin_sampler_auxiliary),
+                        <span class="kw-2">&amp;</span>decomposition,
                     ),
-                    <span class="ident">dispersal_sampler</span>,
-                    <span class="ident">PoissonEventTimeSampler::new</span>(<span class="ident">args</span>.<span class="ident">delta_t</span>),
+                    dispersal_sampler,
+                    PoissonEventTimeSampler::new(args.delta_t),
                 )<span class="question-mark">?</span>;
 
-            <span class="kw">let</span> <span class="ident">emigration_exit</span> <span class="op">=</span> <span class="ident">IndependentEmigrationExit::new</span>(
-                <span class="ident">decomposition</span>,
-                <span class="ident">ProbabilisticEmigrationChoice::new</span>(<span class="ident">communication_probability</span>),
+            <span class="kw">let </span>emigration_exit = IndependentEmigrationExit::new(
+                decomposition,
+                ProbabilisticEmigrationChoice::new(communication_probability),
             );
-            <span class="kw">let</span> <span class="ident">immigration_entry</span> <span class="op">=</span> <span class="ident">NeverImmigrationEntry::default</span>();
+            <span class="kw">let </span>immigration_entry = NeverImmigrationEntry::default();
 
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">simulation</span> <span class="op">=</span> <span class="ident">SimulationBuilder</span> {
-                <span class="ident">maths</span>: <span class="ident">PhantomData</span>::<span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span>,
-                <span class="ident">habitat</span>,
-                <span class="ident">lineage_store</span>,
-                <span class="ident">dispersal_sampler</span>,
-                <span class="ident">coalescence_sampler</span>,
-                <span class="ident">turnover_rate</span>,
-                <span class="ident">speciation_probability</span>,
-                <span class="ident">emigration_exit</span>,
-                <span class="ident">event_sampler</span>,
-                <span class="ident">active_lineage_sampler</span>,
-                <span class="ident">rng</span>,
-                <span class="ident">immigration_entry</span>,
+            <span class="kw">let </span><span class="kw-2">mut </span>simulation = SimulationBuilder {
+                maths: PhantomData::&lt;M&gt;,
+                habitat,
+                lineage_store,
+                dispersal_sampler,
+                coalescence_sampler,
+                turnover_rate,
+                speciation_probability,
+                emigration_exit,
+                event_sampler,
+                active_lineage_sampler,
+                rng,
+                immigration_entry,
             }
-            .<span class="ident">build</span>();
+            .build();
 
-            <span class="kw">let</span> (<span class="ident">_status</span>, <span class="ident">time</span>, <span class="ident">steps</span>, <span class="ident">_lineages</span>) <span class="op">=</span>
-                <span class="ident">parallelisation::independent::landscape::simulate</span>(
-                    <span class="kw-2">&amp;mut</span> <span class="ident">simulation</span>,
-                    <span class="ident">lineages</span>,
-                    <span class="ident">args</span>.<span class="ident">dedup_cache</span>,
-                    <span class="ident">args</span>.<span class="ident">step_slice</span>,
-                    <span class="ident">local_partition</span>,
+            <span class="kw">let </span>(_status, time, steps, _lineages) =
+                parallelisation::independent::landscape::simulate(
+                    <span class="kw-2">&amp;mut </span>simulation,
+                    lineages,
+                    args.dedup_cache,
+                    args.step_slice,
+                    local_partition,
                 );
 
-            <span class="comment">// TODO: Adapt for parallel pausing</span>
-            <span class="comment">// TODO: Adapt for lineage passthrough</span>
-            <span class="prelude-val">Ok</span>(<span class="ident">SimulationOutcome::Done</span> { <span class="ident">time</span>, <span class="ident">steps</span> })
+            <span class="comment">// TODO: Adapt for parallel pausing
+            // TODO: Adapt for lineage passthrough
+            </span><span class="prelude-val">Ok</span>(SimulationOutcome::Done { time, steps })
         },
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="rustcoalescence_algorithms_independent" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0-nightly (affe0d3a0 2022-08-05)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="rustcoalescence_algorithms_independent" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (5e9772042 2022-10-29)" ></div></body></html>

@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `necsim/impls/std/src/event_log/replay/mod.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>mod.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../storage.js"></script><script defer src="../../../../source-script.js"></script><script defer src="../../../../source-files.js"></script><script defer src="../../../../main.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../../necsim_impls_std/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../../necsim_impls_std/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../../necsim_impls_std/index.html"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `necsim/impls/std/src/event_log/replay/mod.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>mod.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../../normalize.css"><link rel="stylesheet" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../../ayu.css" disabled><link rel="stylesheet" href="../../../../dark.css" disabled><link rel="stylesheet" href="../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../storage.js"></script><script defer src="../../../../source-script.js"></script><script defer src="../../../../source-files.js"></script><script defer src="../../../../main.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../../../necsim_impls_std/index.html"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../wheel.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -194,201 +194,201 @@
 <span id="194">194</span>
 <span id="195">195</span>
 <span id="196">196</span>
-</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">std</span>::{
-    <span class="ident">collections::BinaryHeap</span>, <span class="ident">convert::TryFrom</span>, <span class="ident">iter::FromIterator</span>, <span class="ident">num::NonZeroUsize</span>, <span class="ident">path::Path</span>,
+</pre><pre class="rust"><code><span class="kw">use </span>std::{
+    collections::BinaryHeap, convert::TryFrom, iter::FromIterator, num::NonZeroUsize, path::Path,
 };
 
-<span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>, <span class="ident">Serializer</span>};
+<span class="kw">use </span>serde::{Deserialize, Serialize, Serializer};
 
-<span class="kw">use</span> <span class="ident">necsim_core::event::PackedEvent</span>;
+<span class="kw">use </span>necsim_core::event::PackedEvent;
 
-<span class="kw">mod</span> <span class="ident">globbed</span>;
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">segment</span>;
-<span class="kw">mod</span> <span class="ident">sorted_segments</span>;
+<span class="kw">mod </span>globbed;
+<span class="kw">pub mod </span>segment;
+<span class="kw">mod </span>sorted_segments;
 
-<span class="kw">use</span> <span class="ident">globbed::GlobbedSortedSegments</span>;
-<span class="kw">use</span> <span class="ident">segment::SortedSegment</span>;
-<span class="kw">use</span> <span class="ident">sorted_segments::SortedSortedSegments</span>;
+<span class="kw">use </span>globbed::GlobbedSortedSegments;
+<span class="kw">use </span>segment::SortedSegment;
+<span class="kw">use </span>sorted_segments::SortedSortedSegments;
 
-<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::module_name_repetitions</span>)]</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Deserialize</span>)]</span>
-<span class="attribute">#[<span class="ident">serde</span>(<span class="ident">try_from</span> <span class="op">=</span> <span class="string">&quot;EventLogReplayRaw&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">EventLogReplay</span> {
-    <span class="ident">frontier</span>: <span class="ident">BinaryHeap</span><span class="op">&lt;</span><span class="ident">SortedSortedSegments</span><span class="op">&gt;</span>,
+<span class="attribute">#[allow(clippy::module_name_repetitions)]
+#[derive(Debug, Deserialize)]
+#[serde(try_from = <span class="string">&quot;EventLogReplayRaw&quot;</span>)]
+</span><span class="kw">pub struct </span>EventLogReplay {
+    frontier: BinaryHeap&lt;SortedSortedSegments&gt;,
 
-    <span class="ident">with_speciation</span>: <span class="ident">bool</span>,
-    <span class="ident">with_dispersal</span>: <span class="ident">bool</span>,
+    with_speciation: bool,
+    with_dispersal: bool,
 }
 
-<span class="kw">impl</span> <span class="ident">Serialize</span> <span class="kw">for</span> <span class="ident">EventLogReplay</span> {
-    <span class="kw">fn</span> <span class="ident">serialize</span><span class="op">&lt;</span><span class="ident">S</span>: <span class="ident">Serializer</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">serializer</span>: <span class="ident">S</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">S::Ok</span>, <span class="ident">S::Error</span><span class="op">&gt;</span> {
-        <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Serialize</span>)]</span>
-        <span class="kw">struct</span> <span class="ident">EventLog</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span> {
-            <span class="ident">segments</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;r</span> <span class="ident">Path</span><span class="op">&gt;</span>,
-            <span class="ident">capacity</span>: <span class="ident">NonZeroUsize</span>,
+<span class="kw">impl </span>Serialize <span class="kw">for </span>EventLogReplay {
+    <span class="kw">fn </span>serialize&lt;S: Serializer&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, serializer: S) -&gt; <span class="prelude-ty">Result</span>&lt;S::Ok, S::Error&gt; {
+        <span class="attribute">#[derive(Serialize)]
+        </span><span class="kw">struct </span>EventLog&lt;<span class="lifetime">&#39;r</span>&gt; {
+            segments: Vec&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;r </span>Path&gt;,
+            capacity: NonZeroUsize,
         }
 
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">segments</span> <span class="op">=</span> <span class="ident">Vec::new</span>();
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">capacity</span> <span class="op">=</span> <span class="ident">NonZeroUsize::new</span>(<span class="number">1</span>).<span class="ident">unwrap</span>();
+        <span class="kw">let </span><span class="kw-2">mut </span>segments = Vec::new();
+        <span class="kw">let </span><span class="kw-2">mut </span>capacity = NonZeroUsize::new(<span class="number">1</span>).unwrap();
 
-        <span class="kw">for</span> <span class="ident">segs</span> <span class="kw">in</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">frontier</span> {
-            <span class="kw">for</span> <span class="ident">seg</span> <span class="kw">in</span> <span class="ident">segs</span>.<span class="ident">segments</span>() {
-                <span class="ident">segments</span>.<span class="ident">push</span>(<span class="ident">seg</span>.<span class="ident">path</span>());
+        <span class="kw">for </span>segs <span class="kw">in </span><span class="kw-2">&amp;</span><span class="self">self</span>.frontier {
+            <span class="kw">for </span>seg <span class="kw">in </span>segs.segments() {
+                segments.push(seg.path());
 
-                <span class="ident">capacity</span> <span class="op">=</span> <span class="ident">capacity</span>.<span class="ident">max</span>(<span class="ident">seg</span>.<span class="ident">capacity</span>());
+                capacity = capacity.max(seg.capacity());
             }
         }
 
-        <span class="ident">segments</span>.<span class="ident">sort</span>();
+        segments.sort();
 
-        <span class="ident">EventLog</span> { <span class="ident">segments</span>, <span class="ident">capacity</span> }.<span class="ident">serialize</span>(<span class="ident">serializer</span>)
+        EventLog { segments, capacity }.serialize(serializer)
     }
 }
 
-<span class="kw">impl</span> <span class="ident">TryFrom</span><span class="op">&lt;</span><span class="ident">EventLogReplayRaw</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">EventLogReplay</span> {
-    <span class="kw">type</span> <span class="ident">Error</span> <span class="op">=</span> <span class="ident">anyhow::Error</span>;
+<span class="kw">impl </span>TryFrom&lt;EventLogReplayRaw&gt; <span class="kw">for </span>EventLogReplay {
+    <span class="kw">type </span>Error = anyhow::Error;
 
-    <span class="kw">fn</span> <span class="ident">try_from</span>(<span class="ident">raw</span>: <span class="ident">EventLogReplayRaw</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident"><span class="self">Self</span>::Error</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">capacity</span> <span class="op">=</span> <span class="ident">raw</span>.<span class="ident">capacity</span>;
+    <span class="kw">fn </span>try_from(raw: EventLogReplayRaw) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, <span class="self">Self</span>::Error&gt; {
+        <span class="kw">let </span>capacity = raw.capacity;
 
-        <span class="ident">raw</span>.<span class="ident">segments</span>
-            .<span class="ident">into_iter</span>()
-            .<span class="ident">flatten</span>()
-            .<span class="ident">map</span>(<span class="op">|</span><span class="kw-2">mut</span> <span class="ident">segment</span><span class="op">|</span> {
-                <span class="ident">segment</span>.<span class="ident">set_capacity</span>(<span class="ident">capacity</span>);
-                <span class="ident">segment</span>
+        raw.segments
+            .into_iter()
+            .flatten()
+            .map(|<span class="kw-2">mut </span>segment| {
+                segment.set_capacity(capacity);
+                segment
             })
-            .<span class="ident">collect</span>()
+            .collect()
     }
 }
 
-<span class="kw">impl</span> <span class="ident">EventLogReplay</span> {
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">length</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">usize</span> {
-        <span class="self">self</span>.<span class="ident">frontier</span>.<span class="ident">iter</span>().<span class="ident">map</span>(<span class="ident">SortedSortedSegments::length</span>).<span class="ident">sum</span>()
+<span class="kw">impl </span>EventLogReplay {
+    <span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>length(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; usize {
+        <span class="self">self</span>.frontier.iter().map(SortedSortedSegments::length).sum()
     }
 
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_speciation</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">with_speciation</span>
+    <span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>with_speciation(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
+        <span class="self">self</span>.with_speciation
     }
 
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_dispersal</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">with_dispersal</span>
+    <span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>with_dispersal(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
+        <span class="self">self</span>.with_dispersal
     }
 }
 
-<span class="kw">impl</span> <span class="ident">FromIterator</span><span class="op">&lt;</span><span class="ident">SortedSegment</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">anyhow::Result</span><span class="op">&lt;</span><span class="ident">EventLogReplay</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">from_iter</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">IntoIterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">SortedSegment</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="ident">iter</span>: <span class="ident">T</span>) -&gt; <span class="self">Self</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">segments</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">SortedSegment</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">iter</span>.<span class="ident">into_iter</span>().<span class="ident">collect</span>();
+<span class="kw">impl </span>FromIterator&lt;SortedSegment&gt; <span class="kw">for </span>anyhow::Result&lt;EventLogReplay&gt; {
+    <span class="kw">fn </span>from_iter&lt;T: IntoIterator&lt;Item = SortedSegment&gt;&gt;(iter: T) -&gt; <span class="self">Self </span>{
+        <span class="kw">let </span><span class="kw-2">mut </span>segments: Vec&lt;SortedSegment&gt; = iter.into_iter().collect();
 
-        <span class="kw">if</span> <span class="ident">segments</span>.<span class="ident">is_empty</span>() {
+        <span class="kw">if </span>segments.is_empty() {
             <span class="macro">anyhow::bail!</span>(<span class="string">&quot;The EventLogReplay requires at least one event log segment.&quot;</span>)
         }
 
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">with_speciation</span> <span class="op">=</span> <span class="prelude-val">None</span>;
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">with_dispersal</span> <span class="op">=</span> <span class="prelude-val">None</span>;
+        <span class="kw">let </span><span class="kw-2">mut </span>with_speciation = <span class="prelude-val">None</span>;
+        <span class="kw">let </span><span class="kw-2">mut </span>with_dispersal = <span class="prelude-val">None</span>;
 
-        <span class="kw">for</span> <span class="ident">segment</span> <span class="kw">in</span> <span class="kw-2">&amp;</span><span class="ident">segments</span> {
-            <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">with_speciation</span>) <span class="op">=</span> <span class="ident">with_speciation</span> {
+        <span class="kw">for </span>segment <span class="kw">in </span><span class="kw-2">&amp;</span>segments {
+            <span class="kw">if let </span><span class="prelude-val">Some</span>(with_speciation) = with_speciation {
                 <span class="macro">anyhow::ensure!</span>(
-                    <span class="ident">with_speciation</span> <span class="op">==</span> <span class="ident">segment</span>.<span class="ident">header</span>().<span class="ident">with_speciation</span>(),
-                    <span class="string">&quot;There is a mismatch in reporting speciation events between some segments.&quot;</span>
-                );
-            } <span class="kw">else</span> {
-                <span class="ident">with_speciation</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">segment</span>.<span class="ident">header</span>().<span class="ident">with_speciation</span>());
+                    with_speciation == segment.header().with_speciation(),
+                    <span class="string">&quot;There is a mismatch in reporting speciation events between some segments.&quot;
+                </span>);
+            } <span class="kw">else </span>{
+                with_speciation = <span class="prelude-val">Some</span>(segment.header().with_speciation());
             }
 
-            <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">with_dispersal</span>) <span class="op">=</span> <span class="ident">with_dispersal</span> {
+            <span class="kw">if let </span><span class="prelude-val">Some</span>(with_dispersal) = with_dispersal {
                 <span class="macro">anyhow::ensure!</span>(
-                    <span class="ident">with_dispersal</span> <span class="op">==</span> <span class="ident">segment</span>.<span class="ident">header</span>().<span class="ident">with_dispersal</span>(),
-                    <span class="string">&quot;There is a mismatch in reporting dispersal events between some segments.&quot;</span>
-                );
-            } <span class="kw">else</span> {
-                <span class="ident">with_dispersal</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">segment</span>.<span class="ident">header</span>().<span class="ident">with_dispersal</span>());
+                    with_dispersal == segment.header().with_dispersal(),
+                    <span class="string">&quot;There is a mismatch in reporting dispersal events between some segments.&quot;
+                </span>);
+            } <span class="kw">else </span>{
+                with_dispersal = <span class="prelude-val">Some</span>(segment.header().with_dispersal());
             }
         }
 
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">grouped_segments</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">SortedSegment</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Vec::new</span>();
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">current_group</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">SortedSegment</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Vec::new</span>();
+        <span class="kw">let </span><span class="kw-2">mut </span>grouped_segments: Vec&lt;Vec&lt;SortedSegment&gt;&gt; = Vec::new();
+        <span class="kw">let </span><span class="kw-2">mut </span>current_group: Vec&lt;SortedSegment&gt; = Vec::new();
 
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">max_time</span>: <span class="ident">f64</span> <span class="op">=</span> <span class="ident">f64::NEG_INFINITY</span>;
+        <span class="kw">let </span><span class="kw-2">mut </span>max_time: f64 = f64::NEG_INFINITY;
 
-        <span class="kw">while</span> <span class="op">!</span><span class="ident">segments</span>.<span class="ident">is_empty</span>() {
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">min_time</span>: <span class="ident">f64</span> <span class="op">=</span> <span class="ident">f64::INFINITY</span>;
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">min_index</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> <span class="op">=</span> <span class="prelude-val">None</span>;
+        <span class="kw">while </span>!segments.is_empty() {
+            <span class="kw">let </span><span class="kw-2">mut </span>min_time: f64 = f64::INFINITY;
+            <span class="kw">let </span><span class="kw-2">mut </span>min_index: <span class="prelude-ty">Option</span>&lt;usize&gt; = <span class="prelude-val">None</span>;
 
-            <span class="kw">for</span> (<span class="ident">i</span>, <span class="ident">seg</span>) <span class="kw">in</span> <span class="ident">segments</span>.<span class="ident">iter</span>().<span class="ident">enumerate</span>() {
-                <span class="kw">if</span> <span class="ident">seg</span>.<span class="ident">header</span>().<span class="ident">min_time</span>() <span class="op">&gt;</span> <span class="ident">max_time</span> <span class="op">&amp;&amp;</span> <span class="ident">seg</span>.<span class="ident">header</span>().<span class="ident">min_time</span>() <span class="op">&lt;</span> <span class="ident">min_time</span> {
-                    <span class="ident">min_time</span> <span class="op">=</span> <span class="ident">seg</span>.<span class="ident">header</span>().<span class="ident">min_time</span>().<span class="ident">get</span>();
-                    <span class="ident">min_index</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">i</span>);
+            <span class="kw">for </span>(i, seg) <span class="kw">in </span>segments.iter().enumerate() {
+                <span class="kw">if </span>seg.header().min_time() &gt; max_time &amp;&amp; seg.header().min_time() &lt; min_time {
+                    min_time = seg.header().min_time().get();
+                    min_index = <span class="prelude-val">Some</span>(i);
                 }
             }
 
-            <span class="kw">let</span> <span class="ident">min_index</span> <span class="op">=</span> <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">min_index</span>) <span class="op">=</span> <span class="ident">min_index</span> {
-                <span class="ident">min_index</span>
-            } <span class="kw">else</span> {
-                <span class="kw">if</span> <span class="op">!</span><span class="ident">current_group</span>.<span class="ident">is_empty</span>() {
-                    <span class="ident">grouped_segments</span>.<span class="ident">push</span>(<span class="ident">current_group</span>);
-                    <span class="ident">current_group</span> <span class="op">=</span> <span class="ident">Vec::new</span>();
+            <span class="kw">let </span>min_index = <span class="kw">if let </span><span class="prelude-val">Some</span>(min_index) = min_index {
+                min_index
+            } <span class="kw">else </span>{
+                <span class="kw">if </span>!current_group.is_empty() {
+                    grouped_segments.push(current_group);
+                    current_group = Vec::new();
                 }
 
-                <span class="ident">max_time</span> <span class="op">=</span> <span class="ident">f64::NEG_INFINITY</span>;
+                max_time = f64::NEG_INFINITY;
 
                 <span class="kw">continue</span>;
             };
 
-            <span class="kw">let</span> <span class="ident">min_segement</span> <span class="op">=</span> <span class="ident">segments</span>.<span class="ident">swap_remove</span>(<span class="ident">min_index</span>);
+            <span class="kw">let </span>min_segement = segments.swap_remove(min_index);
 
-            <span class="ident">max_time</span> <span class="op">=</span> <span class="ident">min_segement</span>.<span class="ident">header</span>().<span class="ident">max_time</span>().<span class="ident">get</span>();
+            max_time = min_segement.header().max_time().get();
 
-            <span class="ident">current_group</span>.<span class="ident">push</span>(<span class="ident">min_segement</span>);
+            current_group.push(min_segement);
         }
 
-        <span class="kw">if</span> <span class="op">!</span><span class="ident">current_group</span>.<span class="ident">is_empty</span>() {
-            <span class="ident">grouped_segments</span>.<span class="ident">push</span>(<span class="ident">current_group</span>);
+        <span class="kw">if </span>!current_group.is_empty() {
+            grouped_segments.push(current_group);
         }
 
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">frontier</span> <span class="op">=</span> <span class="ident">BinaryHeap::with_capacity</span>(<span class="ident">grouped_segments</span>.<span class="ident">len</span>());
+        <span class="kw">let </span><span class="kw-2">mut </span>frontier = BinaryHeap::with_capacity(grouped_segments.len());
 
-        <span class="kw">for</span> <span class="ident">group</span> <span class="kw">in</span> <span class="ident">grouped_segments</span> {
-            <span class="ident">frontier</span>.<span class="ident">push</span>(<span class="ident">SortedSortedSegments::new</span>(<span class="ident">group</span>));
+        <span class="kw">for </span>group <span class="kw">in </span>grouped_segments {
+            frontier.push(SortedSortedSegments::new(group));
         }
 
-        <span class="prelude-val">Ok</span>(<span class="ident">EventLogReplay</span> {
-            <span class="ident">frontier</span>,
-            <span class="ident">with_speciation</span>: <span class="ident">with_speciation</span>.<span class="ident">unwrap</span>(),
-            <span class="ident">with_dispersal</span>: <span class="ident">with_dispersal</span>.<span class="ident">unwrap</span>(),
+        <span class="prelude-val">Ok</span>(EventLogReplay {
+            frontier,
+            with_speciation: with_speciation.unwrap(),
+            with_dispersal: with_dispersal.unwrap(),
         })
     }
 }
 
-<span class="kw">impl</span> <span class="ident">Iterator</span> <span class="kw">for</span> <span class="ident">EventLogReplay</span> {
-    <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="ident">PackedEvent</span>;
+<span class="kw">impl </span>Iterator <span class="kw">for </span>EventLogReplay {
+    <span class="kw">type </span>Item = PackedEvent;
 
-    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Item</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">next_segment</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">frontier</span>.<span class="ident">pop</span>()<span class="question-mark">?</span>;
+    <span class="kw">fn </span>next(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>::Item&gt; {
+        <span class="kw">let </span><span class="kw-2">mut </span>next_segment = <span class="self">self</span>.frontier.pop()<span class="question-mark">?</span>;
 
-        <span class="kw">let</span> <span class="ident">next_event</span> <span class="op">=</span> <span class="ident">next_segment</span>.<span class="ident">next</span>();
+        <span class="kw">let </span>next_event = next_segment.next();
 
-        <span class="self">self</span>.<span class="ident">frontier</span>.<span class="ident">push</span>(<span class="ident">next_segment</span>);
+        <span class="self">self</span>.frontier.push(next_segment);
 
-        <span class="ident">next_event</span>
+        next_event
     }
 }
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Deserialize</span>)]</span>
-<span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;EventLog&quot;</span>)]</span>
-<span class="attribute">#[<span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>)]</span>
-<span class="kw">struct</span> <span class="ident">EventLogReplayRaw</span> {
-    <span class="ident">segments</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">GlobbedSortedSegments</span><span class="op">&gt;</span>,
-    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">default</span> <span class="op">=</span> <span class="string">&quot;default_event_log_replay_segment_capacity&quot;</span>)]</span>
-    <span class="ident">capacity</span>: <span class="ident">NonZeroUsize</span>,
+<span class="attribute">#[derive(Deserialize)]
+#[serde(rename = <span class="string">&quot;EventLog&quot;</span>)]
+#[serde(deny_unknown_fields)]
+</span><span class="kw">struct </span>EventLogReplayRaw {
+    segments: Vec&lt;GlobbedSortedSegments&gt;,
+    <span class="attribute">#[serde(default = <span class="string">&quot;default_event_log_replay_segment_capacity&quot;</span>)]
+    </span>capacity: NonZeroUsize,
 }
 
-<span class="kw">fn</span> <span class="ident">default_event_log_replay_segment_capacity</span>() -&gt; <span class="ident">NonZeroUsize</span> {
-    <span class="ident">NonZeroUsize::new</span>(<span class="number">100_000_usize</span>).<span class="ident">unwrap</span>()
+<span class="kw">fn </span>default_event_log_replay_segment_capacity() -&gt; NonZeroUsize {
+    NonZeroUsize::new(<span class="number">100_000_usize</span>).unwrap()
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="necsim_impls_std" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0-nightly (affe0d3a0 2022-08-05)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="necsim_impls_std" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (5e9772042 2022-10-29)" ></div></body></html>

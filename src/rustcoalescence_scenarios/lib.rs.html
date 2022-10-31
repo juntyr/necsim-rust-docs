@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `rustcoalescence/scenarios/src/lib.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>lib.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../rustcoalescence_scenarios/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../rustcoalescence_scenarios/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../rustcoalescence_scenarios/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `rustcoalescence/scenarios/src/lib.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>lib.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../normalize.css"><link rel="stylesheet" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../ayu.css" disabled><link rel="stylesheet" href="../../dark.css" disabled><link rel="stylesheet" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../rustcoalescence_scenarios/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -89,98 +89,96 @@
 <span id="89">89</span>
 <span id="90">90</span>
 <span id="91">91</span>
-<span id="92">92</span>
-</pre><pre class="rust"><code><span class="attribute">#![<span class="ident">deny</span>(<span class="ident">clippy::pedantic</span>)]</span>
-<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">associated_type_bounds</span>)]</span>
-<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">never_type</span>)]</span>
-<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">generic_associated_types</span>)]</span>
+</pre><pre class="rust"><code><span class="attribute">#![deny(clippy::pedantic)]
+#![feature(associated_type_bounds)]
+#![feature(never_type)]
 
-<span class="attribute">#[<span class="ident">macro_use</span>]</span>
-<span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">log</span>;
+#[macro_use]
+</span><span class="kw">extern crate </span>log;
 
-<span class="kw">use</span> <span class="ident">necsim_core::cogs</span>::{
-    <span class="ident">DispersalSampler</span>, <span class="ident">LineageStore</span>, <span class="ident">MathsCore</span>, <span class="ident">RngCore</span>, <span class="ident">SpeciationProbability</span>, <span class="ident">TurnoverRate</span>,
-    <span class="ident">UniformlySampleableHabitat</span>,
+<span class="kw">use </span>necsim_core::cogs::{
+    DispersalSampler, LineageStore, MathsCore, RngCore, SpeciationProbability, TurnoverRate,
+    UniformlySampleableHabitat,
 };
-<span class="kw">use</span> <span class="ident">necsim_core_bond::OpenClosedUnitF64</span> <span class="kw">as</span> <span class="ident">PositiveUnitF64</span>;
-<span class="kw">use</span> <span class="ident">necsim_partitioning_core::partition::Partition</span>;
+<span class="kw">use </span>necsim_core_bond::OpenClosedUnitF64 <span class="kw">as </span>PositiveUnitF64;
+<span class="kw">use </span>necsim_partitioning_core::partition::Partition;
 
-<span class="kw">use</span> <span class="ident">necsim_impls_no_std</span>::{
-    <span class="ident">cogs</span>::{
-        <span class="ident">dispersal_sampler::in_memory::InMemoryDispersalSampler</span>,
-        <span class="ident">origin_sampler</span>::{<span class="ident">pre_sampler::OriginPreSampler</span>, <span class="ident">TrustedOriginSampler</span>},
+<span class="kw">use </span>necsim_impls_no_std::{
+    cogs::{
+        dispersal_sampler::in_memory::InMemoryDispersalSampler,
+        origin_sampler::{pre_sampler::OriginPreSampler, TrustedOriginSampler},
     },
-    <span class="ident">decomposition::Decomposition</span>,
+    decomposition::Decomposition,
 };
 
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">almost_infinite</span>;
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">non_spatial</span>;
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">spatially_explicit</span>;
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">spatially_implicit</span>;
+<span class="kw">pub mod </span>almost_infinite;
+<span class="kw">pub mod </span>non_spatial;
+<span class="kw">pub mod </span>spatially_explicit;
+<span class="kw">pub mod </span>spatially_implicit;
 
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">ScenarioParameters</span> {
-    <span class="kw">type</span> <span class="ident">Arguments</span>;
-    <span class="kw">type</span> <span class="ident">Error</span>;
+<span class="kw">pub trait </span>ScenarioParameters {
+    <span class="kw">type </span>Arguments;
+    <span class="kw">type </span>Error;
 }
 
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">Scenario</span><span class="op">&lt;</span><span class="ident">M</span>: <span class="ident">MathsCore</span>, <span class="ident">G</span>: <span class="ident">RngCore</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span><span class="op">&gt;</span>: <span class="ident">Sized</span> <span class="op">+</span> <span class="ident">ScenarioParameters</span> {
-    <span class="kw">type</span> <span class="ident">Habitat</span>: <span class="ident">UniformlySampleableHabitat</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">G</span><span class="op">&gt;</span>;
-    <span class="kw">type</span> <span class="ident">OriginSampler</span><span class="op">&lt;</span><span class="lifetime">&#39;h</span>, <span class="ident">I</span>: <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">u64</span><span class="op">&gt;</span><span class="op">&gt;</span>: <span class="ident">TrustedOriginSampler</span><span class="op">&lt;</span>
+<span class="kw">pub trait </span>Scenario&lt;M: MathsCore, G: RngCore&lt;M&gt;&gt;: Sized + ScenarioParameters {
+    <span class="kw">type </span>Habitat: UniformlySampleableHabitat&lt;M, G&gt;;
+    <span class="kw">type </span>OriginSampler&lt;<span class="lifetime">&#39;h</span>, I: Iterator&lt;Item = u64&gt;&gt;: TrustedOriginSampler&lt;
         <span class="lifetime">&#39;h</span>,
-        <span class="ident">M</span>,
-        <span class="ident">Habitat</span> <span class="op">=</span> <span class="ident"><span class="self">Self</span>::Habitat</span>,
-    <span class="op">&gt;</span>
-    <span class="kw">where</span>
-        <span class="ident">M</span>: <span class="lifetime">&#39;h</span>,
-        <span class="ident">G</span>: <span class="lifetime">&#39;h</span>,
+        M,
+        Habitat = <span class="self">Self</span>::Habitat,
+    &gt;
+    <span class="kw">where
+        </span>M: <span class="lifetime">&#39;h</span>,
+        G: <span class="lifetime">&#39;h</span>,
         <span class="self">Self</span>: <span class="lifetime">&#39;h</span>;
-    <span class="kw">type</span> <span class="ident">OriginSamplerAuxiliary</span>;
-    <span class="kw">type</span> <span class="ident">Decomposition</span>: <span class="ident">Decomposition</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident"><span class="self">Self</span>::Habitat</span><span class="op">&gt;</span>;
-    <span class="kw">type</span> <span class="ident">DecompositionAuxiliary</span>;
-    <span class="kw">type</span> <span class="ident">LineageStore</span><span class="op">&lt;</span><span class="ident">L</span>: <span class="ident">LineageStore</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident"><span class="self">Self</span>::Habitat</span><span class="op">&gt;</span><span class="op">&gt;</span>: <span class="ident">LineageStore</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident"><span class="self">Self</span>::Habitat</span><span class="op">&gt;</span>;
-    <span class="kw">type</span> <span class="ident">DispersalSampler</span><span class="op">&lt;</span><span class="ident">D</span>: <span class="ident">DispersalSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident"><span class="self">Self</span>::Habitat</span>, <span class="ident">G</span><span class="op">&gt;</span><span class="op">&gt;</span>: <span class="ident">DispersalSampler</span><span class="op">&lt;</span>
-        <span class="ident">M</span>,
-        <span class="ident"><span class="self">Self</span>::Habitat</span>,
-        <span class="ident">G</span>,
-    <span class="op">&gt;</span>;
-    <span class="kw">type</span> <span class="ident">TurnoverRate</span>: <span class="ident">TurnoverRate</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident"><span class="self">Self</span>::Habitat</span><span class="op">&gt;</span>;
-    <span class="kw">type</span> <span class="ident">SpeciationProbability</span>: <span class="ident">SpeciationProbability</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident"><span class="self">Self</span>::Habitat</span><span class="op">&gt;</span>;
+    <span class="kw">type </span>OriginSamplerAuxiliary;
+    <span class="kw">type </span>Decomposition: Decomposition&lt;M, <span class="self">Self</span>::Habitat&gt;;
+    <span class="kw">type </span>DecompositionAuxiliary;
+    <span class="kw">type </span>LineageStore&lt;L: LineageStore&lt;M, <span class="self">Self</span>::Habitat&gt;&gt;: LineageStore&lt;M, <span class="self">Self</span>::Habitat&gt;;
+    <span class="kw">type </span>DispersalSampler&lt;D: DispersalSampler&lt;M, <span class="self">Self</span>::Habitat, G&gt;&gt;: DispersalSampler&lt;
+        M,
+        <span class="self">Self</span>::Habitat,
+        G,
+    &gt;;
+    <span class="kw">type </span>TurnoverRate: TurnoverRate&lt;M, <span class="self">Self</span>::Habitat&gt;;
+    <span class="kw">type </span>SpeciationProbability: SpeciationProbability&lt;M, <span class="self">Self</span>::Habitat&gt;;
 
-    <span class="doccomment">/// # Errors</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Returns a `Self::Error` if initialising the scenario failed</span>
-    <span class="kw">fn</span> <span class="ident">initialise</span>(
-        <span class="ident">args</span>: <span class="ident"><span class="self">Self</span>::Arguments</span>,
-        <span class="ident">speciation_probability_per_generation</span>: <span class="ident">PositiveUnitF64</span>,
-    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident"><span class="self">Self</span>::Error</span><span class="op">&gt;</span>;
+    <span class="doccomment">/// # Errors
+    ///
+    /// Returns a `Self::Error` if initialising the scenario failed
+    </span><span class="kw">fn </span>initialise(
+        args: <span class="self">Self</span>::Arguments,
+        speciation_probability_per_generation: PositiveUnitF64,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, <span class="self">Self</span>::Error&gt;;
 
-    <span class="doccomment">/// Inside rustcoalescence, I know that only specialised</span>
-    <span class="doccomment">/// `InMemoryDispersalSampler` implementations will be requested.</span>
-    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::type_complexity</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">build</span><span class="op">&lt;</span><span class="ident">D</span>: <span class="ident">InMemoryDispersalSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident"><span class="self">Self</span>::Habitat</span>, <span class="ident">G</span><span class="op">&gt;</span><span class="op">&gt;</span>(
+    <span class="doccomment">/// Inside rustcoalescence, I know that only specialised
+    /// `InMemoryDispersalSampler` implementations will be requested.
+    </span><span class="attribute">#[allow(clippy::type_complexity)]
+    </span><span class="kw">fn </span>build&lt;D: InMemoryDispersalSampler&lt;M, <span class="self">Self</span>::Habitat, G&gt;&gt;(
         <span class="self">self</span>,
     ) -&gt; (
-        <span class="ident"><span class="self">Self</span>::Habitat</span>,
-        <span class="ident"><span class="self">Self</span>::DispersalSampler</span><span class="op">&lt;</span><span class="ident">D</span><span class="op">&gt;</span>,
-        <span class="ident"><span class="self">Self</span>::TurnoverRate</span>,
-        <span class="ident"><span class="self">Self</span>::SpeciationProbability</span>,
-        <span class="ident"><span class="self">Self</span>::OriginSamplerAuxiliary</span>,
-        <span class="ident"><span class="self">Self</span>::DecompositionAuxiliary</span>,
+        <span class="self">Self</span>::Habitat,
+        <span class="self">Self</span>::DispersalSampler&lt;D&gt;,
+        <span class="self">Self</span>::TurnoverRate,
+        <span class="self">Self</span>::SpeciationProbability,
+        <span class="self">Self</span>::OriginSamplerAuxiliary,
+        <span class="self">Self</span>::DecompositionAuxiliary,
     );
 
-    <span class="kw">fn</span> <span class="ident">sample_habitat</span><span class="op">&lt;</span><span class="lifetime">&#39;h</span>, <span class="ident">I</span>: <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">u64</span><span class="op">&gt;</span><span class="op">&gt;</span>(
-        <span class="ident">habitat</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;h</span> <span class="ident"><span class="self">Self</span>::Habitat</span>,
-        <span class="ident">pre_sampler</span>: <span class="ident">OriginPreSampler</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">I</span><span class="op">&gt;</span>,
-        <span class="ident">auxiliary</span>: <span class="ident"><span class="self">Self</span>::OriginSamplerAuxiliary</span>,
-    ) -&gt; <span class="ident"><span class="self">Self</span>::OriginSampler</span><span class="op">&lt;</span><span class="lifetime">&#39;h</span>, <span class="ident">I</span><span class="op">&gt;</span>
-    <span class="kw">where</span>
-        <span class="ident">G</span>: <span class="lifetime">&#39;h</span>;
+    <span class="kw">fn </span>sample_habitat&lt;<span class="lifetime">&#39;h</span>, I: Iterator&lt;Item = u64&gt;&gt;(
+        habitat: <span class="kw-2">&amp;</span><span class="lifetime">&#39;h </span><span class="self">Self</span>::Habitat,
+        pre_sampler: OriginPreSampler&lt;M, I&gt;,
+        auxiliary: <span class="self">Self</span>::OriginSamplerAuxiliary,
+    ) -&gt; <span class="self">Self</span>::OriginSampler&lt;<span class="lifetime">&#39;h</span>, I&gt;
+    <span class="kw">where
+        </span>G: <span class="lifetime">&#39;h</span>;
 
-    <span class="kw">fn</span> <span class="ident">decompose</span>(
-        <span class="ident">habitat</span>: <span class="kw-2">&amp;</span><span class="ident"><span class="self">Self</span>::Habitat</span>,
-        <span class="ident">subdomain</span>: <span class="ident">Partition</span>,
-        <span class="ident">auxiliary</span>: <span class="ident"><span class="self">Self</span>::DecompositionAuxiliary</span>,
-    ) -&gt; <span class="ident"><span class="self">Self</span>::Decomposition</span>;
+    <span class="kw">fn </span>decompose(
+        habitat: <span class="kw-2">&amp;</span><span class="self">Self</span>::Habitat,
+        subdomain: Partition,
+        auxiliary: <span class="self">Self</span>::DecompositionAuxiliary,
+    ) -&gt; <span class="self">Self</span>::Decomposition;
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="rustcoalescence_scenarios" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0-nightly (affe0d3a0 2022-08-05)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="rustcoalescence_scenarios" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (5e9772042 2022-10-29)" ></div></body></html>

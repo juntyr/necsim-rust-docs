@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `necsim/impls/std/src/event_log/replay/sorted_segments.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>sorted_segments.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../storage.js"></script><script defer src="../../../../source-script.js"></script><script defer src="../../../../source-files.js"></script><script defer src="../../../../main.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../../necsim_impls_std/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../../necsim_impls_std/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../../necsim_impls_std/index.html"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `necsim/impls/std/src/event_log/replay/sorted_segments.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>sorted_segments.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../../normalize.css"><link rel="stylesheet" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../../ayu.css" disabled><link rel="stylesheet" href="../../../../dark.css" disabled><link rel="stylesheet" href="../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../storage.js"></script><script defer src="../../../../source-script.js"></script><script defer src="../../../../source-files.js"></script><script defer src="../../../../main.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../../../necsim_impls_std/index.html"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../wheel.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -106,113 +106,113 @@
 <span id="106">106</span>
 <span id="107">107</span>
 <span id="108">108</span>
-</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">std</span>::{
-    <span class="ident">cmp</span>::{<span class="ident">Ord</span>, <span class="ident">Ordering</span>},
-    <span class="ident">fmt</span>,
+</pre><pre class="rust"><code><span class="kw">use </span>std::{
+    cmp::{Ord, Ordering},
+    fmt,
 };
 
-<span class="kw">use</span> <span class="ident">necsim_core::event::PackedEvent</span>;
+<span class="kw">use </span>necsim_core::event::PackedEvent;
 
-<span class="kw">use</span> <span class="ident"><span class="kw">super</span>::segment::SortedSegment</span>;
+<span class="kw">use </span><span class="kw">super</span>::segment::SortedSegment;
 
-<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::module_name_repetitions</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">SortedSortedSegments</span> {
-    <span class="ident">segments</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">SortedSegment</span><span class="op">&gt;</span>,
-    <span class="ident">next</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">PackedEvent</span><span class="op">&gt;</span>,
+<span class="attribute">#[allow(clippy::module_name_repetitions)]
+</span><span class="kw">pub struct </span>SortedSortedSegments {
+    segments: Vec&lt;SortedSegment&gt;,
+    next: <span class="prelude-ty">Option</span>&lt;PackedEvent&gt;,
 }
 
-<span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">SortedSortedSegments</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">fmt</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span>) -&gt; <span class="ident">fmt::Result</span> {
-        <span class="kw">struct</span> <span class="ident">SortedSegmentFmt</span>(<span class="ident">usize</span>);
+<span class="kw">impl </span>fmt::Debug <span class="kw">for </span>SortedSortedSegments {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, fmt: <span class="kw-2">&amp;mut </span>fmt::Formatter) -&gt; fmt::Result {
+        <span class="kw">struct </span>SortedSegmentFmt(usize);
 
-        <span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">SortedSegmentFmt</span> {
-            <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">fmt</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span>) -&gt; <span class="ident">fmt::Result</span> {
-                <span class="macro">write!</span>(<span class="ident">fmt</span>, <span class="string">&quot;Vec&lt;SortedSegment; {}&gt;&quot;</span>, <span class="self">self</span>.<span class="number">0</span>)
+        <span class="kw">impl </span>fmt::Debug <span class="kw">for </span>SortedSegmentFmt {
+            <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, fmt: <span class="kw-2">&amp;mut </span>fmt::Formatter) -&gt; fmt::Result {
+                <span class="macro">write!</span>(fmt, <span class="string">&quot;Vec&lt;SortedSegment; {}&gt;&quot;</span>, <span class="self">self</span>.<span class="number">0</span>)
             }
         }
 
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">debug</span> <span class="op">=</span> <span class="ident">fmt</span>.<span class="ident">debug_struct</span>(<span class="macro">stringify!</span>(<span class="ident">SortedSortedSegments</span>));
-        <span class="ident">debug</span>.<span class="ident">field</span>(<span class="string">&quot;segments&quot;</span>, <span class="kw-2">&amp;</span><span class="ident">SortedSegmentFmt</span>(<span class="self">self</span>.<span class="ident">segments</span>.<span class="ident">len</span>()));
+        <span class="kw">let </span><span class="kw-2">mut </span>debug = fmt.debug_struct(<span class="macro">stringify!</span>(SortedSortedSegments));
+        debug.field(<span class="string">&quot;segments&quot;</span>, <span class="kw-2">&amp;</span>SortedSegmentFmt(<span class="self">self</span>.segments.len()));
 
-        <span class="kw">if</span> <span class="kw">let</span> (<span class="prelude-val">Some</span>(<span class="ident">last</span>), <span class="prelude-val">Some</span>(<span class="ident">first</span>)) <span class="op">=</span> (<span class="self">self</span>.<span class="ident">segments</span>.<span class="ident">first</span>(), <span class="self">self</span>.<span class="ident">segments</span>.<span class="ident">last</span>()) {
-            <span class="ident">debug</span>.<span class="ident">field</span>(<span class="string">&quot;min_time&quot;</span>, <span class="kw-2">&amp;</span><span class="ident">first</span>.<span class="ident">header</span>().<span class="ident">min_time</span>());
-            <span class="ident">debug</span>.<span class="ident">field</span>(<span class="string">&quot;max_time&quot;</span>, <span class="kw-2">&amp;</span><span class="ident">last</span>.<span class="ident">header</span>().<span class="ident">max_time</span>());
+        <span class="kw">if let </span>(<span class="prelude-val">Some</span>(last), <span class="prelude-val">Some</span>(first)) = (<span class="self">self</span>.segments.first(), <span class="self">self</span>.segments.last()) {
+            debug.field(<span class="string">&quot;min_time&quot;</span>, <span class="kw-2">&amp;</span>first.header().min_time());
+            debug.field(<span class="string">&quot;max_time&quot;</span>, <span class="kw-2">&amp;</span>last.header().max_time());
         }
 
-        <span class="ident">debug</span>.<span class="ident">field</span>(<span class="string">&quot;length&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">length</span>()).<span class="ident">finish</span>()
+        debug.field(<span class="string">&quot;length&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.length()).finish()
     }
 }
 
-<span class="kw">impl</span> <span class="ident">SortedSortedSegments</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="kw-2">mut</span> <span class="ident">segments</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">SortedSegment</span><span class="op">&gt;</span>) -&gt; <span class="self">Self</span> {
-        <span class="ident">segments</span>.<span class="ident">reverse</span>();
+<span class="kw">impl </span>SortedSortedSegments {
+    <span class="kw">pub fn </span>new(<span class="kw-2">mut </span>segments: Vec&lt;SortedSegment&gt;) -&gt; <span class="self">Self </span>{
+        segments.reverse();
 
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">this</span> <span class="op">=</span> <span class="self">Self</span> {
-            <span class="ident">segments</span>,
-            <span class="ident">next</span>: <span class="prelude-val">None</span>,
+        <span class="kw">let </span><span class="kw-2">mut </span>this = <span class="self">Self </span>{
+            segments,
+            next: <span class="prelude-val">None</span>,
         };
 
-        <span class="ident">this</span>.<span class="ident">next</span>();
+        this.next();
 
-        <span class="ident">this</span>
+        this
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">length</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">usize</span> {
-        <span class="self">self</span>.<span class="ident">segments</span>.<span class="ident">iter</span>().<span class="ident">map</span>(<span class="ident">SortedSegment::length</span>).<span class="ident">sum</span>()
+    <span class="kw">pub fn </span>length(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; usize {
+        <span class="self">self</span>.segments.iter().map(SortedSegment::length).sum()
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">segments</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>[<span class="ident">SortedSegment</span>] {
-        <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">segments</span>
+    <span class="kw">pub fn </span>segments(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>[SortedSegment] {
+        <span class="kw-2">&amp;</span><span class="self">self</span>.segments
     }
 }
 
-<span class="kw">impl</span> <span class="ident">Iterator</span> <span class="kw">for</span> <span class="ident">SortedSortedSegments</span> {
-    <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="ident">PackedEvent</span>;
+<span class="kw">impl </span>Iterator <span class="kw">for </span>SortedSortedSegments {
+    <span class="kw">type </span>Item = PackedEvent;
 
-    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Item</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">next</span> <span class="op">=</span> <span class="ident">std::mem::replace</span>(
-            <span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">next</span>,
-            <span class="kw">loop</span> {
-                <span class="kw">let</span> <span class="ident">next_segment</span> <span class="op">=</span> <span class="kw">match</span> <span class="self">self</span>.<span class="ident">segments</span>.<span class="ident">last_mut</span>() {
-                    <span class="prelude-val">Some</span>(<span class="ident">next_segment</span>) =&gt; <span class="ident">next_segment</span>,
-                    <span class="prelude-val">None</span> =&gt; <span class="kw">break</span> <span class="prelude-val">None</span>,
+    <span class="kw">fn </span>next(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>::Item&gt; {
+        <span class="kw">let </span>next = std::mem::replace(
+            <span class="kw-2">&amp;mut </span><span class="self">self</span>.next,
+            <span class="kw">loop </span>{
+                <span class="kw">let </span>next_segment = <span class="kw">match </span><span class="self">self</span>.segments.last_mut() {
+                    <span class="prelude-val">Some</span>(next_segment) =&gt; next_segment,
+                    <span class="prelude-val">None </span>=&gt; <span class="kw">break </span><span class="prelude-val">None</span>,
                 };
 
-                <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">next_event</span>) <span class="op">=</span> <span class="ident">next_segment</span>.<span class="ident">next</span>() {
-                    <span class="kw">break</span> <span class="prelude-val">Some</span>(<span class="ident">next_event</span>);
+                <span class="kw">if let </span><span class="prelude-val">Some</span>(next_event) = next_segment.next() {
+                    <span class="kw">break </span><span class="prelude-val">Some</span>(next_event);
                 }
 
-                <span class="self">self</span>.<span class="ident">segments</span>.<span class="ident">pop</span>();
+                <span class="self">self</span>.segments.pop();
             },
         );
 
-        <span class="ident">next</span>
+        next
     }
 }
 
-<span class="kw">impl</span> <span class="ident">Ord</span> <span class="kw">for</span> <span class="ident">SortedSortedSegments</span> {
-    <span class="kw">fn</span> <span class="ident">cmp</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; <span class="ident">Ordering</span> {
-        <span class="kw">match</span> (<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">next</span>, <span class="kw-2">&amp;</span><span class="ident">other</span>.<span class="ident">next</span>) {
-            (<span class="prelude-val">None</span>, <span class="prelude-val">None</span>) =&gt; <span class="ident">Ordering::Equal</span>,
-            (<span class="prelude-val">None</span>, <span class="kw">_</span>) =&gt; <span class="ident">Ordering::Less</span>,
-            (<span class="kw">_</span>, <span class="prelude-val">None</span>) =&gt; <span class="ident">Ordering::Greater</span>,
-            (<span class="prelude-val">Some</span>(<span class="ident">this_event</span>), <span class="prelude-val">Some</span>(<span class="ident">other_event</span>)) =&gt; <span class="ident">other_event</span>.<span class="ident">cmp</span>(<span class="ident">this_event</span>),
+<span class="kw">impl </span>Ord <span class="kw">for </span>SortedSortedSegments {
+    <span class="kw">fn </span>cmp(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; Ordering {
+        <span class="kw">match </span>(<span class="kw-2">&amp;</span><span class="self">self</span>.next, <span class="kw-2">&amp;</span>other.next) {
+            (<span class="prelude-val">None</span>, <span class="prelude-val">None</span>) =&gt; Ordering::Equal,
+            (<span class="prelude-val">None</span>, <span class="kw">_</span>) =&gt; Ordering::Less,
+            (<span class="kw">_</span>, <span class="prelude-val">None</span>) =&gt; Ordering::Greater,
+            (<span class="prelude-val">Some</span>(this_event), <span class="prelude-val">Some</span>(other_event)) =&gt; other_event.cmp(this_event),
         }
     }
 }
 
-<span class="kw">impl</span> <span class="ident">PartialOrd</span> <span class="kw">for</span> <span class="ident">SortedSortedSegments</span> {
-    <span class="kw">fn</span> <span class="ident">partial_cmp</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Ordering</span><span class="op">&gt;</span> {
-        <span class="prelude-val">Some</span>(<span class="self">self</span>.<span class="ident">cmp</span>(<span class="ident">other</span>))
+<span class="kw">impl </span>PartialOrd <span class="kw">for </span>SortedSortedSegments {
+    <span class="kw">fn </span>partial_cmp(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;Ordering&gt; {
+        <span class="prelude-val">Some</span>(<span class="self">self</span>.cmp(other))
     }
 }
 
-<span class="kw">impl</span> <span class="ident">PartialEq</span> <span class="kw">for</span> <span class="ident">SortedSortedSegments</span> {
-    <span class="kw">fn</span> <span class="ident">eq</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">next</span>.<span class="ident">eq</span>(<span class="kw-2">&amp;</span><span class="ident">other</span>.<span class="ident">next</span>)
+<span class="kw">impl </span>PartialEq <span class="kw">for </span>SortedSortedSegments {
+    <span class="kw">fn </span>eq(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; bool {
+        <span class="self">self</span>.next.eq(<span class="kw-2">&amp;</span>other.next)
     }
 }
 
-<span class="kw">impl</span> <span class="ident">Eq</span> <span class="kw">for</span> <span class="ident">SortedSortedSegments</span> {}
+<span class="kw">impl </span>Eq <span class="kw">for </span>SortedSortedSegments {}
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="necsim_impls_std" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0-nightly (affe0d3a0 2022-08-05)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="necsim_impls_std" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (5e9772042 2022-10-29)" ></div></body></html>

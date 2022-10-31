@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `rustcoalescence/algorithms/cuda/src/info.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>info.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../rustcoalescence_algorithms_cuda/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../rustcoalescence_algorithms_cuda/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../rustcoalescence_algorithms_cuda/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `rustcoalescence/algorithms/cuda/src/info.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>info.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../normalize.css"><link rel="stylesheet" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../ayu.css" disabled><link rel="stylesheet" href="../../dark.css" disabled><link rel="stylesheet" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../rustcoalescence_algorithms_cuda/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -72,79 +72,79 @@
 <span id="72">72</span>
 <span id="73">73</span>
 <span id="74">74</span>
-</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">rust_cuda::rustacuda</span>::{
-    <span class="ident">context</span>::{<span class="ident">CurrentContext</span>, <span class="ident">ResourceLimit</span>},
-    <span class="ident">function</span>::{<span class="ident">Function</span>, <span class="ident">FunctionAttribute</span>},
+</pre><pre class="rust"><code><span class="kw">use </span>rust_cuda::rustacuda::{
+    context::{CurrentContext, ResourceLimit},
+    function::{Function, FunctionAttribute},
 };
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">print_context_resource_limits</span>() {
+<span class="kw">pub fn </span>print_context_resource_limits() {
     <span class="macro">println!</span>(<span class="string">&quot;{:=^80}&quot;</span>, <span class="string">&quot; Context Resource Limits &quot;</span>);
 
     <span class="macro">println!</span>(
         <span class="string">&quot;StackSize: {:?}&quot;</span>,
-        <span class="ident">CurrentContext::get_resource_limit</span>(<span class="ident">ResourceLimit::StackSize</span>)
+        CurrentContext::get_resource_limit(ResourceLimit::StackSize)
     );
     <span class="macro">println!</span>(
         <span class="string">&quot;PrintfFifoSize: {:?}&quot;</span>,
-        <span class="ident">CurrentContext::get_resource_limit</span>(<span class="ident">ResourceLimit::PrintfFifoSize</span>)
+        CurrentContext::get_resource_limit(ResourceLimit::PrintfFifoSize)
     );
     <span class="macro">println!</span>(
         <span class="string">&quot;MallocHeapSize: {:?}&quot;</span>,
-        <span class="ident">CurrentContext::get_resource_limit</span>(<span class="ident">ResourceLimit::MallocHeapSize</span>)
+        CurrentContext::get_resource_limit(ResourceLimit::MallocHeapSize)
     );
     <span class="macro">println!</span>(
         <span class="string">&quot;DeviceRuntimeSynchronizeDepth: {:?}&quot;</span>,
-        <span class="ident">CurrentContext::get_resource_limit</span>(<span class="ident">ResourceLimit::DeviceRuntimeSynchronizeDepth</span>)
+        CurrentContext::get_resource_limit(ResourceLimit::DeviceRuntimeSynchronizeDepth)
     );
     <span class="macro">println!</span>(
         <span class="string">&quot;DeviceRuntimePendingLaunchCount: {:?}&quot;</span>,
-        <span class="ident">CurrentContext::get_resource_limit</span>(<span class="ident">ResourceLimit::DeviceRuntimePendingLaunchCount</span>)
+        CurrentContext::get_resource_limit(ResourceLimit::DeviceRuntimePendingLaunchCount)
     );
     <span class="macro">println!</span>(
         <span class="string">&quot;MaxL2FetchGranularity: {:?}&quot;</span>,
-        <span class="ident">CurrentContext::get_resource_limit</span>(<span class="ident">ResourceLimit::MaxL2FetchGranularity</span>)
+        CurrentContext::get_resource_limit(ResourceLimit::MaxL2FetchGranularity)
     );
 
     <span class="macro">println!</span>(<span class="string">&quot;{:=^80}&quot;</span>, <span class="string">&quot;&quot;</span>);
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">print_kernel_function_attributes</span>(<span class="ident">function</span>: <span class="kw-2">&amp;</span><span class="ident">Function</span>) {
+<span class="kw">pub fn </span>print_kernel_function_attributes(function: <span class="kw-2">&amp;</span>Function) {
     <span class="macro">println!</span>(<span class="string">&quot;{:=^80}&quot;</span>, <span class="string">&quot; Kernel Function Attributes &quot;</span>);
 
     <span class="macro">println!</span>(
         <span class="string">&quot;MaxThreadsPerBlock: {:?}&quot;</span>,
-        <span class="ident">function</span>.<span class="ident">get_attribute</span>(<span class="ident">FunctionAttribute::MaxThreadsPerBlock</span>)
+        function.get_attribute(FunctionAttribute::MaxThreadsPerBlock)
     );
     <span class="macro">println!</span>(
         <span class="string">&quot;SharedMemorySizeBytes: {:?}&quot;</span>,
-        <span class="ident">function</span>.<span class="ident">get_attribute</span>(<span class="ident">FunctionAttribute::SharedMemorySizeBytes</span>)
+        function.get_attribute(FunctionAttribute::SharedMemorySizeBytes)
     );
     <span class="macro">println!</span>(
         <span class="string">&quot;ConstSizeBytes: {:?}&quot;</span>,
-        <span class="ident">function</span>.<span class="ident">get_attribute</span>(<span class="ident">FunctionAttribute::ConstSizeBytes</span>)
+        function.get_attribute(FunctionAttribute::ConstSizeBytes)
     );
     <span class="macro">println!</span>(
         <span class="string">&quot;LocalSizeBytes: {:?}&quot;</span>,
-        <span class="ident">function</span>.<span class="ident">get_attribute</span>(<span class="ident">FunctionAttribute::LocalSizeBytes</span>)
+        function.get_attribute(FunctionAttribute::LocalSizeBytes)
     );
     <span class="macro">println!</span>(
         <span class="string">&quot;NumRegisters: {:?}&quot;</span>,
-        <span class="ident">function</span>.<span class="ident">get_attribute</span>(<span class="ident">FunctionAttribute::NumRegisters</span>)
+        function.get_attribute(FunctionAttribute::NumRegisters)
     );
     <span class="macro">println!</span>(
         <span class="string">&quot;PtxVersion: {:?}&quot;</span>,
-        <span class="ident">function</span>.<span class="ident">get_attribute</span>(<span class="ident">FunctionAttribute::PtxVersion</span>)
+        function.get_attribute(FunctionAttribute::PtxVersion)
     );
     <span class="macro">println!</span>(
         <span class="string">&quot;BinaryVersion: {:?}&quot;</span>,
-        <span class="ident">function</span>.<span class="ident">get_attribute</span>(<span class="ident">FunctionAttribute::BinaryVersion</span>)
+        function.get_attribute(FunctionAttribute::BinaryVersion)
     );
     <span class="macro">println!</span>(
         <span class="string">&quot;CacheModeCa: {:?}&quot;</span>,
-        <span class="ident">function</span>.<span class="ident">get_attribute</span>(<span class="ident">FunctionAttribute::CacheModeCa</span>)
+        function.get_attribute(FunctionAttribute::CacheModeCa)
     );
 
     <span class="macro">println!</span>(<span class="string">&quot;{:=^80}&quot;</span>, <span class="string">&quot;&quot;</span>);
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="rustcoalescence_algorithms_cuda" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0-nightly (affe0d3a0 2022-08-05)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="rustcoalescence_algorithms_cuda" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (5e9772042 2022-10-29)" ></div></body></html>
