@@ -133,9 +133,20 @@
 <span id="133">133</span>
 <span id="134">134</span>
 <span id="135">135</span>
+<span id="136">136</span>
+<span id="137">137</span>
+<span id="138">138</span>
+<span id="139">139</span>
+<span id="140">140</span>
+<span id="141">141</span>
+<span id="142">142</span>
+<span id="143">143</span>
+<span id="144">144</span>
 </pre><pre class="rust"><code><span class="kw">use </span>core::num::NonZeroU32;
 
 <span class="kw">use </span>serde::{Deserialize, Deserializer, Serialize, Serializer};
+
+<span class="kw">use </span><span class="kw">crate</span>::cogs::Backup;
 
 <span class="attribute">#[allow(clippy::unsafe_derive_deserialize)]
 #[derive(
@@ -146,6 +157,13 @@
 </span><span class="kw">pub struct </span>Location {
     x: u32,
     y: u32,
+}
+
+<span class="attribute">#[contract_trait]
+</span><span class="kw">impl </span>Backup <span class="kw">for </span>Location {
+    <span class="kw">unsafe fn </span>backup_unchecked(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="self">Self </span>{
+        <span class="self">self</span>.clone()
+    }
 }
 
 <span class="kw">impl </span>Location {

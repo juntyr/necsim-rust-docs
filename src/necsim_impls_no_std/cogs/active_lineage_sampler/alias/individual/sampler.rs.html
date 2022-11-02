@@ -161,7 +161,7 @@
     ) -&gt; <span class="self">Self</span>::LineageIterator&lt;<span class="lifetime">&#39;a</span>&gt; {
         <span class="self">self</span>.alias_sampler
             .iter_all_events_ordered()
-            .map(<span class="kw">move </span>|local_reference| <span class="kw-2">&amp;</span>lineage_store[local_reference.clone()])
+            .map(<span class="kw">move </span>|local_reference| <span class="kw-2">&amp;</span>lineage_store[local_reference])
     }
 
     <span class="attribute">#[must_use]

@@ -142,6 +142,10 @@
 <span id="142">142</span>
 <span id="143">143</span>
 <span id="144">144</span>
+<span id="145">145</span>
+<span id="146">146</span>
+<span id="147">147</span>
+<span id="148">148</span>
 </pre><pre class="rust"><code><span class="kw">use </span>alloc::vec::Vec;
 <span class="kw">use </span>core::marker::PhantomData;
 
@@ -280,7 +284,11 @@
 {
     <span class="kw">unsafe fn </span>backup_unchecked(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="self">Self </span>{
         <span class="self">Self </span>{
-            active_lineage_references: <span class="self">self</span>.active_lineage_references.clone(),
+            active_lineage_references: <span class="self">self
+                </span>.active_lineage_references
+                .iter()
+                .map(|x| x.backup_unchecked())
+                .collect(),
             last_event_time: <span class="self">self</span>.last_event_time,
             _marker: PhantomData::&lt;(M, H, G, S, X, D, N, I)&gt;,
         }

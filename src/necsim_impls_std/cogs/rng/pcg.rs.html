@@ -129,20 +129,13 @@
 <span id="129">129</span>
 <span id="130">130</span>
 <span id="131">131</span>
-<span id="132">132</span>
-<span id="133">133</span>
-<span id="134">134</span>
-<span id="135">135</span>
-<span id="136">136</span>
-<span id="137">137</span>
-<span id="138">138</span>
 </pre><pre class="rust"><code><span class="kw">use </span>std::{fmt, marker::PhantomData};
 
 <span class="kw">use </span>pcg_rand::{seeds::PcgSeeder, PCGStateInfo, Pcg64};
 <span class="kw">use </span>rand_core::{RngCore <span class="kw">as _</span>, SeedableRng};
 <span class="kw">use </span>serde::{Deserialize, Serialize};
 
-<span class="kw">use </span>necsim_core::cogs::{Backup, MathsCore, RngCore, SplittableRng};
+<span class="kw">use </span>necsim_core::cogs::{MathsCore, RngCore, SplittableRng};
 
 <span class="attribute">#[allow(clippy::module_name_repetitions)]
 #[derive(Serialize, Deserialize)]
@@ -169,13 +162,6 @@
             .field(<span class="string">&quot;state&quot;</span>, <span class="kw-2">&amp;</span>state.state)
             .field(<span class="string">&quot;stream&quot;</span>, <span class="kw-2">&amp;</span>(state.increment &gt;&gt; <span class="number">1</span>))
             .finish()
-    }
-}
-
-<span class="attribute">#[contract_trait]
-</span><span class="kw">impl</span>&lt;M: MathsCore&gt; Backup <span class="kw">for </span>Pcg&lt;M&gt; {
-    <span class="kw">unsafe fn </span>backup_unchecked(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="self">Self </span>{
-        <span class="self">self</span>.clone()
     }
 }
 

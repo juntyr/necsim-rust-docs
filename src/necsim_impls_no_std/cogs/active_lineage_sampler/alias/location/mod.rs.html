@@ -479,7 +479,7 @@
 {
     <span class="kw">unsafe fn </span>backup_unchecked(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="self">Self </span>{
         <span class="self">Self </span>{
-            alias_sampler: <span class="self">self</span>.alias_sampler.clone(),
+            alias_sampler: <span class="self">self</span>.alias_sampler.backup_unchecked(),
             number_active_lineages: <span class="self">self</span>.number_active_lineages,
             last_event_time: <span class="self">self</span>.last_event_time,
             marker: PhantomData::&lt;(M, H, G, S, X, D, C, T, N, E, I)&gt;,

@@ -38,7 +38,7 @@
 <span class="attribute">#[macro_use]
 </span><span class="kw">extern crate </span>const_type_layout;
 
-<span class="attribute">#[macro_use]
+<span class="attribute">#[cfg_attr(target_os = <span class="string">&quot;cuda&quot;</span>, macro_use)]
 </span><span class="kw">extern crate </span>contracts;
 
 <span class="kw">pub mod </span>cogs;

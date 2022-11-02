@@ -251,7 +251,7 @@
     ) -&gt; <span class="self">Self</span>::LineageIterator&lt;<span class="lifetime">&#39;a</span>&gt; {
         <span class="self">self</span>.active_lineage_references
             .iter()
-            .map(<span class="kw">move </span>|local_reference| <span class="kw-2">&amp;</span>lineage_store[local_reference.clone()])
+            .map(<span class="kw">move </span>|local_reference| <span class="kw-2">&amp;</span>lineage_store[local_reference])
     }
 
     <span class="kw">fn </span>get_last_event_time(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; NonNegativeF64 {

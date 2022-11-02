@@ -191,7 +191,7 @@
 
         <span class="kw">let </span>chosen_coalescence_index =
             coalescence_rng_sample.sample_coalescence_index::&lt;M&gt;(population);
-        <span class="kw">let </span>chosen_coalescence = lineages_at_location[chosen_coalescence_index <span class="kw">as </span>usize].clone();
+        <span class="kw">let </span>chosen_coalescence = <span class="kw-2">&amp;</span>lineages_at_location[chosen_coalescence_index <span class="kw">as </span>usize];
 
         <span class="kw">let </span>lineage = <span class="kw-2">&amp;</span>lineage_store[chosen_coalescence];
 

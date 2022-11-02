@@ -123,6 +123,11 @@
 <span id="123">123</span>
 <span id="124">124</span>
 <span id="125">125</span>
+<span id="126">126</span>
+<span id="127">127</span>
+<span id="128">128</span>
+<span id="129">129</span>
+<span id="130">130</span>
 </pre><pre class="rust"><code><span class="kw">use </span>core::marker::PhantomData;
 
 <span class="kw">use </span>fnv::FnvBuildHasher;
@@ -130,7 +135,9 @@
 <span class="kw">use </span>slab::Slab;
 
 <span class="kw">use </span>necsim_core::{
-    cogs::{GloballyCoherentLineageStore, LineageStore, LocallyCoherentLineageStore, MathsCore},
+    cogs::{
+        Backup, GloballyCoherentLineageStore, LineageStore, LocallyCoherentLineageStore, MathsCore,
+    },
     landscape::{IndexedLocation, Location},
     lineage::{GlobalLineageReference, Lineage},
 };
@@ -160,7 +167,7 @@
     <span class="attribute">#[must_use]
     </span><span class="kw">fn </span>get_lineage_for_local_reference(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        reference: InMemoryLineageReference,
+        reference: <span class="kw-2">&amp;</span>InMemoryLineageReference,
     ) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>Lineage&gt; {
         <span class="self">self</span>.lineages_store.get(usize::from(reference))
     }
@@ -179,7 +186,7 @@
     ) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>GlobalLineageReference&gt; {
         <span class="self">self</span>.location_to_lineage_reference
             .get(indexed_location.location())
-            .map(|local_reference| <span class="kw-2">&amp;</span><span class="self">self</span>[<span class="kw-2">*</span>local_reference].global_reference)
+            .map(|local_reference| <span class="kw-2">&amp;</span><span class="self">self</span>[local_reference].global_reference)
     }
 
     <span class="attribute">#[debug_requires(lineage.indexed_location.index() == <span class="number">0</span>, <span class="string">&quot;only one lineage per location&quot;</span>)]
@@ -190,18 +197,21 @@
     ) -&gt; InMemoryLineageReference {
         <span class="kw">let </span>location = lineage.indexed_location.location().clone();
 
-        <span class="kw">let </span>local_lineage_reference =
-            InMemoryLineageReference::from(<span class="self">self</span>.lineages_store.insert(lineage));
+        <span class="comment">// Safety: a new unique reference is issued here, no cloning occurs
+        </span><span class="kw">let </span>local_lineage_reference =
+            <span class="kw">unsafe </span>{ InMemoryLineageReference::issue(<span class="self">self</span>.lineages_store.insert(lineage)) };
 
-        <span class="self">self</span>.location_to_lineage_reference
-            .insert(location, local_lineage_reference);
+        <span class="comment">// Safety: the clone stays internal behind a reference
+        </span><span class="self">self</span>.location_to_lineage_reference.insert(location, <span class="kw">unsafe </span>{
+            local_lineage_reference.backup_unchecked()
+        });
 
         local_lineage_reference
     }
 
     <span class="attribute">#[must_use]
     #[debug_requires(
-        <span class="self">self</span>[reference]</span>.indexed_location.index() == <span class="number">0</span>,
+        <span class="self">self</span>[<span class="kw-2">&amp;</span>reference]</span>.indexed_location.index() == <span class="number">0</span>,
         <span class="string">&quot;only one lineage per location&quot;
     </span>)]
     <span class="kw">fn </span>extract_lineage_locally_coherent(

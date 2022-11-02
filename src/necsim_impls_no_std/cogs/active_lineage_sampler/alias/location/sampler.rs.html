@@ -179,11 +179,14 @@
 <span id="179">179</span>
 <span id="180">180</span>
 <span id="181">181</span>
+<span id="182">182</span>
+<span id="183">183</span>
+<span id="184">184</span>
 </pre><pre class="rust"><code><span class="kw">use </span>core::{num::NonZeroUsize, ops::ControlFlow};
 
 <span class="kw">use </span>necsim_core::{
     cogs::{
-        ActiveLineageSampler, CoalescenceSampler, DispersalSampler, EmigrationExit,
+        ActiveLineageSampler, Backup, CoalescenceSampler, DispersalSampler, EmigrationExit,
         GloballyCoherentLineageStore, Habitat, ImmigrationEntry, MathsCore, RngCore,
         SpeciationProbability, TurnoverRate,
     },
@@ -232,7 +235,7 @@
                 lineage_store
                     .get_local_lineage_references_at_location_unordered(location, habitat)
                     .iter()
-                    .map(<span class="kw">move </span>|local_reference| <span class="kw-2">&amp;</span>lineage_store[local_reference.clone()])
+                    .map(<span class="kw">move </span>|local_reference| <span class="kw-2">&amp;</span>lineage_store[local_reference])
             })
     }
 
@@ -278,8 +281,11 @@
             //         `chosen_active_location` can only be selected in that case
             </span><span class="kw">let </span>chosen_lineage_index_at_location = rng
                 .sample_index(<span class="kw">unsafe </span>{ NonZeroUsize::new_unchecked(lineages_at_location.len()) });
-            <span class="kw">let </span>chosen_lineage_reference =
-                lineages_at_location[chosen_lineage_index_at_location].clone();
+            <span class="comment">// Safety: reference clone is only used to then remove the lineage, which is
+            // owned
+            </span><span class="kw">let </span>chosen_lineage_reference = <span class="kw">unsafe </span>{
+                lineages_at_location[chosen_lineage_index_at_location].backup_unchecked()
+            };
 
             <span class="kw">let </span>chosen_lineage = simulation
                 .lineage_store

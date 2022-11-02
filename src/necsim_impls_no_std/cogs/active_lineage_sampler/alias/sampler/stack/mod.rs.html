@@ -228,6 +228,28 @@
 <span id="228">228</span>
 <span id="229">229</span>
 <span id="230">230</span>
+<span id="231">231</span>
+<span id="232">232</span>
+<span id="233">233</span>
+<span id="234">234</span>
+<span id="235">235</span>
+<span id="236">236</span>
+<span id="237">237</span>
+<span id="238">238</span>
+<span id="239">239</span>
+<span id="240">240</span>
+<span id="241">241</span>
+<span id="242">242</span>
+<span id="243">243</span>
+<span id="244">244</span>
+<span id="245">245</span>
+<span id="246">246</span>
+<span id="247">247</span>
+<span id="248">248</span>
+<span id="249">249</span>
+<span id="250">250</span>
+<span id="251">251</span>
+<span id="252">252</span>
 </pre><pre class="rust"><code><span class="kw">use </span>alloc::{vec, vec::Vec};
 <span class="kw">use </span>core::{
     cmp::Ordering,
@@ -236,29 +258,28 @@
     num::{NonZeroU128, NonZeroUsize},
 };
 
-<span class="kw">use </span>necsim_core::cogs::{MathsCore, RngCore, RngSampler};
+<span class="kw">use </span>necsim_core::cogs::{Backup, MathsCore, RngCore, RngSampler};
 <span class="kw">use </span>necsim_core_bond::{NonNegativeF64, PositiveF64};
 
 <span class="attribute">#[cfg(test)]
 </span><span class="kw">mod </span>tests;
 
-<span class="attribute">#[derive(Clone, Debug, PartialEq, Eq)]
-</span><span class="kw">struct </span>RejectionSamplingGroup&lt;E: Eq + Hash&gt; {
+<span class="attribute">#[derive(Debug, PartialEq, Eq)]
+</span><span class="kw">struct </span>RejectionSamplingGroup&lt;E: Eq + Hash + Backup&gt; {
     events: Vec&lt;E&gt;,
     weights: Vec&lt;u64&gt;,
     total_weight: u128,
 }
 
 <span class="attribute">#[allow(clippy::module_name_repetitions)]
-#[derive(Clone)]
-</span><span class="kw">pub struct </span>DynamicAliasMethodStackSampler&lt;E: Eq + Hash + Clone&gt; {
+</span><span class="kw">pub struct </span>DynamicAliasMethodStackSampler&lt;E: Eq + Hash + Backup&gt; {
     exponents: Vec&lt;i16&gt;,
     groups: Vec&lt;RejectionSamplingGroup&lt;E&gt;&gt;,
     min_exponent: i16,
     total_weight: u128,
 }
 
-<span class="kw">impl</span>&lt;E: Eq + Hash + Clone&gt; fmt::Debug <span class="kw">for </span>DynamicAliasMethodStackSampler&lt;E&gt; {
+<span class="kw">impl</span>&lt;E: Eq + Hash + Backup&gt; fmt::Debug <span class="kw">for </span>DynamicAliasMethodStackSampler&lt;E&gt; {
     <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, fmt: <span class="kw-2">&amp;mut </span>fmt::Formatter) -&gt; fmt::Result {
         fmt.debug_struct(<span class="string">&quot;DynamicAliasMethodStackSampler&quot;</span>)
             .field(<span class="string">&quot;exponents&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.exponents)
@@ -267,7 +288,7 @@
     }
 }
 
-<span class="kw">impl</span>&lt;E: Eq + Hash&gt; RejectionSamplingGroup&lt;E&gt; {
+<span class="kw">impl</span>&lt;E: Eq + Hash + Backup&gt; RejectionSamplingGroup&lt;E&gt; {
     <span class="kw">fn </span>iter(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw">impl </span>Iterator&lt;Item = <span class="kw-2">&amp;</span>E&gt; {
         <span class="self">self</span>.events.iter()
     }
@@ -323,7 +344,7 @@
     }
 }
 
-<span class="kw">impl</span>&lt;E: Eq + Hash + Clone&gt; DynamicAliasMethodStackSampler&lt;E&gt; {
+<span class="kw">impl</span>&lt;E: Eq + Hash + Backup&gt; DynamicAliasMethodStackSampler&lt;E&gt; {
     <span class="attribute">#[must_use]
     </span><span class="kw">pub fn </span>new() -&gt; <span class="self">Self </span>{
         <span class="self">Self </span>{
@@ -453,9 +474,32 @@
     }
 }
 
-<span class="kw">impl</span>&lt;E: Eq + Hash + Clone&gt; Default <span class="kw">for </span>DynamicAliasMethodStackSampler&lt;E&gt; {
+<span class="kw">impl</span>&lt;E: Eq + Hash + Backup&gt; Default <span class="kw">for </span>DynamicAliasMethodStackSampler&lt;E&gt; {
     <span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{
         <span class="self">Self</span>::new()
+    }
+}
+
+<span class="attribute">#[contract_trait]
+</span><span class="kw">impl</span>&lt;E: Eq + Hash + Backup&gt; Backup <span class="kw">for </span>RejectionSamplingGroup&lt;E&gt; {
+    <span class="kw">unsafe fn </span>backup_unchecked(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{
+            events: <span class="self">self</span>.events.iter().map(|x| x.backup_unchecked()).collect(),
+            weights: <span class="self">self</span>.weights.clone(),
+            total_weight: <span class="self">self</span>.total_weight,
+        }
+    }
+}
+
+<span class="attribute">#[contract_trait]
+</span><span class="kw">impl</span>&lt;E: Eq + Hash + Backup&gt; Backup <span class="kw">for </span>DynamicAliasMethodStackSampler&lt;E&gt; {
+    <span class="kw">unsafe fn </span>backup_unchecked(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{
+            exponents: <span class="self">self</span>.exponents.clone(),
+            groups: <span class="self">self</span>.groups.iter().map(|x| x.backup_unchecked()).collect(),
+            min_exponent: <span class="self">self</span>.min_exponent,
+            total_weight: <span class="self">self</span>.total_weight,
+        }
     }
 }
 </code></pre></div>
