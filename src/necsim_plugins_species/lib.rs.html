@@ -7,14 +7,34 @@
 <span id="7">7</span>
 <span id="8">8</span>
 <span id="9">9</span>
+<span id="10">10</span>
+<span id="11">11</span>
+<span id="12">12</span>
+<span id="13">13</span>
+<span id="14">14</span>
+<span id="15">15</span>
+<span id="16">16</span>
+<span id="17">17</span>
+<span id="18">18</span>
+<span id="19">19</span>
 </pre><pre class="rust"><code><span class="attribute">#![deny(clippy::pedantic)]
 
 #[macro_use]
 </span><span class="kw">extern crate </span>log;
 
-<span class="kw">mod </span>individuals;
+<span class="kw">mod </span>identity;
+<span class="kw">mod </span>individual;
+<span class="kw">mod </span>location;
+<span class="kw">mod </span>state;
 
-<span class="comment">// Register the reporter plugin
-</span><span class="macro">necsim_plugins_core::export_plugin!</span>(IndividualSpecies =&gt; individuals::IndividualLocationSpeciesReporter);
+<span class="kw">use </span>identity::SpeciesIdentity;
+<span class="kw">use </span>state::LastEventState;
+
+<span class="comment">// Register the reporter plugins
+</span><span class="macro">necsim_plugins_core::export_plugin!</span>(
+    IndividualSpeciesSQLite =&gt; individual::sqlite::IndividualSpeciesSQLiteReporter,
+    IndividualSpeciesFeather =&gt; individual::feather::IndividualSpeciesFeatherReporter,
+    LocationSpeciesFeather =&gt; location::feather::LocationSpeciesFeatherReporter,
+);
 </code></pre></div>
 </section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="necsim_plugins_species" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (5e9772042 2022-10-29)" ></div></body></html>

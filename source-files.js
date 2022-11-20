@@ -12,7 +12,7 @@ var sourcesIndex = JSON.parse('{\
 "necsim_plugins_core":["",[["import",[],["combinator.rs","mod.rs","plugin.rs","serde.rs"]]],["export.rs","lib.rs"]],\
 "necsim_plugins_csv":["",[],["lib.rs"]],\
 "necsim_plugins_metacommunity":["",[],["lib.rs"]],\
-"necsim_plugins_species":["",[["individuals",[],["database.rs","mod.rs","reporter.rs"]]],["lib.rs"]],\
+"necsim_plugins_species":["",[["individual",[["feather",[],["dataframe.rs","mod.rs","reporter.rs"]],["sqlite",[],["database.rs","mod.rs","reporter.rs"]]],["mod.rs"]],["location",[["feather",[],["dataframe.rs","mod.rs","reporter.rs"]]],["mod.rs"]]],["identity.rs","lib.rs","state.rs"]],\
 "necsim_plugins_statistics":["",[],["coverage.rs","lib.rs","speciation.rs","turnover.rs"]],\
 "necsim_plugins_tskit":["",[["tree",[],["metadata.rs","mod.rs","reporter.rs","table.rs"]]],["lib.rs","provenance.rs"]],\
 "rustcoalescence":["",[["args",[["cli",[],["mod.rs","replay.rs"]],["config",[["rng",[],["base32.rs","mod.rs"]],["sample",[],["mod.rs","origin.rs"]]],["algorithm.rs","mod.rs","partitioning.rs","pause.rs","scenario.rs"]],["utils",[["ser",[],["impl.rs","mod.rs"]]],["mod.rs","parse.rs"]]],["mod.rs"]],["cli",[["simulate",[["dispatch",[["valid",[],["algorithm_scenario.rs","info.rs","launch.rs","mod.rs","partitioning.rs","rng.rs"]]],["mod.rs"]],["parse",[],["algorithm.rs","event_log.rs","fields.rs","mod.rs","partitioning.rs","pause.rs","reporters.rs","rng.rs","sample.rs","scenario.rs","speciation.rs"]]],["mod.rs","pause.rs"]]],["mod.rs","replay.rs"]]],["main.rs","minimal_logger.rs","reporter.rs"]],\

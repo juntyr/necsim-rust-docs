@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `necsim/plugins/species/src/individuals/database.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>database.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../normalize.css"><link rel="stylesheet" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../ayu.css" disabled><link rel="stylesheet" href="../../../dark.css" disabled><link rel="stylesheet" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../../necsim_plugins_species/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `necsim/plugins/species/src/individual/sqlite/database.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>database.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../../normalize.css"><link rel="stylesheet" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../../ayu.css" disabled><link rel="stylesheet" href="../../../../dark.css" disabled><link rel="stylesheet" href="../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../storage.js"></script><script defer src="../../../../source-script.js"></script><script defer src="../../../../source-files.js"></script><script defer src="../../../../main.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../../../necsim_plugins_species/index.html"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../wheel.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -413,197 +413,44 @@
 <span id="413">413</span>
 <span id="414">414</span>
 <span id="415">415</span>
-<span id="416">416</span>
-<span id="417">417</span>
-<span id="418">418</span>
-<span id="419">419</span>
-<span id="420">420</span>
-<span id="421">421</span>
-<span id="422">422</span>
-<span id="423">423</span>
-<span id="424">424</span>
-<span id="425">425</span>
-<span id="426">426</span>
-<span id="427">427</span>
-<span id="428">428</span>
-<span id="429">429</span>
-<span id="430">430</span>
-<span id="431">431</span>
-<span id="432">432</span>
-<span id="433">433</span>
-<span id="434">434</span>
-<span id="435">435</span>
-<span id="436">436</span>
-<span id="437">437</span>
-<span id="438">438</span>
-<span id="439">439</span>
-<span id="440">440</span>
-<span id="441">441</span>
-<span id="442">442</span>
-<span id="443">443</span>
-<span id="444">444</span>
-<span id="445">445</span>
-<span id="446">446</span>
-<span id="447">447</span>
-<span id="448">448</span>
-<span id="449">449</span>
-<span id="450">450</span>
-<span id="451">451</span>
-<span id="452">452</span>
-<span id="453">453</span>
-<span id="454">454</span>
-<span id="455">455</span>
-<span id="456">456</span>
-<span id="457">457</span>
-<span id="458">458</span>
-<span id="459">459</span>
-<span id="460">460</span>
-<span id="461">461</span>
-<span id="462">462</span>
-<span id="463">463</span>
-<span id="464">464</span>
-<span id="465">465</span>
-<span id="466">466</span>
-<span id="467">467</span>
-<span id="468">468</span>
-<span id="469">469</span>
-<span id="470">470</span>
-<span id="471">471</span>
-<span id="472">472</span>
-<span id="473">473</span>
-<span id="474">474</span>
-<span id="475">475</span>
-<span id="476">476</span>
-<span id="477">477</span>
-<span id="478">478</span>
-<span id="479">479</span>
-<span id="480">480</span>
-<span id="481">481</span>
-<span id="482">482</span>
-<span id="483">483</span>
-<span id="484">484</span>
-<span id="485">485</span>
-<span id="486">486</span>
-<span id="487">487</span>
-<span id="488">488</span>
-<span id="489">489</span>
-<span id="490">490</span>
-<span id="491">491</span>
-<span id="492">492</span>
-<span id="493">493</span>
-<span id="494">494</span>
-<span id="495">495</span>
-<span id="496">496</span>
-<span id="497">497</span>
-<span id="498">498</span>
-<span id="499">499</span>
-<span id="500">500</span>
-<span id="501">501</span>
-<span id="502">502</span>
-<span id="503">503</span>
-<span id="504">504</span>
-<span id="505">505</span>
-<span id="506">506</span>
-<span id="507">507</span>
-<span id="508">508</span>
-<span id="509">509</span>
-<span id="510">510</span>
-<span id="511">511</span>
-<span id="512">512</span>
-<span id="513">513</span>
-<span id="514">514</span>
-<span id="515">515</span>
-<span id="516">516</span>
-<span id="517">517</span>
-<span id="518">518</span>
-<span id="519">519</span>
-<span id="520">520</span>
-<span id="521">521</span>
-<span id="522">522</span>
 </pre><pre class="rust"><code><span class="kw">use </span>necsim_core::{
-    event::{DispersalEvent, SpeciationEvent},
     landscape::{IndexedLocation, Location},
     lineage::GlobalLineageReference,
 };
-<span class="kw">use </span>necsim_core_bond::{NonNegativeF64, NonZeroOneU64, PositiveF64};
+<span class="kw">use </span>necsim_core_bond::{NonZeroOneU64, PositiveF64};
 
-<span class="kw">use </span>bincode::Options;
 <span class="kw">use </span>rusqlite::{named_params, types::Value};
-<span class="kw">use </span>serde::{Deserialize, Serialize};
 
-<span class="kw">use super</span>::{IndividualLocationSpeciesReporter, SpeciesIdentity, SpeciesLocationsMode};
+<span class="kw">use crate</span>::{LastEventState, SpeciesIdentity};
+
+<span class="kw">use super</span>::{IndividualSpeciesSQLiteReporter, SpeciesLocationsMode};
 
 <span class="kw">const </span>METADATA_TABLE: <span class="kw-2">&amp;</span>str = <span class="string">&quot;__SPECIES_REPORTER_META&quot;</span>;
 
-<span class="kw">impl </span>IndividualLocationSpeciesReporter {
+<span class="kw">impl </span>IndividualSpeciesSQLiteReporter {
     <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn </span>store_individual_origin(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
-        individual: <span class="kw-2">&amp;</span>GlobalLineageReference,
+        lineage: <span class="kw-2">&amp;</span>GlobalLineageReference,
         origin: <span class="kw-2">&amp;</span>IndexedLocation,
     ) {
-        <span class="self">self</span>.origins.insert(individual.clone(), origin.clone());
+        <span class="self">self</span>.origins.insert(lineage.clone(), origin.clone());
     }
 
     <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn </span>store_individual_speciation(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
-        parent: <span class="kw-2">&amp;</span>GlobalLineageReference,
+        lineage: <span class="kw-2">&amp;</span>GlobalLineageReference,
         origin: <span class="kw-2">&amp;</span>IndexedLocation,
         time: PositiveF64,
     ) {
         <span class="comment">// Resolve the actual parent, irrespective of duplicate individuals
-        </span><span class="kw">let </span><span class="kw-2">mut </span>parent = parent;
+        </span><span class="kw">let </span><span class="kw-2">mut </span>parent = lineage;
         <span class="kw">while let </span><span class="prelude-val">Some</span>(parent_parent) = <span class="self">self</span>.parents.get(parent) {
             parent = parent_parent;
         }
-        <span class="kw">let </span>parent = parent.clone();
-
-        <span class="kw">let </span>location = (u64::from(origin.location().y()) &lt;&lt; <span class="number">32</span>) | u64::from(origin.location().x());
-        <span class="kw">let </span>index = u64::from(origin.index()) &lt;&lt; <span class="number">16</span>;
-        <span class="kw">let </span>time = time.get().to_bits();
-
-        <span class="kw">let </span>location_bytes = seahash_diffuse(location).to_le_bytes();
-        <span class="kw">let </span>index_bytes = seahash_diffuse(index).to_le_bytes();
-        <span class="kw">let </span>time_bytes = seahash_diffuse(time).to_le_bytes();
-
-        <span class="comment">// Shuffle and mix all 24 bytes of the species identity
-        </span><span class="kw">let </span>lower = u64::from_le_bytes([
-            location_bytes[<span class="number">3</span>],
-            time_bytes[<span class="number">0</span>],
-            index_bytes[<span class="number">5</span>],
-            location_bytes[<span class="number">1</span>],
-            time_bytes[<span class="number">4</span>],
-            time_bytes[<span class="number">7</span>],
-            time_bytes[<span class="number">5</span>],
-            location_bytes[<span class="number">5</span>],
-        ]);
-        <span class="kw">let </span>middle = u64::from_le_bytes([
-            time_bytes[<span class="number">6</span>],
-            index_bytes[<span class="number">4</span>],
-            location_bytes[<span class="number">0</span>],
-            location_bytes[<span class="number">6</span>],
-            index_bytes[<span class="number">2</span>],
-            index_bytes[<span class="number">1</span>],
-            location_bytes[<span class="number">7</span>],
-            index_bytes[<span class="number">3</span>],
-        ]);
-        <span class="kw">let </span>upper = u64::from_le_bytes([
-            location_bytes[<span class="number">4</span>],
-            location_bytes[<span class="number">2</span>],
-            time_bytes[<span class="number">2</span>],
-            index_bytes[<span class="number">0</span>],
-            time_bytes[<span class="number">3</span>],
-            time_bytes[<span class="number">1</span>],
-            index_bytes[<span class="number">7</span>],
-            index_bytes[<span class="number">6</span>],
-        ]);
 
         <span class="self">self</span>.species.insert(
-            parent,
-            SpeciesIdentity(
-                seahash_diffuse(lower),
-                seahash_diffuse(middle),
-                seahash_diffuse(upper),
-            ),
+            parent.clone(),
+            SpeciesIdentity::from_speciation(origin, time),
         );
     }
 
@@ -830,43 +677,30 @@
             }
 
             <span class="kw">if let </span><span class="prelude-val">Some</span>(species) = species {
-                <span class="comment">// Try to parse the species identity from its String form
-                </span><span class="kw">let </span>species = (|| -&gt; <span class="prelude-ty">Result</span>&lt;<span class="kw">_</span>, <span class="kw">_</span>&gt; {
-                    <span class="kw">if </span>species.len() != <span class="number">48 </span>|| !species.is_ascii() {
-                        <span class="kw">return </span><span class="prelude-val">Err</span>(());
-                    }
+                <span class="kw">let </span><span class="kw-2">mut </span>identity = [<span class="number">0_u8</span>; <span class="number">24</span>];
 
-                    <span class="prelude-val">Ok</span>(SpeciesIdentity(
-                        u64::from_str_radix(<span class="kw-2">&amp;</span>species[<span class="number">0</span>..<span class="number">16</span>], <span class="number">16</span>).map_err(|<span class="kw">_</span>| ())<span class="question-mark">?</span>,
-                        u64::from_str_radix(<span class="kw-2">&amp;</span>species[<span class="number">16</span>..<span class="number">32</span>], <span class="number">16</span>).map_err(|<span class="kw">_</span>| ())<span class="question-mark">?</span>,
-                        u64::from_str_radix(<span class="kw-2">&amp;</span>species[<span class="number">32</span>..<span class="number">48</span>], <span class="number">16</span>).map_err(|<span class="kw">_</span>| ())<span class="question-mark">?</span>,
-                    ))
-                })()
-                .map_err(|<span class="kw">_</span>| {
+                <span class="comment">// Try to parse the species identity from its String form
+                </span>hex::decode_to_slice(<span class="kw-2">&amp;</span>species, <span class="kw-2">&amp;mut </span>identity).map_err(|<span class="kw">_</span>| {
                     rusqlite::Error::SqliteFailure(
                         rusqlite::ffi::Error {
                             code: rusqlite::ffi::ErrorCode::TypeMismatch,
                             extended_code: <span class="number">0</span>,
                         },
                         <span class="prelude-val">Some</span>(<span class="macro">format!</span>(
-                            <span class="string">&quot;Invalid species identity {:?} for individual #{}&quot;</span>,
-                            species, id,
+                            <span class="string">&quot;Invalid species identity {species:?} for individual #{id}&quot;</span>,
                         )),
                     )
                 })<span class="question-mark">?</span>;
 
                 <span class="comment">// Populate the individual `species` lookup
-                </span><span class="self">self</span>.species.insert(id, species);
+                </span><span class="self">self</span>.species.insert(id, SpeciesIdentity::from(identity));
             }
         }
 
         <span class="kw">let </span>last_event: String = <span class="self">self
             </span>.connection
             .query_row(
-                <span class="kw-2">&amp;</span><span class="macro">format!</span>(
-                    <span class="string">&quot;SELECT value FROM {} WHERE key=&#39;last-event&#39;&quot;</span>,
-                    METADATA_TABLE
-                ),
+                <span class="kw-2">&amp;</span><span class="macro">format!</span>(<span class="string">&quot;SELECT value FROM {METADATA_TABLE} WHERE key=&#39;last-event&#39;&quot;</span>,),
                 [],
                 |row| row.get(<span class="string">&quot;value&quot;</span>),
             )
@@ -942,9 +776,9 @@
                     .get(<span class="kw-2">&amp;</span>lineage)
                     .map(|parent| to_i64(<span class="kw">unsafe </span>{ parent.clone().into_inner().get() - <span class="number">2 </span>})),
                 <span class="comment">/* :species */
-                </span><span class="self">self</span>.species.get(<span class="kw-2">&amp;</span>ancestor).map(|species| {
-                    <span class="macro">format!</span>(<span class="string">&quot;{:016x}{:016x}{:016x}&quot;</span>, species.<span class="number">0</span>, species.<span class="number">1</span>, species.<span class="number">2</span>)
-                }),
+                </span><span class="self">self</span>.species
+                    .get(<span class="kw-2">&amp;</span>ancestor)
+                    .map(|species| hex::encode(<span class="kw-2">**</span>species)),
             ])<span class="question-mark">?</span>;
         }
 
@@ -969,10 +803,7 @@
         })<span class="question-mark">?</span>;
 
         tx.execute(
-            <span class="kw-2">&amp;</span><span class="macro">format!</span>(
-                <span class="string">&quot;INSERT OR REPLACE INTO {} VALUES (:key, :value)&quot;</span>,
-                METADATA_TABLE
-            ),
+            <span class="kw-2">&amp;</span><span class="macro">format!</span>(<span class="string">&quot;INSERT OR REPLACE INTO {METADATA_TABLE} VALUES (:key, :value)&quot;</span>,),
             <span class="macro">named_params! </span>{ <span class="string">&quot;:key&quot;</span>: <span class="string">&quot;last-event&quot;</span>, <span class="string">&quot;:value&quot;</span>: last_event_state },
         )<span class="question-mark">?</span>;
 
@@ -997,50 +828,5 @@
 <span class="kw">const fn </span>from_i64(x: i64) -&gt; u64 {
     u64::from_ne_bytes(x.to_ne_bytes())
 }
-
-<span class="kw">const fn </span>seahash_diffuse(<span class="kw-2">mut </span>x: u64) -&gt; u64 {
-    <span class="comment">// SeaHash diffusion function
-    // https://docs.rs/seahash/4.1.0/src/seahash/helper.rs.html#75-92
-
-    // These are derived from the PCG RNG&#39;s round. Thanks to @Veedrac for proposing
-    // this. The basic idea is that we use dynamic shifts, which are determined
-    // by the input itself. The shift is chosen by the higher bits, which means
-    // that changing those flips the lower bits, which scatters upwards because
-    // of the multiplication.
-
-    </span>x = x.wrapping_add(<span class="number">0x9e37_79b9_7f4a_7c15</span>);
-
-    x = x.wrapping_mul(<span class="number">0x6eed_0e9d_a4d9_4a4f</span>);
-
-    <span class="kw">let </span>a = x &gt;&gt; <span class="number">32</span>;
-    <span class="kw">let </span>b = x &gt;&gt; <span class="number">60</span>;
-
-    x ^= a &gt;&gt; b;
-
-    x = x.wrapping_mul(<span class="number">0x6eed_0e9d_a4d9_4a4f</span>);
-
-    x
-}
-
-<span class="attribute">#[derive(Serialize, Deserialize)]
-</span><span class="kw">struct </span>LastEventState {
-    last_parent_prior_time: <span class="prelude-ty">Option</span>&lt;(GlobalLineageReference, NonNegativeF64)&gt;,
-    last_speciation_event: <span class="prelude-ty">Option</span>&lt;SpeciationEvent&gt;,
-    last_dispersal_event: <span class="prelude-ty">Option</span>&lt;DispersalEvent&gt;,
-}
-
-<span class="kw">impl </span>LastEventState {
-    <span class="kw">fn </span>into_string(<span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;String, ()&gt; {
-        <span class="kw">let </span>bytes = bincode::options().serialize(<span class="kw-2">&amp;</span><span class="self">self</span>).map_err(|<span class="kw">_</span>| ())<span class="question-mark">?</span>;
-
-        <span class="prelude-val">Ok</span>(base32::encode(base32::Alphabet::Crockford, <span class="kw-2">&amp;</span>bytes))
-    }
-
-    <span class="kw">fn </span>from_string(string: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Result</span>&lt;LastEventState, ()&gt; {
-        <span class="kw">let </span>bytes = base32::decode(base32::Alphabet::Crockford, string).ok_or(())<span class="question-mark">?</span>;
-
-        bincode::options().deserialize(<span class="kw-2">&amp;</span>bytes).map_err(|<span class="kw">_</span>| ())
-    }
-}
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="necsim_plugins_species" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (5e9772042 2022-10-29)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="necsim_plugins_species" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (5e9772042 2022-10-29)" ></div></body></html>
