@@ -500,10 +500,10 @@
         <span class="kw">let </span>counts = PrimitiveArray::from_vec(counts);
 
         <span class="kw">let </span>chunk = Chunk::try_new(<span class="macro">vec!</span>[
-            xs.arced(),
-            ys.arced(),
-            species.arced(),
-            counts.arced(),
+            xs.boxed(),
+            ys.boxed(),
+            species.boxed(),
+            counts.boxed(),
         ])<span class="question-mark">?</span>;
         writer.write(<span class="kw-2">&amp;</span>chunk, <span class="prelude-val">None</span>)<span class="question-mark">?</span>;
 

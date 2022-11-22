@@ -433,7 +433,7 @@
             self_last_speciation_event = last_event.last_speciation_event;
             self_last_dispersal_event = last_event.last_dispersal_event;
 
-            <span class="kw">for </span>chunk <span class="kw">in </span>arrow2::io::ipc::read::FileReader::new(reader, metadata, <span class="prelude-val">None</span>) {
+            <span class="kw">for </span>chunk <span class="kw">in </span>arrow2::io::ipc::read::FileReader::new(reader, metadata, <span class="prelude-val">None</span>, <span class="prelude-val">None</span>) {
                 <span class="kw">let </span>chunk = chunk.map_err(serde::de::Error::custom)<span class="question-mark">?</span>;
 
                 <span class="kw">let </span>(xs, ys, species, counts) = <span class="kw">match </span>chunk.columns() {
@@ -484,7 +484,7 @@
                 <span class="kw">for </span>(((x, y), species), count) <span class="kw">in </span>xs
                     .values_iter()
                     .zip(ys.values_iter())
-                    .zip(species.iter_values())
+                    .zip(species.values_iter())
                     .zip(counts.values_iter())
                 {
                     <span class="kw">let </span>origin = Location::new(<span class="kw-2">*</span>x, <span class="kw-2">*</span>y);
