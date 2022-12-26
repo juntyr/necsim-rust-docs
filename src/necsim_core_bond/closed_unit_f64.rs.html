@@ -185,6 +185,11 @@
 <span id="185">185</span>
 <span id="186">186</span>
 <span id="187">187</span>
+<span id="188">188</span>
+<span id="189">189</span>
+<span id="190">190</span>
+<span id="191">191</span>
+<span id="192">192</span>
 </pre><pre class="rust"><code><span class="kw">use </span>core::{
     cmp::Ordering,
     convert::TryFrom,
@@ -273,6 +278,11 @@
     <span class="attribute">#[must_use]
     </span><span class="kw">pub const fn </span>zero() -&gt; <span class="self">Self </span>{
         <span class="self">Self</span>(<span class="number">0.0_f64</span>)
+    }
+
+    <span class="attribute">#[must_use]
+    </span><span class="kw">pub const fn </span>half() -&gt; <span class="self">Self </span>{
+        <span class="self">Self</span>(<span class="number">0.5_f64</span>)
     }
 
     <span class="attribute">#[must_use]

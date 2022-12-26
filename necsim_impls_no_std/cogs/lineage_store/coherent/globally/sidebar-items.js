@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"mod":[["almost_infinite",""],["gillespie",""]]};
+window.SIDEBAR_ITEMS = {"mod":[["gillespie",""],["singleton_demes",""]]};

@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"mod":[["almost_infinite_normal",""],["in_memory",""],["non_spatial",""],["spatially_implicit",""],["trespassing",""]]};
+window.SIDEBAR_ITEMS = {"mod":[["almost_infinite_normal",""],["in_memory",""],["non_spatial",""],["spatially_implicit",""],["trespassing",""],["wrapping_noise",""]]};

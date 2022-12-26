@@ -292,12 +292,16 @@
 <span id="292">292</span>
 <span id="293">293</span>
 <span id="294">294</span>
+<span id="295">295</span>
+<span id="296">296</span>
 </pre><pre class="rust"><code><span class="kw">use </span>necsim_core_bond::OffByOneU32;
 
 <span class="kw">use </span><span class="kw">super</span>::Location;
 
-<span class="attribute">#[allow(clippy::module_name_repetitions)]
-#[derive(PartialEq, Eq, Clone, Debug, TypeLayout)]
+<span class="attribute">#[allow(clippy::module_name_repetitions, clippy::unsafe_derive_deserialize)]
+#[derive(PartialEq, Eq, Clone, Debug, serde::Deserialize, serde::Serialize, TypeLayout)]
+#[serde(rename = <span class="string">&quot;Extent&quot;</span>)]
+#[serde(deny_unknown_fields)]
 #[repr(C)]
 </span><span class="kw">pub struct </span>LandscapeExtent {
     x: u32,

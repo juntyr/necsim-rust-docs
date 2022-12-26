@@ -65,6 +65,9 @@
 <span id="65">65</span>
 <span id="66">66</span>
 <span id="67">67</span>
+<span id="68">68</span>
+<span id="69">69</span>
+<span id="70">70</span>
 </pre><pre class="rust"><code><span class="kw">use </span>necsim_core_bond::OffByOneU64;
 
 <span class="kw">use </span><span class="kw">crate</span>::landscape::{IndexedLocation, LandscapeExtent, Location};
@@ -83,6 +86,9 @@
         </span><span class="self">Self</span>: <span class="lifetime">&#39;a</span>;
 
     <span class="attribute">#[must_use]
+    </span><span class="kw">fn </span>is_finite(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool;
+
+    <span class="attribute">#[must_use]
     </span><span class="kw">fn </span>get_extent(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>LandscapeExtent;
 
     <span class="attribute">#[must_use]
@@ -91,7 +97,7 @@
     }
 
     <span class="attribute">#[must_use]
-    #[debug_ensures(ret.get() == {
+    #[debug_ensures(!<span class="self">self</span>.is_finite() || ret.get() == {
         <span class="self">self</span>.iter_habitable_locations()
             .map(|location| u128::from(<span class="self">self</span>.get_habitat_at_location(<span class="kw-2">&amp;</span>location)))
             .sum()

@@ -150,6 +150,17 @@
 <span id="150">150</span>
 <span id="151">151</span>
 <span id="152">152</span>
+<span id="153">153</span>
+<span id="154">154</span>
+<span id="155">155</span>
+<span id="156">156</span>
+<span id="157">157</span>
+<span id="158">158</span>
+<span id="159">159</span>
+<span id="160">160</span>
+<span id="161">161</span>
+<span id="162">162</span>
+<span id="163">163</span>
 </pre><pre class="rust"><code><span class="kw">use </span>core::{
     convert::TryFrom,
     fmt,
@@ -159,7 +170,7 @@
 
 <span class="kw">use </span>serde::{Deserialize, Deserializer, Serialize};
 
-<span class="kw">use </span><span class="kw">crate</span>::OffByOneU32;
+<span class="kw">use crate</span>::{ClosedUnitF64, OffByOneU32};
 
 <span class="attribute">#[derive(Debug)]
 #[allow(clippy::module_name_repetitions)]
@@ -300,6 +311,17 @@
 
     <span class="kw">fn </span>mul(<span class="self">self</span>, other: <span class="self">Self</span>) -&gt; <span class="self">Self </span>{
         <span class="self">Self</span>((<span class="self">self</span>.<span class="number">0 </span>+ <span class="number">1</span>) * (other.<span class="number">0 </span>+ <span class="number">1</span>) - <span class="number">1</span>)
+    }
+}
+
+<span class="kw">impl </span>Mul&lt;ClosedUnitF64&gt; <span class="kw">for </span>OffByOneU64 {
+    <span class="kw">type </span>Output = <span class="self">Self</span>;
+
+    <span class="kw">fn </span>mul(<span class="self">self</span>, other: ClosedUnitF64) -&gt; <span class="self">Self</span>::Output {
+        <span class="attribute">#[allow(clippy::cast_possible_truncation)]
+        #[allow(clippy::cast_sign_loss)]
+        #[allow(clippy::cast_precision_loss)]
+        </span><span class="self">Self</span>(((((<span class="self">self</span>.get() <span class="kw">as </span>f64) * other.get()) <span class="kw">as </span>u128) - <span class="number">1</span>) <span class="kw">as </span>u64)
     }
 }
 </code></pre></div>

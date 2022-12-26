@@ -234,7 +234,7 @@
     <span class="kw">for </span>EventBuffer&lt;ReportSpeciation, ReportDispersal&gt;
 {
     <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, fmt: <span class="kw-2">&amp;mut </span>fmt::Formatter) -&gt; fmt::Result {
-        fmt.debug_struct(<span class="string">&quot;EventBuffer&quot;</span>)
+        fmt.debug_struct(<span class="macro">stringify!</span>(EventBuffer))
             .field(<span class="string">&quot;max_events&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.max_events)
             .field(<span class="string">&quot;event_counter&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.event_counter)
             .finish()

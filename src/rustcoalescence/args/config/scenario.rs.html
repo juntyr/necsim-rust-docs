@@ -18,6 +18,8 @@
 <span id="18">18</span>
 <span id="19">19</span>
 <span id="20">20</span>
+<span id="21">21</span>
+<span id="22">22</span>
 </pre><pre class="rust"><code><span class="kw">use </span>serde::{Deserialize, Serialize};
 
 <span class="kw">use </span>rustcoalescence_scenarios::{
@@ -27,6 +29,7 @@
         SpatiallyExplicitTurnoverMapArguments, SpatiallyExplicitUniformTurnoverArguments,
     },
     spatially_implicit::SpatiallyImplicitArguments,
+    wrapping_noise::WrappingNoiseArguments,
 };
 
 <span class="attribute">#[derive(Debug, Serialize, Deserialize)]
@@ -37,6 +40,7 @@
     NonSpatial(NonSpatialArguments),
     SpatiallyImplicit(SpatiallyImplicitArguments),
     AlmostInfinite(AlmostInfiniteArguments),
+    WrappingNoise(WrappingNoiseArguments),
 }
 </code></pre></div>
 </section></div></main><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="rustcoalescence" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (5e9772042 2022-10-29)" ></div></body></html>

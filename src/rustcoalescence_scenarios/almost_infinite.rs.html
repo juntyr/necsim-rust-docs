@@ -113,6 +113,8 @@
 <span id="113">113</span>
 <span id="114">114</span>
 <span id="115">115</span>
+<span id="116">116</span>
+<span id="117">117</span>
 </pre><pre class="rust"><code><span class="kw">use </span>serde::{Deserialize, Serialize};
 
 <span class="kw">use </span>necsim_core::cogs::{DispersalSampler, LineageStore, MathsCore, RngCore};
@@ -123,7 +125,7 @@
     cogs::{
         dispersal_sampler::almost_infinite_normal::AlmostInfiniteNormalDispersalSampler,
         habitat::almost_infinite::AlmostInfiniteHabitat,
-        lineage_store::coherent::globally::almost_infinite::AlmostInfiniteLineageStore,
+        lineage_store::coherent::globally::singleton_demes::SingletonDemesLineageStore,
         origin_sampler::{
             almost_infinite::AlmostInfiniteOriginSampler, pre_sampler::OriginPreSampler,
         },
@@ -147,6 +149,7 @@
 
 <span class="attribute">#[derive(Debug, Serialize, Deserialize)]
 #[allow(clippy::module_name_repetitions)]
+#[serde(rename = <span class="string">&quot;AlmostInfinite&quot;</span>)]
 </span><span class="kw">pub struct </span>AlmostInfiniteArguments {
     <span class="kw">pub </span>radius: u16,
     <span class="kw">pub </span>sigma: NonNegativeF64,
@@ -163,7 +166,8 @@
     <span class="kw">type </span>DispersalSampler&lt;D: DispersalSampler&lt;M, <span class="self">Self</span>::Habitat, G&gt;&gt; =
         AlmostInfiniteNormalDispersalSampler&lt;M, G&gt;;
     <span class="kw">type </span>Habitat = AlmostInfiniteHabitat&lt;M&gt;;
-    <span class="kw">type </span>LineageStore&lt;L: LineageStore&lt;M, <span class="self">Self</span>::Habitat&gt;&gt; = AlmostInfiniteLineageStore&lt;M&gt;;
+    <span class="kw">type </span>LineageStore&lt;L: LineageStore&lt;M, <span class="self">Self</span>::Habitat&gt;&gt; =
+        SingletonDemesLineageStore&lt;M, <span class="self">Self</span>::Habitat&gt;;
     <span class="kw">type </span>OriginSampler&lt;<span class="lifetime">&#39;h</span>, I: Iterator&lt;Item = u64&gt;&gt; = AlmostInfiniteOriginSampler&lt;<span class="lifetime">&#39;h</span>, M, I&gt; <span class="kw">where </span>G: <span class="lifetime">&#39;h</span>;
     <span class="kw">type </span>OriginSamplerAuxiliary = (u16,);
     <span class="kw">type </span>SpeciationProbability = UniformSpeciationProbability;

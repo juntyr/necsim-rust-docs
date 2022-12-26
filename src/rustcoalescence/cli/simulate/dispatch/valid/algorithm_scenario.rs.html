@@ -193,6 +193,14 @@
 <span id="193">193</span>
 <span id="194">194</span>
 <span id="195">195</span>
+<span id="196">196</span>
+<span id="197">197</span>
+<span id="198">198</span>
+<span id="199">199</span>
+<span id="200">200</span>
+<span id="201">201</span>
+<span id="202">202</span>
+<span id="203">203</span>
 </pre><pre class="rust"><code><span class="kw">use </span>necsim_core::reporter::Reporter;
 <span class="kw">use </span>necsim_core_bond::{NonNegativeF64, OpenClosedUnitF64 <span class="kw">as </span>PositiveUnitF64};
 <span class="kw">use </span>necsim_partitioning_core::LocalPartition;
@@ -215,6 +223,7 @@
         SpatiallyExplicitTurnoverMapScenario, SpatiallyExplicitUniformTurnoverScenario,
     },
     spatially_implicit::SpatiallyImplicitScenario,
+    wrapping_noise::WrappingNoiseScenario,
     Scenario,
 };
 
@@ -381,6 +390,13 @@
         },
         ScenarioArgs::SpatiallyImplicit(scenario_args) =&gt; {
             SpatiallyImplicitScenario::initialise(
+                scenario_args,
+                speciation_probability_per_generation,
+            )
+            .into_ok()
+        },
+        ScenarioArgs::WrappingNoise(scenario_args) =&gt; {
+            WrappingNoiseScenario::initialise(
                 scenario_args,
                 speciation_probability_per_generation,
             )
