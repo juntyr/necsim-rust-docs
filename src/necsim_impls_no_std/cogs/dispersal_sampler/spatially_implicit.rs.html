@@ -151,8 +151,6 @@
 <span id="151">151</span>
 <span id="152">152</span>
 <span id="153">153</span>
-<span id="154">154</span>
-<span id="155">155</span>
 </pre><pre class="rust"><code><span class="kw">use </span>necsim_core::{
     cogs::{Backup, DispersalSampler, Habitat, MathsCore, RngCore, SeparableDispersalSampler},
     landscape::Location,
@@ -204,13 +202,11 @@
     <span class="kw">for </span>SpatiallyImplicitDispersalSampler&lt;M, G&gt;
 {
     <span class="attribute">#[must_use]
-    #[debug_requires(
-        habitat.local().contains(location) || habitat.meta().contains(location),
-        <span class="string">&quot;location is inside either the local or meta habitat extent&quot;
-    </span>)]
-    #[debug_ensures(habitat.meta().contains(<span class="kw-2">&amp;</span>ret) || <span class="kw">if </span>old(habitat.local().contains(location)) {
-        habitat.local().contains(<span class="kw-2">&amp;</span>ret)
-    } <span class="kw">else </span>{ <span class="bool-val">false </span>}, <span class="string">&quot;target is inside the meta habitat extent, \
+    #[debug_ensures(habitat.meta().get_extent().contains(<span class="kw-2">&amp;</span>ret) || (
+        <span class="kw">if </span>old(habitat.local().get_extent().contains(location)) {
+            habitat.local().get_extent().contains(<span class="kw-2">&amp;</span>ret)
+        } <span class="kw">else </span>{ <span class="bool-val">false </span>}
+    ), <span class="string">&quot;target is inside the meta habitat extent, \
         or -- iff the location was local -- in the local habitat extent&quot;
     </span>)]
     </span><span class="kw">fn </span>sample_dispersal_from_location(
@@ -221,7 +217,9 @@
     ) -&gt; Location {
         <span class="kw">use </span>necsim_core::cogs::RngSampler;
 
-        <span class="kw">if </span>habitat.local().contains(location) {
+        <span class="comment">// By PRE, location must be habitable, i.e. either in the local or the meta
+        //  habitat
+        </span><span class="kw">if </span>habitat.local().get_extent().contains(location) {
             <span class="kw">if </span>rng.sample_event(<span class="self">self</span>.local_migration_probability_per_generation.into()) {
                 <span class="comment">// Provide a dummpy Location in the meta community to disperse from
                 </span><span class="self">self</span>.meta.sample_dispersal_from_location(
@@ -248,13 +246,11 @@
     <span class="kw">for </span>SpatiallyImplicitDispersalSampler&lt;M, G&gt;
 {
     <span class="attribute">#[must_use]
-    #[debug_requires(
-        habitat.local().contains(location) || habitat.meta().contains(location),
-        <span class="string">&quot;location is inside either the local or meta habitat extent&quot;
-    </span>)]
-    #[debug_ensures(habitat.meta().contains(<span class="kw-2">&amp;</span>ret) || <span class="kw">if </span>old(habitat.local().contains(location)) {
-        habitat.local().contains(<span class="kw-2">&amp;</span>ret)
-    } <span class="kw">else </span>{ <span class="bool-val">false </span>}, <span class="string">&quot;target is inside the meta habitat extent, \
+    #[debug_ensures(habitat.meta().get_extent().contains(<span class="kw-2">&amp;</span>ret) || (
+        <span class="kw">if </span>old(habitat.local().get_extent().contains(location)) {
+            habitat.local().get_extent().contains(<span class="kw-2">&amp;</span>ret)
+        } <span class="kw">else </span>{ <span class="bool-val">false </span>}
+    ), <span class="string">&quot;target is inside the meta habitat extent, \
         or -- iff the location was local -- in the local habitat extent&quot;
     </span>)]
     </span><span class="kw">fn </span>sample_non_self_dispersal_from_location(
@@ -265,7 +261,9 @@
     ) -&gt; Location {
         <span class="kw">use </span>necsim_core::cogs::RngSampler;
 
-        <span class="kw">if </span>habitat.local().contains(location) {
+        <span class="comment">// By PRE, location must be habitable, i.e. either in the local or the meta
+        //  habitat
+        </span><span class="kw">if </span>habitat.local().get_extent().contains(location) {
             <span class="kw">if </span>rng.sample_event(<span class="self">self</span>.local_migration_probability_per_generation.into()) {
                 <span class="comment">// Provide a dummpy Location in the meta community to disperse from
                 // As the individual is dispersing to a different community,
@@ -289,16 +287,14 @@
     }
 
     <span class="attribute">#[must_use]
-    #[debug_requires(
-        habitat.local().contains(location) || habitat.meta().contains(location),
-        <span class="string">&quot;location is inside either the local or meta habitat extent&quot;
-    </span>)]
     </span><span class="kw">fn </span>get_self_dispersal_probability_at_location(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         location: <span class="kw-2">&amp;</span>Location,
         habitat: <span class="kw-2">&amp;</span>SpatiallyImplicitHabitat&lt;M&gt;,
     ) -&gt; ClosedUnitF64 {
-        <span class="kw">if </span>habitat.local().contains(location) {
+        <span class="comment">// By PRE, location must be habitable, i.e. either in the local or the meta
+        //  habitat
+        </span><span class="kw">if </span>habitat.local().get_extent().contains(location) {
             <span class="self">self</span>.local
                 .get_self_dispersal_probability_at_location(location, habitat.local())
                 * ClosedUnitF64::from(<span class="self">self</span>.local_migration_probability_per_generation).one_minus()

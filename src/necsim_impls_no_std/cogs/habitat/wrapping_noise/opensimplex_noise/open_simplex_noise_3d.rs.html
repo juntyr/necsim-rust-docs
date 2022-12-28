@@ -344,6 +344,24 @@
 <span id="344">344</span>
 <span id="345">345</span>
 <span id="346">346</span>
+<span id="347">347</span>
+<span id="348">348</span>
+<span id="349">349</span>
+<span id="350">350</span>
+<span id="351">351</span>
+<span id="352">352</span>
+<span id="353">353</span>
+<span id="354">354</span>
+<span id="355">355</span>
+<span id="356">356</span>
+<span id="357">357</span>
+<span id="358">358</span>
+<span id="359">359</span>
+<span id="360">360</span>
+<span id="361">361</span>
+<span id="362">362</span>
+<span id="363">363</span>
+<span id="364">364</span>
 </pre><pre class="rust"><code><span class="kw">use </span>necsim_core_maths::MathsCore;
 
 <span class="kw">use super</span>::{
@@ -390,13 +408,24 @@
     <span class="kw">const </span>SQUISH_POINT: Vec3&lt;f64&gt; = Vec3::new(SQUISH, SQUISH, SQUISH);
     <span class="kw">const </span>STRETCH_POINT: Vec3&lt;f64&gt; = Vec3::new(STRETCH, STRETCH, STRETCH);
 
-    <span class="kw">fn </span>extrapolate(grid: Vec3&lt;f64&gt;, delta: Vec3&lt;f64&gt;, perm: <span class="kw-2">&amp;</span>PermTable) -&gt; f64 {
+    <span class="kw">fn </span>extrapolate&lt;M: MathsCore&gt;(
+        grid: Vec3&lt;f64&gt;,
+        delta: Vec3&lt;f64&gt;,
+        perm: <span class="kw-2">&amp;</span>PermTable,
+        wrap: f64,
+    ) -&gt; f64 {
+        <span class="comment">// Wrap the grid to put in the range [0; wrap), then snap to grid points
+        </span><span class="kw">let </span>grid = grid.map(|i| i - M::floor(i / wrap) * wrap).map(M::floor);
+
         <span class="kw">let </span>point = GRAD_TABLE[<span class="self">Self</span>::get_grad_table_index(grid, perm)];
 
         point.x * delta.x + point.y * delta.y + point.z * delta.z
     }
 
-    <span class="kw">fn </span>eval&lt;M: MathsCore&gt;(input: Vec3&lt;f64&gt;, perm: <span class="kw-2">&amp;</span>PermTable) -&gt; f64 {
+    <span class="kw">fn </span>eval&lt;M: MathsCore&gt;(input: Vec3&lt;f64&gt;, perm: <span class="kw-2">&amp;</span>PermTable, wrap: f64) -&gt; f64 {
+        <span class="comment">// Pre-squish the input to allow wrapping in extrapolate
+        </span><span class="kw">let </span>input = input + (<span class="self">Self</span>::SQUISH_POINT * input.sum());
+
         <span class="kw">let </span>stretch: Vec3&lt;f64&gt; = input + (<span class="self">Self</span>::STRETCH_POINT * input.sum());
         <span class="kw">let </span>grid = stretch.map(M::floor);
 
@@ -404,18 +433,25 @@
         <span class="kw">let </span>ins = stretch - grid;
         <span class="kw">let </span>origin = input - squashed;
 
-        <span class="self">Self</span>::get_value(grid, origin, ins, perm)
+        <span class="self">Self</span>::get_value::&lt;M&gt;(grid, origin, ins, perm, wrap)
     }
 }
 
 <span class="kw">impl </span>OpenSimplexNoise3D {
-    <span class="kw">fn </span>get_value(grid: Vec3&lt;f64&gt;, origin: Vec3&lt;f64&gt;, ins: Vec3&lt;f64&gt;, perm: <span class="kw-2">&amp;</span>PermTable) -&gt; f64 {
+    <span class="kw">fn </span>get_value&lt;M: MathsCore&gt;(
+        grid: Vec3&lt;f64&gt;,
+        origin: Vec3&lt;f64&gt;,
+        ins: Vec3&lt;f64&gt;,
+        perm: <span class="kw-2">&amp;</span>PermTable,
+        wrap: f64,
+    ) -&gt; f64 {
         <span class="kw">let </span>contribute = |x: f64, y: f64, z: f64| {
-            utils::contribute::&lt;OpenSimplexNoise3D, Vec3&lt;f64&gt;&gt;(
+            utils::contribute::&lt;OpenSimplexNoise3D, Vec3&lt;f64&gt;, M&gt;(
                 Vec3::new(x, y, z),
                 origin,
                 grid,
                 perm,
+                wrap,
             )
         };
 

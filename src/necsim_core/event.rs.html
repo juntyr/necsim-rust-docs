@@ -250,6 +250,109 @@
 <span id="250">250</span>
 <span id="251">251</span>
 <span id="252">252</span>
+<span id="253">253</span>
+<span id="254">254</span>
+<span id="255">255</span>
+<span id="256">256</span>
+<span id="257">257</span>
+<span id="258">258</span>
+<span id="259">259</span>
+<span id="260">260</span>
+<span id="261">261</span>
+<span id="262">262</span>
+<span id="263">263</span>
+<span id="264">264</span>
+<span id="265">265</span>
+<span id="266">266</span>
+<span id="267">267</span>
+<span id="268">268</span>
+<span id="269">269</span>
+<span id="270">270</span>
+<span id="271">271</span>
+<span id="272">272</span>
+<span id="273">273</span>
+<span id="274">274</span>
+<span id="275">275</span>
+<span id="276">276</span>
+<span id="277">277</span>
+<span id="278">278</span>
+<span id="279">279</span>
+<span id="280">280</span>
+<span id="281">281</span>
+<span id="282">282</span>
+<span id="283">283</span>
+<span id="284">284</span>
+<span id="285">285</span>
+<span id="286">286</span>
+<span id="287">287</span>
+<span id="288">288</span>
+<span id="289">289</span>
+<span id="290">290</span>
+<span id="291">291</span>
+<span id="292">292</span>
+<span id="293">293</span>
+<span id="294">294</span>
+<span id="295">295</span>
+<span id="296">296</span>
+<span id="297">297</span>
+<span id="298">298</span>
+<span id="299">299</span>
+<span id="300">300</span>
+<span id="301">301</span>
+<span id="302">302</span>
+<span id="303">303</span>
+<span id="304">304</span>
+<span id="305">305</span>
+<span id="306">306</span>
+<span id="307">307</span>
+<span id="308">308</span>
+<span id="309">309</span>
+<span id="310">310</span>
+<span id="311">311</span>
+<span id="312">312</span>
+<span id="313">313</span>
+<span id="314">314</span>
+<span id="315">315</span>
+<span id="316">316</span>
+<span id="317">317</span>
+<span id="318">318</span>
+<span id="319">319</span>
+<span id="320">320</span>
+<span id="321">321</span>
+<span id="322">322</span>
+<span id="323">323</span>
+<span id="324">324</span>
+<span id="325">325</span>
+<span id="326">326</span>
+<span id="327">327</span>
+<span id="328">328</span>
+<span id="329">329</span>
+<span id="330">330</span>
+<span id="331">331</span>
+<span id="332">332</span>
+<span id="333">333</span>
+<span id="334">334</span>
+<span id="335">335</span>
+<span id="336">336</span>
+<span id="337">337</span>
+<span id="338">338</span>
+<span id="339">339</span>
+<span id="340">340</span>
+<span id="341">341</span>
+<span id="342">342</span>
+<span id="343">343</span>
+<span id="344">344</span>
+<span id="345">345</span>
+<span id="346">346</span>
+<span id="347">347</span>
+<span id="348">348</span>
+<span id="349">349</span>
+<span id="350">350</span>
+<span id="351">351</span>
+<span id="352">352</span>
+<span id="353">353</span>
+<span id="354">354</span>
+<span id="355">355</span>
 </pre><pre class="rust"><code><span class="kw">use </span>necsim_core_bond::{NonNegativeF64, PositiveF64};
 <span class="kw">use </span>serde::{Deserialize, Serialize};
 
@@ -264,43 +367,32 @@
 };
 
 <span class="attribute">#[allow(clippy::module_name_repetitions)]
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[allow(clippy::unsafe_derive_deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize, TypeLayout)]
+#[repr(C)]
 </span><span class="kw">pub struct </span>PackedEvent {
     global_lineage_reference: GlobalLineageReference,
-    prior_time: NonNegativeF64, <span class="comment">// time of the previous event
-    </span>event_time: PositiveF64,    <span class="comment">// time of this event
+    <span class="comment">// p\e (-) (+)
+    // (-)  N   S
+    // (+)  M   C
+    </span>prior_time: f64, <span class="comment">// time of the previous event, NonNegativeF64
+    </span>event_time: f64, <span class="comment">// time of this event, PositiveF64
     </span>origin: IndexedLocation,
-    target: <span class="prelude-ty">Option</span>&lt;IndexedLocation&gt;,
-    interaction: LineageInteraction,
+    target: IndexedLocation,
+    coalescence: GlobalLineageReference,
 }
 
 <span class="kw">impl </span>PackedEvent {
     <span class="attribute">#[must_use]
     #[inline]
     </span><span class="kw">pub fn </span>event_time(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; PositiveF64 {
-        <span class="self">self</span>.event_time
+        <span class="kw">unsafe </span>{ PositiveF64::new_unchecked(<span class="self">self</span>.event_time.make_positive()) }
     }
 }
 
 <span class="attribute">#[allow(dead_code)]
-</span><span class="kw">const </span>EXCESSIVE_OPTION_PACKED_EVENT_ERROR: [(); <span class="number">1 </span>- {
-    <span class="kw">const </span>ASSERT: bool =
-        core::mem::size_of::&lt;<span class="prelude-ty">Option</span>&lt;PackedEvent&gt;&gt;() == core::mem::size_of::&lt;PackedEvent&gt;();
-    ASSERT
-} <span class="kw">as </span>usize] = [];
-
-<span class="attribute">#[allow(dead_code)]
 </span><span class="kw">const </span>EXCESSIVE_PACKED_EVENT_ERROR: [(); <span class="number">1 </span>- {
-    <span class="kw">const </span>ASSERT: bool = {
-        <span class="kw">const </span>SPECIATION_SIZE: usize = core::mem::size_of::&lt;SpeciationEvent&gt;();
-        <span class="kw">const </span>DISPERSAL_SIZE: usize = core::mem::size_of::&lt;DispersalEvent&gt;();
-
-        <span class="kw">if </span>SPECIATION_SIZE &gt; DISPERSAL_SIZE {
-            SPECIATION_SIZE
-        } <span class="kw">else </span>{
-            DISPERSAL_SIZE
-        }
-    } == core::mem::size_of::&lt;PackedEvent&gt;();
+    <span class="kw">const </span>ASSERT: bool = core::mem::size_of::&lt;PackedEvent&gt;() == <span class="number">56</span>;
     ASSERT
 } <span class="kw">as </span>usize] = [];
 
@@ -329,16 +421,13 @@
 }
 
 <span class="attribute">#[allow(dead_code)]
-</span><span class="kw">const </span>EXCESSIVE_OPTION_SPECIATION_EVENT_ERROR: [(); <span class="number">1 </span>- {
-    <span class="kw">const </span>ASSERT: bool =
-        core::mem::size_of::&lt;<span class="prelude-ty">Option</span>&lt;SpeciationEvent&gt;&gt;() == core::mem::size_of::&lt;SpeciationEvent&gt;();
+</span><span class="kw">const </span>EXCESSIVE_SPECIATION_EVENT_ERROR: [(); <span class="number">1 </span>- {
+    <span class="kw">const </span>ASSERT: bool = core::mem::size_of::&lt;SpeciationEvent&gt;() == <span class="number">40</span>;
     ASSERT
 } <span class="kw">as </span>usize] = [];
 
 <span class="attribute">#[allow(clippy::module_name_repetitions)]
-#[allow(clippy::unsafe_derive_deserialize)]
-#[derive(Debug, Clone, Serialize, Deserialize, TypeLayout)]
-#[repr(C)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 </span><span class="kw">pub struct </span>DispersalEvent {
     <span class="kw">pub </span>global_lineage_reference: GlobalLineageReference,
     <span class="kw">pub </span>prior_time: NonNegativeF64, <span class="comment">// time of the previous event
@@ -347,6 +436,12 @@
     <span class="kw">pub </span>target: IndexedLocation,
     <span class="kw">pub </span>interaction: LineageInteraction,
 }
+
+<span class="attribute">#[allow(dead_code)]
+</span><span class="kw">const </span>EXCESSIVE_DISPERSAL_EVENT_ERROR: [(); <span class="number">1 </span>- {
+    <span class="kw">const </span>ASSERT: bool = core::mem::size_of::&lt;DispersalEvent&gt;() == <span class="number">64</span>;
+    ASSERT
+} <span class="kw">as </span>usize] = [];
 
 <span class="attribute">#[allow(dead_code)]
 </span><span class="kw">const </span>EXCESSIVE_OPTION_DISPERSAL_EVENT_ERROR: [(); <span class="number">1 </span>- {
@@ -363,26 +458,62 @@
 
 <span class="kw">impl </span>From&lt;SpeciationEvent&gt; <span class="kw">for </span>PackedEvent {
     <span class="kw">fn </span>from(event: SpeciationEvent) -&gt; <span class="self">Self </span>{
-        <span class="self">Self </span>{
-            global_lineage_reference: event.global_lineage_reference,
-            prior_time: event.prior_time,
-            event_time: event.event_time,
-            origin: event.origin,
-            target: <span class="prelude-val">None</span>,
-            interaction: LineageInteraction::None,
+        <span class="comment">// speciation is encoded as p(-), e(+)
+        </span><span class="self">Self </span>{
+            global_lineage_reference: event.global_lineage_reference.clone(),
+            prior_time: event.prior_time.get().make_negative(),
+            event_time: event.event_time.get(),
+            origin: event.origin.clone(),
+            target: event.origin,
+            coalescence: event.global_lineage_reference,
         }
     }
 }
 
 <span class="kw">impl </span>From&lt;DispersalEvent&gt; <span class="kw">for </span>PackedEvent {
-    <span class="kw">fn </span>from(event: DispersalEvent) -&gt; <span class="self">Self </span>{
+    <span class="kw">fn </span>from(
+        DispersalEvent {
+            global_lineage_reference,
+            prior_time,
+            event_time,
+            origin,
+            target,
+            interaction,
+        }: DispersalEvent,
+    ) -&gt; <span class="self">Self </span>{
+        <span class="kw">let </span>prior_time = prior_time.get();
+        <span class="kw">let </span>event_time = event_time.get();
+
+        <span class="kw">let </span>(coalescence, prior_time, event_time) = <span class="kw">match </span>interaction {
+            LineageInteraction::None =&gt; {
+                <span class="comment">// dispersal, no coalescence is encoded as p(-), e(-)
+                </span>(
+                    global_lineage_reference.clone(),
+                    prior_time.make_negative(),
+                    event_time.make_negative(),
+                )
+            },
+            LineageInteraction::Maybe =&gt; {
+                <span class="comment">// dispersal, maybe coalescence is encoded as p(+), e(-)
+                </span>(
+                    global_lineage_reference.clone(),
+                    prior_time,
+                    event_time.make_negative(),
+                )
+            },
+            LineageInteraction::Coalescence(coalescence) =&gt; {
+                <span class="comment">// dispersal, with coalescence is encoded as p(+), e(+)
+                </span>(coalescence, prior_time, event_time)
+            },
+        };
+
         <span class="self">Self </span>{
-            global_lineage_reference: event.global_lineage_reference,
-            prior_time: event.prior_time,
-            event_time: event.event_time,
-            origin: event.origin,
-            target: <span class="prelude-val">Some</span>(event.target),
-            interaction: event.interaction,
+            global_lineage_reference,
+            prior_time,
+            event_time,
+            origin,
+            target,
+            coalescence,
         }
     }
 }
@@ -396,25 +527,70 @@
     }
 }
 
+<span class="kw">impl </span>From&lt;SpeciationEvent&gt; <span class="kw">for </span>TypedEvent {
+    <span class="kw">fn </span>from(event: SpeciationEvent) -&gt; <span class="self">Self </span>{
+        <span class="self">Self</span>::Speciation(event)
+    }
+}
+
+<span class="kw">impl </span>From&lt;DispersalEvent&gt; <span class="kw">for </span>TypedEvent {
+    <span class="kw">fn </span>from(event: DispersalEvent) -&gt; <span class="self">Self </span>{
+        <span class="self">Self</span>::Dispersal(event)
+    }
+}
+
 <span class="kw">impl </span>From&lt;PackedEvent&gt; <span class="kw">for </span>TypedEvent {
-    <span class="kw">fn </span>from(event: PackedEvent) -&gt; <span class="self">Self </span>{
-        <span class="attribute">#[allow(clippy::option_if_let_else)]
-        </span><span class="kw">if let </span><span class="prelude-val">Some</span>(target) = event.target {
-            <span class="self">Self</span>::Dispersal(DispersalEvent {
-                global_lineage_reference: event.global_lineage_reference,
-                prior_time: event.prior_time,
-                event_time: event.event_time,
-                origin: event.origin,
+    <span class="kw">fn </span>from(
+        PackedEvent {
+            global_lineage_reference,
+            prior_time,
+            event_time,
+            origin,
+            target,
+            coalescence,
+        }: PackedEvent,
+    ) -&gt; <span class="self">Self </span>{
+        <span class="kw">let </span>prior_pos = prior_time.is_sign_positive();
+        <span class="kw">let </span>event_pos = event_time.is_sign_positive();
+
+        <span class="kw">let </span>prior_time = <span class="kw">unsafe </span>{ NonNegativeF64::new_unchecked(prior_time.make_positive()) };
+        <span class="kw">let </span>event_time = <span class="kw">unsafe </span>{ PositiveF64::new_unchecked(event_time.make_positive()) };
+
+        <span class="kw">match </span>(prior_pos, event_pos) {
+            <span class="comment">// dispersal, no coalescence is encoded as p(-), e(-)
+            </span>(<span class="bool-val">false</span>, <span class="bool-val">false</span>) =&gt; <span class="self">Self</span>::Dispersal(DispersalEvent {
+                global_lineage_reference,
+                prior_time,
+                event_time,
+                origin,
                 target,
-                interaction: event.interaction,
-            })
-        } <span class="kw">else </span>{
-            <span class="self">Self</span>::Speciation(SpeciationEvent {
-                global_lineage_reference: event.global_lineage_reference,
-                prior_time: event.prior_time,
-                event_time: event.event_time,
-                origin: event.origin,
-            })
+                interaction: LineageInteraction::None,
+            }),
+            <span class="comment">// speciation is encoded as p(-), e(+)
+            </span>(<span class="bool-val">false</span>, <span class="bool-val">true</span>) =&gt; <span class="self">Self</span>::Speciation(SpeciationEvent {
+                global_lineage_reference,
+                prior_time,
+                event_time,
+                origin,
+            }),
+            <span class="comment">// dispersal, maybe coalescence is encoded as p(+), e(-)
+            </span>(<span class="bool-val">true</span>, <span class="bool-val">false</span>) =&gt; <span class="self">Self</span>::Dispersal(DispersalEvent {
+                global_lineage_reference,
+                prior_time,
+                event_time,
+                origin,
+                target,
+                interaction: LineageInteraction::Maybe,
+            }),
+            <span class="comment">// dispersal, with coalescence is encoded as p(+), e(+)
+            </span>(<span class="bool-val">true</span>, <span class="bool-val">true</span>) =&gt; <span class="self">Self</span>::Dispersal(DispersalEvent {
+                global_lineage_reference,
+                prior_time,
+                event_time,
+                origin,
+                target,
+                interaction: LineageInteraction::Coalescence(coalescence),
+            }),
         }
     }
 }
@@ -423,13 +599,13 @@
 
 <span class="kw">impl </span>PartialEq <span class="kw">for </span>PackedEvent {
     <span class="comment">// `Event`s are equal when they have the same `origin`, `event_time`,
-    //  `target` and `interaction`
-    // (`global_lineage_reference` and `prior_time` are ignored)
+    //  and `target`
+    // (`global_lineage_reference`, `prior_time`, and `coalescence` are ignored)
     </span><span class="kw">fn </span>eq(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; bool {
         <span class="self">self</span>.origin == other.origin
-            &amp;&amp; <span class="self">self</span>.event_time == other.event_time
+            &amp;&amp; <span class="kw">unsafe </span>{ PositiveF64::new_unchecked(<span class="self">self</span>.event_time) }
+                == <span class="kw">unsafe </span>{ PositiveF64::new_unchecked(other.event_time) }
             &amp;&amp; <span class="self">self</span>.target == other.target
-            &amp;&amp; <span class="self">self</span>.interaction == other.interaction
     }
 }
 
@@ -438,24 +614,22 @@
         <span class="comment">// Order `Event`s in lexicographical order:
         //  (1) event_time                       /=\
         //  (2) origin                  different | events
-        //  (3) target and interaction           \=/
+        //  (3) target                           \=/
         //  (4) prior_time              parent + offspring
         //  (5) global_lineage_reference
-
+        // (coalescence is ignored)
         </span>(
-            <span class="kw-2">&amp;</span><span class="self">self</span>.event_time,
+            <span class="kw-2">&amp;</span><span class="kw">unsafe </span>{ PositiveF64::new_unchecked(<span class="self">self</span>.event_time.make_positive()) },
             <span class="kw-2">&amp;</span><span class="self">self</span>.origin,
             <span class="kw-2">&amp;</span><span class="self">self</span>.target,
-            <span class="kw-2">&amp;</span><span class="self">self</span>.interaction,
-            <span class="kw-2">&amp;</span><span class="self">self</span>.prior_time,
+            <span class="kw-2">&amp;</span><span class="kw">unsafe </span>{ NonNegativeF64::new_unchecked(<span class="self">self</span>.prior_time.make_positive()) },
             <span class="kw-2">&amp;</span><span class="self">self</span>.global_lineage_reference,
         )
             .cmp(<span class="kw-2">&amp;</span>(
-                <span class="kw-2">&amp;</span>other.event_time,
+                <span class="kw-2">&amp;</span><span class="kw">unsafe </span>{ PositiveF64::new_unchecked(other.event_time.make_positive()) },
                 <span class="kw-2">&amp;</span>other.origin,
                 <span class="kw-2">&amp;</span>other.target,
-                <span class="kw-2">&amp;</span>other.interaction,
-                <span class="kw-2">&amp;</span>other.prior_time,
+                <span class="kw-2">&amp;</span><span class="kw">unsafe </span>{ NonNegativeF64::new_unchecked(other.prior_time.make_positive()) },
                 <span class="kw-2">&amp;</span>other.global_lineage_reference,
             ))
     }
@@ -469,13 +643,12 @@
 
 <span class="kw">impl </span>Hash <span class="kw">for </span>PackedEvent {
     <span class="comment">// `Event`s are equal when they have the same `origin`, `event_time`,
-    //  `target` and `interaction`
-    // (`global_lineage_reference` and `prior_time` are ignored)
+    //  and `target`.
+    // (`global_lineage_reference`, `prior_time`, and `coalescence` are ignored)
     </span><span class="kw">fn </span>hash&lt;S: Hasher&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, state: <span class="kw-2">&amp;mut </span>S) {
         <span class="self">self</span>.origin.hash(state);
-        <span class="self">self</span>.event_time.hash(state);
+        <span class="kw">unsafe </span>{ PositiveF64::new_unchecked(<span class="self">self</span>.event_time.make_positive()) }.hash(state);
         <span class="self">self</span>.target.hash(state);
-        <span class="self">self</span>.interaction.hash(state);
     }
 }
 
@@ -493,13 +666,46 @@
 
 <span class="kw">impl </span>PartialEq <span class="kw">for </span>DispersalEvent {
     <span class="comment">// `SpeciationEvent`s are equal when they have the same `origin`,
-    //  `event_time`, `target` and `interaction`
-    //  (`global_lineage_reference` and `prior_time` are ignored)
+    //  `event_time`, and `target`
+    // (`global_lineage_reference`, `prior_time`, and `interaction` are ignored)
     </span><span class="kw">fn </span>eq(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; bool {
         <span class="self">self</span>.origin == other.origin
             &amp;&amp; <span class="self">self</span>.event_time == other.event_time
             &amp;&amp; <span class="self">self</span>.target == other.target
-            &amp;&amp; <span class="self">self</span>.interaction == other.interaction
+    }
+}
+
+<span class="kw">trait </span>F64 {
+    <span class="kw">fn </span>make_positive(<span class="self">self</span>) -&gt; <span class="self">Self</span>;
+    <span class="kw">fn </span>make_negative(<span class="self">self</span>) -&gt; <span class="self">Self</span>;
+}
+
+<span class="kw">impl </span>F64 <span class="kw">for </span>f64 {
+    <span class="kw">fn </span>make_positive(<span class="self">self</span>) -&gt; <span class="self">Self </span>{
+        f64::from_bits(<span class="self">self</span>.to_bits() &amp; <span class="number">0x7fff_ffff_ffff_ffff_u64</span>)
+    }
+
+    <span class="kw">fn </span>make_negative(<span class="self">self</span>) -&gt; <span class="self">Self </span>{
+        f64::from_bits(<span class="self">self</span>.to_bits() | <span class="number">0x8000_0000_0000_0000_u64</span>)
+    }
+}
+
+<span class="attribute">#[cfg(test)]
+</span><span class="kw">mod </span>tests {
+    <span class="kw">use </span><span class="kw">super</span>::F64;
+
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>test_make_positive() {
+        <span class="macro">assert_eq!</span>((-<span class="number">0.0_f64</span>).make_positive().to_bits(), (<span class="number">0.0_f64</span>).to_bits());
+        <span class="macro">assert_eq!</span>((-<span class="number">42.0_f64</span>).make_positive().to_bits(), (<span class="number">42.0_f64</span>).to_bits());
+        <span class="macro">assert_eq!</span>((<span class="number">24.0_f64</span>).make_positive().to_bits(), (<span class="number">24.0_f64</span>).to_bits());
+    }
+
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>test_make_negative() {
+        <span class="macro">assert_eq!</span>((<span class="number">0.0_f64</span>).make_negative().to_bits(), (-<span class="number">0.0_f64</span>).to_bits());
+        <span class="macro">assert_eq!</span>((<span class="number">42.0_f64</span>).make_negative().to_bits(), (-<span class="number">42.0_f64</span>).to_bits());
+        <span class="macro">assert_eq!</span>((-<span class="number">24.0_f64</span>).make_negative().to_bits(), (-<span class="number">24.0_f64</span>).to_bits());
     }
 }
 </code></pre></div>

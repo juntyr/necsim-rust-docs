@@ -18,6 +18,9 @@
 <span id="18">18</span>
 <span id="19">19</span>
 <span id="20">20</span>
+<span id="21">21</span>
+<span id="22">22</span>
+<span id="23">23</span>
 </pre><pre class="rust"><code><span class="kw">use </span>necsim_core_bond::ClosedUnitF64;
 
 <span class="kw">use crate</span>::{
@@ -31,7 +34,10 @@
     <span class="kw">crate</span>::cogs::Backup + core::fmt::Debug
 {
     <span class="attribute">#[must_use]
-    #[debug_requires(habitat.contains(location), <span class="string">&quot;location is inside habitat&quot;</span>)]
+    #[debug_requires(
+        habitat.is_location_habitable(location),
+        <span class="string">&quot;location is habitable&quot;
+    </span>)]
     </span><span class="kw">fn </span>get_speciation_probability_at_location(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         location: <span class="kw-2">&amp;</span>Location,

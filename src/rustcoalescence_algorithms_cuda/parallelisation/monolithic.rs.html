@@ -666,7 +666,7 @@
                             }
                         }
 
-                        event_buffer.report_events(<span class="kw-2">&amp;mut </span>proxy);
+                        event_buffer.report_events_unordered(<span class="kw-2">&amp;mut </span>proxy);
 
                         proxy.local_partition().get_reporter().report_progress(
                             <span class="kw-2">&amp;</span>((slow_lineages.len() <span class="kw">as </span>u64) + (fast_lineages.len() <span class="kw">as </span>u64)).into(),

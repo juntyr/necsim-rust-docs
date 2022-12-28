@@ -71,13 +71,6 @@
 <span id="71">71</span>
 <span id="72">72</span>
 <span id="73">73</span>
-<span id="74">74</span>
-<span id="75">75</span>
-<span id="76">76</span>
-<span id="77">77</span>
-<span id="78">78</span>
-<span id="79">79</span>
-<span id="80">80</span>
 </pre><pre class="rust"><code><span class="kw">use </span>core::hash::{Hash, Hasher};
 
 <span class="kw">use </span>necsim_core_bond::{ClosedOpenUnitF64, PositiveF64};
@@ -113,13 +106,6 @@
     sample_time: PositiveF64,
     sample_location: IndexedLocation,
 }
-
-<span class="attribute">#[allow(dead_code)]
-</span><span class="kw">const </span>EXCESSIVE_OPTION_SPECIATION_SAMPLE_ERROR: [(); <span class="number">1 </span>- {
-    <span class="kw">const </span>ASSERT: bool = core::mem::size_of::&lt;<span class="prelude-ty">Option</span>&lt;SpeciationSample&gt;&gt;()
-        == core::mem::size_of::&lt;SpeciationSample&gt;();
-    ASSERT
-} <span class="kw">as </span>usize] = [];
 
 <span class="kw">impl </span>SpeciationSample {
     <span class="kw">pub fn </span>update_min(

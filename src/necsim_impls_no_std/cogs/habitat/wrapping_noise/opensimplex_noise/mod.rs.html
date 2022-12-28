@@ -91,6 +91,9 @@
 <span id="91">91</span>
 <span id="92">92</span>
 <span id="93">93</span>
+<span id="94">94</span>
+<span id="95">95</span>
+<span id="96">96</span>
 </pre><pre class="rust"><code><span class="attribute">#![allow(
     clippy::cast_possible_truncation,
     clippy::cast_sign_loss,
@@ -100,6 +103,8 @@
 </span><span class="comment">// OpenSimplex noise implementation vendored from
 // https://github.com/Mapet13/opensimplex_noise_rust
 // by Jakub Sordyl, licensed under the Unlicense
+//
+// Adapted to use MathsCore and support wrapping
 
 </span><span class="kw">use </span>necsim_core_maths::MathsCore;
 
@@ -140,19 +145,20 @@
 
     <span class="attribute">#[allow(dead_code)]
     #[must_use]
-    </span><span class="kw">pub fn </span>eval_2d&lt;M: MathsCore&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, x: f64, y: f64) -&gt; f64 {
-        OpenSimplexNoise2D::eval::&lt;M&gt;(Vec2::new(x, y), <span class="kw-2">&amp;</span><span class="self">self</span>.perm)
+    </span><span class="kw">pub fn </span>eval_2d&lt;M: MathsCore&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, x: f64, y: f64, wrap: f64) -&gt; f64 {
+        OpenSimplexNoise2D::eval::&lt;M&gt;(Vec2::new(x, y), <span class="kw-2">&amp;</span><span class="self">self</span>.perm, wrap)
     }
 
     <span class="attribute">#[allow(dead_code)]
     #[must_use]
-    </span><span class="kw">pub fn </span>eval_3d&lt;M: MathsCore&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, x: f64, y: f64, z: f64) -&gt; f64 {
-        OpenSimplexNoise3D::eval::&lt;M&gt;(Vec3::new(x, y, z), <span class="kw-2">&amp;</span><span class="self">self</span>.perm)
+    </span><span class="kw">pub fn </span>eval_3d&lt;M: MathsCore&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, x: f64, y: f64, z: f64, wrap: f64) -&gt; f64 {
+        OpenSimplexNoise3D::eval::&lt;M&gt;(Vec3::new(x, y, z), <span class="kw-2">&amp;</span><span class="self">self</span>.perm, wrap)
     }
 
-    <span class="attribute">#[must_use]
-    </span><span class="kw">pub fn </span>eval_4d&lt;M: MathsCore&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, x: f64, y: f64, z: f64, w: f64) -&gt; f64 {
-        OpenSimplexNoise4D::eval::&lt;M&gt;(Vec4::new(x, y, z, w), <span class="kw-2">&amp;</span><span class="self">self</span>.perm)
+    <span class="attribute">#[allow(dead_code)]
+    #[must_use]
+    </span><span class="kw">pub fn </span>eval_4d&lt;M: MathsCore&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, x: f64, y: f64, z: f64, w: f64, wrap: f64) -&gt; f64 {
+        OpenSimplexNoise4D::eval::&lt;M&gt;(Vec4::new(x, y, z, w), <span class="kw-2">&amp;</span><span class="self">self</span>.perm, wrap)
     }
 }
 
@@ -160,8 +166,8 @@
     <span class="kw">const </span>STRETCH_POINT: T;
     <span class="kw">const </span>SQUISH_POINT: T;
 
-    <span class="kw">fn </span>eval&lt;M: MathsCore&gt;(point: T, perm: <span class="kw-2">&amp;</span>PermTable) -&gt; f64;
-    <span class="kw">fn </span>extrapolate(grid: T, delta: T, perm: <span class="kw-2">&amp;</span>PermTable) -&gt; f64;
+    <span class="kw">fn </span>eval&lt;M: MathsCore&gt;(point: T, perm: <span class="kw-2">&amp;</span>PermTable, wrap: f64) -&gt; f64;
+    <span class="kw">fn </span>extrapolate&lt;M: MathsCore&gt;(grid: T, delta: T, perm: <span class="kw-2">&amp;</span>PermTable, wrap: f64) -&gt; f64;
 }
 
 <span class="kw">fn </span>generate_perm_array(seed: i64) -&gt; PermTable {

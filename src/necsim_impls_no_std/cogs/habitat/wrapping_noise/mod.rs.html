@@ -249,14 +249,8 @@
 <span id="249">249</span>
 <span id="250">250</span>
 <span id="251">251</span>
-<span id="252">252</span>
-<span id="253">253</span>
-<span id="254">254</span>
-<span id="255">255</span>
-<span id="256">256</span>
-<span id="257">257</span>
 </pre><pre class="rust"><code><span class="kw">use </span>alloc::boxed::Box;
-<span class="kw">use </span>core::{f64::consts::PI, fmt, num::NonZeroUsize};
+<span class="kw">use </span>core::{fmt, num::NonZeroUsize};
 <span class="kw">use </span>necsim_core_bond::{ClosedUnitF64, OffByOneU64, OpenClosedUnitF64 <span class="kw">as </span>PositiveUnitF64};
 <span class="kw">use </span>r#final::Final;
 
@@ -271,7 +265,7 @@
 
 <span class="kw">use </span><span class="kw">crate</span>::cogs::{
     habitat::almost_infinite::AlmostInfiniteHabitat,
-    lineage_store::coherent::globally::singleton_demes::SingletonDemesHabitat,
+    lineage_store::coherent::globally::singleton_demes::SingletonDemesHabitat, rng::wyhash::WyHash,
 };
 
 <span class="attribute">#[allow(clippy::module_name_repetitions)]
@@ -292,7 +286,6 @@
 <span class="kw">impl</span>&lt;M: MathsCore&gt; fmt::Debug <span class="kw">for </span>WrappingNoiseHabitat&lt;M&gt; {
     <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, fmt: <span class="kw-2">&amp;mut </span>fmt::Formatter) -&gt; fmt::Result {
         fmt.debug_struct(<span class="macro">stringify!</span>(WrappingNoiseHabitat))
-            .field(<span class="string">&quot;inner&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.inner)
             .field(<span class="string">&quot;coverage&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.coverage)
             .field(<span class="string">&quot;scale&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.scale)
             .field(<span class="string">&quot;persistence&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.persistence)
@@ -310,27 +303,29 @@
         persistence: PositiveUnitF64,
         octaves: NonZeroUsize,
     ) -&gt; <span class="self">Self </span>{
-        <span class="kw">const </span>THRESHOLD_QUALITY_LOG2: u32 = <span class="number">8</span>;
-
         <span class="kw">let </span>noise = Box::new(OpenSimplexNoise::new(<span class="prelude-val">Some</span>(seed)));
 
         <span class="comment">// Emperically determine a threshold to uniformly sample habitat
         //  from the generated Simplex Noise
         </span><span class="kw">let </span><span class="kw-2">mut </span>samples = alloc::vec::Vec::new();
 
-        <span class="kw">for </span>y <span class="kw">in </span><span class="number">0</span>..(<span class="number">1 </span>&lt;&lt; THRESHOLD_QUALITY_LOG2) {
-            <span class="kw">for </span>x <span class="kw">in </span><span class="number">0</span>..(<span class="number">1 </span>&lt;&lt; THRESHOLD_QUALITY_LOG2) {
-                samples.push(sum_noise_octaves::&lt;M&gt;(
-                    <span class="kw-2">&amp;</span>noise,
-                    <span class="kw-2">&amp;</span>Location::new(
-                        x &lt;&lt; (<span class="number">32 </span>- THRESHOLD_QUALITY_LOG2),
-                        y &lt;&lt; (<span class="number">32 </span>- THRESHOLD_QUALITY_LOG2),
-                    ),
-                    persistence,
-                    scale,
-                    octaves,
-                ));
-            }
+        <span class="comment">// Utilise a PRNG to avoid sampling degeneracies for finding the
+        //  threshold which would poison the entire sampler
+        </span><span class="kw">let </span><span class="kw-2">mut </span>rng: WyHash&lt;M&gt; = WyHash::from_seed(seed.to_le_bytes());
+
+        <span class="kw">for _ in </span><span class="number">0</span>..(<span class="number">1_usize </span>&lt;&lt; <span class="number">16</span>) {
+            <span class="kw">let </span>location = rng.sample_u64();
+
+            samples.push(sum_noise_octaves::&lt;M&gt;(
+                <span class="kw-2">&amp;</span>noise,
+                <span class="kw-2">&amp;</span>Location::new(
+                    (location &amp; <span class="number">0x0000_0000_FFFF_FFFF</span>) <span class="kw">as </span>u32,
+                    ((location &gt;&gt; <span class="number">32</span>) &amp; <span class="number">0x0000_0000_FFFF_FFFF</span>) <span class="kw">as </span>u32,
+                ),
+                persistence,
+                scale,
+                octaves,
+            ));
         }
 
         samples.sort_unstable_by(f64::total_cmp);
@@ -468,8 +463,6 @@
 
 <span class="kw">impl</span>&lt;M: MathsCore&gt; SingletonDemesHabitat&lt;M&gt; <span class="kw">for </span>WrappingNoiseHabitat&lt;M&gt; {}
 
-<span class="kw">const </span>U32_MAX_AS_F64: f64 = (u32::MAX <span class="kw">as </span>f64) + <span class="number">1.0_f64</span>;
-
 <span class="comment">// Adapted from Christian Maher&#39;s article &quot;Working with Simplex Noise&quot;
 // Licensed under CC BY 3.0
 // Published at https://cmaher.github.io/posts/working-with-simplex-noise/
@@ -480,37 +473,32 @@
     scale: PositiveUnitF64,
     octaves: NonZeroUsize,
 ) -&gt; f64 {
+    <span class="kw">const </span>F64_2_32: f64 = (u32::MAX <span class="kw">as </span>f64) + <span class="number">1.0_f64</span>;
+
     <span class="kw">let </span><span class="kw-2">mut </span>max_amplitude = <span class="number">0.0_f64</span>;
     <span class="kw">let </span><span class="kw-2">mut </span>amplitude = <span class="number">1.0_f64</span>;
-    <span class="kw">let </span><span class="kw-2">mut </span>frequency = scale.get();
+    <span class="comment">// Pre-scale the frequency to avoid pow2 degeneracies
+    </span><span class="kw">let </span><span class="kw-2">mut </span>frequency = scale.get() * core::f64::consts::FRAC_1_PI * <span class="number">3.0</span>;
 
     <span class="kw">let </span><span class="kw-2">mut </span>result = <span class="number">0.0_f64</span>;
 
     <span class="kw">for _ in </span><span class="number">0</span>..octaves.get() {
-        <span class="kw">let </span>(x, y, z, w) = location_to_wrapping_4d::&lt;M&gt;(location, frequency);
-        result += noise.eval_4d::&lt;M&gt;(x, y, z, w) * amplitude;
+        <span class="comment">// Ensure wrapping occurs at an integer boundary
+        </span><span class="kw">let </span>wrap = M::round(F64_2_32 * frequency);
+        <span class="kw">let </span>fixed_frequency = wrap / F64_2_32;
+
+        <span class="kw">let </span>(x, y) = (
+            f64::from(location.x()) * fixed_frequency,
+            f64::from(location.y()) * fixed_frequency,
+        );
+
+        result += noise.eval_2d::&lt;M&gt;(x, y, wrap) * amplitude;
         max_amplitude += amplitude;
         amplitude <span class="kw-2">*</span>= persistence.get();
         frequency <span class="kw-2">*</span>= <span class="number">2.0_f64</span>;
     }
 
     result / max_amplitude
-}
-
-<span class="comment">// Adapted from JTippetts&#39; Seamless Noise article on gamedev.net:
-//  https://www.gamedev.net/blog/33/entry-2138456-seamless-noise/
-</span><span class="kw">fn </span>location_to_wrapping_4d&lt;M: MathsCore&gt;(location: <span class="kw-2">&amp;</span>Location, scale: f64) -&gt; (f64, f64, f64, f64) {
-    <span class="kw">let </span>s = f64::from(location.x()) / U32_MAX_AS_F64;
-    <span class="kw">let </span>t = f64::from(location.y()) / U32_MAX_AS_F64;
-
-    <span class="kw">let </span>scale = scale * U32_MAX_AS_F64;
-
-    <span class="kw">let </span>nx = M::cos(s * <span class="number">2.0_f64 </span>* PI) * scale;
-    <span class="kw">let </span>ny = M::cos(t * <span class="number">2.0_f64 </span>* PI) * scale;
-    <span class="kw">let </span>nz = M::sin(s * <span class="number">2.0_f64 </span>* PI) * scale;
-    <span class="kw">let </span>nw = M::sin(t * <span class="number">2.0_f64 </span>* PI) * scale;
-
-    (nx, ny, nz, nw)
 }
 </code></pre></div>
 </section></div></main><div id="rustdoc-vars" data-root-path="../../../../../" data-current-crate="necsim_impls_no_std" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (5e9772042 2022-10-29)" ></div></body></html>

@@ -94,6 +94,44 @@
 <span id="94">94</span>
 <span id="95">95</span>
 <span id="96">96</span>
+<span id="97">97</span>
+<span id="98">98</span>
+<span id="99">99</span>
+<span id="100">100</span>
+<span id="101">101</span>
+<span id="102">102</span>
+<span id="103">103</span>
+<span id="104">104</span>
+<span id="105">105</span>
+<span id="106">106</span>
+<span id="107">107</span>
+<span id="108">108</span>
+<span id="109">109</span>
+<span id="110">110</span>
+<span id="111">111</span>
+<span id="112">112</span>
+<span id="113">113</span>
+<span id="114">114</span>
+<span id="115">115</span>
+<span id="116">116</span>
+<span id="117">117</span>
+<span id="118">118</span>
+<span id="119">119</span>
+<span id="120">120</span>
+<span id="121">121</span>
+<span id="122">122</span>
+<span id="123">123</span>
+<span id="124">124</span>
+<span id="125">125</span>
+<span id="126">126</span>
+<span id="127">127</span>
+<span id="128">128</span>
+<span id="129">129</span>
+<span id="130">130</span>
+<span id="131">131</span>
+<span id="132">132</span>
+<span id="133">133</span>
+<span id="134">134</span>
 </pre><pre class="rust"><code><span class="kw">use </span>necsim_core_maths::MathsCore;
 
 <span class="kw">use super</span>::{
@@ -107,29 +145,54 @@
 
 </span><span class="kw">const </span>NORMALIZING_SCALAR: f64 = <span class="number">47.0</span>;
 
-<span class="kw">const </span>GRAD_TABLE: [Vec2&lt;f64&gt;; <span class="number">8</span>] = [
-    Vec2::new(<span class="number">5.0</span>, <span class="number">2.0</span>),
-    Vec2::new(<span class="number">2.0</span>, <span class="number">5.0</span>),
-    Vec2::new(-<span class="number">5.0</span>, <span class="number">2.0</span>),
-    Vec2::new(-<span class="number">2.0</span>, <span class="number">5.0</span>),
-    Vec2::new(<span class="number">5.0</span>, -<span class="number">2.0</span>),
-    Vec2::new(<span class="number">2.0</span>, -<span class="number">5.0</span>),
-    Vec2::new(-<span class="number">5.0</span>, -<span class="number">2.0</span>),
-    Vec2::new(-<span class="number">2.0</span>, -<span class="number">5.0</span>),
-];
-
 <span class="kw">pub enum </span>OpenSimplexNoise2D {}
 
 <span class="kw">impl </span>NoiseEvaluator&lt;Vec2&lt;f64&gt;&gt; <span class="kw">for </span>OpenSimplexNoise2D {
     <span class="kw">const </span>SQUISH_POINT: Vec2&lt;f64&gt; = Vec2::new(SQUISH, SQUISH);
     <span class="kw">const </span>STRETCH_POINT: Vec2&lt;f64&gt; = Vec2::new(STRETCH, STRETCH);
 
-    <span class="kw">fn </span>extrapolate(grid: Vec2&lt;f64&gt;, delta: Vec2&lt;f64&gt;, perm: <span class="kw-2">&amp;</span>PermTable) -&gt; f64 {
-        <span class="kw">let </span>point = GRAD_TABLE[<span class="self">Self</span>::get_grad_table_index(grid, perm)];
-        point.x * delta.x + point.y * delta.y
+    <span class="kw">fn </span>extrapolate&lt;M: MathsCore&gt;(
+        grid: Vec2&lt;f64&gt;,
+        delta: Vec2&lt;f64&gt;,
+        perm: <span class="kw-2">&amp;</span>PermTable,
+        wrap: f64,
+    ) -&gt; f64 {
+        <span class="comment">// Wrap the grid to put in the range [0; wrap), then snap to grid points
+        </span><span class="kw">let </span>grid = grid.map(|i| i - M::floor(i / wrap) * wrap).map(M::floor);
+
+        <span class="kw">let </span>idx = <span class="self">Self</span>::get_grad_table_index(grid, perm);
+
+        <span class="comment">// Calculate the gradient directly to avoid a GRAD_TABLE lookup
+        // const GRAD_TABLE: [Vec2&lt;f64&gt;; 8] = [
+        //     Vec2::new(5.0, 2.0),
+        //     Vec2::new(2.0, 5.0),
+        //     Vec2::new(-5.0, 2.0),
+        //     Vec2::new(-2.0, 5.0),
+        //     Vec2::new(5.0, -2.0),
+        //     Vec2::new(2.0, -5.0),
+        //     Vec2::new(-5.0, -2.0),
+        //     Vec2::new(-2.0, -5.0),
+        // ];
+        </span><span class="kw">let </span><span class="kw-2">mut </span>point = <span class="kw">if </span>(idx &amp; <span class="number">1</span>) == <span class="number">0 </span>{
+            Vec2::new(<span class="number">5.0</span>, <span class="number">2.0</span>)
+        } <span class="kw">else </span>{
+            Vec2::new(<span class="number">2.0</span>, <span class="number">5.0</span>)
+        };
+        <span class="kw">if </span>(idx &amp; <span class="number">2</span>) != <span class="number">0 </span>{
+            point.x <span class="kw-2">*</span>= -<span class="number">1.0</span>;
+        }
+        <span class="kw">if </span>(idx &amp; <span class="number">4</span>) != <span class="number">0 </span>{
+            point.y <span class="kw-2">*</span>= -<span class="number">1.0</span>;
+        }
+
+        <span class="comment">// let point = GRAD_TABLE[Self::get_grad_table_index(grid, perm)];
+        </span>point.x * delta.x + point.y * delta.y
     }
 
-    <span class="kw">fn </span>eval&lt;M: MathsCore&gt;(input: Vec2&lt;f64&gt;, perm: <span class="kw-2">&amp;</span>PermTable) -&gt; f64 {
+    <span class="kw">fn </span>eval&lt;M: MathsCore&gt;(input: Vec2&lt;f64&gt;, perm: <span class="kw-2">&amp;</span>PermTable, wrap: f64) -&gt; f64 {
+        <span class="comment">// Pre-squish the input to allow wrapping in extrapolate
+        </span><span class="kw">let </span>input = input + (<span class="self">Self</span>::SQUISH_POINT * input.sum());
+
         <span class="kw">let </span>stretch: Vec2&lt;f64&gt; = input + (<span class="self">Self</span>::STRETCH_POINT * input.sum());
         <span class="kw">let </span>grid = stretch.map(M::floor);
 
@@ -137,14 +200,27 @@
         <span class="kw">let </span>ins = stretch - grid;
         <span class="kw">let </span>origin = input - squashed;
 
-        OpenSimplexNoise2D::get_value(grid, origin, ins, perm)
+        OpenSimplexNoise2D::get_value::&lt;M&gt;(grid, origin, ins, perm, wrap)
     }
 }
 
 <span class="kw">impl </span>OpenSimplexNoise2D {
-    <span class="kw">fn </span>get_value(grid: Vec2&lt;f64&gt;, origin: Vec2&lt;f64&gt;, ins: Vec2&lt;f64&gt;, perm: <span class="kw-2">&amp;</span>PermTable) -&gt; f64 {
+    <span class="attribute">#[cfg_attr(target_os = <span class="string">&quot;cuda&quot;</span>, inline)]
+    </span><span class="kw">fn </span>get_value&lt;M: MathsCore&gt;(
+        grid: Vec2&lt;f64&gt;,
+        origin: Vec2&lt;f64&gt;,
+        ins: Vec2&lt;f64&gt;,
+        perm: <span class="kw-2">&amp;</span>PermTable,
+        wrap: f64,
+    ) -&gt; f64 {
         <span class="kw">let </span>contribute = |x, y| -&gt; f64 {
-            utils::contribute::&lt;OpenSimplexNoise2D, Vec2&lt;f64&gt;&gt;(Vec2::new(x, y), origin, grid, perm)
+            utils::contribute::&lt;OpenSimplexNoise2D, Vec2&lt;f64&gt;, M&gt;(
+                Vec2::new(x, y),
+                origin,
+                grid,
+                perm,
+                wrap,
+            )
         };
 
         <span class="kw">let </span>value = contribute(<span class="number">1.0</span>, <span class="number">0.0</span>)

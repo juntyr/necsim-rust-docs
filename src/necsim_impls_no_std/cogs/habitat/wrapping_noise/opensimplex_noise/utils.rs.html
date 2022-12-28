@@ -15,13 +15,22 @@
 <span id="15">15</span>
 <span id="16">16</span>
 <span id="17">17</span>
-</pre><pre class="rust"><code><span class="kw">use super</span>::{vector::VecType, NoiseEvaluator, PermTable};
+<span id="18">18</span>
+<span id="19">19</span>
+<span id="20">20</span>
+<span id="21">21</span>
+<span id="22">22</span>
+<span id="23">23</span>
+</pre><pre class="rust"><code><span class="kw">use </span>necsim_core_maths::MathsCore;
 
-<span class="kw">pub fn </span>contribute&lt;NoiseEvaluatorType: NoiseEvaluator&lt;Vec&gt;, Vec: VecType&lt;f64&gt;&gt;(
+<span class="kw">use super</span>::{vector::VecType, NoiseEvaluator, PermTable};
+
+<span class="kw">pub fn </span>contribute&lt;NoiseEvaluatorType: NoiseEvaluator&lt;Vec&gt;, Vec: VecType&lt;f64&gt;, M: MathsCore&gt;(
     delta: Vec,
     origin: Vec,
     grid: Vec,
     perm: <span class="kw-2">&amp;</span>PermTable,
+    wrap: f64,
 ) -&gt; f64 {
     <span class="kw">let </span>shifted: Vec = origin - delta - NoiseEvaluatorType::SQUISH_POINT * delta.sum();
     <span class="kw">let </span>attn: f64 = <span class="number">2.0 </span>- shifted.get_attenuation_factor();
@@ -30,7 +39,10 @@
         <span class="kw">return </span><span class="number">0.0</span>;
     }
 
-    attn * attn * attn * attn * NoiseEvaluatorType::extrapolate(grid + delta, shifted, perm)
+    <span class="kw">let </span>attn2 = attn * attn;
+    <span class="kw">let </span>attn4 = attn2 * attn2;
+
+    attn4 * NoiseEvaluatorType::extrapolate::&lt;M&gt;(grid + delta, shifted, perm, wrap)
 }
 </code></pre></div>
 </section></div></main><div id="rustdoc-vars" data-root-path="../../../../../../" data-current-crate="necsim_impls_no_std" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (5e9772042 2022-10-29)" ></div></body></html>

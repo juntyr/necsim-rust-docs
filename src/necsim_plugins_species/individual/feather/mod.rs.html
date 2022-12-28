@@ -262,12 +262,6 @@
 <span id="262">262</span>
 <span id="263">263</span>
 <span id="264">264</span>
-<span id="265">265</span>
-<span id="266">266</span>
-<span id="267">267</span>
-<span id="268">268</span>
-<span id="269">269</span>
-<span id="270">270</span>
 </pre><pre class="rust"><code><span class="kw">use </span>std::{collections::HashMap, convert::TryFrom, fmt, fs::File, io::BufReader, path::PathBuf};
 
 <span class="kw">use </span>arrow2::{
@@ -282,7 +276,7 @@
     landscape::{IndexedLocation, Location},
     lineage::GlobalLineageReference,
 };
-<span class="kw">use </span>necsim_core_bond::{NonNegativeF64, NonZeroOneU64};
+<span class="kw">use </span>necsim_core_bond::NonNegativeF64;
 
 <span class="kw">use crate</span>::{LastEventState, SpeciesIdentity};
 
@@ -461,19 +455,13 @@
                     .zip(parents.values_iter())
                     .zip(species.iter())
                 {
-                    <span class="kw">let </span>id = <span class="kw">unsafe </span>{
-                        GlobalLineageReference::from_inner(NonZeroOneU64::new_unchecked(<span class="kw-2">*</span>id + <span class="number">2</span>))
-                    };
+                    <span class="kw">let </span>id = <span class="kw">unsafe </span>{ GlobalLineageReference::from_inner(<span class="kw-2">*</span>id) };
 
                     <span class="comment">// Populate the individual `origins` lookup
                     </span>self_origins
                         .insert(id.clone(), IndexedLocation::new(Location::new(<span class="kw-2">*</span>x, <span class="kw-2">*</span>y), <span class="kw-2">*</span>i));
 
-                    <span class="kw">let </span>parent = <span class="kw">unsafe </span>{
-                        GlobalLineageReference::from_inner(NonZeroOneU64::new_unchecked(
-                            <span class="kw-2">*</span>parent + <span class="number">2</span>,
-                        ))
-                    };
+                    <span class="kw">let </span>parent = <span class="kw">unsafe </span>{ GlobalLineageReference::from_inner(<span class="kw-2">*</span>parent) };
 
                     <span class="comment">// Populate the individual `parents` lookup
                     // parent == id -&gt; individual does NOT have a parent

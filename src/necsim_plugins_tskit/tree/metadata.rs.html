@@ -42,26 +42,8 @@
 <span id="42">42</span>
 <span id="43">43</span>
 <span id="44">44</span>
-<span id="45">45</span>
-<span id="46">46</span>
-<span id="47">47</span>
-<span id="48">48</span>
-<span id="49">49</span>
-<span id="50">50</span>
-<span id="51">51</span>
-<span id="52">52</span>
-<span id="53">53</span>
-<span id="54">54</span>
-<span id="55">55</span>
-<span id="56">56</span>
-<span id="57">57</span>
-</pre><pre class="rust"><code><span class="kw">use </span>std::{
-    array::TryFromSliceError,
-    convert::{TryFrom, TryInto},
-    io,
-};
+</pre><pre class="rust"><code><span class="kw">use </span>std::{array::TryFromSliceError, convert::TryInto, io};
 
-<span class="kw">use </span>necsim_core_bond::NonZeroOneU64;
 <span class="kw">use </span>tskit::metadata::{IndividualMetadata, MetadataError, MetadataRoundtrip, NodeMetadata};
 
 <span class="kw">use </span>necsim_core::lineage::GlobalLineageReference;
@@ -72,8 +54,8 @@
 
 <span class="kw">impl </span>MetadataRoundtrip <span class="kw">for </span>GlobalLineageMetadata {
     <span class="kw">fn </span>encode(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;u8&gt;, MetadataError&gt; {
-        <span class="comment">// Store the internal u64 without the +2 offset
-        </span><span class="prelude-val">Ok</span>((<span class="kw">unsafe </span>{ <span class="self">self</span>.<span class="number">0</span>.clone().into_inner() }.get() - <span class="number">2</span>)
+        <span class="comment">// Store the internal u64
+        </span><span class="prelude-val">Ok</span>(<span class="kw">unsafe </span>{ <span class="self">self</span>.<span class="number">0</span>.clone().into_inner() }
             .to_le_bytes()
             .to_vec())
     }
@@ -89,17 +71,9 @@
             }
         })<span class="question-mark">?</span>;
 
-        <span class="comment">// Convert the bytes into an u64 with the needed +2 offset
-        </span><span class="kw">let </span>value = u64::from_le_bytes(value_bytes) + <span class="number">2</span>;
-
-        <span class="comment">// Create the internal `NonZeroOneU64` representation of the reference
-        </span><span class="kw">let </span>value_inner =
-            NonZeroOneU64::try_from(value).map_err(|err| MetadataError::RoundtripError {
-                value: Box::new(io::Error::new(io::ErrorKind::InvalidData, err.to_string())),
-            })<span class="question-mark">?</span>;
-
-        <span class="prelude-val">Ok</span>(<span class="self">Self</span>(<span class="kw">unsafe </span>{
-            GlobalLineageReference::from_inner(value_inner)
+        <span class="comment">// Convert the bytes into an u64 and a GlobalLineageReference
+        </span><span class="prelude-val">Ok</span>(<span class="self">Self</span>(<span class="kw">unsafe </span>{
+            GlobalLineageReference::from_inner(u64::from_le_bytes(value_bytes))
         }))
     }
 }

@@ -90,7 +90,12 @@
 <span id="90">90</span>
 <span id="91">91</span>
 <span id="92">92</span>
-</pre><pre class="rust"><code><span class="kw">use </span>core::marker::PhantomData;
+<span id="93">93</span>
+<span id="94">94</span>
+<span id="95">95</span>
+<span id="96">96</span>
+<span id="97">97</span>
+</pre><pre class="rust"><code><span class="kw">use </span>core::{fmt, marker::PhantomData};
 
 <span class="kw">use </span>necsim_core::{
     cogs::{Backup, Habitat, MathsCore, RngCore, UniformlySampleableHabitat},
@@ -100,19 +105,25 @@
 
 <span class="kw">use </span><span class="kw">crate</span>::cogs::lineage_store::coherent::globally::singleton_demes::SingletonDemesHabitat;
 
+<span class="kw">const </span>ALMOST_INFINITE_EXTENT: LandscapeExtent =
+    LandscapeExtent::new(<span class="number">0</span>, <span class="number">0</span>, OffByOneU32::max(), OffByOneU32::max());
+
 <span class="attribute">#[allow(clippy::module_name_repetitions)]
-#[derive(Debug)]
 #[cfg_attr(feature = <span class="string">&quot;cuda&quot;</span>, derive(rust_cuda::common::LendRustToCuda))]
 #[cfg_attr(feature = <span class="string">&quot;cuda&quot;</span>, cuda(free = <span class="string">&quot;M&quot;</span>))]
 </span><span class="kw">pub struct </span>AlmostInfiniteHabitat&lt;M: MathsCore&gt; {
-    extent: LandscapeExtent,
     marker: PhantomData&lt;M&gt;,
+}
+
+<span class="kw">impl</span>&lt;M: MathsCore&gt; fmt::Debug <span class="kw">for </span>AlmostInfiniteHabitat&lt;M&gt; {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, fmt: <span class="kw-2">&amp;mut </span>fmt::Formatter) -&gt; fmt::Result {
+        fmt.debug_struct(<span class="macro">stringify!</span>(AlmostInfiniteHabitat)).finish()
+    }
 }
 
 <span class="kw">impl</span>&lt;M: MathsCore&gt; Default <span class="kw">for </span>AlmostInfiniteHabitat&lt;M&gt; {
     <span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{
         <span class="self">Self </span>{
-            extent: LandscapeExtent::new(<span class="number">0_u32</span>, <span class="number">0_u32</span>, OffByOneU32::max(), OffByOneU32::max()),
             marker: PhantomData::&lt;M&gt;,
         }
     }
@@ -122,7 +133,6 @@
 </span><span class="kw">impl</span>&lt;M: MathsCore&gt; Backup <span class="kw">for </span>AlmostInfiniteHabitat&lt;M&gt; {
     <span class="kw">unsafe fn </span>backup_unchecked(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="self">Self </span>{
         <span class="self">Self </span>{
-            extent: <span class="self">self</span>.extent.clone(),
             marker: PhantomData::&lt;M&gt;,
         }
     }
@@ -139,7 +149,7 @@
 
     <span class="attribute">#[must_use]
     </span><span class="kw">fn </span>get_extent(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>LandscapeExtent {
-        <span class="kw-2">&amp;</span><span class="self">self</span>.extent
+        <span class="kw-2">&amp;</span>ALMOST_INFINITE_EXTENT
     }
 
     <span class="attribute">#[must_use]

@@ -290,10 +290,6 @@
 <span id="290">290</span>
 <span id="291">291</span>
 <span id="292">292</span>
-<span id="293">293</span>
-<span id="294">294</span>
-<span id="295">295</span>
-<span id="296">296</span>
 </pre><pre class="rust"><code><span class="kw">use </span>necsim_core_bond::OffByOneU32;
 
 <span class="kw">use </span><span class="kw">super</span>::Location;
@@ -312,11 +308,7 @@
 
 <span class="kw">impl </span>LandscapeExtent {
     <span class="attribute">#[must_use]
-    #[debug_ensures(ret.x() == x, <span class="string">&quot;stores x&quot;</span>)]
-    #[debug_ensures(ret.y() == y, <span class="string">&quot;stores y&quot;</span>)]
-    #[debug_ensures(ret.width() == width, <span class="string">&quot;stores width&quot;</span>)]
-    #[debug_ensures(ret.height() == height, <span class="string">&quot;stores height&quot;</span>)]
-    </span><span class="kw">pub fn </span>new(x: u32, y: u32, width: OffByOneU32, height: OffByOneU32) -&gt; <span class="self">Self </span>{
+    </span><span class="kw">pub const fn </span>new(x: u32, y: u32, width: OffByOneU32, height: OffByOneU32) -&gt; <span class="self">Self </span>{
         <span class="self">Self </span>{
             x,
             y,
@@ -326,27 +318,27 @@
     }
 
     <span class="attribute">#[must_use]
-    </span><span class="kw">pub fn </span>x(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; u32 {
+    </span><span class="kw">pub const fn </span>x(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; u32 {
         <span class="self">self</span>.x
     }
 
     <span class="attribute">#[must_use]
-    </span><span class="kw">pub fn </span>y(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; u32 {
+    </span><span class="kw">pub const fn </span>y(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; u32 {
         <span class="self">self</span>.y
     }
 
     <span class="attribute">#[must_use]
-    </span><span class="kw">pub fn </span>width(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; OffByOneU32 {
+    </span><span class="kw">pub const fn </span>width(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; OffByOneU32 {
         <span class="self">self</span>.width
     }
 
     <span class="attribute">#[must_use]
-    </span><span class="kw">pub fn </span>height(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; OffByOneU32 {
+    </span><span class="kw">pub const fn </span>height(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; OffByOneU32 {
         <span class="self">self</span>.height
     }
 
     <span class="attribute">#[must_use]
-    </span><span class="kw">pub fn </span>contains(<span class="kw-2">&amp;</span><span class="self">self</span>, location: <span class="kw-2">&amp;</span>Location) -&gt; bool {
+    </span><span class="kw">pub const fn </span>contains(<span class="kw-2">&amp;</span><span class="self">self</span>, location: <span class="kw-2">&amp;</span>Location) -&gt; bool {
         location.x() &gt;= <span class="self">self</span>.x
             &amp;&amp; location.x() &lt;= <span class="self">self</span>.width.add_incl(<span class="self">self</span>.x)
             &amp;&amp; location.y() &gt;= <span class="self">self</span>.y

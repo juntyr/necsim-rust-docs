@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["GlobalLineageReference",""],["Lineage",""],["LineageInteraction",""],["MigratingLineage",""]]};
+window.SIDEBAR_ITEMS = {"enum":[["LineageInteraction",""]],"struct":[["GlobalLineageReference",""],["Lineage",""],["MigratingLineage",""]]};

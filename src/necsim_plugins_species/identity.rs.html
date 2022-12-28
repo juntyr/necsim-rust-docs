@@ -281,31 +281,6 @@
 <span id="281">281</span>
 <span id="282">282</span>
 <span id="283">283</span>
-<span id="284">284</span>
-<span id="285">285</span>
-<span id="286">286</span>
-<span id="287">287</span>
-<span id="288">288</span>
-<span id="289">289</span>
-<span id="290">290</span>
-<span id="291">291</span>
-<span id="292">292</span>
-<span id="293">293</span>
-<span id="294">294</span>
-<span id="295">295</span>
-<span id="296">296</span>
-<span id="297">297</span>
-<span id="298">298</span>
-<span id="299">299</span>
-<span id="300">300</span>
-<span id="301">301</span>
-<span id="302">302</span>
-<span id="303">303</span>
-<span id="304">304</span>
-<span id="305">305</span>
-<span id="306">306</span>
-<span id="307">307</span>
-<span id="308">308</span>
 </pre><pre class="rust"><code><span class="kw">use </span>std::{
     array::TryFromSliceError,
     convert::{TryFrom, TryInto},
@@ -316,7 +291,7 @@
     landscape::{IndexedLocation, Location},
     lineage::GlobalLineageReference,
 };
-<span class="kw">use </span>necsim_core_bond::{NonZeroOneU64, PositiveF64};
+<span class="kw">use </span>necsim_core_bond::PositiveF64;
 
 <span class="attribute">#[allow(clippy::module_name_repetitions)]
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
@@ -358,9 +333,9 @@
         lineage: GlobalLineageReference,
         anchor: GlobalLineageReference,
     ) -&gt; SpeciesIdentity {
-        <span class="kw">let </span>lineage = <span class="kw">unsafe </span>{ lineage.into_inner().get() - <span class="number">2 </span>};
+        <span class="kw">let </span>lineage = <span class="kw">unsafe </span>{ lineage.into_inner() };
         <span class="kw">let </span>marker = <span class="number">0x0</span>;
-        <span class="kw">let </span>anchor = <span class="kw">unsafe </span>{ anchor.into_inner().get() - <span class="number">2 </span>};
+        <span class="kw">let </span>anchor = <span class="kw">unsafe </span>{ anchor.into_inner() };
 
         <span class="self">Self</span>::from_raw(lineage, marker, anchor)
     }
@@ -400,14 +375,8 @@
             <span class="kw">return </span><span class="prelude-val">Err</span>(<span class="self">self</span>);
         }
 
-        <span class="kw">let </span>lineage = <span class="kw">match </span>NonZeroOneU64::new(lineage.wrapping_add(<span class="number">2</span>)) {
-            <span class="prelude-val">Ok</span>(lineage) =&gt; <span class="kw">unsafe </span>{ GlobalLineageReference::from_inner(lineage) },
-            <span class="prelude-val">Err</span>(<span class="kw">_</span>) =&gt; <span class="kw">return </span><span class="prelude-val">Err</span>(<span class="self">self</span>),
-        };
-        <span class="kw">let </span>anchor = <span class="kw">match </span>NonZeroOneU64::new(anchor.wrapping_add(<span class="number">2</span>)) {
-            <span class="prelude-val">Ok</span>(anchor) =&gt; <span class="kw">unsafe </span>{ GlobalLineageReference::from_inner(anchor) },
-            <span class="prelude-val">Err</span>(<span class="kw">_</span>) =&gt; <span class="kw">return </span><span class="prelude-val">Err</span>(<span class="self">self</span>),
-        };
+        <span class="kw">let </span>lineage = <span class="kw">unsafe </span>{ GlobalLineageReference::from_inner(lineage) };
+        <span class="kw">let </span>anchor = <span class="kw">unsafe </span>{ GlobalLineageReference::from_inner(anchor) };
 
         <span class="prelude-val">Ok</span>((lineage, anchor))
     }
@@ -545,7 +514,7 @@
         landscape::{IndexedLocation, Location},
         lineage::GlobalLineageReference,
     };
-    <span class="kw">use </span>necsim_core_bond::{NonZeroOneU64, PositiveF64};
+    <span class="kw">use </span>necsim_core_bond::PositiveF64;
 
     <span class="kw">use </span><span class="kw">super</span>::SpeciesIdentity;
 
@@ -582,27 +551,8 @@
         <span class="kw">let </span><span class="kw-2">mut </span>rng = StdRng::from_entropy();
 
         <span class="kw">for _ in </span><span class="number">0</span>..<span class="number">1_000_000 </span>{
-            <span class="kw">let </span>lineage = <span class="kw">loop </span>{
-                <span class="kw">let </span>l = rng.next_u64();
-
-                <span class="kw">match </span>NonZeroOneU64::new(l) {
-                    <span class="prelude-val">Ok</span>(l) =&gt; <span class="kw">break unsafe </span>{ GlobalLineageReference::from_inner(l) },
-                    <span class="prelude-val">Err</span>(<span class="kw">_</span>) =&gt; <span class="kw">continue</span>,
-                }
-            };
-
-            <span class="kw">let </span>anchor = <span class="kw">loop </span>{
-                <span class="kw">let </span>a = rng.next_u64();
-
-                <span class="kw">if </span>a &gt; (u64::MAX &gt;&gt; <span class="number">1</span>) {
-                    <span class="kw">continue</span>;
-                }
-
-                <span class="kw">match </span>NonZeroOneU64::new(a) {
-                    <span class="prelude-val">Ok</span>(a) =&gt; <span class="kw">break unsafe </span>{ GlobalLineageReference::from_inner(a) },
-                    <span class="prelude-val">Err</span>(<span class="kw">_</span>) =&gt; <span class="kw">continue</span>,
-                }
-            };
+            <span class="kw">let </span>lineage = <span class="kw">unsafe </span>{ GlobalLineageReference::from_inner(rng.next_u64()) };
+            <span class="kw">let </span>anchor = <span class="kw">unsafe </span>{ GlobalLineageReference::from_inner(rng.next_u64()) };
 
             <span class="kw">let </span>identity = SpeciesIdentity::from_unspeciated(lineage.clone(), anchor.clone());
 

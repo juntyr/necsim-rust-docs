@@ -184,7 +184,83 @@
 <span id="184">184</span>
 <span id="185">185</span>
 <span id="186">186</span>
-</pre><pre class="rust"><code><span class="kw">use </span>core::{fmt, marker::PhantomData};
+<span id="187">187</span>
+<span id="188">188</span>
+<span id="189">189</span>
+<span id="190">190</span>
+<span id="191">191</span>
+<span id="192">192</span>
+<span id="193">193</span>
+<span id="194">194</span>
+<span id="195">195</span>
+<span id="196">196</span>
+<span id="197">197</span>
+<span id="198">198</span>
+<span id="199">199</span>
+<span id="200">200</span>
+<span id="201">201</span>
+<span id="202">202</span>
+<span id="203">203</span>
+<span id="204">204</span>
+<span id="205">205</span>
+<span id="206">206</span>
+<span id="207">207</span>
+<span id="208">208</span>
+<span id="209">209</span>
+<span id="210">210</span>
+<span id="211">211</span>
+<span id="212">212</span>
+<span id="213">213</span>
+<span id="214">214</span>
+<span id="215">215</span>
+<span id="216">216</span>
+<span id="217">217</span>
+<span id="218">218</span>
+<span id="219">219</span>
+<span id="220">220</span>
+<span id="221">221</span>
+<span id="222">222</span>
+<span id="223">223</span>
+<span id="224">224</span>
+<span id="225">225</span>
+<span id="226">226</span>
+<span id="227">227</span>
+<span id="228">228</span>
+<span id="229">229</span>
+<span id="230">230</span>
+<span id="231">231</span>
+<span id="232">232</span>
+<span id="233">233</span>
+<span id="234">234</span>
+<span id="235">235</span>
+<span id="236">236</span>
+<span id="237">237</span>
+<span id="238">238</span>
+<span id="239">239</span>
+<span id="240">240</span>
+<span id="241">241</span>
+<span id="242">242</span>
+<span id="243">243</span>
+<span id="244">244</span>
+<span id="245">245</span>
+<span id="246">246</span>
+<span id="247">247</span>
+<span id="248">248</span>
+<span id="249">249</span>
+<span id="250">250</span>
+<span id="251">251</span>
+<span id="252">252</span>
+<span id="253">253</span>
+<span id="254">254</span>
+<span id="255">255</span>
+<span id="256">256</span>
+<span id="257">257</span>
+<span id="258">258</span>
+<span id="259">259</span>
+<span id="260">260</span>
+<span id="261">261</span>
+<span id="262">262</span>
+</pre><pre class="rust"><code><span class="kw">use </span>core::fmt;
 
 <span class="attribute">#[cfg(not(target_os = <span class="string">&quot;cuda&quot;</span>))]
 </span><span class="kw">use </span>rust_cuda::rustacuda::{
@@ -193,13 +269,15 @@
 };
 
 <span class="kw">use </span>rust_cuda::utils::{
-    aliasing::{SplitSliceOverCudaThreadsConstStride, SplitSliceOverCudaThreadsDynamicStride},
-    exchange::buffer::CudaExchangeBuffer,
+    aliasing::SplitSliceOverCudaThreadsDynamicStride, exchange::buffer::CudaExchangeBuffer,
 };
 
 <span class="kw">use </span>necsim_core::{
-    event::{DispersalEvent, SpeciationEvent},
-    reporter::{boolean::Boolean, Reporter},
+    event::{PackedEvent, SpeciationEvent, TypedEvent},
+    reporter::{
+        boolean::{Boolean, False, True},
+        Reporter,
+    },
 };
 
 <span class="attribute">#[cfg(target_os = <span class="string">&quot;cuda&quot;</span>)]
@@ -207,34 +285,60 @@
 
 <span class="kw">use </span><span class="kw">super</span>::utils::MaybeSome;
 
-<span class="attribute">#[allow(clippy::module_name_repetitions)]
+<span class="attribute">#[allow(clippy::module_name_repetitions, clippy::type_complexity)]
 #[derive(rust_cuda::common::LendRustToCuda)]
 #[cuda(free = <span class="string">&quot;ReportSpeciation&quot;</span>, free = <span class="string">&quot;ReportDispersal&quot;</span>)]
 </span><span class="kw">pub struct </span>EventBuffer&lt;ReportSpeciation: Boolean, ReportDispersal: Boolean&gt; {
     <span class="attribute">#[cuda(embed)]
-    </span>speciation_mask:
-        SplitSliceOverCudaThreadsConstStride&lt;CudaExchangeBuffer&lt;bool, <span class="bool-val">true</span>, <span class="bool-val">true</span>&gt;, <span class="number">1_usize</span>&gt;,
+    </span>event_mask: SplitSliceOverCudaThreadsDynamicStride&lt;CudaExchangeBuffer&lt;bool, <span class="bool-val">true</span>, <span class="bool-val">true</span>&gt;&gt;,
     <span class="attribute">#[cuda(embed)]
-    </span>speciation_buffer: SplitSliceOverCudaThreadsConstStride&lt;
-        CudaExchangeBuffer&lt;MaybeSome&lt;SpeciationEvent&gt;, <span class="bool-val">false</span>, <span class="bool-val">true</span>&gt;,
-        <span class="number">1_usize</span>,
-    &gt;,
-    <span class="attribute">#[cuda(embed)]
-    </span>dispersal_mask: SplitSliceOverCudaThreadsDynamicStride&lt;CudaExchangeBuffer&lt;bool, <span class="bool-val">true</span>, <span class="bool-val">true</span>&gt;&gt;,
-    <span class="attribute">#[cuda(embed)]
-    </span>dispersal_buffer: SplitSliceOverCudaThreadsDynamicStride&lt;
-        CudaExchangeBuffer&lt;MaybeSome&lt;DispersalEvent&gt;, <span class="bool-val">false</span>, <span class="bool-val">true</span>&gt;,
+    </span>event_buffer: SplitSliceOverCudaThreadsDynamicStride&lt;
+        CudaExchangeBuffer&lt;
+            MaybeSome&lt;&lt;EventBuffer&lt;ReportSpeciation, ReportDispersal&gt; <span class="kw">as </span>EventType&gt;::Event&gt;,
+            <span class="bool-val">false</span>,
+            <span class="bool-val">true</span>,
+        &gt;,
     &gt;,
     max_events: usize,
     event_counter: usize,
-    marker: PhantomData&lt;(ReportSpeciation, ReportDispersal)&gt;,
+}
+
+<span class="kw">pub trait </span>EventType {
+    <span class="kw">type </span>Event: <span class="lifetime">&#39;static
+        </span>+ ~<span class="kw">const </span>rust_cuda::const_type_layout::TypeGraphLayout
+        + rust_cuda::safety::StackOnly
+        + Into&lt;TypedEvent&gt;
+        + Into&lt;PackedEvent&gt;
+        + Clone;
+}
+
+<span class="kw">impl</span>&lt;ReportSpeciation: Boolean, ReportDispersal: Boolean&gt; EventType
+    <span class="kw">for </span>EventBuffer&lt;ReportSpeciation, ReportDispersal&gt;
+{
+    default <span class="kw">type </span>Event = PackedEvent;
+}
+
+<span class="kw">impl </span>EventType <span class="kw">for </span>EventBuffer&lt;False, False&gt; {
+    <span class="kw">type </span>Event = PackedEvent;
+}
+
+<span class="kw">impl </span>EventType <span class="kw">for </span>EventBuffer&lt;False, True&gt; {
+    <span class="kw">type </span>Event = PackedEvent;
+}
+
+<span class="kw">impl </span>EventType <span class="kw">for </span>EventBuffer&lt;True, False&gt; {
+    <span class="kw">type </span>Event = SpeciationEvent;
+}
+
+<span class="kw">impl </span>EventType <span class="kw">for </span>EventBuffer&lt;True, True&gt; {
+    <span class="kw">type </span>Event = PackedEvent;
 }
 
 <span class="kw">impl</span>&lt;ReportSpeciation: Boolean, ReportDispersal: Boolean&gt; fmt::Debug
     <span class="kw">for </span>EventBuffer&lt;ReportSpeciation, ReportDispersal&gt;
 {
     <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, fmt: <span class="kw-2">&amp;mut </span>fmt::Formatter) -&gt; fmt::Result {
-        fmt.debug_struct(<span class="macro">stringify!</span>(EventBuffer))
+        fmt.debug_struct(<span class="string">&quot;EventBuffer&quot;</span>)
             .field(<span class="string">&quot;max_events&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.max_events)
             .field(<span class="string">&quot;event_counter&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.event_counter)
             .finish()
@@ -255,72 +359,75 @@
         <span class="kw">let </span>block_size = (block_size.x * block_size.y * block_size.z) <span class="kw">as </span>usize;
         <span class="kw">let </span>grid_size = (grid_size.x * grid_size.y * grid_size.z) <span class="kw">as </span>usize;
 
-        <span class="kw">let </span>speciation_capacity = <span class="kw">if </span>ReportSpeciation::VALUE {
-            block_size * grid_size
-        } <span class="kw">else </span>{
-            <span class="number">0_usize
-        </span>};
-        <span class="kw">let </span>dispersal_capacity = <span class="kw">if </span>ReportDispersal::VALUE {
-            max_events * block_size * grid_size
-        } <span class="kw">else </span>{
+        <span class="attribute">#[allow(clippy::bool_to_int_with_if)]
+        </span><span class="kw">let </span>max_events = <span class="kw">if </span>ReportDispersal::VALUE {
+            max_events
+        } <span class="kw">else if </span>ReportSpeciation::VALUE {
+            <span class="number">1_usize
+        </span>} <span class="kw">else </span>{
             <span class="number">0_usize
         </span>};
 
-        <span class="kw">let </span><span class="kw-2">mut </span>speciation_buffer = alloc::vec::Vec::with_capacity(speciation_capacity);
-        speciation_buffer.resize_with(speciation_capacity, || MaybeSome::None);
+        <span class="kw">let </span>event_capacity = max_events * block_size * grid_size;
 
-        <span class="kw">let </span><span class="kw-2">mut </span>dispersal_buffer = alloc::vec::Vec::with_capacity(dispersal_capacity);
-        dispersal_buffer.resize_with(dispersal_capacity, || MaybeSome::None);
+        <span class="kw">let </span><span class="kw-2">mut </span>event_buffer = alloc::vec::Vec::with_capacity(event_capacity);
+        event_buffer.resize_with(event_capacity, || MaybeSome::None);
 
         <span class="prelude-val">Ok</span>(<span class="self">Self </span>{
-            speciation_mask: SplitSliceOverCudaThreadsConstStride::new(CudaExchangeBuffer::new(
-                <span class="kw-2">&amp;</span><span class="bool-val">false</span>,
-                speciation_capacity,
-            )<span class="question-mark">?</span>),
-            speciation_buffer: SplitSliceOverCudaThreadsConstStride::new(
-                CudaExchangeBuffer::from_vec(speciation_buffer)<span class="question-mark">?</span>,
-            ),
-            dispersal_mask: SplitSliceOverCudaThreadsDynamicStride::new(
-                CudaExchangeBuffer::new(<span class="kw-2">&amp;</span><span class="bool-val">false</span>, dispersal_capacity)<span class="question-mark">?</span>,
+            event_mask: SplitSliceOverCudaThreadsDynamicStride::new(
+                CudaExchangeBuffer::new(<span class="kw-2">&amp;</span><span class="bool-val">false</span>, event_capacity)<span class="question-mark">?</span>,
                 max_events,
             ),
-            dispersal_buffer: SplitSliceOverCudaThreadsDynamicStride::new(
-                CudaExchangeBuffer::from_vec(dispersal_buffer)<span class="question-mark">?</span>,
+            event_buffer: SplitSliceOverCudaThreadsDynamicStride::new(
+                CudaExchangeBuffer::from_vec(event_buffer)<span class="question-mark">?</span>,
                 max_events,
             ),
             max_events,
             event_counter: <span class="number">0_usize</span>,
-            marker: PhantomData::&lt;(ReportSpeciation, ReportDispersal)&gt;,
         })
     }
 
-    <span class="kw">pub fn </span>report_events&lt;P&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, reporter: <span class="kw-2">&amp;mut </span>P)
+    <span class="attribute">#[allow(clippy::missing_panics_doc)] </span><span class="comment">// TODO: remove
+    </span><span class="kw">pub fn </span>report_events_unordered&lt;P&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, reporter: <span class="kw-2">&amp;mut </span>P)
     <span class="kw">where
         </span>P: Reporter&lt;ReportSpeciation = ReportSpeciation, ReportDispersal = ReportDispersal&gt;,
     {
-        <span class="kw">for </span>(mask, dispersal) <span class="kw">in </span><span class="self">self
-            </span>.dispersal_mask
-            .iter_mut()
-            .zip(<span class="self">self</span>.dispersal_buffer.iter())
-        {
-            <span class="kw">if </span>ReportDispersal::VALUE &amp;&amp; <span class="kw-2">*</span>mask.read() {
-                reporter.report_dispersal(<span class="kw">unsafe </span>{ dispersal.read().assume_some_ref() }.into());
-            }
+        <span class="comment">// let mut last_time = 0.0_f64;
 
-            mask.write(<span class="bool-val">false</span>);
+        // let mut times = alloc::vec::Vec::new();
+
+        </span><span class="kw">for </span>(mask, event) <span class="kw">in </span><span class="self">self</span>.event_mask.iter_mut().zip(<span class="self">self</span>.event_buffer.iter()) {
+            <span class="kw">if </span><span class="kw-2">*</span>mask.read() {
+                <span class="kw">let </span>event: TypedEvent = <span class="kw">unsafe </span>{ event.read().assume_some_read() }.into();
+                <span class="comment">// let new_time: f64 = match &amp;event {
+                //     TypedEvent::Speciation(speciation) =&gt; speciation.event_time,
+                //     TypedEvent::Dispersal(dispersal) =&gt; dispersal.event_time,
+                // }
+                // .get();
+                // times.push(Some(new_time));
+                // assert!(new_time &gt;= last_time, &quot;{new_time} {last_time}&quot;);
+                // last_time = new_time;
+
+                </span><span class="kw">match </span>event {
+                    TypedEvent::Speciation(<span class="kw-2">ref </span>speciation) =&gt; {
+                        reporter.report_speciation(speciation.into());
+                    },
+                    TypedEvent::Dispersal(<span class="kw-2">ref </span>dispersal) =&gt; {
+                        reporter.report_dispersal(dispersal.into());
+                    },
+                }
+            } <span class="comment">/*else {
+                  times.push(None);
+              }*/
+
+            </span>mask.write(<span class="bool-val">false</span>);
         }
 
-        <span class="kw">for </span>(mask, speciation) <span class="kw">in </span><span class="self">self
-            </span>.speciation_mask
-            .iter_mut()
-            .zip(<span class="self">self</span>.speciation_buffer.iter())
-        {
-            <span class="kw">if </span>ReportSpeciation::VALUE &amp;&amp; <span class="kw-2">*</span>mask.read() {
-                reporter.report_speciation(<span class="kw">unsafe </span>{ speciation.read().assume_some_ref() }.into());
-            }
+        <span class="comment">// panic!(&quot;{:?}&quot;, times);
+    </span>}
 
-            mask.write(<span class="bool-val">false</span>);
-        }
+    <span class="kw">pub fn </span>max_events_per_individual(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; usize {
+        <span class="self">self</span>.max_events
     }
 }
 
@@ -328,23 +435,72 @@
 </span><span class="kw">impl</span>&lt;ReportSpeciation: Boolean, ReportDispersal: Boolean&gt; Reporter
     <span class="kw">for </span>EventBuffer&lt;ReportSpeciation, ReportDispersal&gt;
 {
+    <span class="macro">impl_report!</span>([default] speciation(<span class="kw-2">&amp;mut </span><span class="self">self</span>, _event: Ignored) {});
+
+    <span class="macro">impl_report!</span>([default] dispersal(<span class="kw-2">&amp;mut </span><span class="self">self</span>, _event: Ignored) {});
+
+    <span class="macro">impl_report!</span>([default] progress(<span class="kw-2">&amp;mut </span><span class="self">self</span>, _progress: Ignored) {});
+}
+
+<span class="attribute">#[cfg(target_os = <span class="string">&quot;cuda&quot;</span>)]
+</span><span class="kw">impl </span>Reporter <span class="kw">for </span>EventBuffer&lt;False, True&gt; {
     <span class="macro">impl_report!</span>(
         <span class="attribute">#[debug_requires(
-            !<span class="self">self</span>.speciation_mask.get(<span class="number">0</span>).map(
-                rust_cuda::utils::exchange::buffer::CudaExchangeItem::read
-            ).copied().unwrap_or(<span class="bool-val">true</span>),
-            <span class="string">&quot;does not report extraneous speciation event&quot;
+            <span class="self">self</span>.event_counter &lt; <span class="self">self</span>.max_events,
+            <span class="string">&quot;does not report extraneous dispersal events&quot;
+        </span>)]
+        </span>dispersal(<span class="kw-2">&amp;mut </span><span class="self">self</span>, event: Used) {
+            <span class="kw">if let </span><span class="prelude-val">Some</span>(mask) = <span class="self">self</span>.event_mask.get_mut(<span class="self">self</span>.event_counter) {
+                mask.write(<span class="bool-val">true</span>);
+
+                <span class="kw">unsafe </span>{
+                    <span class="self">self</span>.event_buffer.get_unchecked_mut(<span class="self">self</span>.event_counter)
+                }.write(MaybeSome::Some(event.clone().into()));
+            }
+
+            <span class="self">self</span>.event_counter += <span class="number">1</span>;
+        }
+    );
+}
+
+<span class="attribute">#[cfg(target_os = <span class="string">&quot;cuda&quot;</span>)]
+</span><span class="kw">impl </span>Reporter <span class="kw">for </span>EventBuffer&lt;True, False&gt; {
+    <span class="macro">impl_report!</span>(
+        <span class="attribute">#[debug_requires(
+            <span class="self">self</span>.event_counter == <span class="number">0</span>,
+            <span class="string">&quot;does not report extraneous speciation events&quot;
         </span>)]
         </span>speciation(<span class="kw-2">&amp;mut </span><span class="self">self</span>, event: Used) {
-            <span class="kw">if </span>ReportSpeciation::VALUE {
-                <span class="kw">if let </span><span class="prelude-val">Some</span>(mask) = <span class="self">self</span>.speciation_mask.get_mut(<span class="number">0</span>) {
-                    mask.write(<span class="bool-val">true</span>);
+            <span class="kw">if let </span><span class="prelude-val">Some</span>(mask) = <span class="self">self</span>.event_mask.get_mut(<span class="number">0</span>) {
+                mask.write(<span class="bool-val">true</span>);
 
-                    <span class="kw">unsafe </span>{
-                        <span class="self">self</span>.speciation_buffer.get_unchecked_mut(<span class="number">0</span>)
-                    }.write(MaybeSome::Some(event.clone()));
-                }
+                <span class="kw">unsafe </span>{
+                    <span class="self">self</span>.event_buffer.get_unchecked_mut(<span class="number">0</span>)
+                }.write(MaybeSome::Some(event.clone()));
             }
+
+            <span class="self">self</span>.event_counter = <span class="self">self</span>.max_events;
+        }
+    );
+}
+
+<span class="attribute">#[cfg(target_os = <span class="string">&quot;cuda&quot;</span>)]
+</span><span class="kw">impl </span>Reporter <span class="kw">for </span>EventBuffer&lt;True, True&gt; {
+    <span class="macro">impl_report!</span>(
+        <span class="attribute">#[debug_requires(
+            <span class="self">self</span>.event_counter &lt; <span class="self">self</span>.max_events,
+            <span class="string">&quot;does not report extraneous speciation events&quot;
+        </span>)]
+        </span>speciation(<span class="kw-2">&amp;mut </span><span class="self">self</span>, event: Used) {
+            <span class="kw">if let </span><span class="prelude-val">Some</span>(mask) = <span class="self">self</span>.event_mask.get_mut(<span class="self">self</span>.event_counter) {
+                mask.write(<span class="bool-val">true</span>);
+
+                <span class="kw">unsafe </span>{
+                    <span class="self">self</span>.event_buffer.get_unchecked_mut(<span class="self">self</span>.event_counter)
+                }.write(MaybeSome::Some(event.clone().into()));
+            }
+
+            <span class="self">self</span>.event_counter = <span class="self">self</span>.max_events;
         }
     );
 
@@ -354,21 +510,17 @@
             <span class="string">&quot;does not report extraneous dispersal events&quot;
         </span>)]
         </span>dispersal(<span class="kw-2">&amp;mut </span><span class="self">self</span>, event: Used) {
-            <span class="kw">if </span>ReportDispersal::VALUE {
-                <span class="kw">if let </span><span class="prelude-val">Some</span>(mask) = <span class="self">self</span>.dispersal_mask.get_mut(<span class="self">self</span>.event_counter) {
-                    mask.write(<span class="bool-val">true</span>);
+            <span class="kw">if let </span><span class="prelude-val">Some</span>(mask) = <span class="self">self</span>.event_mask.get_mut(<span class="self">self</span>.event_counter) {
+                mask.write(<span class="bool-val">true</span>);
 
-                    <span class="kw">unsafe </span>{
-                        <span class="self">self</span>.dispersal_buffer.get_unchecked_mut(<span class="self">self</span>.event_counter)
-                    }.write(MaybeSome::Some(event.clone()));
-                }
-
-                <span class="self">self</span>.event_counter += <span class="number">1</span>;
+                <span class="kw">unsafe </span>{
+                    <span class="self">self</span>.event_buffer.get_unchecked_mut(<span class="self">self</span>.event_counter)
+                }.write(MaybeSome::Some(event.clone().into()));
             }
+
+            <span class="self">self</span>.event_counter += <span class="number">1</span>;
         }
     );
-
-    <span class="macro">impl_report!</span>(progress(<span class="kw-2">&amp;mut </span><span class="self">self</span>, _progress: Ignored) {});
 }
 </code></pre></div>
 </section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="necsim_impls_cuda" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (5e9772042 2022-10-29)" ></div></body></html>

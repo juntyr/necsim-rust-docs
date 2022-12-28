@@ -259,7 +259,7 @@
         <span class="kw">while let </span><span class="prelude-val">Some</span>(lineage) = origin_sampler.next() {
             <span class="kw">if </span>!origin_sampler
                 .habitat()
-                .contains(lineage.indexed_location.location())
+                .is_location_habitable(lineage.indexed_location.location())
             {
                 exceptional_lineages.push(ExceptionalLineage::OutOfHabitat(lineage));
                 <span class="kw">continue</span>;

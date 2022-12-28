@@ -68,6 +68,13 @@
 <span id="68">68</span>
 <span id="69">69</span>
 <span id="70">70</span>
+<span id="71">71</span>
+<span id="72">72</span>
+<span id="73">73</span>
+<span id="74">74</span>
+<span id="75">75</span>
+<span id="76">76</span>
+<span id="77">77</span>
 </pre><pre class="rust"><code><span class="kw">use </span>necsim_core_bond::OffByOneU64;
 
 <span class="kw">use </span><span class="kw">crate</span>::landscape::{IndexedLocation, LandscapeExtent, Location};
@@ -92,8 +99,15 @@
     </span><span class="kw">fn </span>get_extent(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>LandscapeExtent;
 
     <span class="attribute">#[must_use]
-    </span><span class="kw">fn </span>contains(<span class="kw-2">&amp;</span><span class="self">self</span>, location: <span class="kw-2">&amp;</span>Location) -&gt; bool {
-        <span class="self">self</span>.get_extent().contains(location)
+    </span><span class="kw">fn </span>is_location_habitable(<span class="kw-2">&amp;</span><span class="self">self</span>, location: <span class="kw-2">&amp;</span>Location) -&gt; bool {
+        <span class="self">self</span>.get_extent().contains(location) &amp;&amp; <span class="self">self</span>.get_habitat_at_location(location) &gt; <span class="number">0_u32
+    </span>}
+
+    <span class="attribute">#[must_use]
+    </span><span class="kw">fn </span>is_indexed_location_habitable(<span class="kw-2">&amp;</span><span class="self">self</span>, indexed_location: <span class="kw-2">&amp;</span>IndexedLocation) -&gt; bool {
+        <span class="self">self</span>.get_extent().contains(indexed_location.location())
+            &amp;&amp; (indexed_location.index()
+                &lt; <span class="self">self</span>.get_habitat_at_location(indexed_location.location()))
     }
 
     <span class="attribute">#[must_use]

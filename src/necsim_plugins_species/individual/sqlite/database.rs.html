@@ -407,17 +407,11 @@
 <span id="407">407</span>
 <span id="408">408</span>
 <span id="409">409</span>
-<span id="410">410</span>
-<span id="411">411</span>
-<span id="412">412</span>
-<span id="413">413</span>
-<span id="414">414</span>
-<span id="415">415</span>
 </pre><pre class="rust"><code><span class="kw">use </span>necsim_core::{
     landscape::{IndexedLocation, Location},
     lineage::GlobalLineageReference,
 };
-<span class="kw">use </span>necsim_core_bond::{NonZeroOneU64, PositiveF64};
+<span class="kw">use </span>necsim_core_bond::PositiveF64;
 
 <span class="kw">use </span>rusqlite::{named_params, types::Value};
 
@@ -655,9 +649,7 @@
             <span class="kw">let </span>parent: <span class="prelude-ty">Option</span>&lt;i64&gt; = row.get(<span class="string">&quot;parent&quot;</span>)<span class="question-mark">?</span>;
             <span class="kw">let </span>species: <span class="prelude-ty">Option</span>&lt;String&gt; = row.get(<span class="string">&quot;species&quot;</span>)<span class="question-mark">?</span>;
 
-            <span class="kw">let </span>id = <span class="kw">unsafe </span>{
-                GlobalLineageReference::from_inner(NonZeroOneU64::new_unchecked(from_i64(id) + <span class="number">2</span>))
-            };
+            <span class="kw">let </span>id = <span class="kw">unsafe </span>{ GlobalLineageReference::from_inner(from_i64(id)) };
 
             <span class="comment">// Populate the individual `origins` lookup
             </span><span class="self">self</span>.origins.insert(
@@ -666,11 +658,7 @@
             );
 
             <span class="kw">if let </span><span class="prelude-val">Some</span>(parent) = parent {
-                <span class="kw">let </span>parent = <span class="kw">unsafe </span>{
-                    GlobalLineageReference::from_inner(NonZeroOneU64::new_unchecked(
-                        from_i64(parent) + <span class="number">2</span>,
-                    ))
-                };
+                <span class="kw">let </span>parent = <span class="kw">unsafe </span>{ GlobalLineageReference::from_inner(from_i64(parent)) };
 
                 <span class="comment">// Populate the individual `parents` lookup
                 </span><span class="self">self</span>.parents.insert(id.clone(), parent);
@@ -767,14 +755,14 @@
 
             <span class="comment">// Positional parameters boost performance
             </span>insertion.execute(<span class="macro">rusqlite::params!</span>[
-                <span class="comment">/* :id */ </span>to_i64(<span class="kw">unsafe </span>{ lineage.clone().into_inner().get() - <span class="number">2 </span>}),
+                <span class="comment">/* :id */ </span>to_i64(<span class="kw">unsafe </span>{ lineage.clone().into_inner() }),
                 <span class="comment">/* :x */ </span>to_i32(origin.location().x()),
                 <span class="comment">/* :y */ </span>to_i32(origin.location().y()),
                 <span class="comment">/* :i */ </span>to_i32(origin.index()),
                 <span class="comment">/* :parent */
                 </span><span class="self">self</span>.parents
                     .get(<span class="kw-2">&amp;</span>lineage)
-                    .map(|parent| to_i64(<span class="kw">unsafe </span>{ parent.clone().into_inner().get() - <span class="number">2 </span>})),
+                    .map(|parent| to_i64(<span class="kw">unsafe </span>{ parent.clone().into_inner() })),
                 <span class="comment">/* :species */
                 </span><span class="self">self</span>.species
                     .get(<span class="kw-2">&amp;</span>ancestor)

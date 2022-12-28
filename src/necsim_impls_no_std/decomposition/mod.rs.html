@@ -21,9 +21,6 @@
 <span id="21">21</span>
 <span id="22">22</span>
 <span id="23">23</span>
-<span id="24">24</span>
-<span id="25">25</span>
-<span id="26">26</span>
 </pre><pre class="rust"><code><span class="kw">use </span>necsim_core::{
     cogs::{Backup, Habitat, MathsCore},
     landscape::Location,
@@ -40,10 +37,7 @@
 </span><span class="kw">pub trait </span>Decomposition&lt;M: MathsCore, H: Habitat&lt;M&gt;&gt;: Backup + Sized + core::fmt::Debug {
     <span class="kw">fn </span>get_subdomain(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Partition;
 
-    <span class="attribute">#[debug_requires(
-        habitat.contains(location),
-        <span class="string">&quot;location is contained inside habitat&quot;
-    </span>)]
+    <span class="attribute">#[debug_requires(habitat.is_location_habitable(location), <span class="string">&quot;location is habitable&quot;</span>)]
     #[debug_ensures(
         ret &lt; <span class="self">self</span>.get_subdomain().size().get(),
         <span class="string">&quot;subdomain rank is in range [0, self.get_subdomain().size())&quot;

@@ -96,67 +96,67 @@
 #[allow(clippy::module_name_repetitions)]
 </span><span class="macro">macro_rules! </span>impl_report {
     <span class="comment">// Special case: Ignored = MaybeUsed&lt;False&gt;
-    </span>($(<span class="attribute">#[<span class="macro-nonterminal">$metas</span>:meta]</span>)* <span class="macro-nonterminal">$target</span>:ident(<span class="kw-2">&amp;mut </span><span class="macro-nonterminal">$this</span>:ident, <span class="macro-nonterminal">$value</span>:ident: Ignored) {}) =&gt;
+    </span>($(<span class="attribute">#[<span class="macro-nonterminal">$metas</span>:meta]</span>)* $([<span class="macro-nonterminal">$default</span>:tt])<span class="question-mark">? </span><span class="macro-nonterminal">$target</span>:ident(<span class="kw-2">&amp;mut </span><span class="macro-nonterminal">$this</span>:ident, <span class="macro-nonterminal">$value</span>:ident: Ignored) {}) =&gt;
     {
         <span class="macro">impl_report!</span>{
             $(<span class="attribute">#[<span class="macro-nonterminal">$metas</span>]</span>)*
-            <span class="macro-nonterminal">$target</span>(<span class="kw-2">&amp;mut </span><span class="macro-nonterminal">$this</span>, <span class="macro-nonterminal">$value</span>: MaybeUsed&lt;<span class="macro-nonterminal">$crate::reporter::boolean::False</span>&gt;) {}
+            $([<span class="macro-nonterminal">$default</span>])<span class="question-mark">? </span><span class="macro-nonterminal">$target</span>(<span class="kw-2">&amp;mut </span><span class="macro-nonterminal">$this</span>, <span class="macro-nonterminal">$value</span>: MaybeUsed&lt;<span class="macro-nonterminal">$crate::reporter::boolean::False</span>&gt;) {}
         }
     };
     <span class="comment">// Special case: Used = MaybeUsed&lt;True&gt;
-    </span>($(<span class="attribute">#[<span class="macro-nonterminal">$metas</span>:meta]</span>)* <span class="macro-nonterminal">$target</span>:ident(<span class="kw-2">&amp;mut </span><span class="macro-nonterminal">$this</span>:ident, <span class="macro-nonterminal">$value</span>:ident: Used) <span class="macro-nonterminal">$code</span>:block) =&gt;
+    </span>($(<span class="attribute">#[<span class="macro-nonterminal">$metas</span>:meta]</span>)* $([<span class="macro-nonterminal">$default</span>:tt])<span class="question-mark">? </span><span class="macro-nonterminal">$target</span>:ident(<span class="kw-2">&amp;mut </span><span class="macro-nonterminal">$this</span>:ident, <span class="macro-nonterminal">$value</span>:ident: Used) <span class="macro-nonterminal">$code</span>:block) =&gt;
     {
         <span class="macro">impl_report!</span>{
             $(<span class="attribute">#[<span class="macro-nonterminal">$metas</span>]</span>)*
-            <span class="macro-nonterminal">$target</span>(<span class="kw-2">&amp;mut </span><span class="macro-nonterminal">$this</span>, <span class="macro-nonterminal">$value</span>: MaybeUsed&lt;<span class="macro-nonterminal">$crate::reporter::boolean::True</span>&gt;)
+            $([<span class="macro-nonterminal">$default</span>])<span class="question-mark">? </span><span class="macro-nonterminal">$target</span>(<span class="kw-2">&amp;mut </span><span class="macro-nonterminal">$this</span>, <span class="macro-nonterminal">$value</span>: MaybeUsed&lt;<span class="macro-nonterminal">$crate::reporter::boolean::True</span>&gt;)
             <span class="macro-nonterminal">$code
         </span>}
     };
     <span class="comment">// Dispatch case: MaybeUsed + speciation
-    </span>($(<span class="attribute">#[<span class="macro-nonterminal">$metas</span>:meta]</span>)* speciation(<span class="kw-2">&amp;mut </span><span class="macro-nonterminal">$this</span>:ident, <span class="macro-nonterminal">$value</span>:ident: MaybeUsed&lt;<span class="macro-nonterminal">$Usage</span>:ty&gt;)
+    </span>($(<span class="attribute">#[<span class="macro-nonterminal">$metas</span>:meta]</span>)* $([<span class="macro-nonterminal">$default</span>:tt])<span class="question-mark">? </span>speciation(<span class="kw-2">&amp;mut </span><span class="macro-nonterminal">$this</span>:ident, <span class="macro-nonterminal">$value</span>:ident: MaybeUsed&lt;<span class="macro-nonterminal">$Usage</span>:ty&gt;)
         <span class="macro-nonterminal">$code</span>:block) =&gt;
     {
         <span class="macro">impl_report!</span>{
             $(<span class="attribute">#[<span class="macro-nonterminal">$metas</span>]</span>)*
-            <span class="kw">fn </span>report_speciation(<span class="kw-2">&amp;mut </span><span class="macro-nonterminal">$this</span>, <span class="macro-nonterminal">$value</span>: MaybeUsed&lt;
+            $([<span class="macro-nonterminal">$default</span>])<span class="question-mark">? </span><span class="kw">fn </span>report_speciation(<span class="kw-2">&amp;mut </span><span class="macro-nonterminal">$this</span>, <span class="macro-nonterminal">$value</span>: MaybeUsed&lt;
                 <span class="macro-nonterminal">$crate::event::SpeciationEvent</span>, ReportSpeciation = <span class="macro-nonterminal">$Usage
             </span>&gt;) <span class="macro-nonterminal">$code
         </span>}
     };
     <span class="comment">// Dispatch case: MaybeUsed + dispersal
-    </span>($(<span class="attribute">#[<span class="macro-nonterminal">$metas</span>:meta]</span>)* dispersal(<span class="kw-2">&amp;mut </span><span class="macro-nonterminal">$this</span>:ident, <span class="macro-nonterminal">$value</span>:ident: MaybeUsed&lt;<span class="macro-nonterminal">$Usage</span>:ty&gt;)
+    </span>($(<span class="attribute">#[<span class="macro-nonterminal">$metas</span>:meta]</span>)* $([<span class="macro-nonterminal">$default</span>:tt])<span class="question-mark">? </span>dispersal(<span class="kw-2">&amp;mut </span><span class="macro-nonterminal">$this</span>:ident, <span class="macro-nonterminal">$value</span>:ident: MaybeUsed&lt;<span class="macro-nonterminal">$Usage</span>:ty&gt;)
         <span class="macro-nonterminal">$code</span>:block) =&gt;
     {
         <span class="macro">impl_report!</span>{
             $(<span class="attribute">#[<span class="macro-nonterminal">$metas</span>]</span>)*
-            <span class="kw">fn </span>report_dispersal(<span class="kw-2">&amp;mut </span><span class="macro-nonterminal">$this</span>, <span class="macro-nonterminal">$value</span>: MaybeUsed&lt;
+            $([<span class="macro-nonterminal">$default</span>])<span class="question-mark">? </span><span class="kw">fn </span>report_dispersal(<span class="kw-2">&amp;mut </span><span class="macro-nonterminal">$this</span>, <span class="macro-nonterminal">$value</span>: MaybeUsed&lt;
                 <span class="macro-nonterminal">$crate::event::DispersalEvent</span>, ReportDispersal = <span class="macro-nonterminal">$Usage
             </span>&gt;) <span class="macro-nonterminal">$code
         </span>}
     };
     <span class="comment">// Dispatch case: MaybeUsed + progress
-    </span>($(<span class="attribute">#[<span class="macro-nonterminal">$metas</span>:meta]</span>)* progress(<span class="kw-2">&amp;mut </span><span class="macro-nonterminal">$this</span>:ident, <span class="macro-nonterminal">$value</span>:ident: MaybeUsed&lt;<span class="macro-nonterminal">$Usage</span>:ty&gt;)
+    </span>($(<span class="attribute">#[<span class="macro-nonterminal">$metas</span>:meta]</span>)* $([<span class="macro-nonterminal">$default</span>:tt])<span class="question-mark">? </span>progress(<span class="kw-2">&amp;mut </span><span class="macro-nonterminal">$this</span>:ident, <span class="macro-nonterminal">$value</span>:ident: MaybeUsed&lt;<span class="macro-nonterminal">$Usage</span>:ty&gt;)
         <span class="macro-nonterminal">$code</span>:block) =&gt;
     {
         <span class="macro">impl_report!</span>{
             $(<span class="attribute">#[<span class="macro-nonterminal">$metas</span>]</span>)*
-            <span class="kw">fn </span>report_progress(<span class="kw-2">&amp;mut </span><span class="macro-nonterminal">$this</span>, <span class="macro-nonterminal">$value</span>: MaybeUsed&lt;u64, ReportProgress = <span class="macro-nonterminal">$Usage</span>&gt;) <span class="macro-nonterminal">$code
+            $([<span class="macro-nonterminal">$default</span>])<span class="question-mark">? </span><span class="kw">fn </span>report_progress(<span class="kw-2">&amp;mut </span><span class="macro-nonterminal">$this</span>, <span class="macro-nonterminal">$value</span>: MaybeUsed&lt;u64, ReportProgress = <span class="macro-nonterminal">$Usage</span>&gt;) <span class="macro-nonterminal">$code
         </span>}
     };
     <span class="comment">// Impl case: MaybeUsed
-    </span>($(<span class="attribute">#[<span class="macro-nonterminal">$metas</span>:meta]</span>)* <span class="kw">fn </span><span class="macro-nonterminal">$target</span>:ident(<span class="kw-2">&amp;mut </span><span class="macro-nonterminal">$this</span>:ident, <span class="macro-nonterminal">$value</span>:ident: MaybeUsed&lt;
+    </span>($(<span class="attribute">#[<span class="macro-nonterminal">$metas</span>:meta]</span>)* $([<span class="macro-nonterminal">$default</span>:tt])<span class="question-mark">? </span><span class="kw">fn </span><span class="macro-nonterminal">$target</span>:ident(<span class="kw-2">&amp;mut </span><span class="macro-nonterminal">$this</span>:ident, <span class="macro-nonterminal">$value</span>:ident: MaybeUsed&lt;
         <span class="macro-nonterminal">$EventTy</span>:ty, <span class="macro-nonterminal">$UsageIdent</span>:ident = <span class="macro-nonterminal">$UsageTy</span>:ty
     &gt;) <span class="macro-nonterminal">$code</span>:block) =&gt;
     {
         $(<span class="attribute">#[<span class="macro-nonterminal">$metas</span>]</span>)*
-        <span class="kw">fn </span><span class="macro-nonterminal">$target</span>(
+        $(<span class="macro-nonterminal">$default</span>)<span class="question-mark">? </span><span class="kw">fn </span><span class="macro-nonterminal">$target</span>(
             <span class="kw-2">&amp;mut </span><span class="macro-nonterminal">$this</span>,
             <span class="macro-nonterminal">$value</span>: <span class="kw-2">&amp;</span><span class="macro-nonterminal">$crate::reporter::used::MaybeUsed</span>&lt;<span class="macro-nonterminal">$EventTy</span>, <span class="self">Self</span>::<span class="macro-nonterminal">$UsageIdent</span>&gt;,
         ) {
             <span class="macro-nonterminal">$value</span>.maybe_use_in(|<span class="macro-nonterminal">$value</span>| <span class="macro-nonterminal">$code</span>)
         }
 
-        <span class="kw">type </span><span class="macro-nonterminal">$UsageIdent </span>= <span class="macro-nonterminal">$UsageTy</span>;
+        $(<span class="macro-nonterminal">$default</span>)<span class="question-mark">? </span><span class="kw">type </span><span class="macro-nonterminal">$UsageIdent </span>= <span class="macro-nonterminal">$UsageTy</span>;
     };
 }
 

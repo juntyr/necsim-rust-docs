@@ -112,8 +112,6 @@
 <span id="112">112</span>
 <span id="113">113</span>
 <span id="114">114</span>
-<span id="115">115</span>
-<span id="116">116</span>
 </pre><pre class="rust"><code><span class="kw">use </span>necsim_core::{
     cogs::{
         Backup, DispersalSampler, Habitat, MathsCore, RngCore, RngSampler,
@@ -211,22 +209,20 @@
         location: <span class="kw-2">&amp;</span>Location,
         habitat: <span class="kw-2">&amp;</span>WrappingNoiseHabitat&lt;M&gt;,
     ) -&gt; ClosedUnitF64 {
-        <span class="kw">if </span>habitat.get_habitat_at_location(location) == <span class="number">0 </span>{
-            ClosedUnitF64::zero()
-        } <span class="kw">else </span>{
-            <span class="kw">let </span>p_self_dispersal = <span class="self">self
-                </span>.inner
-                .get_self_dispersal_probability_at_location(location, habitat.get_inner());
-            <span class="kw">let </span>p_out_dispersal = p_self_dispersal.one_minus() * habitat.coverage();
+        <span class="comment">// By PRE, the location is habitable, i.e. self-dispersal is possible
 
-            <span class="comment">// Safety:
-            // - p_self_dispersal and p_out_dispersal are both in [0, 1]
-            // - a / (a + [0, 1]) = [0, 1]
-            </span><span class="kw">unsafe </span>{
-                ClosedUnitF64::new_unchecked(
-                    p_self_dispersal.get() / (p_self_dispersal.get() + p_out_dispersal.get()),
-                )
-            }
+        </span><span class="kw">let </span>p_self_dispersal = <span class="self">self
+            </span>.inner
+            .get_self_dispersal_probability_at_location(location, habitat.get_inner());
+        <span class="kw">let </span>p_out_dispersal = p_self_dispersal.one_minus() * habitat.coverage();
+
+        <span class="comment">// Safety:
+        // - p_self_dispersal and p_out_dispersal are both in [0, 1]
+        // - a / (a + [0, 1]) = [0, 1]
+        </span><span class="kw">unsafe </span>{
+            ClosedUnitF64::new_unchecked(
+                p_self_dispersal.get() / (p_self_dispersal.get() + p_out_dispersal.get()),
+            )
         }
     }
 }

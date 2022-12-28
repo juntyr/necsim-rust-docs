@@ -2,21 +2,21 @@
     fn <a href="#method.sample_non_self_dispersal_from_location" class="fnname">sample_non_self_dispersal_from_location</a>(<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&amp;self,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;location: &amp;<a class="struct" href="../../landscape/struct.Location.html" title="struct necsim_core::landscape::Location">Location</a>,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;habitat: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.reference.html">&amp;</a>H,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rng: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.reference.html">&amp;mut </a>G<br>&nbsp;&nbsp;&nbsp;&nbsp;) -&gt; <a class="struct" href="../../landscape/struct.Location.html" title="struct necsim_core::landscape::Location">Location</a> { ... }
 <span class="item-spacer"></span>    fn <a href="#method.get_self_dispersal_probability_at_location" class="fnname">get_self_dispersal_probability_at_location</a>(<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&amp;self,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;location: &amp;<a class="struct" href="../../landscape/struct.Location.html" title="struct necsim_core::landscape::Location">Location</a>,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;habitat: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.reference.html">&amp;</a>H<br>&nbsp;&nbsp;&nbsp;&nbsp;) -&gt; ClosedUnitF64 { ... }
 }</code></pre></div><h2 id="provided-methods" class="small-section-header">Provided Methods<a href="#provided-methods" class="anchor"></a></h2><div class="methods"><details class="rustdoc-toggle method-toggle" open><summary><section id="method.sample_non_self_dispersal_from_location" class="method has-srclink"><a class="srclink rightside" href="../../../src/necsim_core/cogs/dispersal_sampler.rs.html#36">source</a><h4 class="code-header">fn <a href="#method.sample_non_self_dispersal_from_location" class="fnname">sample_non_self_dispersal_from_location</a>(<br>&nbsp;&nbsp;&nbsp;&nbsp;&amp;self,<br>&nbsp;&nbsp;&nbsp;&nbsp;location: &amp;<a class="struct" href="../../landscape/struct.Location.html" title="struct necsim_core::landscape::Location">Location</a>,<br>&nbsp;&nbsp;&nbsp;&nbsp;habitat: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.reference.html">&amp;</a>H,<br>&nbsp;&nbsp;&nbsp;&nbsp;rng: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.reference.html">&amp;mut </a>G<br>) -&gt; <a class="struct" href="../../landscape/struct.Location.html" title="struct necsim_core::landscape::Location">Location</a></h4></section></summary><div class="docblock"><h5 id="contracts"><a href="#contracts">Contracts</a></h5>
-<p>Pre-condition - debug: location is inside habitat</p>
+<p>Pre-condition - debug: location is habitable</p>
 <ul>
-<li><code>habitat.contains(location)</code></li>
+<li><code>habitat.is_location_habitable(location)</code></li>
 </ul>
-<p>Post-condition - debug: target is inside habitat</p>
+<p>Post-condition - debug: target is habitable</p>
 <ul>
-<li><code>old(habitat).contains(&amp; ret)</code></li>
+<li><code>old(habitat).is_location_habitable(&amp; ret)</code></li>
 </ul>
 <p>Post-condition - debug: disperses to a different location</p>
 <ul>
 <li><code>&amp; ret != location</code></li>
 </ul>
 </div></details><details class="rustdoc-toggle method-toggle" open><summary><section id="method.get_self_dispersal_probability_at_location" class="method has-srclink"><a class="srclink rightside" href="../../../src/necsim_core/cogs/dispersal_sampler.rs.html#47">source</a><h4 class="code-header">fn <a href="#method.get_self_dispersal_probability_at_location" class="fnname">get_self_dispersal_probability_at_location</a>(<br>&nbsp;&nbsp;&nbsp;&nbsp;&amp;self,<br>&nbsp;&nbsp;&nbsp;&nbsp;location: &amp;<a class="struct" href="../../landscape/struct.Location.html" title="struct necsim_core::landscape::Location">Location</a>,<br>&nbsp;&nbsp;&nbsp;&nbsp;habitat: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.reference.html">&amp;</a>H<br>) -&gt; ClosedUnitF64</h4></section></summary><div class="docblock"><h5 id="contracts-1"><a href="#contracts-1">Contracts</a></h5>
-<p>Pre-condition - debug: location is inside habitat</p>
+<p>Pre-condition - debug: location is habitable</p>
 <ul>
-<li><code>habitat.contains(location)</code></li>
+<li><code>habitat.is_location_habitable(location)</code></li>
 </ul>
 </div></details></div><h2 id="implementors" class="small-section-header">Implementors<a href="#implementors" class="anchor"></a></h2><div id="implementors-list"></div><script src="../../../implementors/necsim_core/cogs/dispersal_sampler/trait.SeparableDispersalSampler.js" async></script></section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="necsim_core" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (5e9772042 2022-10-29)" ></div></body></html>

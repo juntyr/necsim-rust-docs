@@ -68,8 +68,8 @@
     <span class="kw">crate</span>::cogs::Backup + core::fmt::Debug
 {
     <span class="attribute">#[must_use]
-    #[debug_requires(habitat.contains(location), <span class="string">&quot;location is inside habitat&quot;</span>)]
-    #[debug_ensures(old(habitat).contains(<span class="kw-2">&amp;</span>ret), <span class="string">&quot;target is inside habitat&quot;</span>)]
+    #[debug_requires(habitat.is_location_habitable(location), <span class="string">&quot;location is habitable&quot;</span>)]
+    #[debug_ensures(old(habitat).is_location_habitable(<span class="kw-2">&amp;</span>ret), <span class="string">&quot;target is habitable&quot;</span>)]
     </span><span class="kw">fn </span>sample_dispersal_from_location(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         location: <span class="kw-2">&amp;</span>Location,
@@ -86,8 +86,8 @@
     DispersalSampler&lt;M, H, G&gt;
 {
     <span class="attribute">#[must_use]
-    #[debug_requires(habitat.contains(location), <span class="string">&quot;location is inside habitat&quot;</span>)]
-    #[debug_ensures(old(habitat).contains(<span class="kw-2">&amp;</span>ret), <span class="string">&quot;target is inside habitat&quot;</span>)]
+    #[debug_requires(habitat.is_location_habitable(location), <span class="string">&quot;location is habitable&quot;</span>)]
+    #[debug_ensures(old(habitat).is_location_habitable(<span class="kw-2">&amp;</span>ret), <span class="string">&quot;target is habitable&quot;</span>)]
     #[debug_ensures(<span class="kw-2">&amp;</span>ret != location, <span class="string">&quot;disperses to a different location&quot;</span>)]
     </span><span class="kw">fn </span>sample_non_self_dispersal_from_location(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
@@ -97,7 +97,7 @@
     ) -&gt; Location;
 
     <span class="attribute">#[must_use]
-    #[debug_requires(habitat.contains(location), <span class="string">&quot;location is inside habitat&quot;</span>)]
+    #[debug_requires(habitat.is_location_habitable(location), <span class="string">&quot;location is habitable&quot;</span>)]
     </span><span class="kw">fn </span>get_self_dispersal_probability_at_location(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         location: <span class="kw-2">&amp;</span>Location,

@@ -50,6 +50,34 @@
 <span id="50">50</span>
 <span id="51">51</span>
 <span id="52">52</span>
+<span id="53">53</span>
+<span id="54">54</span>
+<span id="55">55</span>
+<span id="56">56</span>
+<span id="57">57</span>
+<span id="58">58</span>
+<span id="59">59</span>
+<span id="60">60</span>
+<span id="61">61</span>
+<span id="62">62</span>
+<span id="63">63</span>
+<span id="64">64</span>
+<span id="65">65</span>
+<span id="66">66</span>
+<span id="67">67</span>
+<span id="68">68</span>
+<span id="69">69</span>
+<span id="70">70</span>
+<span id="71">71</span>
+<span id="72">72</span>
+<span id="73">73</span>
+<span id="74">74</span>
+<span id="75">75</span>
+<span id="76">76</span>
+<span id="77">77</span>
+<span id="78">78</span>
+<span id="79">79</span>
+<span id="80">80</span>
 </pre><pre class="rust"><code><span class="kw">use </span>core::marker::PhantomData;
 
 <span class="kw">use </span>necsim_core::{
@@ -60,7 +88,10 @@
     lineage::LineageInteraction,
 };
 
-<span class="kw">use </span><span class="kw">crate</span>::cogs::lineage_store::independent::IndependentLineageStore;
+<span class="kw">use </span><span class="kw">crate</span>::cogs::lineage_store::{
+    coherent::globally::singleton_demes::SingletonDemesHabitat,
+    independent::IndependentLineageStore,
+};
 
 <span class="attribute">#[allow(clippy::module_name_repetitions)]
 #[derive(Debug)]
@@ -86,20 +117,45 @@
     <span class="kw">for </span>IndependentCoalescenceSampler&lt;M, H&gt;
 {
     <span class="attribute">#[must_use]
-    #[debug_ensures(ret.<span class="number">1 </span>== LineageInteraction::Maybe, <span class="string">&quot;always reports maybe&quot;</span>)]
-    </span><span class="kw">fn </span>sample_interaction_at_location(
+    </span><span class="comment">// #[debug_ensures(ret.1 == LineageInteraction::Maybe, &quot;always reports maybe&quot;)]
+    </span>default <span class="kw">fn </span>sample_interaction_at_location(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         location: Location,
         habitat: <span class="kw-2">&amp;</span>H,
         _lineage_store: <span class="kw-2">&amp;</span>IndependentLineageStore&lt;M, H&gt;,
         coalescence_rng_sample: CoalescenceRngSample,
     ) -&gt; (IndexedLocation, LineageInteraction) {
-        <span class="kw">let </span>chosen_coalescence_index = coalescence_rng_sample
-            .sample_coalescence_index::&lt;M&gt;(habitat.get_habitat_at_location(<span class="kw-2">&amp;</span>location));
+        <span class="kw">let </span>population = habitat.get_habitat_at_location(<span class="kw-2">&amp;</span>location);
+
+        <span class="kw">let </span>chosen_coalescence_index =
+            coalescence_rng_sample.sample_coalescence_index::&lt;M&gt;(population);
 
         <span class="kw">let </span>indexed_location = IndexedLocation::new(location, chosen_coalescence_index);
 
         (indexed_location, LineageInteraction::Maybe)
+    }
+}
+
+<span class="comment">// Specialise for SingletonDemesHabitat as the compiler cannot yet optimise out
+//  the call to `habitat.get_habitat_at_location(&amp;location)`.
+</span><span class="attribute">#[contract_trait]
+</span><span class="kw">impl</span>&lt;M: MathsCore, H: SingletonDemesHabitat&lt;M&gt;&gt;
+    CoalescenceSampler&lt;M, H, IndependentLineageStore&lt;M, H&gt;&gt;
+    <span class="kw">for </span>IndependentCoalescenceSampler&lt;M, H&gt;
+{
+    <span class="attribute">#[must_use]
+    #[debug_ensures(ret.<span class="number">1 </span>== LineageInteraction::Maybe, <span class="string">&quot;always reports maybe&quot;</span>)]
+    </span><span class="kw">fn </span>sample_interaction_at_location(
+        <span class="kw-2">&amp;</span><span class="self">self</span>,
+        location: Location,
+        _habitat: <span class="kw-2">&amp;</span>H,
+        _lineage_store: <span class="kw-2">&amp;</span>IndependentLineageStore&lt;M, H&gt;,
+        _coalescence_rng_sample: CoalescenceRngSample,
+    ) -&gt; (IndexedLocation, LineageInteraction) {
+        (
+            IndexedLocation::new(location, <span class="number">0_u32</span>),
+            LineageInteraction::Maybe,
+        )
     }
 }
 </code></pre></div>

@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["EventBuffer",""]]};
+window.SIDEBAR_ITEMS = {"struct":[["EventBuffer",""]],"trait":[["EventType",""]]};

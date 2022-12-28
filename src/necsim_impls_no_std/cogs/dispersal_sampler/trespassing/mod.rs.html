@@ -194,6 +194,12 @@
 <span id="194">194</span>
 <span id="195">195</span>
 <span id="196">196</span>
+<span id="197">197</span>
+<span id="198">198</span>
+<span id="199">199</span>
+<span id="200">200</span>
+<span id="201">201</span>
+<span id="202">202</span>
 </pre><pre class="rust"><code><span class="kw">use </span>core::marker::PhantomData;
 
 <span class="kw">use </span>necsim_core::{
@@ -212,8 +218,8 @@
     Backup + core::fmt::Debug
 {
     <span class="attribute">#[must_use]
-    #[debug_requires(!habitat.contains(location), <span class="string">&quot;location is outside habitat&quot;</span>)]
-    #[debug_ensures(old(habitat).contains(<span class="kw-2">&amp;</span>ret), <span class="string">&quot;target is inside habitat&quot;</span>)]
+    #[debug_requires(!habitat.is_location_habitable(location), <span class="string">&quot;location is inhabitable&quot;</span>)]
+    #[debug_ensures(old(habitat).is_location_habitable(<span class="kw-2">&amp;</span>ret), <span class="string">&quot;target is habitable&quot;</span>)]
     </span><span class="kw">fn </span>sample_anti_trespassing_dispersal_from_location(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         location: <span class="kw-2">&amp;</span>Location,
@@ -287,14 +293,15 @@
     <span class="attribute">#[must_use]
     #[inline]
     #[allow(clippy::no_effect_underscore_binding)]
-    #[debug_ensures(old(habitat).contains(<span class="kw-2">&amp;</span>ret), <span class="string">&quot;target is inside habitat&quot;</span>)]
+    #[debug_ensures(old(habitat).is_location_habitable(<span class="kw-2">&amp;</span>ret), <span class="string">&quot;target is habitable&quot;</span>)]
     </span><span class="kw">fn </span>sample_dispersal_from_location(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         location: <span class="kw-2">&amp;</span>Location,
         habitat: <span class="kw-2">&amp;</span>H,
         rng: <span class="kw-2">&amp;mut </span>G,
     ) -&gt; Location {
-        <span class="comment">// Explicitly circumvent the precondition that `habitat.contains(location)`
+        <span class="comment">// Explicitly circumvent the precondition that
+        //  `habitat.is_location_habitable(location)`
         </span><span class="self">self</span>.__contracts_impl_sample_dispersal_from_location(location, habitat, rng)
     }
 
@@ -306,12 +313,12 @@
         habitat: <span class="kw-2">&amp;</span>H,
         rng: <span class="kw-2">&amp;mut </span>G,
     ) -&gt; Location {
-        <span class="kw">if </span>habitat.contains(location) {
-            <span class="comment">// Re-establish the precondition that `habitat.contains(location)`
+        <span class="kw">if </span>habitat.is_location_habitable(location) {
+            <span class="comment">// Re-establish the precondition that `habitat.is_location_habitable(location)`
             </span><span class="self">self</span>.legal_dispersal_sampler
                 .sample_dispersal_from_location(location, habitat, rng)
         } <span class="kw">else </span>{
-            <span class="comment">// Establish the precondition that `!habitat.contains(location)`
+            <span class="comment">// Establish the precondition that `!habitat.is_location_habitable(location)`
             </span><span class="self">self</span>.trespassing_dispersal_sampler
                 .sample_anti_trespassing_dispersal_from_location(location, habitat, rng)
         }
@@ -329,7 +336,7 @@
     <span class="attribute">#[must_use]
     #[inline]
     #[allow(clippy::no_effect_underscore_binding)]
-    #[debug_ensures(old(habitat).contains(<span class="kw-2">&amp;</span>ret), <span class="string">&quot;target is inside habitat&quot;</span>)]
+    #[debug_ensures(old(habitat).is_location_habitable(<span class="kw-2">&amp;</span>ret), <span class="string">&quot;target is habitable&quot;</span>)]
     #[debug_ensures(<span class="kw-2">&amp;</span>ret != location, <span class="string">&quot;disperses to a different location&quot;</span>)]
     </span><span class="kw">fn </span>sample_non_self_dispersal_from_location(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
@@ -337,7 +344,8 @@
         habitat: <span class="kw-2">&amp;</span>H,
         rng: <span class="kw-2">&amp;mut </span>G,
     ) -&gt; Location {
-        <span class="comment">// Explicitly circumvent the precondition that `habitat.contains(location)`
+        <span class="comment">// Explicitly circumvent the precondition that
+        //  `habitat.is_location_habitable(location)`
         </span><span class="self">self</span>.__contracts_impl_sample_non_self_dispersal_from_location(location, habitat, rng)
     }
 
@@ -349,12 +357,15 @@
         habitat: <span class="kw-2">&amp;</span>H,
         rng: <span class="kw-2">&amp;mut </span>G,
     ) -&gt; Location {
-        <span class="kw">if </span>habitat.contains(location) {
-            <span class="comment">// Re-establish the precondition that `habitat.contains(location)`
+        <span class="kw">if </span>habitat.is_location_habitable(location) {
+            <span class="comment">// Re-establish the precondition that `habitat.is_location_habitable(location)`
             </span><span class="self">self</span>.legal_dispersal_sampler
                 .sample_non_self_dispersal_from_location(location, habitat, rng)
         } <span class="kw">else </span>{
-            <span class="comment">// Establish the precondition that `!habitat.contains(location)`
+            <span class="comment">// Establish the precondition that `!habitat.is_location_habitable(location)`
+            // Since the origin location is inhabitable but the target location is
+            //  habitable, the target location must be different from the origin
+            //  location
             </span><span class="self">self</span>.trespassing_dispersal_sampler
                 .sample_anti_trespassing_dispersal_from_location(location, habitat, rng)
         }
@@ -367,7 +378,8 @@
         location: <span class="kw-2">&amp;</span>Location,
         habitat: <span class="kw-2">&amp;</span>H,
     ) -&gt; ClosedUnitF64 {
-        <span class="comment">// Explicitly circumvent the precondition that `habitat.contains(location)`
+        <span class="comment">// Explicitly circumvent the precondition that
+        //  `habitat.is_location_habitable(location)`
         </span><span class="self">self</span>.__contracts_impl_get_self_dispersal_probability_at_location(location, habitat)
     }
 
@@ -378,14 +390,14 @@
         location: <span class="kw-2">&amp;</span>Location,
         habitat: <span class="kw-2">&amp;</span>H,
     ) -&gt; ClosedUnitF64 {
-        <span class="kw">if </span>habitat.contains(location) {
-            <span class="comment">// Re-establish the precondition that `habitat.contains(location)`
+        <span class="kw">if </span>habitat.is_location_habitable(location) {
+            <span class="comment">// Re-establish the precondition that `habitat.is_location_habitable(location)`
             </span><span class="self">self</span>.legal_dispersal_sampler
                 .get_self_dispersal_probability_at_location(location, habitat)
         } <span class="kw">else </span>{
-            <span class="comment">// The `AntiTrespassingDispersalSampler` always jumps from outside
-            //  the habitat to inside the habitat, i.e. there is never any
-            //  self-dispersal outside the habitat
+            <span class="comment">// The `AntiTrespassingDispersalSampler` always jumps from an inhabitable
+            //  location to a habitable location, i.e. there is never any self-dispersal
+            //  when starting at an inhabitable location
             </span>ClosedUnitF64::zero()
         }
     }

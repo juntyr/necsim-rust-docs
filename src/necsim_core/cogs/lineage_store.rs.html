@@ -150,6 +150,10 @@
 <span id="150">150</span>
 <span id="151">151</span>
 <span id="152">152</span>
+<span id="153">153</span>
+<span id="154">154</span>
+<span id="155">155</span>
+<span id="156">156</span>
 </pre><pre class="rust"><code><span class="kw">use </span>core::ops::Index;
 
 <span class="kw">use super</span>::{Habitat, LineageReference, MathsCore};
@@ -184,8 +188,8 @@
 {
     <span class="attribute">#[must_use]
     #[debug_requires(
-        habitat.contains(indexed_location.location()),
-        <span class="string">&quot;indexed location is inside habitat&quot;
+        habitat.is_indexed_location_habitable(indexed_location),
+        <span class="string">&quot;indexed location is habitable&quot;
     </span>)]
     </span><span class="kw">fn </span>get_global_lineage_reference_at_indexed_location(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
@@ -194,8 +198,8 @@
     ) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>GlobalLineageReference&gt;;
 
     <span class="attribute">#[debug_requires(
-        habitat.contains(lineage.indexed_location.location()),
-        <span class="string">&quot;indexed location is inside habitat&quot;
+        habitat.is_indexed_location_habitable(<span class="kw-2">&amp;</span>lineage.indexed_location),
+        <span class="string">&quot;indexed location is habitable&quot;
     </span>)]
     #[debug_ensures(<span class="self">self</span>.get_lineage_for_local_reference(
         <span class="kw-2">&amp;</span>ret
@@ -220,9 +224,10 @@
     #[debug_requires(<span class="self">self</span>.get_lineage_for_local_reference(
         <span class="kw-2">&amp;</span>reference
     ).is_some(), <span class="string">&quot;lineage is active&quot;</span>)]
-    #[debug_ensures(old(habitat).contains(
-        ret.indexed_location.location()
-    ), <span class="string">&quot;prior location is inside habitat&quot;</span>)]
+    #[debug_ensures(
+        old(habitat).is_indexed_location_habitable(<span class="kw-2">&amp;</span>ret.indexed_location),
+        <span class="string">&quot;prior indexed location is habitable&quot;
+    </span>)]
     #[debug_ensures(<span class="self">self</span>.get_lineage_for_local_reference(
         <span class="kw-2">&amp;</span>old(<span class="kw">unsafe </span>{ <span class="kw">crate</span>::cogs::Backup::backup_unchecked(<span class="kw-2">&amp;</span>reference) })
     ).is_none(), <span class="string">&quot;lineage was deactivated&quot;</span>)]
@@ -256,7 +261,10 @@
     </span><span class="kw">fn </span>iter_active_locations(<span class="kw-2">&amp;</span><span class="self">self</span>, habitat: <span class="kw-2">&amp;</span>H) -&gt; <span class="self">Self</span>::LocationIterator&lt;<span class="lifetime">&#39;_</span>&gt;;
 
     <span class="attribute">#[must_use]
-    #[debug_requires(habitat.contains(location), <span class="string">&quot;location is inside habitat&quot;</span>)]
+    #[debug_requires(
+        habitat.is_location_habitable(location),
+        <span class="string">&quot;location is habitable&quot;
+    </span>)]
     </span><span class="kw">fn </span>get_local_lineage_references_at_location_unordered(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         location: <span class="kw-2">&amp;</span>Location,
