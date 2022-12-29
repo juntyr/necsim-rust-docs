@@ -129,6 +129,11 @@
 <span id="129">129</span>
 <span id="130">130</span>
 <span id="131">131</span>
+<span id="132">132</span>
+<span id="133">133</span>
+<span id="134">134</span>
+<span id="135">135</span>
+<span id="136">136</span>
 </pre><pre class="rust"><code><span class="kw">use </span>alloc::vec::Vec;
 <span class="kw">use </span>core::marker::PhantomData;
 
@@ -140,7 +145,7 @@
         LocallyCoherentLineageStore, MathsCore, RngCore,
     },
     landscape::{IndexedLocation, Location},
-    lineage::{GlobalLineageReference, MigratingLineage},
+    lineage::{GlobalLineageReference, MigratingLineage, TieBreaker},
     simulation::partial::emigration_exit::PartialSimulation,
 };
 
@@ -225,6 +230,11 @@
                 prior_time,
                 event_time,
                 coalescence_rng_sample: CoalescenceRngSample::new(rng),
+                tie_breaker: <span class="kw">if </span><span class="self">self</span>.decomposition.get_subdomain().rank() &lt; target_subdomain {
+                    TieBreaker::PreferImmigrant
+                } <span class="kw">else </span>{
+                    TieBreaker::PreferLocal
+                },
             },
         ));
 

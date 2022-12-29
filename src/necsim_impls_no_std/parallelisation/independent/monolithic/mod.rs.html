@@ -263,6 +263,11 @@
 <span id="263">263</span>
 <span id="264">264</span>
 <span id="265">265</span>
+<span id="266">266</span>
+<span id="267">267</span>
+<span id="268">268</span>
+<span id="269">269</span>
+<span id="270">270</span>
 </pre><pre class="rust"><code><span class="kw">use </span>alloc::collections::VecDeque;
 <span class="kw">use </span>core::{
     num::{NonZeroU64, Wrapping},
@@ -483,7 +488,12 @@
                 }
             }
 
-            previous_next_event_time = <span class="prelude-val">None</span>;
+            <span class="comment">// Note: Coalescence consistency
+            //  If a jumps to b at the same time as b jumps to a,
+            //  no coalescence occurs as coalescence would only be
+            //  detected at the next shared duplicate event
+
+            </span>previous_next_event_time = <span class="prelude-val">None</span>;
 
             <span class="kw">let </span>(new_time, new_steps) = simulation.simulate_incremental_early_stop(
                 |<span class="kw">_</span>, steps, next_event_time| {

@@ -243,23 +243,6 @@
 <span id="243">243</span>
 <span id="244">244</span>
 <span id="245">245</span>
-<span id="246">246</span>
-<span id="247">247</span>
-<span id="248">248</span>
-<span id="249">249</span>
-<span id="250">250</span>
-<span id="251">251</span>
-<span id="252">252</span>
-<span id="253">253</span>
-<span id="254">254</span>
-<span id="255">255</span>
-<span id="256">256</span>
-<span id="257">257</span>
-<span id="258">258</span>
-<span id="259">259</span>
-<span id="260">260</span>
-<span id="261">261</span>
-<span id="262">262</span>
 </pre><pre class="rust"><code><span class="kw">use </span>core::fmt;
 
 <span class="attribute">#[cfg(not(target_os = <span class="string">&quot;cuda&quot;</span>))]
@@ -387,28 +370,15 @@
         })
     }
 
-    <span class="attribute">#[allow(clippy::missing_panics_doc)] </span><span class="comment">// TODO: remove
-    </span><span class="kw">pub fn </span>report_events_unordered&lt;P&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, reporter: <span class="kw-2">&amp;mut </span>P)
+    <span class="kw">pub fn </span>report_events_unordered&lt;P&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, reporter: <span class="kw-2">&amp;mut </span>P)
     <span class="kw">where
         </span>P: Reporter&lt;ReportSpeciation = ReportSpeciation, ReportDispersal = ReportDispersal&gt;,
     {
-        <span class="comment">// let mut last_time = 0.0_f64;
-
-        // let mut times = alloc::vec::Vec::new();
-
-        </span><span class="kw">for </span>(mask, event) <span class="kw">in </span><span class="self">self</span>.event_mask.iter_mut().zip(<span class="self">self</span>.event_buffer.iter()) {
+        <span class="kw">for </span>(mask, event) <span class="kw">in </span><span class="self">self</span>.event_mask.iter_mut().zip(<span class="self">self</span>.event_buffer.iter()) {
             <span class="kw">if </span><span class="kw-2">*</span>mask.read() {
                 <span class="kw">let </span>event: TypedEvent = <span class="kw">unsafe </span>{ event.read().assume_some_read() }.into();
-                <span class="comment">// let new_time: f64 = match &amp;event {
-                //     TypedEvent::Speciation(speciation) =&gt; speciation.event_time,
-                //     TypedEvent::Dispersal(dispersal) =&gt; dispersal.event_time,
-                // }
-                // .get();
-                // times.push(Some(new_time));
-                // assert!(new_time &gt;= last_time, &quot;{new_time} {last_time}&quot;);
-                // last_time = new_time;
 
-                </span><span class="kw">match </span>event {
+                <span class="kw">match </span>event {
                     TypedEvent::Speciation(<span class="kw-2">ref </span>speciation) =&gt; {
                         reporter.report_speciation(speciation.into());
                     },
@@ -416,15 +386,11 @@
                         reporter.report_dispersal(dispersal.into());
                     },
                 }
-            } <span class="comment">/*else {
-                  times.push(None);
-              }*/
+            }
 
-            </span>mask.write(<span class="bool-val">false</span>);
+            mask.write(<span class="bool-val">false</span>);
         }
-
-        <span class="comment">// panic!(&quot;{:?}&quot;, times);
-    </span>}
+    }
 
     <span class="kw">pub fn </span>max_events_per_individual(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; usize {
         <span class="self">self</span>.max_events

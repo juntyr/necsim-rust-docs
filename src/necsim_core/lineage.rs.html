@@ -217,6 +217,16 @@
 <span id="217">217</span>
 <span id="218">218</span>
 <span id="219">219</span>
+<span id="220">220</span>
+<span id="221">221</span>
+<span id="222">222</span>
+<span id="223">223</span>
+<span id="224">224</span>
+<span id="225">225</span>
+<span id="226">226</span>
+<span id="227">227</span>
+<span id="228">228</span>
+<span id="229">229</span>
 </pre><pre class="rust"><code><span class="kw">use </span>core::{
     cmp::{Ord, Ordering},
     fmt,
@@ -372,6 +382,13 @@
     }
 }
 
+<span class="attribute">#[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
+#[repr(i8)]
+</span><span class="kw">pub enum </span>TieBreaker {
+    PreferImmigrant = -<span class="number">1</span>,
+    PreferLocal = <span class="number">1</span>,
+}
+
 <span class="attribute">#[allow(clippy::module_name_repetitions)]
 #[derive(Debug, PartialEq, Serialize, Deserialize)]
 #[repr(C)]
@@ -382,6 +399,7 @@
     <span class="kw">pub </span>coalescence_rng_sample: CoalescenceRngSample,
     <span class="kw">pub </span>dispersal_target: Location,
     <span class="kw">pub </span>dispersal_origin: IndexedLocation,
+    <span class="kw">pub </span>tie_breaker: TieBreaker,
 }
 
 <span class="attribute">#[contract_trait]
@@ -394,6 +412,7 @@
             prior_time: <span class="self">self</span>.prior_time,
             event_time: <span class="self">self</span>.event_time,
             coalescence_rng_sample: <span class="self">self</span>.coalescence_rng_sample.backup_unchecked(),
+            tie_breaker: <span class="self">self</span>.tie_breaker,
         }
     }
 }
@@ -407,6 +426,7 @@
         //  (4) prior_time              parent + offspring
         //  (5) global_lineage_reference
         //  (6) coalescence_rng_sample
+        // (tie_breaker is ignored as it cannot compare MigratingLineages)
         </span><span class="kw">match </span><span class="self">self</span>.event_time.cmp(<span class="kw-2">&amp;</span>other.event_time) {
             Ordering::Equal =&gt; <span class="kw">match </span>(<span class="kw-2">&amp;</span><span class="self">self</span>.dispersal_origin, <span class="kw-2">&amp;</span><span class="self">self</span>.dispersal_target)
                 .cmp(<span class="kw-2">&amp;</span>(<span class="kw-2">&amp;</span>other.dispersal_origin, <span class="kw-2">&amp;</span>other.dispersal_target))

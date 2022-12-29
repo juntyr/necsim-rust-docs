@@ -135,6 +135,9 @@
 <span id="135">135</span>
 <span id="136">136</span>
 <span id="137">137</span>
+<span id="138">138</span>
+<span id="139">139</span>
+<span id="140">140</span>
 </pre><pre class="rust"><code><span class="kw">use </span>core::ops::ControlFlow;
 
 <span class="kw">use </span>necsim_core::{
@@ -227,7 +230,14 @@
 
         total_steps += new_steps;
 
-        <span class="comment">// Send off the possible emigrant and recieve immigrants
+        <span class="comment">// Note: Immigration consistency
+        //  If a jumps to b at the same time as b jumps to a,
+        //  both are independently enqueued for immigration
+        //  (and taken out of the system until then), which
+        //  happens at the next global safe time,
+        //  i.e. no coalescence occurs
+
+        // Send off the possible emigrant and recieve immigrants
         </span><span class="kw">for </span><span class="kw-2">mut </span>immigrant <span class="kw">in </span>local_partition.migrate_individuals(
             simulation.emigration_exit_mut(),
             MigrationMode::Default,
@@ -235,9 +245,7 @@
         ) {
             <span class="comment">// Push all immigrations to the next safe point such that they do
             //  not conflict with the independence of the current time slice
-            </span>immigrant.event_time = immigrant
-                .event_time
-                .max(global_safe_time + independent_time_slice);
+            </span>immigrant.event_time = immigrant.event_time.max(next_safe_time);
 
             simulation.immigration_entry_mut().push(immigrant);
         }
@@ -251,16 +259,14 @@
                 <span class="comment">// Push all immigrations to the next safe point such that they
                 //  do not conflict with the independence of the current time
                 //  slice
-                </span>immigrant.event_time = immigrant
-                    .event_time
-                    .max(global_safe_time + independent_time_slice);
+                </span>immigrant.event_time = immigrant.event_time.max(next_safe_time);
 
                 simulation.immigration_entry_mut().push(immigrant);
             }
         }
 
         <span class="comment">// Globally advance the simulation to the next safe point
-        </span>global_safe_time += independent_time_slice.into();
+        </span>global_safe_time = next_safe_time.into();
     }
 
     local_partition.report_progress_sync(<span class="number">0_u64</span>);

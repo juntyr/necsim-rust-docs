@@ -139,6 +139,19 @@
 <span id="139">139</span>
 <span id="140">140</span>
 <span id="141">141</span>
+<span id="142">142</span>
+<span id="143">143</span>
+<span id="144">144</span>
+<span id="145">145</span>
+<span id="146">146</span>
+<span id="147">147</span>
+<span id="148">148</span>
+<span id="149">149</span>
+<span id="150">150</span>
+<span id="151">151</span>
+<span id="152">152</span>
+<span id="153">153</span>
+<span id="154">154</span>
 </pre><pre class="rust"><code><span class="kw">use </span>std::{
     mem::MaybeUninit,
     os::raw::{c_int, c_void},
@@ -259,8 +272,19 @@
 
     <span class="attribute">#[allow(clippy::cast_possible_wrap)]
     </span><span class="kw">fn </span>equivalent_datatype() -&gt; <span class="self">Self</span>::Out {
+        <span class="comment">// Ensure compilation breaks if a new field is added
+        </span><span class="kw">let </span>MigratingLineage {
+            global_reference: <span class="kw">_</span>,
+            prior_time: <span class="kw">_</span>,
+            event_time: <span class="kw">_</span>,
+            coalescence_rng_sample: <span class="kw">_</span>,
+            dispersal_target: <span class="kw">_</span>,
+            dispersal_origin: <span class="kw">_</span>,
+            tie_breaker: <span class="kw">_</span>,
+        };
+
         UserDatatype::structured(
-            <span class="kw-2">&amp;</span>[<span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>],
+            <span class="kw-2">&amp;</span>[<span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">1</span>],
             <span class="kw-2">&amp;</span>[
                 <span class="macro">offset_of!</span>(MigratingLineage, global_reference) <span class="kw">as </span>mpi::Address,
                 <span class="macro">offset_of!</span>(MigratingLineage, prior_time) <span class="kw">as </span>mpi::Address,
@@ -268,6 +292,7 @@
                 <span class="macro">offset_of!</span>(MigratingLineage, coalescence_rng_sample) <span class="kw">as </span>mpi::Address,
                 <span class="macro">offset_of!</span>(MigratingLineage, dispersal_target) <span class="kw">as </span>mpi::Address,
                 <span class="macro">offset_of!</span>(MigratingLineage, dispersal_origin) <span class="kw">as </span>mpi::Address,
+                <span class="macro">offset_of!</span>(MigratingLineage, tie_breaker) <span class="kw">as </span>mpi::Address,
             ],
             <span class="kw-2">&amp;</span>[
                 u64::equivalent_datatype(),
@@ -276,6 +301,7 @@
                 f64::equivalent_datatype(),
                 u32::equivalent_datatype(),
                 u32::equivalent_datatype(),
+                i8::equivalent_datatype(),
             ],
         )
     }

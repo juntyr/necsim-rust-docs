@@ -152,6 +152,11 @@
 <span id="152">152</span>
 <span id="153">153</span>
 <span id="154">154</span>
+<span id="155">155</span>
+<span id="156">156</span>
+<span id="157">157</span>
+<span id="158">158</span>
+<span id="159">159</span>
 </pre><pre class="rust"><code><span class="kw">use </span>core::marker::PhantomData;
 
 <span class="kw">use </span>necsim_core::{
@@ -160,7 +165,7 @@
         RngCore,
     },
     landscape::{IndexedLocation, Location},
-    lineage::{GlobalLineageReference, MigratingLineage},
+    lineage::{GlobalLineageReference, MigratingLineage, TieBreaker},
     simulation::partial::emigration_exit::PartialSimulation,
 };
 <span class="kw">use </span>necsim_core_bond::{NonNegativeF64, PositiveF64};
@@ -274,6 +279,11 @@
                 prior_time,
                 event_time,
                 coalescence_rng_sample: CoalescenceRngSample::new(rng),
+                tie_breaker: <span class="kw">if </span><span class="self">self</span>.decomposition.get_subdomain().rank() &lt; target_subdomain {
+                    TieBreaker::PreferImmigrant
+                } <span class="kw">else </span>{
+                    TieBreaker::PreferLocal
+                },
             },
         ));
 

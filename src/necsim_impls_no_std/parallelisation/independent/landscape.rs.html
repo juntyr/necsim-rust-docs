@@ -221,6 +221,12 @@
 <span id="221">221</span>
 <span id="222">222</span>
 <span id="223">223</span>
+<span id="224">224</span>
+<span id="225">225</span>
+<span id="226">226</span>
+<span id="227">227</span>
+<span id="228">228</span>
+<span id="229">229</span>
 </pre><pre class="rust"><code><span class="kw">use </span>alloc::{collections::VecDeque, vec::Vec};
 <span class="kw">use </span>core::{
     iter::FromIterator,
@@ -260,7 +266,7 @@
 
 <span class="kw">use super</span>::{reporter::IgnoreProgressReporterProxy, DedupCache};
 
-<span class="attribute">#[allow(clippy::type_complexity)]
+<span class="attribute">#[allow(clippy::type_complexity, clippy::too_many_lines)]
 </span><span class="kw">pub fn </span>simulate&lt;
     <span class="lifetime">&#39;p</span>,
     M: MathsCore,
@@ -354,7 +360,12 @@
             }
         }
 
-        <span class="kw">let </span>(new_time, new_steps) = simulation.simulate_incremental_early_stop(
+        <span class="comment">// Note: Immigration consistency
+        //  If a jumps to b at the same time as b jumps to a,
+        //  no coalescence occurs as coalescence would only be
+        //  detected at the next shared duplicate event
+
+        </span><span class="kw">let </span>(new_time, new_steps) = simulation.simulate_incremental_early_stop(
             |<span class="kw">_</span>, steps, <span class="kw">_</span>| {
                 <span class="kw">if </span>steps &gt;= step_slice.get() {
                     ControlFlow::BREAK
@@ -398,6 +409,7 @@
                 prior_time,
                 event_time,
                 coalescence_rng_sample,
+                tie_breaker: <span class="kw">_</span>,
             } = immigrant;
 
             <span class="comment">// Finish sampling the dispersal of the immigrating individual

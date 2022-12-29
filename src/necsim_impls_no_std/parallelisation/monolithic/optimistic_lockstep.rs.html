@@ -167,6 +167,16 @@
 <span id="167">167</span>
 <span id="168">168</span>
 <span id="169">169</span>
+<span id="170">170</span>
+<span id="171">171</span>
+<span id="172">172</span>
+<span id="173">173</span>
+<span id="174">174</span>
+<span id="175">175</span>
+<span id="176">176</span>
+<span id="177">177</span>
+<span id="178">178</span>
+<span id="179">179</span>
 </pre><pre class="rust"><code><span class="kw">use </span>core::ops::ControlFlow;
 
 <span class="kw">use </span>necsim_core::{
@@ -266,7 +276,17 @@
         }
         .unwrap_or_else(PositiveF64::infinity);
 
-        <span class="comment">// Roll back the simulation to the latest safe point
+        <span class="comment">// Note: Immigration consistency
+        //  If a wants to jump to b at the same time as b
+        //  wants to jumps to a, one of the two is selected
+        //  to go first deterministically based on which
+        //  partition they belong to, and coalescence occurs.
+        //  The non-selected individual&#39;s wish to jump is
+        //  invalidated as there are now different circum-
+        //  stances and since the next event must occur at
+        //  a monotonically later time
+
+        // Roll back the simulation to the latest safe point
         </span><span class="kw-2">*</span>simulation = simulation_backup.resume();
 
         <span class="kw">match </span>local_partition.reduce_vote_min_time(next_local_emigration_time) {
