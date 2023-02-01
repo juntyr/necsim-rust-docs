@@ -1,4 +1,4 @@
 (function() {var implementors = {
 "necsim_partitioning_monolithic":[["impl Partitioning for <a class=\"struct\" href=\"necsim_partitioning_monolithic/struct.MonolithicPartitioning.html\" title=\"struct necsim_partitioning_monolithic::MonolithicPartitioning\">MonolithicPartitioning</a>"]],
-"necsim_partitioning_mpi":[["impl Partitioning for <a class=\"struct\" href=\"necsim_partitioning_mpi/struct.MpiPartitioning.html\" title=\"struct necsim_partitioning_mpi::MpiPartitioning\">MpiPartitioning</a>"]]
+"necsim_partitioning_mpi":[["impl <a class=\"trait\" href=\"necsim_partitioning_core/trait.Partitioning.html\" title=\"trait necsim_partitioning_core::Partitioning\">Partitioning</a> for <a class=\"struct\" href=\"necsim_partitioning_mpi/struct.MpiPartitioning.html\" title=\"struct necsim_partitioning_mpi::MpiPartitioning\">MpiPartitioning</a>"]]
 };if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()
