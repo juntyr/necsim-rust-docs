@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["DecompositionOriginSampler",""]]};
+window.SIDEBAR_ITEMS = {"struct":["DecompositionOriginSampler"]};

@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["MaybeUsed",""]],"type":[["Ignored",""],["Used",""]]};
+window.SIDEBAR_ITEMS = {"struct":["MaybeUsed"],"type":["Ignored","Used"]};

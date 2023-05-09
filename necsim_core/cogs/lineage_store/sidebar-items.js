@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"trait":[["GloballyCoherentLineageStore",""],["LineageStore",""],["LocallyCoherentLineageStore",""]]};
+window.SIDEBAR_ITEMS = {"trait":["GloballyCoherentLineageStore","LineageStore","LocallyCoherentLineageStore"]};

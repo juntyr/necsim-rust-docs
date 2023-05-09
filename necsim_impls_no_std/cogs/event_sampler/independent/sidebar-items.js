@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["IndependentEventSampler",""]]};
+window.SIDEBAR_ITEMS = {"struct":["IndependentEventSampler"]};

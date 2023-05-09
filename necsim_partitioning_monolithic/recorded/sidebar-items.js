@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["RecordedMonolithicLocalPartition",""]]};
+window.SIDEBAR_ITEMS = {"struct":["RecordedMonolithicLocalPartition"]};

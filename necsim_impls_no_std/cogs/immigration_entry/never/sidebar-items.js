@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["NeverImmigrationEntry",""]]};
+window.SIDEBAR_ITEMS = {"struct":["NeverImmigrationEntry"]};

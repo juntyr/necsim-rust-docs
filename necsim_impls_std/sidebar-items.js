@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"mod":[["cogs",""],["event_log",""],["lineage_file",""]]};
+window.SIDEBAR_ITEMS = {"mod":["cogs","event_log","lineage_file"]};

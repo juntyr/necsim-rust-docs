@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"mod":[["almost_infinite",""],["decomposition",""],["in_memory",""],["non_spatial",""],["pre_sampler",""],["resuming",""],["spatially_implicit",""],["wrapping_noise",""]],"trait":[["TrustedOriginSampler","Safety"],["UntrustedOriginSampler","`Lineage`s produced by the sampler’s iterator must have"]]};
+window.SIDEBAR_ITEMS = {"mod":["almost_infinite","decomposition","in_memory","non_spatial","pre_sampler","resuming","spatially_implicit","wrapping_noise"],"trait":["TrustedOriginSampler","UntrustedOriginSampler"]};

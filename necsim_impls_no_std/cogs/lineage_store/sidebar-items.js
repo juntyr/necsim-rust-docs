@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"mod":[["coherent",""],["independent",""]]};
+window.SIDEBAR_ITEMS = {"mod":["coherent","independent"]};

@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"mod":[["in_memory",""],["uniform",""]]};
+window.SIDEBAR_ITEMS = {"mod":["in_memory","uniform"]};

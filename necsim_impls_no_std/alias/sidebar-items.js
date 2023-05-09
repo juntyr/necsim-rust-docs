@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"mod":[["packed",""]],"struct":[["AliasMethodSampler",""]]};
+window.SIDEBAR_ITEMS = {"mod":["packed"],"struct":["AliasMethodSampler"]};

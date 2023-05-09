@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"mod":[["globally",""],["locally",""]]};
+window.SIDEBAR_ITEMS = {"mod":["globally","locally"]};

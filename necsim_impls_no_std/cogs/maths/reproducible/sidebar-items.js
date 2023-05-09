@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":[["ReproducibleMathsCore",""]]};
+window.SIDEBAR_ITEMS = {"enum":["ReproducibleMathsCore"]};

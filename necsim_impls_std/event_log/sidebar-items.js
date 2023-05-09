@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"mod":[["recorder",""],["replay",""]],"struct":[["EventLogHeader",""]]};
+window.SIDEBAR_ITEMS = {"mod":["recorder","replay"],"struct":["EventLogHeader"]};

@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":[["simulate",""]]};
+window.SIDEBAR_ITEMS = {"fn":["simulate"]};

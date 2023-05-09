@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":[["dispatch",""]],"macro":[["match_scenario_algorithm",""]]};
+window.SIDEBAR_ITEMS = {"fn":["dispatch"],"macro":["match_scenario_algorithm"]};

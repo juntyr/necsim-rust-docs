@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["WrappingNoiseArguments",""],["WrappingNoiseScenario",""]]};
+window.SIDEBAR_ITEMS = {"struct":["WrappingNoiseArguments","WrappingNoiseScenario"]};

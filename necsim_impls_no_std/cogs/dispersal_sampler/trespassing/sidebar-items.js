@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"mod":[["uniform",""]],"struct":[["TrespassingDispersalSampler",""]],"trait":[["AntiTrespassingDispersalSampler",""]]};
+window.SIDEBAR_ITEMS = {"mod":["uniform"],"struct":["TrespassingDispersalSampler"],"trait":["AntiTrespassingDispersalSampler"]};

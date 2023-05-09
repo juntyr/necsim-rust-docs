@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"mod":[["const",""],["exp",""],["fixed",""],["geometric",""],["poisson",""]],"trait":[["EventTimeSampler",""]]};
+window.SIDEBAR_ITEMS = {"mod":["const","exp","fixed","geometric","poisson"],"trait":["EventTimeSampler"]};

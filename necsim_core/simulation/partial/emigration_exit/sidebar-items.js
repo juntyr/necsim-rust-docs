@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["PartialSimulation",""]]};
+window.SIDEBAR_ITEMS = {"struct":["PartialSimulation"]};

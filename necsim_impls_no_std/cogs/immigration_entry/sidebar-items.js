@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"mod":[["buffered",""],["never",""]]};
+window.SIDEBAR_ITEMS = {"mod":["buffered","never"]};

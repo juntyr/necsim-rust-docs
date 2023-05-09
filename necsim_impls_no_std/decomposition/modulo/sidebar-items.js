@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["ModuloDecomposition",""]]};
+window.SIDEBAR_ITEMS = {"struct":["ModuloDecomposition"]};

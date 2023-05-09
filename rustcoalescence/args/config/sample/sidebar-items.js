@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":[["SampleMode",""],["SampleOrigin",""]],"mod":[["origin",""]],"struct":[["Sample",""],["SampleModeRestart",""],["SampleRaw",""]]};
+window.SIDEBAR_ITEMS = {"constant":["FIELDS"],"enum":["SampleMode","SampleOrigin","__Field"],"mod":["origin"],"struct":["Sample","SampleModeRestart","SampleRaw","__FieldVisitor","__Visitor"]};

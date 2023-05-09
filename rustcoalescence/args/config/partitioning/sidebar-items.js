@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":[["Partitioning",""]]};
+window.SIDEBAR_ITEMS = {"enum":["Partitioning"]};

@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["SimulationKernel",""]],"type":[["KernelCompilationCallback",""]]};
+window.SIDEBAR_ITEMS = {"struct":["SimulationKernel"],"type":["KernelCompilationCallback"]};

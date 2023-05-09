@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"trait":[["TurnoverRate",""]]};
+window.SIDEBAR_ITEMS = {"trait":["TurnoverRate"]};

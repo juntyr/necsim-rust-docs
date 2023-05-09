@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"trait":[["SingularActiveLineageSampler",""]]};
+window.SIDEBAR_ITEMS = {"trait":["SingularActiveLineageSampler"]};

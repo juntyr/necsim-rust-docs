@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["ImmigrantPopIterator",""]]};
+window.SIDEBAR_ITEMS = {"struct":["ImmigrantPopIterator"]};

@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["LocationAliasActiveLineageSampler",""]]};
+window.SIDEBAR_ITEMS = {"struct":["LocationAliasActiveLineageSampler"]};

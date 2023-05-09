@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["UniformAntiTrespassingDispersalSampler",""]]};
+window.SIDEBAR_ITEMS = {"struct":["UniformAntiTrespassingDispersalSampler"]};

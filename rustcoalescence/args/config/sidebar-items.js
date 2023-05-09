@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"mod":[["algorithm",""],["partitioning",""],["pause",""],["rng",""],["sample",""],["scenario",""]]};
+window.SIDEBAR_ITEMS = {"mod":["algorithm","partitioning","pause","rng","sample","scenario"]};

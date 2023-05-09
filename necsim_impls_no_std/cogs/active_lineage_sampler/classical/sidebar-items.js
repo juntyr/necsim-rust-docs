@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["ClassicalActiveLineageSampler",""]]};
+window.SIDEBAR_ITEMS = {"struct":["ClassicalActiveLineageSampler"]};

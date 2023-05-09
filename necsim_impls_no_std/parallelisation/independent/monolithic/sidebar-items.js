@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":[["simulate",""]],"mod":[["reporter",""]]};
+window.SIDEBAR_ITEMS = {"fn":["simulate"],"mod":["reporter"]};

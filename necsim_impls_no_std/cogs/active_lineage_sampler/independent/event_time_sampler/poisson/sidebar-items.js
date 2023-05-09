@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["PoissonEventTimeSampler",""]]};
+window.SIDEBAR_ITEMS = {"struct":["PoissonEventTimeSampler"]};

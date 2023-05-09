@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"mod":[["conditional",""],["independent",""],["unconditional",""]]};
+window.SIDEBAR_ITEMS = {"mod":["conditional","independent","unconditional"]};

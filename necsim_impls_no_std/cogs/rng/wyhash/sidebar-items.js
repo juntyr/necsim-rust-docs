@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["WyHash",""]]};
+window.SIDEBAR_ITEMS = {"struct":["WyHash"]};

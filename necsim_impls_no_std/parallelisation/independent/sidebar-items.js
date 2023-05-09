@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":[["DedupCache",""],["EventSlice",""]],"mod":[["individuals",""],["landscape",""],["monolithic",""]],"struct":[["AbsoluteCapacity",""],["RelativeCapacity",""]]};
+window.SIDEBAR_ITEMS = {"enum":["DedupCache","EventSlice"],"mod":["individuals","landscape","monolithic"],"struct":["AbsoluteCapacity","RelativeCapacity"]};

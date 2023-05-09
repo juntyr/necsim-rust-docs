@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["UniformTurnoverRate",""]]};
+window.SIDEBAR_ITEMS = {"struct":["UniformTurnoverRate"]};

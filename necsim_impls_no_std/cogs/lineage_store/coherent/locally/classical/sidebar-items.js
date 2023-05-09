@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["ClassicalLineageStore",""]]};
+window.SIDEBAR_ITEMS = {"struct":["ClassicalLineageStore"]};

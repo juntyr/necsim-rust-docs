@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["SeaHash",""]]};
+window.SIDEBAR_ITEMS = {"struct":["SeaHash"]};

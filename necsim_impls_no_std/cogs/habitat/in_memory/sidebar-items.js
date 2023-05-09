@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["InMemoryHabitat",""]]};
+window.SIDEBAR_ITEMS = {"struct":["InMemoryHabitat"]};

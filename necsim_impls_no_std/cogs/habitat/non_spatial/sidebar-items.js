@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["NonSpatialHabitat",""]]};
+window.SIDEBAR_ITEMS = {"struct":["NonSpatialHabitat"]};

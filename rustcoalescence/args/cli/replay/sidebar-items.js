@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":[["ReplayMode",""]],"struct":[["ReplayArgs",""],["ReplayArgsRaw",""]]};
+window.SIDEBAR_ITEMS = {"enum":["ReplayMode"],"struct":["ReplayArgs","ReplayArgsRaw"]};

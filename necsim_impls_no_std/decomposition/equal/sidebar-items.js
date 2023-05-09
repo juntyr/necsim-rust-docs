@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["EqualDecomposition",""]]};
+window.SIDEBAR_ITEMS = {"struct":["EqualDecomposition"]};

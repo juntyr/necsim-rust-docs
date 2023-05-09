@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":[["IndependentAlgorithm",""]]};
+window.SIDEBAR_ITEMS = {"enum":["IndependentAlgorithm"]};

@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":[["RustcoalescenceArgs",""]],"mod":[["replay",""]],"struct":[["CommandArgs",""]]};
+window.SIDEBAR_ITEMS = {"enum":["RustcoalescenceArgs"],"mod":["replay"],"struct":["CommandArgs"]};

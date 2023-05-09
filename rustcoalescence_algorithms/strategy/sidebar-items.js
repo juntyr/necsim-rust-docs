@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":[["CoalescenceStrategy",""],["OutOfDemeStrategy",""],["OutOfHabitatStrategy",""]],"struct":[["RestartFixUpStrategy",""]]};
+window.SIDEBAR_ITEMS = {"enum":["CoalescenceStrategy","OutOfDemeStrategy","OutOfHabitatStrategy"],"struct":["RestartFixUpStrategy"]};

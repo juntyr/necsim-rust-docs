@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["SpatiallyImplicitHabitat",""]]};
+window.SIDEBAR_ITEMS = {"struct":["SpatiallyImplicitHabitat"]};

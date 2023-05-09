@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":[["write_resume_config",""]]};
+window.SIDEBAR_ITEMS = {"fn":["write_resume_config"]};

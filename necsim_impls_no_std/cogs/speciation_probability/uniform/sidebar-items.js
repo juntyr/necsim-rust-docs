@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["UniformSpeciationProbability",""]]};
+window.SIDEBAR_ITEMS = {"struct":["UniformSpeciationProbability"]};

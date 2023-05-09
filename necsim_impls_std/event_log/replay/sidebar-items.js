@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"mod":[["segment",""]],"struct":[["EventLogReplay",""]]};
+window.SIDEBAR_ITEMS = {"mod":["segment"],"struct":["EventLogReplay"]};

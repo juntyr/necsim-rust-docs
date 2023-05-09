@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"mod":[["lineage",""]],"struct":[["RestartFixUpActiveLineageSampler",""]]};
+window.SIDEBAR_ITEMS = {"mod":["lineage"],"struct":["RestartFixUpActiveLineageSampler"]};

@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"mod":[["pcg",""]]};
+window.SIDEBAR_ITEMS = {"mod":["pcg"]};

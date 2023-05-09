@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"mod":[["cogs",""],["event_buffer",""],["value_buffer",""]]};
+window.SIDEBAR_ITEMS = {"mod":["cogs","event_buffer","value_buffer"]};

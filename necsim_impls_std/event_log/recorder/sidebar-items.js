@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["EventLogRecorder",""]]};
+window.SIDEBAR_ITEMS = {"struct":["EventLogRecorder"]};

@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["IndexedLocation",""],["LandscapeExtent",""],["Location",""],["LocationIterator",""]]};
+window.SIDEBAR_ITEMS = {"struct":["IndexedLocation","LandscapeExtent","Location","LocationIterator"]};

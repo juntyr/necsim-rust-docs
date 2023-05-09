@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":[["NvptxMathsCore",""]]};
+window.SIDEBAR_ITEMS = {"enum":["NvptxMathsCore"]};

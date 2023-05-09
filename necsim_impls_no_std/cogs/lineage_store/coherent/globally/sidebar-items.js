@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"mod":[["gillespie",""],["singleton_demes",""]]};
+window.SIDEBAR_ITEMS = {"mod":["gillespie","singleton_demes"]};

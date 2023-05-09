@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["Base32String",""]]};
+window.SIDEBAR_ITEMS = {"struct":["Base32String"]};

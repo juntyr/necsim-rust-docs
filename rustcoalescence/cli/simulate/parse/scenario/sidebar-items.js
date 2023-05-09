@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":[["parse_and_normalise",""]],"struct":[["SimulateArgsScenarioOnly",""]]};
+window.SIDEBAR_ITEMS = {"fn":["parse_and_normalise"],"struct":["SimulateArgsScenarioOnly"]};

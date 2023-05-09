@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":[["IntrinsicsMathsCore",""]],"trait":[["MathsCore",""]]};
+window.SIDEBAR_ITEMS = {"enum":["IntrinsicsMathsCore"],"trait":["MathsCore"]};

@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["EventSkippingAlgorithm",""]]};
+window.SIDEBAR_ITEMS = {"struct":["EventSkippingAlgorithm"]};

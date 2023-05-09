@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"mod":[["algorithm",""],["event_log",""],["fields",""],["partitioning",""],["pause",""],["reporters",""],["rng",""],["sample",""],["scenario",""],["speciation",""]]};
+window.SIDEBAR_ITEMS = {"mod":["algorithm","event_log","fields","partitioning","pause","reporters","rng","sample","scenario","speciation"]};

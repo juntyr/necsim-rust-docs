@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["InMemorySeparableAliasDispersalSampler",""]]};
+window.SIDEBAR_ITEMS = {"struct":["InMemorySeparableAliasDispersalSampler"]};

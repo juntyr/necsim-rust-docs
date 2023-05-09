@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["AlwaysEmigrationChoice",""]]};
+window.SIDEBAR_ITEMS = {"struct":["AlwaysEmigrationChoice"]};

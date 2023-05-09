@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["ConditionalCoalescenceSampler",""]]};
+window.SIDEBAR_ITEMS = {"struct":["ConditionalCoalescenceSampler"]};

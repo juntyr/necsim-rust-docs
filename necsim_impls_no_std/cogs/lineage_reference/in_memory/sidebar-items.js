@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["InMemoryLineageReference",""]]};
+window.SIDEBAR_ITEMS = {"struct":["InMemoryLineageReference"]};

@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["CudaRng",""]]};
+window.SIDEBAR_ITEMS = {"struct":["CudaRng"]};

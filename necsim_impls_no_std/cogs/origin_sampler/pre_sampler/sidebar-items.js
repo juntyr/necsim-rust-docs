@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["OriginPreSampler",""]]};
+window.SIDEBAR_ITEMS = {"struct":["OriginPreSampler"]};

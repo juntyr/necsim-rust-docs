@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"mod":[["partial",""]],"struct":[["Simulation",""],["SimulationBuilder",""]]};
+window.SIDEBAR_ITEMS = {"mod":["partial"],"struct":["Simulation","SimulationBuilder"]};

@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"mod":[["event_time_sampler",""]],"struct":[["IndependentActiveLineageSampler",""]]};
+window.SIDEBAR_ITEMS = {"mod":["event_time_sampler"],"struct":["IndependentActiveLineageSampler"]};

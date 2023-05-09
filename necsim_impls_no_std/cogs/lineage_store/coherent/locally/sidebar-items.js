@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"mod":[["classical",""]]};
+window.SIDEBAR_ITEMS = {"mod":["classical"]};

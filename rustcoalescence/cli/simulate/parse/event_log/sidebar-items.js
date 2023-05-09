@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":[["deserialize_state_event_log",""],["parse_and_normalise",""]],"struct":[["SimulateArgsEventLogOnly",""],["SimulateArgsEventLogOnlyRaw",""]]};
+window.SIDEBAR_ITEMS = {"constant":["FIELDS"],"enum":["__Field"],"fn":["deserialize_state_event_log","parse_and_normalise"],"struct":["SimulateArgsEventLogOnly","SimulateArgsEventLogOnlyRaw","__DeserializeWith","__FieldVisitor","__Visitor"]};

@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["LineageFileSaver",""]]};
+window.SIDEBAR_ITEMS = {"struct":["LineageFileSaver"]};

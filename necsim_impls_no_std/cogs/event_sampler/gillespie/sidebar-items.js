@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"mod":[["conditional",""],["unconditional",""]],"trait":[["GillespieEventSampler",""]]};
+window.SIDEBAR_ITEMS = {"mod":["conditional","unconditional"],"trait":["GillespieEventSampler"]};

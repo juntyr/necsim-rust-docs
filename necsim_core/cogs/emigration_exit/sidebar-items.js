@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"trait":[["EmigrationExit",""]]};
+window.SIDEBAR_ITEMS = {"trait":["EmigrationExit"]};

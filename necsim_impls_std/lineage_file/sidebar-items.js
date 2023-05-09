@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"mod":[["loader",""],["saver",""]]};
+window.SIDEBAR_ITEMS = {"mod":["loader","saver"]};

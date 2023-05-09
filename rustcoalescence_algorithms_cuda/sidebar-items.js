@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":[["CudaAlgorithm",""]]};
+window.SIDEBAR_ITEMS = {"enum":["CudaAlgorithm"]};

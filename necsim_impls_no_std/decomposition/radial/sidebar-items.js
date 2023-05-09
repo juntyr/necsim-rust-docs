@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["RadialDecomposition",""]]};
+window.SIDEBAR_ITEMS = {"struct":["RadialDecomposition"]};

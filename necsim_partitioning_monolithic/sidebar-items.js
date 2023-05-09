@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":[["MonolithicLocalPartition",""]],"mod":[["live",""],["recorded",""]],"struct":[["MonolithicPartitioning",""]]};
+window.SIDEBAR_ITEMS = {"enum":["MonolithicLocalPartition"],"mod":["live","recorded"],"struct":["MonolithicPartitioning"]};

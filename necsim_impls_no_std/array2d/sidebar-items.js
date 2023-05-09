@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":[["Error","An error that can arise during the use of an `Array2D`."]],"struct":[["Array2D","A fixed sized two-dimensional array."]]};
+window.SIDEBAR_ITEMS = {"enum":["Error"],"struct":["Array2D"]};

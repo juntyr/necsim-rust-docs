@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["GillespieLineageStore",""]]};
+window.SIDEBAR_ITEMS = {"struct":["GillespieLineageStore"]};

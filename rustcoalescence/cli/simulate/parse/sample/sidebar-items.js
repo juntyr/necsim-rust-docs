@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":[["parse_and_normalise",""]],"struct":[["SimulateArgsSampleOnly",""]]};
+window.SIDEBAR_ITEMS = {"constant":["FIELDS"],"enum":["__Field"],"fn":["parse_and_normalise"],"struct":["SimulateArgsSampleOnly","__FieldVisitor","__Visitor"]};

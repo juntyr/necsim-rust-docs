@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"trait":[["ReporterContext",""]]};
+window.SIDEBAR_ITEMS = {"trait":["ReporterContext"]};

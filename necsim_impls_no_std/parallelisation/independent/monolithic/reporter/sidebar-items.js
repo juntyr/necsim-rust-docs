@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":[["WaterLevelReporterStrategy",""]],"trait":[["WaterLevelReporterConstructor",""],["WaterLevelReporterProxy",""]]};
+window.SIDEBAR_ITEMS = {"enum":["WaterLevelReporterStrategy"],"trait":["WaterLevelReporterConstructor","WaterLevelReporterProxy"]};

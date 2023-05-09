@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":[["Reporters",""]],"struct":[["ReporterPluginDeclaration",""],["ReporterPluginFilter",""],["UnsafeReporterPlugin",""]],"trait":[["SerializeableReporter",""]],"type":[["DynReporterPlugin",""]]};
+window.SIDEBAR_ITEMS = {"enum":["Reporters"],"struct":["ReporterPluginDeclaration","ReporterPluginFilter","UnsafeReporterPlugin"],"trait":["SerializeableReporter"],"type":["DynReporterPlugin"]};

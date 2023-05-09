@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["CsvReporter",""]]};
+window.SIDEBAR_ITEMS = {"struct":["CsvReporter"]};
