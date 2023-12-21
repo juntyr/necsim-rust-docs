@@ -1,3 +1,0 @@
-(function() {var implementors = {
-"rustcoalescence":[["impl Parser for <a class=\"struct\" href=\"rustcoalescence/args/cli/struct.CommandArgs.html\" title=\"struct rustcoalescence::args::cli::CommandArgs\">CommandArgs</a>"],["impl Parser for <a class=\"enum\" href=\"rustcoalescence/args/cli/enum.RustcoalescenceArgs.html\" title=\"enum rustcoalescence::args::cli::RustcoalescenceArgs\">RustcoalescenceArgs</a>"]]
-};if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

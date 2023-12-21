@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":["SampleOriginRaw"],"struct":["VecLineages"]};
+window.SIDEBAR_ITEMS = {"enum":["SampleOriginRaw"]};
