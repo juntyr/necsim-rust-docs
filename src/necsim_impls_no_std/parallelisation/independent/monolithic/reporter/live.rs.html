@@ -249,7 +249,7 @@
 
     <span class="kw">fn </span>advance_water_level(<span class="kw-2">&amp;mut </span><span class="self">self</span>, water_level: NonNegativeF64) {
         <span class="comment">// Report all events below the water level in sorted order
-        </span><span class="self">self</span>.slow_events.sort();
+        </span><span class="self">self</span>.slow_events.sort_unstable();
 
         <span class="kw">for </span>event <span class="kw">in </span><span class="self">self</span>.slow_events.drain(..) {
             <span class="kw">match </span>event.into() {
@@ -286,7 +286,7 @@
 {
     <span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
         <span class="comment">// Report all events below the water level in sorted order
-        </span><span class="self">self</span>.slow_events.sort();
+        </span><span class="self">self</span>.slow_events.sort_unstable();
 
         <span class="kw">for </span>event <span class="kw">in </span><span class="self">self</span>.slow_events.drain(..) {
             <span class="kw">match </span>event.into() {
@@ -304,7 +304,7 @@
         }
 
         <span class="comment">// Report all events above the water level in sorted order
-        </span><span class="self">self</span>.fast_events.sort();
+        </span><span class="self">self</span>.fast_events.sort_unstable();
 
         <span class="kw">for </span>event <span class="kw">in </span><span class="self">self</span>.fast_events.drain(..) {
             <span class="kw">match </span>event.into() {

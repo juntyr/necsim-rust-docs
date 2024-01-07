@@ -131,7 +131,7 @@
 <a href="#131" id="131">131</a>
 <a href="#132" id="132">132</a>
 <a href="#133" id="133">133</a>
-</pre></div><pre class="rust"><code><span class="kw">use </span>std::num::NonZeroU64;
+</pre></div><pre class="rust"><code><span class="kw">use </span>std::num::{NonZeroU32, NonZeroU64};
 
 <span class="kw">use </span>serde::{Deserialize, Serialize};
 <span class="kw">use </span>serde_state::DeserializeState;
@@ -192,8 +192,8 @@
     <span class="kw">pub </span>device: u32,
     <span class="kw">pub </span>ptx_jit: bool,
     <span class="kw">pub </span>delta_t: PositiveF64,
-    <span class="kw">pub </span>block_size: u32,
-    <span class="kw">pub </span>grid_size: u32,
+    <span class="kw">pub </span>block_size: NonZeroU32,
+    <span class="kw">pub </span>grid_size: NonZeroU32,
     <span class="kw">pub </span>step_slice: NonZeroU64,
     <span class="kw">pub </span>dedup_cache: DedupCache,
     <span class="kw">pub </span>parallelism_mode: ParallelismMode,
@@ -240,8 +240,8 @@
     <span class="kw">pub </span>device: u32,
     <span class="kw">pub </span>ptx_jit: bool,
     <span class="kw">pub </span>delta_t: PositiveF64,
-    <span class="kw">pub </span>block_size: u32,
-    <span class="kw">pub </span>grid_size: u32,
+    <span class="kw">pub </span>block_size: NonZeroU32,
+    <span class="kw">pub </span>grid_size: NonZeroU32,
     <span class="kw">pub </span>step_slice: NonZeroU64,
     <span class="kw">pub </span>dedup_cache: DedupCache,
     <span class="attr">#[serde(deserialize_state)]
@@ -254,8 +254,8 @@
             device: <span class="number">0_u32</span>,
             ptx_jit: <span class="bool-val">true</span>,
             delta_t: PositiveF64::new(<span class="number">3.0_f64</span>).unwrap(),
-            block_size: <span class="number">64_u32</span>,
-            grid_size: <span class="number">64_u32</span>,
+            block_size: NonZeroU32::new(<span class="number">64_u32</span>).unwrap(),
+            grid_size: NonZeroU32::new(<span class="number">64_u32</span>).unwrap(),
             step_slice: NonZeroU64::new(<span class="number">150_u64</span>).unwrap(),
             dedup_cache: DedupCache::Relative(RelativeCapacity {
                 factor: PositiveF64::new(<span class="number">0.1_f64</span>).unwrap(),

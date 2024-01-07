@@ -280,7 +280,7 @@
 
         <span class="attr">#[cfg(target_os = <span class="string">&quot;cuda&quot;</span>)]
         </span><span class="kw">unsafe </span>{
-            <span class="macro">core::arch::asm!</span>(<span class="string">&quot;copysign.f64 {}, {}, {};&quot;</span>, out(reg64) offset, <span class="kw">in</span>(reg64) x, <span class="kw">const </span>ROUND_TRUNC_OFFSET.to_bits(), options(pure, nomem, nostack));
+            <span class="macro">core::arch::asm!</span>(<span class="string">&quot;copysign.f64 {}, {}, {};&quot;</span>, out(reg64) offset, <span class="kw">in</span>(reg64) x, <span class="kw">in</span>(reg64) ROUND_TRUNC_OFFSET, options(pure, nomem, nostack));
         }
         <span class="attr">#[cfg(not(target_os = <span class="string">&quot;cuda&quot;</span>))]
         </span><span class="kw">unsafe </span>{
