@@ -201,31 +201,43 @@
 <a href="#201" id="201">201</a>
 <a href="#202" id="202">202</a>
 <a href="#203" id="203">203</a>
+<a href="#204" id="204">204</a>
+<a href="#205" id="205">205</a>
+<a href="#206" id="206">206</a>
+<a href="#207" id="207">207</a>
+<a href="#208" id="208">208</a>
+<a href="#209" id="209">209</a>
+<a href="#210" id="210">210</a>
+<a href="#211" id="211">211</a>
+<a href="#212" id="212">212</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>necsim_core::reporter::Reporter;
 <span class="kw">use </span>necsim_core_bond::{NonNegativeF64, OpenClosedUnitF64 <span class="kw">as </span>PositiveUnitF64};
 <span class="kw">use </span>necsim_partitioning_core::LocalPartition;
 
 <span class="kw">use </span>rustcoalescence_algorithms::AlgorithmDefaults;
 
-<span class="attr">#[cfg(feature = <span class="string">&quot;rustcoalescence-algorithms-cuda&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">&quot;cuda-algorithm&quot;</span>)]
 </span><span class="kw">use </span>rustcoalescence_algorithms_cuda::CudaAlgorithm;
-<span class="attr">#[cfg(feature = <span class="string">&quot;rustcoalescence-algorithms-gillespie&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">&quot;gillespie-algorithms&quot;</span>)]
 </span><span class="kw">use </span>rustcoalescence_algorithms_gillespie::{
     event_skipping::EventSkippingAlgorithm, gillespie::GillespieAlgorithm,
 };
-<span class="attr">#[cfg(feature = <span class="string">&quot;rustcoalescence-algorithms-independent&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">&quot;independent-algorithm&quot;</span>)]
 </span><span class="kw">use </span>rustcoalescence_algorithms_independent::IndependentAlgorithm;
 
-<span class="kw">use </span>rustcoalescence_scenarios::{
-    almost_infinite::AlmostInfiniteScenario,
-    non_spatial::NonSpatialScenario,
-    spatially_explicit::{
-        SpatiallyExplicitTurnoverMapScenario, SpatiallyExplicitUniformTurnoverScenario,
-    },
-    spatially_implicit::SpatiallyImplicitScenario,
-    wrapping_noise::WrappingNoiseScenario,
-    Scenario,
-};
+<span class="attr">#[cfg(feature = <span class="string">&quot;almost-infinite-scenario&quot;</span>)]
+</span><span class="kw">use </span>rustcoalescence_scenarios::almost_infinite::AlmostInfiniteScenario;
+<span class="attr">#[cfg(feature = <span class="string">&quot;non-spatial-scenario&quot;</span>)]
+</span><span class="kw">use </span>rustcoalescence_scenarios::non_spatial::NonSpatialScenario;
+<span class="attr">#[cfg(feature = <span class="string">&quot;spatially-explicit-turnover-map-scenario&quot;</span>)]
+</span><span class="kw">use </span>rustcoalescence_scenarios::spatially_explicit::SpatiallyExplicitTurnoverMapScenario;
+<span class="attr">#[cfg(feature = <span class="string">&quot;spatially-explicit-uniform-turnover-scenario&quot;</span>)]
+</span><span class="kw">use </span>rustcoalescence_scenarios::spatially_explicit::SpatiallyExplicitUniformTurnoverScenario;
+<span class="attr">#[cfg(feature = <span class="string">&quot;spatially-implicit-scenario&quot;</span>)]
+</span><span class="kw">use </span>rustcoalescence_scenarios::spatially_implicit::SpatiallyImplicitScenario;
+<span class="attr">#[cfg(feature = <span class="string">&quot;wrapping-noise-scenario&quot;</span>)]
+</span><span class="kw">use </span>rustcoalescence_scenarios::wrapping_noise::WrappingNoiseScenario;
+<span class="kw">use </span>rustcoalescence_scenarios::Scenario;
 
 <span class="kw">use crate</span>::{
     args::config::{
@@ -240,40 +252,40 @@
 <span class="macro">macro_rules! </span>match_scenario_algorithm {
     (
         (<span class="macro-nonterminal">$algorithm</span>:expr, <span class="macro-nonterminal">$scenario</span>:expr =&gt; <span class="macro-nonterminal">$algscen</span>:ident) {
-            $($(<span class="attr">#[<span class="macro-nonterminal">$meta</span>:meta]</span>)* <span class="macro-nonterminal">$algpat</span>:pat =&gt; <span class="macro-nonterminal">$algcode</span>:block),*
+            $($(<span class="attr">#[<span class="macro-nonterminal">$algmeta</span>:meta]</span>)* <span class="macro-nonterminal">$algpat</span>:pat =&gt; <span class="macro-nonterminal">$algcode</span>:block),*
             &lt;=&gt;
-            $(<span class="macro-nonterminal">$scenpat</span>:pat =&gt; <span class="macro-nonterminal">$scencode</span>:block),*
+            $($(<span class="attr">#[<span class="macro-nonterminal">$scenmeta</span>:meta]</span>)* <span class="macro-nonterminal">$scenpat</span>:pat =&gt; <span class="macro-nonterminal">$scencode</span>:block),*
         }
     ) =&gt; {
         <span class="macro">match_scenario_algorithm! </span>{
             <span class="kw">impl </span>(<span class="macro-nonterminal">$algorithm</span>, <span class="macro-nonterminal">$scenario </span>=&gt; <span class="macro-nonterminal">$algscen</span>) {
-                $($(<span class="attr">#[<span class="macro-nonterminal">$meta</span>]</span>)* <span class="macro-nonterminal">$algpat </span>=&gt; <span class="macro-nonterminal">$algcode</span>),*
+                $($(<span class="attr">#[<span class="macro-nonterminal">$algmeta</span>]</span>)* <span class="macro-nonterminal">$algpat </span>=&gt; <span class="macro-nonterminal">$algcode</span>),*
                 &lt;=&gt;
-                $(<span class="macro-nonterminal">$scenpat </span>=&gt; <span class="macro-nonterminal">$scencode</span>),*
+                $($(<span class="attr">#[<span class="macro-nonterminal">$scenmeta</span>]</span>)* <span class="macro-nonterminal">$scenpat </span>=&gt; <span class="macro-nonterminal">$scencode</span>),*
                 &lt;=&gt;
             }
         }
     };
     (
         <span class="kw">impl </span>(<span class="macro-nonterminal">$algorithm</span>:expr, <span class="macro-nonterminal">$scenario</span>:expr =&gt; <span class="macro-nonterminal">$algscen</span>:ident) {
-            $(<span class="attr">#[<span class="macro-nonterminal">$meta</span>:meta]</span>)* <span class="macro-nonterminal">$algpat</span>:pat =&gt; <span class="macro-nonterminal">$algcode</span>:block,
-            $($(<span class="attr">#[<span class="macro-nonterminal">$metarem</span>:meta]</span>)* <span class="macro-nonterminal">$algpatrem</span>:pat =&gt; <span class="macro-nonterminal">$algcoderem</span>:block),+
+            $(<span class="attr">#[<span class="macro-nonterminal">$algmeta</span>:meta]</span>)* <span class="macro-nonterminal">$algpat</span>:pat =&gt; <span class="macro-nonterminal">$algcode</span>:block,
+            $($(<span class="attr">#[<span class="macro-nonterminal">$algmetarem</span>:meta]</span>)* <span class="macro-nonterminal">$algpatrem</span>:pat =&gt; <span class="macro-nonterminal">$algcoderem</span>:block),+
             &lt;=&gt;
-            $(<span class="macro-nonterminal">$scenpat</span>:pat =&gt; <span class="macro-nonterminal">$scencode</span>:block),*
+            $($(<span class="attr">#[<span class="macro-nonterminal">$scenmeta</span>:meta]</span>)* <span class="macro-nonterminal">$scenpat</span>:pat =&gt; <span class="macro-nonterminal">$scencode</span>:block),*
             &lt;=&gt;
             $(<span class="macro-nonterminal">$tail</span>:tt)*
         }
     ) =&gt; {
         <span class="macro">match_scenario_algorithm! </span>{
             <span class="kw">impl </span>(<span class="macro-nonterminal">$algorithm</span>, <span class="macro-nonterminal">$scenario </span>=&gt; <span class="macro-nonterminal">$algscen</span>) {
-                $($(<span class="attr">#[<span class="macro-nonterminal">$metarem</span>]</span>)* <span class="macro-nonterminal">$algpatrem </span>=&gt; <span class="macro-nonterminal">$algcoderem</span>),+
+                $($(<span class="attr">#[<span class="macro-nonterminal">$algmetarem</span>]</span>)* <span class="macro-nonterminal">$algpatrem </span>=&gt; <span class="macro-nonterminal">$algcoderem</span>),+
                 &lt;=&gt;
-                $(<span class="macro-nonterminal">$scenpat </span>=&gt; <span class="macro-nonterminal">$scencode</span>),*
+                $($(<span class="attr">#[<span class="macro-nonterminal">$scenmeta</span>]</span>)* <span class="macro-nonterminal">$scenpat </span>=&gt; <span class="macro-nonterminal">$scencode</span>),*
                 &lt;=&gt;
                 $(<span class="macro-nonterminal">$tail</span>)*
-                $(<span class="attr">#[<span class="macro-nonterminal">$meta</span>]</span>)* <span class="macro-nonterminal">$algpat </span>=&gt; {
+                $(<span class="attr">#[<span class="macro-nonterminal">$algmeta</span>]</span>)* <span class="macro-nonterminal">$algpat </span>=&gt; {
                     <span class="kw">match </span><span class="macro-nonterminal">$scenario </span>{
-                        $(<span class="macro-nonterminal">$scenpat </span>=&gt; {
+                        $($(<span class="attr">#[<span class="macro-nonterminal">$scenmeta</span>]</span>)* <span class="macro-nonterminal">$scenpat </span>=&gt; {
                             <span class="kw">let </span><span class="macro-nonterminal">$algscen </span>= <span class="macro-nonterminal">$scencode</span>;
                             <span class="macro-nonterminal">$algcode
                         </span>}),*
@@ -284,18 +296,18 @@
     };
     (
         <span class="kw">impl </span>(<span class="macro-nonterminal">$algorithm</span>:expr, <span class="macro-nonterminal">$scenario</span>:expr =&gt; <span class="macro-nonterminal">$algscen</span>:ident) {
-            $(<span class="attr">#[<span class="macro-nonterminal">$meta</span>:meta]</span>)* <span class="macro-nonterminal">$algpat</span>:pat =&gt; <span class="macro-nonterminal">$algcode</span>:block
+            $(<span class="attr">#[<span class="macro-nonterminal">$algmeta</span>:meta]</span>)* <span class="macro-nonterminal">$algpat</span>:pat =&gt; <span class="macro-nonterminal">$algcode</span>:block
             &lt;=&gt;
-            $(<span class="macro-nonterminal">$scenpat</span>:pat =&gt; <span class="macro-nonterminal">$scencode</span>:block),*
+            $($(<span class="attr">#[<span class="macro-nonterminal">$scenmeta</span>:meta]</span>)* <span class="macro-nonterminal">$scenpat</span>:pat =&gt; <span class="macro-nonterminal">$scencode</span>:block),*
             &lt;=&gt;
             $(<span class="macro-nonterminal">$tail</span>:tt)*
         }
     ) =&gt; {
         <span class="kw">match </span><span class="macro-nonterminal">$algorithm </span>{
             $(<span class="macro-nonterminal">$tail</span>)*
-            $(<span class="attr">#[<span class="macro-nonterminal">$meta</span>]</span>)* <span class="macro-nonterminal">$algpat </span>=&gt; {
+            $(<span class="attr">#[<span class="macro-nonterminal">$algmeta</span>]</span>)* <span class="macro-nonterminal">$algpat </span>=&gt; {
                 <span class="kw">match </span><span class="macro-nonterminal">$scenario </span>{
-                    $(<span class="macro-nonterminal">$scenpat </span>=&gt; {
+                    $($(<span class="attr">#[<span class="macro-nonterminal">$scenmeta</span>]</span>)* <span class="macro-nonterminal">$scenpat </span>=&gt; {
                         <span class="kw">let </span><span class="macro-nonterminal">$algscen </span>= <span class="macro-nonterminal">$scencode</span>;
                         <span class="macro-nonterminal">$algcode
                     </span>}),*
@@ -321,7 +333,7 @@
     <span class="macro">match_scenario_algorithm!</span>(
         (algorithm, scenario =&gt; scenario)
     {
-        <span class="attr">#[cfg(feature = <span class="string">&quot;rustcoalescence-algorithms-gillespie&quot;</span>)]
+        <span class="attr">#[cfg(feature = <span class="string">&quot;gillespie-algorithms&quot;</span>)]
         </span>AlgorithmArgs::Gillespie(algorithm_args) =&gt; {
             rng::dispatch::&lt;
                 &lt;GillespieAlgorithm <span class="kw">as </span>AlgorithmDefaults&gt;::MathsCore,
@@ -331,7 +343,7 @@
                 pause_before, ron_args, normalised_args,
             )
         },
-        <span class="attr">#[cfg(feature = <span class="string">&quot;rustcoalescence-algorithms-gillespie&quot;</span>)]
+        <span class="attr">#[cfg(feature = <span class="string">&quot;gillespie-algorithms&quot;</span>)]
         </span>AlgorithmArgs::EventSkipping(algorithm_args) =&gt; {
             rng::dispatch::&lt;
                 &lt;EventSkippingAlgorithm <span class="kw">as </span>AlgorithmDefaults&gt;::MathsCore,
@@ -341,7 +353,7 @@
                 pause_before, ron_args, normalised_args,
             )
         },
-        <span class="attr">#[cfg(feature = <span class="string">&quot;rustcoalescence-algorithms-independent&quot;</span>)]
+        <span class="attr">#[cfg(feature = <span class="string">&quot;independent-algorithm&quot;</span>)]
         </span>AlgorithmArgs::Independent(algorithm_args) =&gt; {
             rng::dispatch::&lt;
                 &lt;IndependentAlgorithm <span class="kw">as </span>AlgorithmDefaults&gt;::MathsCore,
@@ -351,7 +363,7 @@
                 pause_before, ron_args, normalised_args,
             )
         },
-        <span class="attr">#[cfg(feature = <span class="string">&quot;rustcoalescence-algorithms-cuda&quot;</span>)]
+        <span class="attr">#[cfg(feature = <span class="string">&quot;cuda-algorithm&quot;</span>)]
         </span>AlgorithmArgs::Cuda(algorithm_args) =&gt; {
             rng::dispatch::&lt;
                 &lt;CudaAlgorithm <span class="kw">as </span>AlgorithmDefaults&gt;::MathsCore,
@@ -362,40 +374,46 @@
             )
         }
         &lt;=&gt;
-        ScenarioArgs::SpatiallyExplicitUniformTurnover(scenario_args) =&gt; {
+        <span class="attr">#[cfg(feature = <span class="string">&quot;spatially-explicit-uniform-turnover-scenario&quot;</span>)]
+        </span>ScenarioArgs::SpatiallyExplicitUniformTurnover(scenario_args) =&gt; {
             SpatiallyExplicitUniformTurnoverScenario::initialise(
                 scenario_args,
                 speciation_probability_per_generation,
             )<span class="question-mark">?
         </span>},
-        ScenarioArgs::SpatiallyExplicitTurnoverMap(scenario_args) =&gt; {
+        <span class="attr">#[cfg(feature = <span class="string">&quot;spatially-explicit-turnover-map-scenario&quot;</span>)]
+        </span>ScenarioArgs::SpatiallyExplicitTurnoverMap(scenario_args) =&gt; {
             SpatiallyExplicitTurnoverMapScenario::initialise(
                 scenario_args,
                 speciation_probability_per_generation,
             )<span class="question-mark">?
         </span>},
-        ScenarioArgs::NonSpatial(scenario_args) =&gt; {
+        <span class="attr">#[cfg(feature = <span class="string">&quot;non-spatial-scenario&quot;</span>)]
+        </span>ScenarioArgs::NonSpatial(scenario_args) =&gt; {
             NonSpatialScenario::initialise(
                 scenario_args,
                 speciation_probability_per_generation,
             )
             .into_ok()
         },
-        ScenarioArgs::AlmostInfinite(scenario_args) =&gt; {
+        <span class="attr">#[cfg(feature = <span class="string">&quot;almost-infinite-scenario&quot;</span>)]
+        </span>ScenarioArgs::AlmostInfinite(scenario_args) =&gt; {
             AlmostInfiniteScenario::initialise(
                 scenario_args,
                 speciation_probability_per_generation,
             )
             .into_ok()
         },
-        ScenarioArgs::SpatiallyImplicit(scenario_args) =&gt; {
+        <span class="attr">#[cfg(feature = <span class="string">&quot;spatially-implicit-scenario&quot;</span>)]
+        </span>ScenarioArgs::SpatiallyImplicit(scenario_args) =&gt; {
             SpatiallyImplicitScenario::initialise(
                 scenario_args,
                 speciation_probability_per_generation,
             )
             .into_ok()
         },
-        ScenarioArgs::WrappingNoise(scenario_args) =&gt; {
+        <span class="attr">#[cfg(feature = <span class="string">&quot;wrapping-noise-scenario&quot;</span>)]
+        </span>ScenarioArgs::WrappingNoise(scenario_args) =&gt; {
             WrappingNoiseScenario::initialise(
                 scenario_args,
                 speciation_probability_per_generation,

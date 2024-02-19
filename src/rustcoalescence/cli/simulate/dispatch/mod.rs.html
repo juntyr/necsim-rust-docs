@@ -26,30 +26,30 @@
 <a href="#26" id="26">26</a>
 <a href="#27" id="27">27</a>
 </pre></div><pre class="rust"><code><span class="attr">#[cfg(any(
-    feature = <span class="string">&quot;rustcoalescence-algorithms-gillespie&quot;</span>,
-    feature = <span class="string">&quot;rustcoalescence-algorithms-independent&quot;</span>,
-    feature = <span class="string">&quot;rustcoalescence-algorithms-cuda&quot;
+    feature = <span class="string">&quot;gillespie-algorithms&quot;</span>,
+    feature = <span class="string">&quot;independent-algorithm&quot;</span>,
+    feature = <span class="string">&quot;cuda-algorithm&quot;
 </span>))]
 </span><span class="kw">mod </span>valid;
 
 <span class="attr">#[cfg(not(any(
-    feature = <span class="string">&quot;rustcoalescence-algorithms-gillespie&quot;</span>,
-    feature = <span class="string">&quot;rustcoalescence-algorithms-independent&quot;</span>,
-    feature = <span class="string">&quot;rustcoalescence-algorithms-cuda&quot;
+    feature = <span class="string">&quot;gillespie-algorithms&quot;</span>,
+    feature = <span class="string">&quot;independent-algorithm&quot;</span>,
+    feature = <span class="string">&quot;cuda-algorithm&quot;
 </span>)))]
 </span><span class="kw">mod </span>fallback;
 
 <span class="attr">#[cfg(any(
-    feature = <span class="string">&quot;rustcoalescence-algorithms-gillespie&quot;</span>,
-    feature = <span class="string">&quot;rustcoalescence-algorithms-independent&quot;</span>,
-    feature = <span class="string">&quot;rustcoalescence-algorithms-cuda&quot;
+    feature = <span class="string">&quot;gillespie-algorithms&quot;</span>,
+    feature = <span class="string">&quot;independent-algorithm&quot;</span>,
+    feature = <span class="string">&quot;cuda-algorithm&quot;
 </span>))]
 </span><span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">use </span>valid::dispatch;
 
 <span class="attr">#[cfg(not(any(
-    feature = <span class="string">&quot;rustcoalescence-algorithms-gillespie&quot;</span>,
-    feature = <span class="string">&quot;rustcoalescence-algorithms-independent&quot;</span>,
-    feature = <span class="string">&quot;rustcoalescence-algorithms-cuda&quot;
+    feature = <span class="string">&quot;gillespie-algorithms&quot;</span>,
+    feature = <span class="string">&quot;independent-algorithm&quot;</span>,
+    feature = <span class="string">&quot;cuda-algorithm&quot;
 </span>)))]
 </span><span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">use </span>fallback::dispatch;
 </code></pre></div></section></main></body></html>

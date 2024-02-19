@@ -71,31 +71,31 @@
 <span class="kw">use </span>necsim_partitioning_core::partition::Partition;
 
 <span class="attr">#[cfg(any(
-    feature = <span class="string">&quot;rustcoalescence-algorithms-gillespie&quot;</span>,
-    feature = <span class="string">&quot;rustcoalescence-algorithms-independent&quot;</span>,
-    feature = <span class="string">&quot;rustcoalescence-algorithms-cuda&quot;
+    feature = <span class="string">&quot;gillespie-algorithms&quot;</span>,
+    feature = <span class="string">&quot;independent-algorithm&quot;</span>,
+    feature = <span class="string">&quot;cuda-algorithm&quot;
 </span>))]
 </span><span class="kw">use </span>rustcoalescence_algorithms::AlgorithmParamters;
 
 <span class="attr">#[derive(Debug, DeserializeState)]
 #[serde(deserialize_state = <span class="string">&quot;Partition&quot;</span>)]
 </span><span class="kw">pub enum </span>Algorithm {
-    <span class="attr">#[cfg(feature = <span class="string">&quot;rustcoalescence-algorithms-gillespie&quot;</span>)]
+    <span class="attr">#[cfg(feature = <span class="string">&quot;gillespie-algorithms&quot;</span>)]
     #[serde(alias = <span class="string">&quot;Classical&quot;</span>)]
     </span>Gillespie(
         <span class="attr">#[serde(deserialize_state)]
         </span>&lt;rustcoalescence_algorithms_gillespie::gillespie::GillespieAlgorithm <span class="kw">as </span>rustcoalescence_algorithms::AlgorithmParamters&gt;::Arguments,
     ),
-    <span class="attr">#[cfg(feature = <span class="string">&quot;rustcoalescence-algorithms-gillespie&quot;</span>)]
+    <span class="attr">#[cfg(feature = <span class="string">&quot;gillespie-algorithms&quot;</span>)]
     #[serde(alias = <span class="string">&quot;SkippingGillespie&quot;</span>)]
     </span>EventSkipping(
         <span class="attr">#[serde(deserialize_state)]
         </span>&lt;rustcoalescence_algorithms_gillespie::event_skipping::EventSkippingAlgorithm <span class="kw">as </span>AlgorithmParamters&gt;::Arguments,
     ),
-    <span class="attr">#[cfg(feature = <span class="string">&quot;rustcoalescence-algorithms-cuda&quot;</span>)]
+    <span class="attr">#[cfg(feature = <span class="string">&quot;cuda-algorithm&quot;</span>)]
     #[serde(alias = <span class="string">&quot;CUDA&quot;</span>)]
     </span>Cuda(<span class="attr">#[serde(deserialize_state)] </span>&lt;rustcoalescence_algorithms_cuda::CudaAlgorithm <span class="kw">as </span>AlgorithmParamters&gt;::Arguments),
-    <span class="attr">#[cfg(feature = <span class="string">&quot;rustcoalescence-algorithms-independent&quot;</span>)]
+    <span class="attr">#[cfg(feature = <span class="string">&quot;independent-algorithm&quot;</span>)]
     </span>Independent(
         <span class="attr">#[serde(deserialize_state)] </span>&lt;rustcoalescence_algorithms_independent::IndependentAlgorithm <span class="kw">as </span>AlgorithmParamters&gt;::Arguments,
     ),
@@ -105,22 +105,22 @@
     <span class="kw">fn </span>serialize&lt;S: Serializer&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, serializer: S) -&gt; <span class="prelude-ty">Result</span>&lt;S::Ok, S::Error&gt; {
         <span class="attr">#[allow(unreachable_patterns, clippy::single_match_else)]
         </span><span class="kw">match </span><span class="self">self </span>{
-            <span class="attr">#[cfg(feature = <span class="string">&quot;rustcoalescence-algorithms-gillespie&quot;</span>)]
+            <span class="attr">#[cfg(feature = <span class="string">&quot;gillespie-algorithms&quot;</span>)]
             </span><span class="self">Self</span>::Gillespie(args) =&gt; {
                 serializer.serialize_newtype_variant(<span class="macro">stringify!</span>(Algorithm), <span class="number">0</span>, <span class="string">&quot;Gillespie&quot;</span>, args)
             },
-            <span class="attr">#[cfg(feature = <span class="string">&quot;rustcoalescence-algorithms-gillespie&quot;</span>)]
+            <span class="attr">#[cfg(feature = <span class="string">&quot;gillespie-algorithms&quot;</span>)]
             </span><span class="self">Self</span>::EventSkipping(args) =&gt; serializer.serialize_newtype_variant(
                 <span class="macro">stringify!</span>(Algorithm),
                 <span class="number">1</span>,
                 <span class="string">&quot;EventSkipping&quot;</span>,
                 args,
             ),
-            <span class="attr">#[cfg(feature = <span class="string">&quot;rustcoalescence-algorithms-cuda&quot;</span>)]
+            <span class="attr">#[cfg(feature = <span class="string">&quot;cuda-algorithm&quot;</span>)]
             </span><span class="self">Self</span>::Cuda(args) =&gt; {
                 serializer.serialize_newtype_variant(<span class="macro">stringify!</span>(Algorithm), <span class="number">2</span>, <span class="string">&quot;CUDA&quot;</span>, args)
             },
-            <span class="attr">#[cfg(feature = <span class="string">&quot;rustcoalescence-algorithms-independent&quot;</span>)]
+            <span class="attr">#[cfg(feature = <span class="string">&quot;independent-algorithm&quot;</span>)]
             </span><span class="self">Self</span>::Independent(args) =&gt; {
                 serializer.serialize_newtype_variant(<span class="macro">stringify!</span>(Algorithm), <span class="number">3</span>, <span class="string">&quot;Independent&quot;</span>, args)
             },

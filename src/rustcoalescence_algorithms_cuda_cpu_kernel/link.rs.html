@@ -308,11 +308,23 @@
 <a href="#308" id="308">308</a>
 <a href="#309" id="309">309</a>
 <a href="#310" id="310">310</a>
-</pre></div><pre class="rust"><code><span class="kw">use </span>rustcoalescence_algorithms_cuda_gpu_kernel::{SimulatableKernel, SimulationKernelArgs};
+<a href="#311" id="311">311</a>
+<a href="#312" id="312">312</a>
+<a href="#313" id="313">313</a>
+<a href="#314" id="314">314</a>
+<a href="#315" id="315">315</a>
+<a href="#316" id="316">316</a>
+<a href="#317" id="317">317</a>
+<a href="#318" id="318">318</a>
+<a href="#319" id="319">319</a>
+</pre></div><pre class="rust"><code><span class="attr">#[allow(unused_imports)]
+</span><span class="kw">use </span>rustcoalescence_algorithms_cuda_gpu_kernel::{SimulatableKernel, SimulationKernelArgs};
 
-<span class="kw">use </span><span class="kw">crate</span>::SimulationKernel;
+<span class="attr">#[allow(unused_imports)]
+</span><span class="kw">use </span><span class="kw">crate</span>::SimulationKernel;
 
-<span class="macro">macro_rules! </span>link_kernel {
+<span class="attr">#[allow(unused_macros)]
+</span><span class="macro">macro_rules! </span>link_kernel {
     (<span class="macro-nonterminal">$habitat</span>:ty, <span class="macro-nonterminal">$dispersal</span>:ty, <span class="macro-nonterminal">$turnover</span>:ty, <span class="macro-nonterminal">$speciation</span>:ty) =&gt; {
         <span class="macro">link_kernel! </span>{
             <span class="macro-nonterminal">$habitat</span>, <span class="macro-nonterminal">$dispersal</span>, <span class="macro-nonterminal">$turnover</span>, <span class="macro-nonterminal">$speciation</span>,
@@ -511,7 +523,8 @@
     };
 }
 
-<span class="macro">link_kernel!</span>(
+<span class="attr">#[cfg(feature = <span class="string">&quot;non-spatial-scenario&quot;</span>)]
+</span><span class="macro">link_kernel!</span>(
     necsim_impls_no_std::cogs::habitat::non_spatial::NonSpatialHabitat&lt;
         necsim_impls_cuda::cogs::maths::NvptxMathsCore
     &gt;,
@@ -528,7 +541,8 @@
     necsim_impls_no_std::cogs::speciation_probability::uniform::UniformSpeciationProbability
 );
 
-<span class="macro">link_kernel!</span>(
+<span class="attr">#[cfg(feature = <span class="string">&quot;spatially-implicit-scenario&quot;</span>)]
+</span><span class="macro">link_kernel!</span>(
     necsim_impls_no_std::cogs::habitat::spatially_implicit::SpatiallyImplicitHabitat&lt;
         necsim_impls_cuda::cogs::maths::NvptxMathsCore
     &gt;,
@@ -545,7 +559,8 @@
     necsim_impls_no_std::cogs::speciation_probability::spatially_implicit::SpatiallyImplicitSpeciationProbability
 );
 
-<span class="macro">link_kernel!</span>(
+<span class="attr">#[cfg(feature = <span class="string">&quot;almost-infinite-scenario&quot;</span>)]
+</span><span class="macro">link_kernel!</span>(
     necsim_impls_no_std::cogs::habitat::almost_infinite::AlmostInfiniteHabitat&lt;
         necsim_impls_cuda::cogs::maths::NvptxMathsCore
     &gt;,
@@ -562,7 +577,8 @@
     necsim_impls_no_std::cogs::speciation_probability::uniform::UniformSpeciationProbability
 );
 
-<span class="macro">link_kernel!</span>(
+<span class="attr">#[cfg(feature = <span class="string">&quot;spatially-explicit-uniform-turnover-scenario&quot;</span>)]
+</span><span class="macro">link_kernel!</span>(
     necsim_impls_no_std::cogs::habitat::in_memory::InMemoryHabitat&lt;
         necsim_impls_cuda::cogs::maths::NvptxMathsCore
     &gt;,
@@ -582,7 +598,8 @@
     necsim_impls_no_std::cogs::speciation_probability::uniform::UniformSpeciationProbability
 );
 
-<span class="macro">link_kernel!</span>(
+<span class="attr">#[cfg(feature = <span class="string">&quot;spatially-explicit-turnover-map-scenario&quot;</span>)]
+</span><span class="macro">link_kernel!</span>(
     necsim_impls_no_std::cogs::habitat::in_memory::InMemoryHabitat&lt;
         necsim_impls_cuda::cogs::maths::NvptxMathsCore
     &gt;,
@@ -602,7 +619,8 @@
     necsim_impls_no_std::cogs::speciation_probability::uniform::UniformSpeciationProbability
 );
 
-<span class="macro">link_kernel!</span>(
+<span class="attr">#[cfg(feature = <span class="string">&quot;wrapping-noise-scenario&quot;</span>)]
+</span><span class="macro">link_kernel!</span>(
     necsim_impls_no_std::cogs::habitat::wrapping_noise::WrappingNoiseHabitat&lt;
         necsim_impls_cuda::cogs::maths::NvptxMathsCore
     &gt;,
