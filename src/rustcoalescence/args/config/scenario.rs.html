@@ -20,14 +20,6 @@
 <a href="#20" id="20">20</a>
 <a href="#21" id="21">21</a>
 <a href="#22" id="22">22</a>
-<a href="#23" id="23">23</a>
-<a href="#24" id="24">24</a>
-<a href="#25" id="25">25</a>
-<a href="#26" id="26">26</a>
-<a href="#27" id="27">27</a>
-<a href="#28" id="28">28</a>
-<a href="#29" id="29">29</a>
-<a href="#30" id="30">30</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>serde::{Deserialize, Serialize};
 
 <span class="attr">#[derive(Debug, Serialize, Deserialize)]
@@ -35,27 +27,19 @@
     <span class="attr">#[cfg(feature = <span class="string">&quot;spatially-explicit-uniform-turnover-scenario&quot;</span>)]
     #[serde(alias = <span class="string">&quot;SpatiallyExplicit&quot;</span>)]
     </span>SpatiallyExplicitUniformTurnover(
-        rustcoalescence_scenarios::spatially_explicit::SpatiallyExplicitUniformTurnoverArguments
+        rustcoalescence_scenarios::spatially_explicit::SpatiallyExplicitUniformTurnoverArguments,
     ),
     <span class="attr">#[cfg(feature = <span class="string">&quot;spatially-explicit-turnover-map-scenario&quot;</span>)]
     </span>SpatiallyExplicitTurnoverMap(
-        rustcoalescence_scenarios::spatially_explicit::SpatiallyExplicitTurnoverMapArguments
+        rustcoalescence_scenarios::spatially_explicit::SpatiallyExplicitTurnoverMapArguments,
     ),
     <span class="attr">#[cfg(feature = <span class="string">&quot;non-spatial-scenario&quot;</span>)]
-    </span>NonSpatial(
-        rustcoalescence_scenarios::non_spatial::NonSpatialArguments
-    ),
+    </span>NonSpatial(rustcoalescence_scenarios::non_spatial::NonSpatialArguments),
     <span class="attr">#[cfg(feature = <span class="string">&quot;spatially-implicit-scenario&quot;</span>)]
-    </span>SpatiallyImplicit(
-        rustcoalescence_scenarios::spatially_implicit::SpatiallyImplicitArguments
-    ),
+    </span>SpatiallyImplicit(rustcoalescence_scenarios::spatially_implicit::SpatiallyImplicitArguments),
     <span class="attr">#[cfg(feature = <span class="string">&quot;almost-infinite-scenario&quot;</span>)]
-    </span>AlmostInfinite(
-        rustcoalescence_scenarios::almost_infinite::AlmostInfiniteArguments
-    ),
+    </span>AlmostInfinite(rustcoalescence_scenarios::almost_infinite::AlmostInfiniteArguments),
     <span class="attr">#[cfg(feature = <span class="string">&quot;wrapping-noise-scenario&quot;</span>)]
-    </span>WrappingNoise(
-        rustcoalescence_scenarios::wrapping_noise::WrappingNoiseArguments
-    ),
+    </span>WrappingNoise(rustcoalescence_scenarios::wrapping_noise::WrappingNoiseArguments),
 }
 </code></pre></div></section></main></body></html>
