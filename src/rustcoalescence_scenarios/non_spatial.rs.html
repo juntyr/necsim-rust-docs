@@ -108,6 +108,8 @@
 <a href="#108" id="108">108</a>
 <a href="#109" id="109">109</a>
 <a href="#110" id="110">110</a>
+<a href="#111" id="111">111</a>
+<a href="#112" id="112">112</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>std::num::NonZeroU32;
 
 <span class="kw">use </span>serde::{Deserialize, Serialize};
@@ -137,8 +139,10 @@
     speciation_probability: UniformSpeciationProbability,
 }
 
-<span class="attr">#[derive(Debug, Serialize, Deserialize)]
+<span class="attr">#[derive(Clone, Debug, Serialize, Deserialize)]
 #[allow(clippy::module_name_repetitions)]
+#[serde(deny_unknown_fields)]
+#[serde(rename = <span class="string">&quot;NonSpatial&quot;</span>)]
 </span><span class="kw">pub struct </span>NonSpatialArguments {
     <span class="kw">pub </span>area: (OffByOneU32, OffByOneU32),
     <span class="kw">pub </span>deme: NonZeroU32,

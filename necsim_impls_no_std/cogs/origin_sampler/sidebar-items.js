@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"mod":["almost_infinite","decomposition","in_memory","non_spatial","pre_sampler","resuming","spatially_implicit","wrapping_noise"],"trait":["TrustedOriginSampler","UntrustedOriginSampler"]};
+window.SIDEBAR_ITEMS = {"mod":["decomposition","in_memory","non_spatial","pre_sampler","resuming","singleton_demes","spatially_implicit"],"trait":["TrustedOriginSampler","UntrustedOriginSampler"]};

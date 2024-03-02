@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":["Scenario"]};
+window.SIDEBAR_ITEMS = {"enum":["Scenario","ScenarioRaw"]};

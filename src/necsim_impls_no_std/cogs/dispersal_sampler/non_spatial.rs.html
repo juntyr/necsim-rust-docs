@@ -130,6 +130,10 @@
 <a href="#130" id="130">130</a>
 <a href="#131" id="131">131</a>
 <a href="#132" id="132">132</a>
+<a href="#133" id="133">133</a>
+<a href="#134" id="134">134</a>
+<a href="#135" id="135">135</a>
+<a href="#136" id="136">136</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>core::{marker::PhantomData, num::NonZeroU64};
 
 <span class="kw">use </span>necsim_core::{
@@ -191,10 +195,12 @@
         </span>Location::new(
             habitat
                 .get_extent()
+                .origin()
                 .x()
                 .wrapping_add((dispersal_target_index % habitat.get_extent().width().get()) <span class="kw">as </span>u32),
             habitat
                 .get_extent()
+                .origin()
                 .y()
                 .wrapping_add((dispersal_target_index / habitat.get_extent().width().get()) <span class="kw">as </span>u32),
         )
@@ -238,10 +244,12 @@
         </span>Location::new(
             habitat
                 .get_extent()
+                .origin()
                 .x()
                 .wrapping_add((dispersal_target_index % habitat.get_extent().width().get()) <span class="kw">as </span>u32),
             habitat
                 .get_extent()
+                .origin()
                 .y()
                 .wrapping_add((dispersal_target_index / habitat.get_extent().width().get()) <span class="kw">as </span>u32),
         )

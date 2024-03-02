@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":["AlmostInfiniteArguments","AlmostInfiniteScenario"]};
+window.SIDEBAR_ITEMS = {"enum":["Sample"],"mod":["clark2dt","normal"],"struct":["AlmostInfiniteArguments"]};

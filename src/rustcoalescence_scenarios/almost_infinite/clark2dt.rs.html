@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `rustcoalescence/scenarios/src/almost_infinite.rs`."><title>almost_infinite.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-9ee3a5e31a2afa3e.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="rustcoalescence_scenarios" data-themes="" data-resource-suffix="" data-rustdoc-version="1.75.0-nightly (0f44eb32f 2023-11-09)" data-channel="nightly" data-search-js="search-8fbf244ebcf71464.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-9dd44ab47b99a0fb.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `rustcoalescence/scenarios/src/almost_infinite/clark2dt.rs`."><title>clark2dt.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-9ee3a5e31a2afa3e.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="rustcoalescence_scenarios" data-themes="" data-resource-suffix="" data-rustdoc-version="1.75.0-nightly (0f44eb32f 2023-11-09)" data-channel="nightly" data-search-js="search-8fbf244ebcf71464.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-9dd44ab47b99a0fb.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -115,19 +115,28 @@
 <a href="#115" id="115">115</a>
 <a href="#116" id="116">116</a>
 <a href="#117" id="117">117</a>
+<a href="#118" id="118">118</a>
+<a href="#119" id="119">119</a>
+<a href="#120" id="120">120</a>
+<a href="#121" id="121">121</a>
+<a href="#122" id="122">122</a>
+<a href="#123" id="123">123</a>
+<a href="#124" id="124">124</a>
+<a href="#125" id="125">125</a>
+<a href="#126" id="126">126</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>serde::{Deserialize, Serialize};
 
 <span class="kw">use </span>necsim_core::cogs::{DispersalSampler, LineageStore, MathsCore, RngCore};
-<span class="kw">use </span>necsim_core_bond::{NonNegativeF64, OpenClosedUnitF64 <span class="kw">as </span>PositiveUnitF64};
+<span class="kw">use </span>necsim_core_bond::{OpenClosedUnitF64 <span class="kw">as </span>PositiveUnitF64, PositiveF64};
 <span class="kw">use </span>necsim_partitioning_core::partition::Partition;
 
 <span class="kw">use </span>necsim_impls_no_std::{
     cogs::{
-        dispersal_sampler::almost_infinite_normal::AlmostInfiniteNormalDispersalSampler,
+        dispersal_sampler::almost_infinite_clark2dt::AlmostInfiniteClark2DtDispersalSampler,
         habitat::almost_infinite::AlmostInfiniteHabitat,
         lineage_store::coherent::globally::singleton_demes::SingletonDemesLineageStore,
         origin_sampler::{
-            almost_infinite::AlmostInfiniteOriginSampler, pre_sampler::OriginPreSampler,
+            pre_sampler::OriginPreSampler, singleton_demes::SingletonDemesOriginSampler,
         },
         speciation_probability::uniform::UniformSpeciationProbability,
         turnover_rate::uniform::UniformTurnoverRate,
@@ -137,39 +146,47 @@
 
 <span class="kw">use crate</span>::{Scenario, ScenarioParameters};
 
+<span class="kw">use </span><span class="kw">super</span>::Sample;
+
 <span class="attr">#[allow(clippy::module_name_repetitions)]
-</span><span class="kw">pub struct </span>AlmostInfiniteScenario&lt;M: MathsCore, G: RngCore&lt;M&gt;&gt; {
-    radius: u16,
+</span><span class="kw">pub struct </span>AlmostInfiniteClark2DtDispersalScenario&lt;M: MathsCore, G: RngCore&lt;M&gt;&gt; {
+    sample: Sample,
 
     habitat: AlmostInfiniteHabitat&lt;M&gt;,
-    dispersal_sampler: AlmostInfiniteNormalDispersalSampler&lt;M, G&gt;,
+    dispersal_sampler: AlmostInfiniteClark2DtDispersalSampler&lt;M, G&gt;,
     turnover_rate: UniformTurnoverRate,
     speciation_probability: UniformSpeciationProbability,
 }
 
 <span class="attr">#[derive(Debug, Serialize, Deserialize)]
 #[allow(clippy::module_name_repetitions)]
-#[serde(rename = <span class="string">&quot;AlmostInfinite&quot;</span>)]
-</span><span class="kw">pub struct </span>AlmostInfiniteArguments {
-    <span class="kw">pub </span>radius: u16,
-    <span class="kw">pub </span>sigma: NonNegativeF64,
+#[serde(rename = <span class="string">&quot;AlmostInfiniteClark2DtDispersal&quot;</span>)]
+</span><span class="kw">pub struct </span>AlmostInfiniteClark2DtDispersalArguments {
+    <span class="kw">pub </span>sample: Sample,
+    <span class="attr">#[serde(alias = <span class="string">&quot;u&quot;</span>)]
+    </span><span class="kw">pub </span>shape_u: PositiveF64,
+    <span class="attr">#[serde(default = <span class="string">&quot;PositiveF64::one&quot;</span>)]
+    #[serde(alias = <span class="string">&quot;p&quot;</span>)]
+    </span><span class="kw">pub </span>tail_p: PositiveF64,
 }
 
-<span class="kw">impl</span>&lt;M: MathsCore, G: RngCore&lt;M&gt;&gt; ScenarioParameters <span class="kw">for </span>AlmostInfiniteScenario&lt;M, G&gt; {
-    <span class="kw">type </span>Arguments = AlmostInfiniteArguments;
+<span class="kw">impl</span>&lt;M: MathsCore, G: RngCore&lt;M&gt;&gt; ScenarioParameters
+    <span class="kw">for </span>AlmostInfiniteClark2DtDispersalScenario&lt;M, G&gt;
+{
+    <span class="kw">type </span>Arguments = AlmostInfiniteClark2DtDispersalArguments;
     <span class="kw">type </span>Error = !;
 }
 
-<span class="kw">impl</span>&lt;M: MathsCore, G: RngCore&lt;M&gt;&gt; Scenario&lt;M, G&gt; <span class="kw">for </span>AlmostInfiniteScenario&lt;M, G&gt; {
+<span class="kw">impl</span>&lt;M: MathsCore, G: RngCore&lt;M&gt;&gt; Scenario&lt;M, G&gt; <span class="kw">for </span>AlmostInfiniteClark2DtDispersalScenario&lt;M, G&gt; {
     <span class="kw">type </span>Decomposition = RadialDecomposition;
     <span class="kw">type </span>DecompositionAuxiliary = ();
     <span class="kw">type </span>DispersalSampler&lt;D: DispersalSampler&lt;M, <span class="self">Self</span>::Habitat, G&gt;&gt; =
-        AlmostInfiniteNormalDispersalSampler&lt;M, G&gt;;
+        AlmostInfiniteClark2DtDispersalSampler&lt;M, G&gt;;
     <span class="kw">type </span>Habitat = AlmostInfiniteHabitat&lt;M&gt;;
     <span class="kw">type </span>LineageStore&lt;L: LineageStore&lt;M, <span class="self">Self</span>::Habitat&gt;&gt; =
         SingletonDemesLineageStore&lt;M, <span class="self">Self</span>::Habitat&gt;;
-    <span class="kw">type </span>OriginSampler&lt;<span class="lifetime">&#39;h</span>, I: Iterator&lt;Item = u64&gt;&gt; = AlmostInfiniteOriginSampler&lt;<span class="lifetime">&#39;h</span>, M, I&gt; <span class="kw">where </span>G: <span class="lifetime">&#39;h</span>;
-    <span class="kw">type </span>OriginSamplerAuxiliary = (u16,);
+    <span class="kw">type </span>OriginSampler&lt;<span class="lifetime">&#39;h</span>, I: Iterator&lt;Item = u64&gt;&gt; = SingletonDemesOriginSampler&lt;<span class="lifetime">&#39;h</span>, M, <span class="self">Self</span>::Habitat, I&gt; <span class="kw">where </span>G: <span class="lifetime">&#39;h</span>;
+    <span class="kw">type </span>OriginSamplerAuxiliary = (Sample,);
     <span class="kw">type </span>SpeciationProbability = UniformSpeciationProbability;
     <span class="kw">type </span>TurnoverRate = UniformTurnoverRate;
 
@@ -178,13 +195,14 @@
         speciation_probability_per_generation: PositiveUnitF64,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, <span class="self">Self</span>::Error&gt; {
         <span class="kw">let </span>habitat = AlmostInfiniteHabitat::default();
-        <span class="kw">let </span>dispersal_sampler = AlmostInfiniteNormalDispersalSampler::new(args.sigma);
+        <span class="kw">let </span>dispersal_sampler =
+            AlmostInfiniteClark2DtDispersalSampler::new(args.shape_u, args.tail_p);
         <span class="kw">let </span>turnover_rate = UniformTurnoverRate::default();
         <span class="kw">let </span>speciation_probability =
             UniformSpeciationProbability::new(speciation_probability_per_generation.into());
 
         <span class="prelude-val">Ok</span>(<span class="self">Self </span>{
-            radius: args.radius,
+            sample: args.sample,
 
             habitat,
             dispersal_sampler,
@@ -208,7 +226,7 @@
             <span class="self">self</span>.dispersal_sampler,
             <span class="self">self</span>.turnover_rate,
             <span class="self">self</span>.speciation_probability,
-            (<span class="self">self</span>.radius,),
+            (<span class="self">self</span>.sample,),
             (),
         )
     }
@@ -216,12 +234,12 @@
     <span class="kw">fn </span>sample_habitat&lt;<span class="lifetime">&#39;h</span>, I: Iterator&lt;Item = u64&gt;&gt;(
         habitat: <span class="kw-2">&amp;</span><span class="lifetime">&#39;h </span><span class="self">Self</span>::Habitat,
         pre_sampler: OriginPreSampler&lt;M, I&gt;,
-        (radius,): <span class="self">Self</span>::OriginSamplerAuxiliary,
+        (sample,): <span class="self">Self</span>::OriginSamplerAuxiliary,
     ) -&gt; <span class="self">Self</span>::OriginSampler&lt;<span class="lifetime">&#39;h</span>, I&gt;
     <span class="kw">where
         </span>G: <span class="lifetime">&#39;h</span>,
     {
-        AlmostInfiniteOriginSampler::new(pre_sampler, habitat, radius)
+        sample.into_origin_sampler(habitat, pre_sampler)
     }
 
     <span class="kw">fn </span>decompose(

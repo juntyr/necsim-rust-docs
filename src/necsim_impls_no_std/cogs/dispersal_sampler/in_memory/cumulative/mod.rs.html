@@ -109,6 +109,7 @@
 <a href="#109" id="109">109</a>
 <a href="#110" id="110">110</a>
 <a href="#111" id="111">111</a>
+<a href="#112" id="112">112</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>alloc::{boxed::Box, vec};
 
 <span class="kw">use </span>necsim_core::{
@@ -148,24 +149,24 @@
         <span class="kw">let </span><span class="kw-2">mut </span>valid_dispersal_targets = <span class="macro">vec!</span>[<span class="prelude-val">None</span>; dispersal.num_elements()].into_boxed_slice();
 
         <span class="kw">for </span>(row_index, row) <span class="kw">in </span>dispersal.rows_iter().enumerate() {
-            <span class="kw">let </span>sum: NonNegativeF64 = row
-                .enumerate()
-                .map(|(col_index, dispersal_probability)| {
-                    <span class="attr">#[allow(clippy::cast_possible_truncation)]
-                    </span><span class="kw">let </span>location = Location::new(
-                        habitat_extent
-                            .x()
-                            .wrapping_add((col_index % usize::from(habitat_extent.width())) <span class="kw">as </span>u32),
-                        habitat_extent
-                            .y()
-                            .wrapping_add((col_index / usize::from(habitat_extent.width())) <span class="kw">as </span>u32),
-                    );
+            <span class="kw">let </span>sum: NonNegativeF64 =
+                row.enumerate()
+                    .map(|(col_index, dispersal_probability)| {
+                        <span class="attr">#[allow(clippy::cast_possible_truncation)]
+                        </span><span class="kw">let </span>location = Location::new(
+                            habitat_extent.origin().x().wrapping_add(
+                                (col_index % usize::from(habitat_extent.width())) <span class="kw">as </span>u32,
+                            ),
+                            habitat_extent.origin().y().wrapping_add(
+                                (col_index / usize::from(habitat_extent.width())) <span class="kw">as </span>u32,
+                            ),
+                        );
 
-                    <span class="comment">// Multiply all dispersal probabilities by the habitat of their target
-                    </span><span class="kw-2">*</span>dispersal_probability
-                        * NonNegativeF64::from(habitat.get_habitat_at_location(<span class="kw-2">&amp;</span>location))
-                })
-                .sum();
+                        <span class="comment">// Multiply all dispersal probabilities by the habitat of their target
+                        </span><span class="kw-2">*</span>dispersal_probability
+                            * NonNegativeF64::from(habitat.get_habitat_at_location(<span class="kw-2">&amp;</span>location))
+                    })
+                    .sum();
 
             <span class="kw">if </span>sum &gt; <span class="number">0.0_f64 </span>{
                 <span class="kw">let </span><span class="kw-2">mut </span>acc = NonNegativeF64::zero();
@@ -173,14 +174,15 @@
 
                 <span class="kw">for </span>col_index <span class="kw">in </span><span class="number">0</span>..dispersal.num_columns() {
                     <span class="attr">#[allow(clippy::cast_possible_truncation)]
-                    </span><span class="kw">let </span>location = Location::new(
-                        habitat_extent
-                            .x()
-                            .wrapping_add((col_index % usize::from(habitat_extent.width())) <span class="kw">as </span>u32),
-                        habitat_extent
-                            .y()
-                            .wrapping_add((col_index / usize::from(habitat_extent.width())) <span class="kw">as </span>u32),
-                    );
+                    </span><span class="kw">let </span>location =
+                        Location::new(
+                            habitat_extent.origin().x().wrapping_add(
+                                (col_index % usize::from(habitat_extent.width())) <span class="kw">as </span>u32,
+                            ),
+                            habitat_extent.origin().y().wrapping_add(
+                                (col_index / usize::from(habitat_extent.width())) <span class="kw">as </span>u32,
+                            ),
+                        );
 
                     <span class="comment">// Multiply all dispersal probabilities by the habitat of their target
                     </span><span class="kw">let </span>dispersal_probability = dispersal[(row_index, col_index)]

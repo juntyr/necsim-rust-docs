@@ -266,6 +266,17 @@
 <a href="#266" id="266">266</a>
 <a href="#267" id="267">267</a>
 <a href="#268" id="268">268</a>
+<a href="#269" id="269">269</a>
+<a href="#270" id="270">270</a>
+<a href="#271" id="271">271</a>
+<a href="#272" id="272">272</a>
+<a href="#273" id="273">273</a>
+<a href="#274" id="274">274</a>
+<a href="#275" id="275">275</a>
+<a href="#276" id="276">276</a>
+<a href="#277" id="277">277</a>
+<a href="#278" id="278">278</a>
+<a href="#279" id="279">279</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>std::{convert::TryFrom, marker::PhantomData, path::PathBuf};
 
 <span class="kw">use </span>serde::{Deserialize, Serialize, Serializer};
@@ -438,6 +449,70 @@
     <span class="kw">pub </span>loading_mode: MapLoadingMode,
 }
 
+<span class="kw">impl </span>SpatiallyExplicitTurnoverMapArguments {
+    <span class="attr">#[allow(clippy::missing_errors_doc)]
+    </span><span class="kw">pub fn </span>try_load(
+        habitat_path: PathBuf,
+        dispersal_path: PathBuf,
+        turnover_path: PathBuf,
+        loading_mode: MapLoadingMode,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, String&gt; {
+        <span class="macro">info!</span>(
+            <span class="string">&quot;Starting to load the dispersal map {:?} ...&quot;</span>,
+            dispersal_path
+        );
+
+        <span class="kw">let </span><span class="kw-2">mut </span>dispersal_map = maps::load_dispersal_map(<span class="kw-2">&amp;</span>dispersal_path, loading_mode)
+            .map_err(|err| <span class="macro">format!</span>(<span class="string">&quot;{err:?}&quot;</span>))<span class="question-mark">?</span>;
+
+        <span class="macro">info!</span>(
+            <span class="string">&quot;Successfully loaded the dispersal map {:?} with dimensions {}x{} [cols x rows].&quot;</span>,
+            <span class="kw-2">&amp;</span>dispersal_path,
+            dispersal_map.num_columns(),
+            dispersal_map.num_rows()
+        );
+
+        <span class="macro">info!</span>(<span class="string">&quot;Starting to load the turnover map {:?} ...&quot;</span>, <span class="kw-2">&amp;</span>turnover_path);
+
+        <span class="kw">let </span>turnover_map = maps::load_turnover_map(<span class="kw-2">&amp;</span>turnover_path, loading_mode)
+            .map_err(|err| <span class="macro">format!</span>(<span class="string">&quot;{err:?}&quot;</span>))<span class="question-mark">?</span>;
+
+        <span class="macro">info!</span>(
+            <span class="string">&quot;Successfully loaded the turnover map {:?} with dimensions {}x{} [cols x rows].&quot;</span>,
+            <span class="kw-2">&amp;</span>turnover_path,
+            turnover_map.num_columns(),
+            turnover_map.num_rows()
+        );
+
+        <span class="macro">info!</span>(<span class="string">&quot;Starting to load the habitat map {:?} ...&quot;</span>, <span class="kw-2">&amp;</span>habitat_path);
+
+        <span class="kw">let </span>habitat_map = maps::load_habitat_map(
+            <span class="kw-2">&amp;</span>habitat_path,
+            <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span>turnover_map),
+            <span class="kw-2">&amp;mut </span>dispersal_map,
+            loading_mode,
+        )
+        .map_err(|err| <span class="macro">format!</span>(<span class="string">&quot;{err:?}&quot;</span>))<span class="question-mark">?</span>;
+
+        <span class="macro">info!</span>(
+            <span class="string">&quot;Successfully loaded the habitat map {:?} with dimensions {}x{} [cols x rows].&quot;</span>,
+            <span class="kw-2">&amp;</span>habitat_path,
+            habitat_map.num_columns(),
+            habitat_map.num_rows()
+        );
+
+        <span class="prelude-val">Ok</span>(SpatiallyExplicitTurnoverMapArguments {
+            habitat_path,
+            habitat_map,
+            dispersal_path,
+            dispersal_map,
+            turnover_path,
+            turnover_map,
+            loading_mode,
+        })
+    }
+}
+
 <span class="kw">impl </span>Serialize <span class="kw">for </span>SpatiallyExplicitTurnoverMapArguments {
     <span class="kw">fn </span>serialize&lt;S: Serializer&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, serializer: S) -&gt; <span class="prelude-ty">Result</span>&lt;S::Ok, S::Error&gt; {
         SpatiallyExplicitTurnoverMapArgumentsRaw {
@@ -454,72 +529,19 @@
     <span class="kw">type </span>Error = String;
 
     <span class="kw">fn </span>try_from(raw: SpatiallyExplicitTurnoverMapArgumentsRaw) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, <span class="self">Self</span>::Error&gt; {
-        <span class="macro">info!</span>(
-            <span class="string">&quot;Starting to load the dispersal map {:?} ...&quot;</span>,
-            <span class="kw-2">&amp;</span>raw.dispersal_map
-        );
-
-        <span class="kw">let </span><span class="kw-2">mut </span>dispersal_map = maps::load_dispersal_map(<span class="kw-2">&amp;</span>raw.dispersal_map, raw.loading_mode)
-            .map_err(|err| <span class="macro">format!</span>(<span class="string">&quot;{err:?}&quot;</span>))<span class="question-mark">?</span>;
-
-        <span class="macro">info!</span>(
-            <span class="string">&quot;Successfully loaded the dispersal map {:?} with dimensions {}x{} [cols x rows].&quot;</span>,
-            <span class="kw-2">&amp;</span>raw.dispersal_map,
-            dispersal_map.num_columns(),
-            dispersal_map.num_rows()
-        );
-
-        <span class="macro">info!</span>(
-            <span class="string">&quot;Starting to load the turnover map {:?} ...&quot;</span>,
-            <span class="kw-2">&amp;</span>raw.turnover_map
-        );
-
-        <span class="kw">let </span>turnover_map = maps::load_turnover_map(<span class="kw-2">&amp;</span>raw.turnover_map, raw.loading_mode)
-            .map_err(|err| <span class="macro">format!</span>(<span class="string">&quot;{err:?}&quot;</span>))<span class="question-mark">?</span>;
-
-        <span class="macro">info!</span>(
-            <span class="string">&quot;Successfully loaded the turnover map {:?} with dimensions {}x{} [cols x rows].&quot;</span>,
-            <span class="kw-2">&amp;</span>raw.turnover_map,
-            turnover_map.num_columns(),
-            turnover_map.num_rows()
-        );
-
-        <span class="macro">info!</span>(
-            <span class="string">&quot;Starting to load the habitat map {:?} ...&quot;</span>,
-            <span class="kw-2">&amp;</span>raw.habitat_map
-        );
-
-        <span class="kw">let </span>habitat_map = maps::load_habitat_map(
-            <span class="kw-2">&amp;</span>raw.habitat_map,
-            <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span>turnover_map),
-            <span class="kw-2">&amp;mut </span>dispersal_map,
+        <span class="self">Self</span>::try_load(
+            raw.habitat_map,
+            raw.dispersal_map,
+            raw.turnover_map,
             raw.loading_mode,
         )
-        .map_err(|err| <span class="macro">format!</span>(<span class="string">&quot;{err:?}&quot;</span>))<span class="question-mark">?</span>;
-
-        <span class="macro">info!</span>(
-            <span class="string">&quot;Successfully loaded the habitat map {:?} with dimensions {}x{} [cols x rows].&quot;</span>,
-            <span class="kw-2">&amp;</span>raw.habitat_map,
-            habitat_map.num_columns(),
-            habitat_map.num_rows()
-        );
-
-        <span class="prelude-val">Ok</span>(SpatiallyExplicitTurnoverMapArguments {
-            habitat_path: raw.habitat_map,
-            habitat_map,
-            dispersal_path: raw.dispersal_map,
-            dispersal_map,
-            turnover_path: raw.turnover_map,
-            turnover_map,
-            loading_mode: raw.loading_mode,
-        })
     }
 }
 
 <span class="attr">#[derive(Debug, Serialize, Deserialize)]
 #[allow(clippy::module_name_repetitions)]
 #[serde(deny_unknown_fields)]
-#[serde(rename = <span class="string">&quot;SpatiallyExplicitTurnoverMapArguments&quot;</span>)]
+#[serde(rename = <span class="string">&quot;SpatiallyExplicitTurnoverMap&quot;</span>)]
 </span><span class="kw">struct </span>SpatiallyExplicitTurnoverMapArgumentsRaw {
     <span class="attr">#[serde(rename = <span class="string">&quot;habitat&quot;</span>, alias = <span class="string">&quot;habitat_map&quot;</span>)]
     </span>habitat_map: PathBuf,

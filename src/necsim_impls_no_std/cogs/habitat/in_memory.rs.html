@@ -178,6 +178,8 @@
 <a href="#178" id="178">178</a>
 <a href="#179" id="179">179</a>
 <a href="#180" id="180">180</a>
+<a href="#181" id="181">181</a>
+<a href="#182" id="182">182</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>core::marker::PhantomData;
 
 <span class="kw">use </span>alloc::{boxed::Box, vec::Vec};
@@ -271,10 +273,10 @@
                 <span class="kw">if </span><span class="kw-2">*</span>habitat &gt; <span class="number">0 </span>{
                     <span class="attr">#[allow(clippy::cast_possible_truncation)]
                     </span><span class="prelude-val">Some</span>(Location::new(
-                        <span class="self">self</span>.extent.x().wrapping_add(
+                        <span class="self">self</span>.extent.origin().x().wrapping_add(
                             (location_index % usize::from(<span class="self">self</span>.extent.width())) <span class="kw">as </span>u32,
                         ),
-                        <span class="self">self</span>.extent.y().wrapping_add(
+                        <span class="self">self</span>.extent.origin().y().wrapping_add(
                             (location_index / usize::from(<span class="self">self</span>.extent.width())) <span class="kw">as </span>u32,
                         ),
                     ))
@@ -303,9 +305,11 @@
         </span>IndexedLocation::new(
             Location::new(
                 <span class="self">self</span>.extent
+                    .origin()
                     .x()
                     .wrapping_add((location_index % usize::from(<span class="self">self</span>.extent.width())) <span class="kw">as </span>u32),
                 <span class="self">self</span>.extent
+                    .origin()
                     .y()
                     .wrapping_add((location_index / usize::from(<span class="self">self</span>.extent.width())) <span class="kw">as </span>u32),
             ),
@@ -348,7 +352,7 @@
         }
 
         <span class="attr">#[allow(clippy::cast_possible_truncation)]
-        </span><span class="kw">let </span>extent = LandscapeExtent::new(<span class="number">0</span>, <span class="number">0</span>, width, height);
+        </span><span class="kw">let </span>extent = LandscapeExtent::new(Location::new(<span class="number">0</span>, <span class="number">0</span>), width, height);
 
         <span class="prelude-val">Some</span>(<span class="self">Self </span>{
             habitat: Final::new(habitat),

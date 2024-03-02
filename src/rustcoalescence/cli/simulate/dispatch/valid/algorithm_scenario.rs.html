@@ -210,6 +210,16 @@
 <a href="#210" id="210">210</a>
 <a href="#211" id="211">211</a>
 <a href="#212" id="212">212</a>
+<a href="#213" id="213">213</a>
+<a href="#214" id="214">214</a>
+<a href="#215" id="215">215</a>
+<a href="#216" id="216">216</a>
+<a href="#217" id="217">217</a>
+<a href="#218" id="218">218</a>
+<a href="#219" id="219">219</a>
+<a href="#220" id="220">220</a>
+<a href="#221" id="221">221</a>
+<a href="#222" id="222">222</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>necsim_core::reporter::Reporter;
 <span class="kw">use </span>necsim_core_bond::{NonNegativeF64, OpenClosedUnitF64 <span class="kw">as </span>PositiveUnitF64};
 <span class="kw">use </span>necsim_partitioning_core::LocalPartition;
@@ -225,14 +235,16 @@
 <span class="attr">#[cfg(feature = <span class="string">&quot;independent-algorithm&quot;</span>)]
 </span><span class="kw">use </span>rustcoalescence_algorithms_independent::IndependentAlgorithm;
 
-<span class="attr">#[cfg(feature = <span class="string">&quot;almost-infinite-scenario&quot;</span>)]
-</span><span class="kw">use </span>rustcoalescence_scenarios::almost_infinite::AlmostInfiniteScenario;
+<span class="attr">#[cfg(feature = <span class="string">&quot;almost-infinite-clark2dt-dispersal-scenario&quot;</span>)]
+</span><span class="kw">use </span>rustcoalescence_scenarios::almost_infinite::clark2dt::AlmostInfiniteClark2DtDispersalScenario;
+<span class="attr">#[cfg(feature = <span class="string">&quot;almost-infinite-normal-dispersal-scenario&quot;</span>)]
+</span><span class="kw">use </span>rustcoalescence_scenarios::almost_infinite::normal::AlmostInfiniteNormalDispersalScenario;
 <span class="attr">#[cfg(feature = <span class="string">&quot;non-spatial-scenario&quot;</span>)]
 </span><span class="kw">use </span>rustcoalescence_scenarios::non_spatial::NonSpatialScenario;
 <span class="attr">#[cfg(feature = <span class="string">&quot;spatially-explicit-turnover-map-scenario&quot;</span>)]
-</span><span class="kw">use </span>rustcoalescence_scenarios::spatially_explicit::SpatiallyExplicitTurnoverMapScenario;
+</span><span class="kw">use </span>rustcoalescence_scenarios::spatially_explicit::map::SpatiallyExplicitTurnoverMapScenario;
 <span class="attr">#[cfg(feature = <span class="string">&quot;spatially-explicit-uniform-turnover-scenario&quot;</span>)]
-</span><span class="kw">use </span>rustcoalescence_scenarios::spatially_explicit::SpatiallyExplicitUniformTurnoverScenario;
+</span><span class="kw">use </span>rustcoalescence_scenarios::spatially_explicit::uniform::SpatiallyExplicitUniformTurnoverScenario;
 <span class="attr">#[cfg(feature = <span class="string">&quot;spatially-implicit-scenario&quot;</span>)]
 </span><span class="kw">use </span>rustcoalescence_scenarios::spatially_implicit::SpatiallyImplicitScenario;
 <span class="attr">#[cfg(feature = <span class="string">&quot;wrapping-noise-scenario&quot;</span>)]
@@ -396,9 +408,17 @@
             )
             .into_ok()
         },
-        <span class="attr">#[cfg(feature = <span class="string">&quot;almost-infinite-scenario&quot;</span>)]
-        </span>ScenarioArgs::AlmostInfinite(scenario_args) =&gt; {
-            AlmostInfiniteScenario::initialise(
+        <span class="attr">#[cfg(feature = <span class="string">&quot;almost-infinite-normal-dispersal-scenario&quot;</span>)]
+        </span>ScenarioArgs::AlmostInfiniteNormalDispersal(scenario_args) =&gt; {
+            AlmostInfiniteNormalDispersalScenario::initialise(
+                scenario_args,
+                speciation_probability_per_generation,
+            )
+            .into_ok()
+        },
+        <span class="attr">#[cfg(feature = <span class="string">&quot;almost-infinite-clark2dt-dispersal-scenario&quot;</span>)]
+        </span>ScenarioArgs::AlmostInfiniteClark2DtDispersal(scenario_args) =&gt; {
+            AlmostInfiniteClark2DtDispersalScenario::initialise(
                 scenario_args,
                 speciation_probability_per_generation,
             )

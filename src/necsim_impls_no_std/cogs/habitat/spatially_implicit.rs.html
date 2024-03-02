@@ -134,7 +134,6 @@
 <a href="#134" id="134">134</a>
 <a href="#135" id="135">135</a>
 <a href="#136" id="136">136</a>
-<a href="#137" id="137">137</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>core::num::NonZeroU32;
 
 <span class="kw">use </span>necsim_core::{
@@ -146,7 +145,7 @@
 <span class="kw">use </span><span class="kw">crate</span>::cogs::habitat::non_spatial::NonSpatialHabitat;
 
 <span class="kw">const </span>SPATIALLY_IMPLICIT_EXTENT: LandscapeExtent =
-    LandscapeExtent::new(<span class="number">0</span>, <span class="number">0</span>, OffByOneU32::max(), OffByOneU32::max());
+    LandscapeExtent::new(Location::new(<span class="number">0</span>, <span class="number">0</span>), OffByOneU32::max(), OffByOneU32::max());
 
 <span class="attr">#[allow(clippy::module_name_repetitions)]
 #[derive(Debug)]
@@ -180,8 +179,7 @@
     ) -&gt; <span class="self">Self </span>{
         <span class="kw">let </span>local = NonSpatialHabitat::new(local_area, local_deme);
         <span class="kw">let </span>meta = NonSpatialHabitat::new_with_offset(
-            meta_area.<span class="number">0</span>.inv(),
-            meta_area.<span class="number">1</span>.inv(),
+            Location::new(meta_area.<span class="number">0</span>.inv(), meta_area.<span class="number">1</span>.inv()),
             meta_area,
             meta_deme,
         );

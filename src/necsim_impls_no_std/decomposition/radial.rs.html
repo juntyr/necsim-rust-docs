@@ -98,8 +98,8 @@
     <span class="kw">fn </span>map_location_to_subdomain_rank(<span class="kw-2">&amp;</span><span class="self">self</span>, location: <span class="kw-2">&amp;</span>Location, habitat: <span class="kw-2">&amp;</span>H) -&gt; u32 {
         <span class="kw">let </span>extent = habitat.get_extent();
 
-        <span class="kw">let </span>neutral_x = location.x().wrapping_sub(extent.x());
-        <span class="kw">let </span>neutral_y = location.y().wrapping_sub(extent.y());
+        <span class="kw">let </span>neutral_x = location.x().wrapping_sub(extent.origin().x());
+        <span class="kw">let </span>neutral_y = location.y().wrapping_sub(extent.origin().y());
 
         <span class="attr">#[allow(clippy::cast_precision_loss)]
         </span><span class="kw">let </span>fraction = (atan2(

@@ -123,6 +123,7 @@
 <a href="#123" id="123">123</a>
 <a href="#124" id="124">124</a>
 <a href="#125" id="125">125</a>
+<a href="#126" id="126">126</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>core::marker::PhantomData;
 
 <span class="kw">use </span>alloc::vec::Vec;
@@ -174,14 +175,15 @@
 
                 <span class="kw">for </span>(col_index, dispersal_probability) <span class="kw">in </span>row.enumerate() {
                     <span class="attr">#[allow(clippy::cast_possible_truncation)]
-                    </span><span class="kw">let </span>location = Location::new(
-                        habitat_extent
-                            .x()
-                            .wrapping_add((col_index % usize::from(habitat_extent.width())) <span class="kw">as </span>u32),
-                        habitat_extent
-                            .y()
-                            .wrapping_add((col_index / usize::from(habitat_extent.width())) <span class="kw">as </span>u32),
-                    );
+                    </span><span class="kw">let </span>location =
+                        Location::new(
+                            habitat_extent.origin().x().wrapping_add(
+                                (col_index % usize::from(habitat_extent.width())) <span class="kw">as </span>u32,
+                            ),
+                            habitat_extent.origin().y().wrapping_add(
+                                (col_index / usize::from(habitat_extent.width())) <span class="kw">as </span>u32,
+                            ),
+                        );
 
                     <span class="comment">// Multiply all dispersal probabilities by the habitat of their target
                     </span><span class="kw">let </span>weight = <span class="kw-2">*</span>dispersal_probability

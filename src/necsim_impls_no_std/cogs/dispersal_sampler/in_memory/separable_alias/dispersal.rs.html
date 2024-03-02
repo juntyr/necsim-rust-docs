@@ -126,8 +126,8 @@
         rng: <span class="kw-2">&amp;mut </span>G,
     ) -&gt; Location {
         <span class="kw">let </span>alias_dispersal_at_location = <span class="self">self</span>.alias_dispersal[(
-            location.y().wrapping_sub(habitat.get_extent().y()) <span class="kw">as </span>usize,
-            location.x().wrapping_sub(habitat.get_extent().x()) <span class="kw">as </span>usize,
+            location.y().wrapping_sub(habitat.get_extent().origin().y()) <span class="kw">as </span>usize,
+            location.x().wrapping_sub(habitat.get_extent().origin().x()) <span class="kw">as </span>usize,
         )]
             .as_ref()
             .expect(<span class="string">&quot;habitat dispersal origin must disperse somewhere&quot;</span>);
@@ -136,10 +136,10 @@
 
         <span class="attr">#[allow(clippy::cast_possible_truncation)]
         </span>Location::new(
-            habitat.get_extent().x().wrapping_add(
+            habitat.get_extent().origin().x().wrapping_add(
                 (dispersal_target_index % usize::from(habitat.get_extent().width())) <span class="kw">as </span>u32,
             ),
-            habitat.get_extent().y().wrapping_add(
+            habitat.get_extent().origin().y().wrapping_add(
                 (dispersal_target_index / usize::from(habitat.get_extent().width())) <span class="kw">as </span>u32,
             ),
         )
@@ -153,8 +153,8 @@
         habitat: <span class="kw-2">&amp;</span>H,
     ) -&gt; ClosedUnitF64 {
         <span class="self">self</span>.self_dispersal[(
-            location.y().wrapping_sub(habitat.get_extent().y()) <span class="kw">as </span>usize,
-            location.x().wrapping_sub(habitat.get_extent().x()) <span class="kw">as </span>usize,
+            location.y().wrapping_sub(habitat.get_extent().origin().y()) <span class="kw">as </span>usize,
+            location.x().wrapping_sub(habitat.get_extent().origin().x()) <span class="kw">as </span>usize,
         )]
     }
 }

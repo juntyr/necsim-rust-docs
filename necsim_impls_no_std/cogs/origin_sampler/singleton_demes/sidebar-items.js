@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["SingletonDemesOriginSampler"],"mod":["circle","rectangle"]};

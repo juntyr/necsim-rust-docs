@@ -142,6 +142,7 @@
 <a href="#142" id="142">142</a>
 <a href="#143" id="143">143</a>
 <a href="#144" id="144">144</a>
+<a href="#145" id="145">145</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>alloc::{boxed::Box, vec::Vec};
 <span class="kw">use </span>core::{marker::PhantomData, ops::Range};
 <span class="kw">use </span>necsim_core_bond::NonNegativeF64;
@@ -214,14 +215,15 @@
 
                 <span class="kw">for </span>(col_index, dispersal_probability) <span class="kw">in </span>row.enumerate() {
                     <span class="attr">#[allow(clippy::cast_possible_truncation)]
-                    </span><span class="kw">let </span>location = Location::new(
-                        habitat_extent
-                            .x()
-                            .wrapping_add((col_index % usize::from(habitat_extent.width())) <span class="kw">as </span>u32),
-                        habitat_extent
-                            .y()
-                            .wrapping_add((col_index / usize::from(habitat_extent.width())) <span class="kw">as </span>u32),
-                    );
+                    </span><span class="kw">let </span>location =
+                        Location::new(
+                            habitat_extent.origin().x().wrapping_add(
+                                (col_index % usize::from(habitat_extent.width())) <span class="kw">as </span>u32,
+                            ),
+                            habitat_extent.origin().y().wrapping_add(
+                                (col_index / usize::from(habitat_extent.width())) <span class="kw">as </span>u32,
+                            ),
+                        );
 
                     <span class="comment">// Multiply all dispersal probabilities by the habitat of their target
                     </span><span class="kw">let </span>weight = <span class="kw-2">*</span>dispersal_probability

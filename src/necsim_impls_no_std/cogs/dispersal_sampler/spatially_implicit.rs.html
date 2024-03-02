@@ -145,12 +145,6 @@
 <a href="#145" id="145">145</a>
 <a href="#146" id="146">146</a>
 <a href="#147" id="147">147</a>
-<a href="#148" id="148">148</a>
-<a href="#149" id="149">149</a>
-<a href="#150" id="150">150</a>
-<a href="#151" id="151">151</a>
-<a href="#152" id="152">152</a>
-<a href="#153" id="153">153</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>necsim_core::{
     cogs::{Backup, DispersalSampler, Habitat, MathsCore, RngCore, SeparableDispersalSampler},
     landscape::Location,
@@ -223,10 +217,7 @@
             <span class="kw">if </span>rng.sample_event(<span class="self">self</span>.local_migration_probability_per_generation.into()) {
                 <span class="comment">// Provide a dummpy Location in the meta community to disperse from
                 </span><span class="self">self</span>.meta.sample_dispersal_from_location(
-                    <span class="kw-2">&amp;</span>Location::new(
-                        habitat.meta().get_extent().x(),
-                        habitat.meta().get_extent().y(),
-                    ),
+                    habitat.meta().get_extent().origin(),
                     habitat.meta(),
                     rng,
                 )
@@ -269,10 +260,7 @@
                 // As the individual is dispersing to a different community,
                 //  we can use standard dispersal in the meta community
                 </span><span class="self">self</span>.meta.sample_dispersal_from_location(
-                    <span class="kw-2">&amp;</span>Location::new(
-                        habitat.meta().get_extent().x(),
-                        habitat.meta().get_extent().y(),
-                    ),
+                    habitat.meta().get_extent().origin(),
                     habitat.meta(),
                     rng,
                 )

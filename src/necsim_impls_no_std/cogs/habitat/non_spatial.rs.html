@@ -146,6 +146,7 @@
 <a href="#146" id="146">146</a>
 <a href="#147" id="147">147</a>
 <a href="#148" id="148">148</a>
+<a href="#149" id="149">149</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>core::{
     marker::PhantomData,
     num::{NonZeroU32, NonZeroU64},
@@ -177,20 +178,19 @@
     </span>)]
     </span><span class="kw">pub fn </span>new(area: (OffByOneU32, OffByOneU32), deme: NonZeroU32) -&gt; <span class="self">Self </span>{
         <span class="self">Self </span>{
-            extent: LandscapeExtent::new(<span class="number">0</span>, <span class="number">0</span>, area.<span class="number">0</span>, area.<span class="number">1</span>),
+            extent: LandscapeExtent::new(Location::new(<span class="number">0</span>, <span class="number">0</span>), area.<span class="number">0</span>, area.<span class="number">1</span>),
             deme,
             marker: PhantomData::&lt;M&gt;,
         }
     }
 
     <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn </span>new_with_offset(
-        x: u32,
-        y: u32,
+        offset: Location,
         area: (OffByOneU32, OffByOneU32),
         deme: NonZeroU32,
     ) -&gt; <span class="self">Self </span>{
         <span class="self">Self </span>{
-            extent: LandscapeExtent::new(x, y, area.<span class="number">0</span>, area.<span class="number">1</span>),
+            extent: LandscapeExtent::new(offset, area.<span class="number">0</span>, area.<span class="number">1</span>),
             deme,
             marker: PhantomData::&lt;M&gt;,
         }
@@ -245,13 +245,13 @@
             indexed_location
                 .location()
                 .y()
-                .wrapping_sub(<span class="self">self</span>.extent.y()),
+                .wrapping_sub(<span class="self">self</span>.extent.origin().y()),
         ) * u64::from(<span class="self">self</span>.extent.width())
             + u64::from(
                 indexed_location
                     .location()
                     .x()
-                    .wrapping_sub(<span class="self">self</span>.extent.x()),
+                    .wrapping_sub(<span class="self">self</span>.extent.origin().x()),
             ))
             * u64::from(<span class="self">self</span>.deme.get())
             + u64::from(indexed_location.index())
@@ -284,9 +284,11 @@
         </span>IndexedLocation::new(
             Location::new(
                 <span class="self">self</span>.extent
+                    .origin()
                     .x()
                     .wrapping_add((dispersal_target_index % <span class="self">self</span>.extent.width().get()) <span class="kw">as </span>u32),
                 <span class="self">self</span>.extent
+                    .origin()
                     .y()
                     .wrapping_add((dispersal_target_index / <span class="self">self</span>.extent.width().get()) <span class="kw">as </span>u32),
             ),
